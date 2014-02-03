@@ -12,8 +12,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QMainWindow>
-#include <QSerialPort>
-#include <QTimer>
 #include <SettingsDialog.hpp>
 #include <QThread>
 #include <Global.hpp>
@@ -21,16 +19,10 @@
 //#define DEBUGWINDOW
 
 /*Forward deceleration*/
-//class QString;
-//class QWidget;
 class QListWidgetItem;
 class QTimer;
-//class QMultiMap;
-
-//class ADDDIALOG;
 class DebugDockWidget;
 class AnimationThread;
-class SendThread;
 class Animations;
 
 namespace Ui {
@@ -41,7 +33,6 @@ namespace Ui {
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    Q_PROPERTY(bool timeout READ timeout WRITE setTimeout)
 
 protected:
     void closeEvent (QCloseEvent *);
@@ -50,28 +41,16 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-
-    bool timeout() const
-    {
-        return m_timeout;
-    }
-
 public slots:
-    void setTimeout(bool arg)
-    {
-        m_timeout = arg;
-    }
 
 signals:
     void startAnimation(const AnimationStruct &currentAnimation);
 
 private slots:
-    void animationThreadSleep(const uint &ms);
     bool okToContinue(void);
     void resizeEvent(QResizeEvent *e);
     void saveSettings(void);
     void readSettings(void);
-    void processTimeOut(void);
     void openCloseSerialPort(void);
 //    void portUnpluged(void);
     void connectSignals(void);
@@ -79,9 +58,7 @@ private slots:
     void createToolbar(void);
     void clearToolButtonClicked(void);
     void about(void);
-    void dataReady();
     void readData(void);
-    void deleteAnimationThread(void);
 #ifdef DEBUGWINDOW
     void sendData(void);
 #endif
@@ -95,8 +72,6 @@ private slots:
 
 private:
     void setupAnimationList(void);
-    void setupThreads(void);
-    void deleteThread(void);
 #ifdef DEBUGWINDOW
     void writeData(const char c);
 #endif
@@ -121,19 +96,14 @@ private:
     QAction *playAction;
     QAction *pauseAction;
 
-    QTimer timer;
-    bool m_timeout;
-    QByteArray *m_data;
+//    QTimer timer;
+
     AnimationStruct currentAnimation;
-//    QMultiMap<QString,AnimationStruct>  *animationMap;
     QHash<QString,AnimationStruct> *playList;
     QHash<QString,AnimationStruct> *alist;
-    QThread *aThread;
-    QThread *sThread;
+
     Animations *animations;
-    QSerialPort *serial;
-    SendThread *sendThread;
-    AnimationThread *animationThread;
+    QSerialPort serial;
 
 };
 

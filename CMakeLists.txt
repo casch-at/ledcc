@@ -16,7 +16,7 @@
 ######################################################
 
 #  !!!!!!!!!!!!!   Run Cmake with !!!!!!!!!!!!!!!!!!!!!!!
-#   -DCMAKE_PREFIX_PATH=/home/christian/Developing/QtLibraries/5.0.2/gcc_64/lib/cmake/ -DCMAKE_BUILD_TYPE=DEBUG
+#   -DCMAKE_PREFIX_PATH=/opts/Qt5.2/5.2.0/gcc_64/lib/cmake/ -DCMAKE_BUILD_TYPE=DEBUG
 
 # Executable name
 

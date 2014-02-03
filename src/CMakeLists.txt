@@ -2,91 +2,58 @@
 # Widgets finds its own dependencies (QtGui and QtCore)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-include_directories (gui core aqp cfiles)
+include_directories (gui core aqp)
 
 # Set Path variables
-set(gui_DIR "${CMAKE_CURRENT_SOURCE_DIR}/gui/")
-# set(usb_DIR "${CMAKE_CURRENT_SOURCE_DIR}/usb/")
-set(core_DIR "${CMAKE_CURRENT_SOURCE_DIR}/core/")
-set(aqp_DIR "${CMAKE_CURRENT_SOURCE_DIR}/aqp/")
+set(gui_DIR "${CMAKE_CURRENT_SOURCE_DIR}/gui")
+set(core_DIR "${CMAKE_CURRENT_SOURCE_DIR}/core")
+set(aqp_DIR "${CMAKE_CURRENT_SOURCE_DIR}/aqp")
 #set(cfiles_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cfiles/")
+
+
 # configure a header file to pass some of the CMake settings
 # to the source code
-
 # # Configure "global.h"
 # configure_file (
 #   "${core_DIR}global.h.in"
 #   "${core_DIR}global.h"
 #   )
-set(${PROGNAME}_SOURCES_MAINEXE
-    ../main.cpp
-)
-message(STATUS ${${PROGNAME}_SOURCES_MAINEXE})
 
-set(${PROGNAME}_HEADERS
-    ${core_DIR}Global.hpp
-#    ${cfiles_DIR}ledCubeAnimations.h
-)
-set(${PROGNAME}_RESOURCES
-    icons.qrc
-)
-
+#message(STATUS ${${PROGNAME}_SOURCES_MAINEXE})
  # Get all files from the above set directories
-file (GLOB GUI
-    "${gui_DIR}*.cpp"
+
+set(HEADERS     ${core_DIR}/Global.hpp)
+set(RESOURCES   icons.qrc)
+set(MAINEXE     ../main.cpp)
+set(GUI         ${gui_DIR}/DebugDockWidget.cpp
+                ${gui_DIR}/MainWindow.cpp
+                ${gui_DIR}/SettingsDialog.cpp
+)
+set(CORE        ${core_DIR}/Animations.cpp
+                ${core_DIR}/Draw.cpp
+)
+set(AQP         ${aqp_DIR}/alt_key.cpp
+                ${aqp_DIR}/aqp.cpp
+                ${aqp_DIR}/kuhn_munkres.cpp
+)
+set(FORMS       ${gui_DIR}/DebugDockWidget.ui
+                ${gui_DIR}/MainWindow.ui
+                ${gui_DIR}/SettingsDialog.ui
 )
 
-file (GLOB CORE
-    "${core_DIR}*.cpp"
-)
+#set(CFILES      ${cfiles}/AsciiHex.cpp
 
-file (GLOB AQP
-    "${aqp_DIR}*.cpp"
-)
-
-#file (GLOB CFILES
-#     "${cfiles_DIR}*.c"
-#)
-file(GLOB ${PROGNAME}_FORMS
-    "${gui_DIR}*.ui"
-)
-
-# REMOVE UNEEDED FILES
-LIST(REMOVE_ITEM AQP
-    "${aqp_DIR}main.cpp"
-)
-
-LIST(REMOVE_ITEM ${PROGNAME}_FORMS
-    "${gui_DIR}mainwindow_bak.ui"
-)
-
-LIST(REMOVE_ITEM ${PROGNAME}_FORMS
-    "${gui_DIR}AddDialog.ui"
-)
-
-LIST(REMOVE_ITEM GUI
-    "${gui_DIR}AddDialog.cpp"
-)
 
 # PUT ALL SOURCE FILES TOGETHER
-set(${PROGNAME}_SOURCES
-    ${GUI}
-    ${CORE}
-    ${CFILES}
-    ${AQP}
-)
+set(${PROGNAME}_SOURCES  ${GUI} ${CORE} ${AQP})
 
-
-set(${PROGNAME}_HEADER    ${${PROGNAME}_HEADERS})
-
-qt5_add_resources(${PROGNAME}_RESOURCES_RCC ${${PROGNAME}_RESOURCES})
-
-qt5_wrap_ui(${PROGNAME}_FORMS_HEADER ${${PROGNAME}_FORMS})
-qt5_wrap_cpp(${PROGNAME}_HEADERS_MOC ${${PROGNAME}_HEADER})
+qt5_add_resources(${PROGNAME}_RESOURCES_RCC ${RESOURCES})
+qt5_wrap_ui(${PROGNAME}_FORMS_HEADER        ${FORMS})
+qt5_wrap_cpp(${PROGNAME}_HEADERS_MOC        ${HEADERS})
 
 add_executable(${PROGNAME}  ${${PROGNAME}_SOURCES}
-                            ${${PROGNAME}_HEADER}
-                            ${${PROGNAME}_SOURCES_MAINEXE}
+                            ${HEADERS}
+                            ${MAINEXE}
                             ${${PROGNAME}_FORMS_HEADER}
                             ${${PROGNAME}_RESOURCES_RCC}
 )
