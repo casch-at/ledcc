@@ -2,26 +2,17 @@
 #include <QtGlobal>
 #include <QTimer>
 #include <QDebug>
-Animations::Animations():
-    timer(new QTimer(this))
 
+Animations::Animations()
 {
-    timer->setSingleShot(true);
-    tmp=true;
-    //    emitTimer->setSingleShot(false);
-    //    timer->start(200);
-    //    connect(emitTimer,&QTimer::timeout,this,&Animations::emitTi);
+
 }
 
 Animations::~Animations()
 {
-    delete timer;
+
 }
 
-//QByteArray Animations::getSendCube(void)
-//{
-//    return data;
-//}
 
 void Animations::effectWall(Axis axis, Direction direction, uint16_t speed)
 {
@@ -168,7 +159,7 @@ void Animations::effectZUpDownMove(uint8_t destination[], uint8_t position[], Ax
         }
 
     }
-    drawPositionAxis(Z_AXIS, position, TRUE);
+    drawPositionAxis(Z_AXIS, position, true);
 }
 
 void Animations::effectFirework(uint16_t iterations, uint16_t speed, uint8_t particles)
@@ -294,7 +285,7 @@ void Animations::effectWireBoxCornerShrinkGrow(uint16_t iterations, uint16_t spe
 
 }
 
-void Animations::effectWireBoxCenterShrinkGrow(uint16_t speed, Bool centerStart)
+void Animations::effectWireBoxCenterShrinkGrow(uint16_t speed, bool centerStart)
 {
     uint8_t i = 0;
     uint8_t j = 0;
@@ -314,7 +305,7 @@ void Animations::effectWireBoxCenterShrinkGrow(uint16_t speed, Bool centerStart)
     }
 }
 
-void Animations::effectAxisNailWall(uint16_t speed, Axis axis, Bool invert)
+void Animations::effectAxisNailWall(uint16_t speed, Axis axis, bool invert)
 {
     uint8_t position[CUBE_ARRAY_SIZE] =
     { 0 };
@@ -372,18 +363,15 @@ void Animations::effectLoadbar(uint16_t speed, Axis axis)
 {
     uint8_t i = 0;
     fillCubeArray(0x00);
-    emit dataChanged(cubeF);
     for (i = 0; i < CUBE_SIZE; i++)
     {
         setPlane(axis, i);
-        //        emit dataChanged(cubeF);
         animationWait(speed);
     }
     animationWait(speed * 2 );
     for (i = 0; i < CUBE_SIZE; i++)
     {
         clearPlane(axis, i);
-        //        emit dataChanged(cubeF);
         animationWait(speed);
     }
 }
@@ -489,24 +477,5 @@ void Animations::effectString(uint8_t *str, uint16_t speed)
 
 void Animations::animationWait(const uint speed)
 {
-//    QWriteLocker locker(&lock);
-//    for (int z = 0; z < CUBE_SIZE; z++) {
-//        for (int y = 0; y < CUBE_SIZE; y++) {
-//            cubeFTemp[z][y] = cubeF[z][y];
-//        }
-//    }
-    //    if(tmp){
-    //    emit dataChanged(cubeFTemp);
-    //        tmp = false;
-    //    }
-    emit dataChanged(cubeF);
-//    emit sleepAnimation(speed);
-//    if(tmp){
-//        qDebug()<< "Animation Timer parent: " << timer->parent();
-//        qDebug()<< "Animation parent: " << parent();
-//        tmp = false;
-//    }
-//    timer->start(speed);
 
-    //    while (timer->isActive());
 }

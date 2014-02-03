@@ -10,9 +10,12 @@ Draw::Draw()
     QTime time = QTime::currentTime();
     cubeF =  CubeArray(8,QVector<uint8_t>(8)) ;
     cubeFTemp =  CubeArray(8,QVector<uint8_t>(8)) ;
-//    cubeFTemp =  QVector<QVector<uint8_t> >(512);
-//    qDebug()<< static_cast<uint>(time.msecsSinceStartOfDay());
     qsrand(static_cast<uint>(time.msecsSinceStartOfDay()));
+}
+
+Draw::~Draw()
+{
+
 }
 
 void Draw::setBixel(int x, int y, int z)
@@ -66,11 +69,11 @@ void Draw::alterBixel(uint8_t x, uint8_t y, uint8_t z, BixelState state)
         clearBixel(x, y, z);
 }
 
-Bool Draw::inRange(uint8_t x, uint8_t y, uint8_t z)
+bool Draw::inRange(uint8_t x, uint8_t y, uint8_t z)
 {
     if (x < CUBE_SIZE && y < CUBE_SIZE && z < CUBE_SIZE)
-        return TRUE;
-    return FALSE;
+        return true;
+    return false;
 }
 
 void Draw::shift(Axis axis, Direction direction)
@@ -142,7 +145,7 @@ void Draw::checkArgumentOrder(uint8_t from, uint8_t to, uint8_t *newStartPoint, 
     *newEndPoint = to;
 }
 
-void Draw::drawPositionAxis(Axis axis, uint8_t position[], Bool invert)
+void Draw::drawPositionAxis(Axis axis, uint8_t position[], bool invert)
 {
     uint8_t x = 0;
     uint8_t y = 0;
@@ -240,6 +243,7 @@ void Draw::setPlaneX(uint8_t x)
 //        }
 //    }
 //}
+
 void Draw::clearPlaneX(uint8_t x)
 {
     uint8_t z, y;
@@ -440,9 +444,4 @@ void Draw::fontGetChar(uint8_t chr, uint8_t dst[5])
         dst[i] = lookUpTable[(chr*5)+i];
 }
 
-
-void Draw::wait()
-{
-
-}
 

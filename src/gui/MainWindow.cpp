@@ -203,12 +203,12 @@ void MainWindow::setupAnimationList()
     alist->insert(a6.name,a6);
     a7.name = QString("Wire Box Center Shrink Grow");
     a7.speed = 50;
-    a7.invert = TRUE;
+    a7.invert = true;
     alist->insert(a7.name,a7);
     a8.name = QString("Axis Nail Wall");
     a8.speed = 50;
     a8.axis = X_AXIS;
-    a8.invert = TRUE;
+    a8.invert = true;
     alist->insert(a8.name,a8);
     a9.name= QString("Loadbar");
     a9.id = 1;
@@ -238,10 +238,8 @@ void MainWindow::setupAnimationList()
         ui->availableAnimationsLW->addItem(i.key());
 }
 
-
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port
 {
-
     m_port = sdialog->settings();
 
     if(!serial.isOpen()){ // Get the status of the Serial port

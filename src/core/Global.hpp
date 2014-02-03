@@ -1,33 +1,31 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 #include "stdint.h"
+#include <QVector>
+#include <QString>
+#include <QObject>
 
+/************************************************************************
+ *                      DEFINES
+ ************************************************************************/
 #define CUBE_SIZE                       8
 #define IT_CUBE_SIZE                    (CUBE_SIZE - 1)
 #define CUBE_ARRAY_SIZE                 (CUBE_SIZE*CUBE_SIZE)
 #define CUBE_LED_COUNT                  (CUBE_ARRAY_SIZE*CUBE_SIZE)
-#include <QVector>
-#include <QString>
-#include <QObject>
-/************************************************************************
- *                   ENUMERATIONS
- ************************************************************************/
 
+
+/************************************************************************
+ *                   TYPE DEFENITIONS
+ ************************************************************************/
 typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned long int uint64_t;
 typedef QVector<QVector<uint8_t> > CubeArray;
 
-
-
-/** @brief: BOOLEAN TYPE */
-typedef enum
-{
-    FALSE = 0,
-    TRUE = !FALSE
-}Bool;
-
+/************************************************************************
+ *                   ENUMERATION DEFENTIONS
+ ************************************************************************/
 /** @brief: AXIS TYPE */
 typedef enum
 {
@@ -50,6 +48,9 @@ typedef enum
     ON = !OFF
 } BixelState;
 
+/************************************************************************
+ *     ANIMATION STRUCT REPRESENTING THE AVAILABLE PARAMETERS
+ ************************************************************************/
 typedef struct{
     QString name;
     QString text;
@@ -61,8 +62,10 @@ typedef struct{
     uint16_t iteration;
     Direction direction;
     Axis axis;
-    Bool invert;
+    bool invert;
     BixelState state;
 }AnimationStruct;
+
 Q_DECLARE_METATYPE(AnimationStruct)
+
 #endif // GLOBAL_H

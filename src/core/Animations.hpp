@@ -13,7 +13,6 @@ class Animations : public Draw
 {
     Q_OBJECT
 public:
-    Animations(QByteArray *byteArray);
     Animations();
     ~Animations();
 
@@ -30,8 +29,8 @@ public:
     void effectFirework(uint16_t iterations, uint16_t speed, uint8_t particles);
     void effectWireBoxCornerShrinkGrow(uint16_t iterations, uint16_t speed, uint8_t rotate,
             uint8_t flip);
-    void effectWireBoxCenterShrinkGrow(uint16_t speed, Bool centerStart);
-    void effectAxisNailWall(uint16_t speed, Axis axis, Bool invert);
+    void effectWireBoxCenterShrinkGrow(uint16_t speed, bool centerStart);
+    void effectAxisNailWall(uint16_t speed, Axis axis, bool invert);
     void effectLoadbar(uint16_t speed, Axis axis);
     void effectRandomSparkFlash(uint16_t iterations, uint16_t speed,
             uint16_t bixels);
@@ -43,20 +42,13 @@ public:
 
 public slots:
 
-
 signals:
-//    void dataChanged(const CubeArray &cubeFTemp);
-    void dataChanged(const CubeArray &cubeF);
-    void sleepAnimation(const uint &ms);
 
 private:
-    bool tmp;
     void animationWait(const uint speed);
     void sendBixelZ(uint8_t x, uint8_t y, uint8_t z, uint16_t speed);
     void effectZUpDownMove(uint8_t destination[CUBE_ARRAY_SIZE],
             uint8_t position[CUBE_ARRAY_SIZE], Axis axe);
 
-    QTimer *timer;
-    QReadWriteLock lock;
 };
 #endif // ANIMATIONS_HPP

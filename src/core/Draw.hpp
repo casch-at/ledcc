@@ -7,6 +7,7 @@
 #include <QByteArray>
 #include <QVector>
 #include <QObject>
+
 volatile const uint8_t lookUpTable[455]  = {
     0x00,0x00,0x00,0x00,0x00,0x00,0x5f,0x5f,0x00,0x00,	//  !
     0x00,0x03,0x00,0x03,0x00,0x14,0x7f,0x14,0x7f,0x14,	// "#
@@ -61,10 +62,7 @@ class Draw: public QObject
     Q_OBJECT
 public:
     Draw();
-    /**
-     * @brief Boolean Type definition
-     */
-
+    ~Draw();
     /***********************************************************************
      *  @brief  Two dimensional array for cube data
      *  cubeFrame[z][y] |= (0x01 << 0) ; where z=y=0
@@ -74,9 +72,6 @@ public:
      ***********************************************************************/
     uint8_t cubeFrame[CUBE_SIZE][CUBE_SIZE];   // [z][y]
     uint8_t cubeFrameTemp[CUBE_SIZE][CUBE_SIZE]; // [z][y]
-
-    QByteArray cubeArray[8][8];
-    QByteArray cubeTempArray[8][8];
 
     CubeArray cubeF;
     CubeArray cubeFTemp;
@@ -88,11 +83,11 @@ public:
     void flipBixels(uint8_t x, uint8_t y, uint8_t z);
     void alterBixel(uint8_t x, uint8_t y, uint8_t z, BixelState state);
 
-    Bool inRange(uint8_t x, uint8_t y, uint8_t z);
+    bool inRange(uint8_t x, uint8_t y, uint8_t z);
     void shift(Axis axis, Direction direction);
     void checkArgumentOrder(uint8_t from, uint8_t to, uint8_t *newStartPoint,
                             uint8_t *newEndPoint);
-    void drawPositionAxis(Axis axis, uint8_t position[CUBE_ARRAY_SIZE], Bool invert);
+    void drawPositionAxis(Axis axis, uint8_t position[CUBE_ARRAY_SIZE], bool invert);
     uint8_t flipByte(uint8_t byte);
 
     void setPlaneZ(uint8_t z);
@@ -121,7 +116,6 @@ public:
     void tmpCubeToCube(void);
     void fontGetChar(uint8_t chr, uint8_t dst[5]);
 private:
-    void wait();
 };
 
 #endif // DRAW_HPP
