@@ -149,14 +149,14 @@ void MainWindow::readSettings (void){ //Load geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
     restoreGeometry (settings.value (GeometrySettings).toByteArray ());
 }
-/**
- * @brief MainWindow::clearToolButtonClicked
- */
-void MainWindow::clearToolButtonClicked()
-{
-    ui->animationPlaylistLW->clear();
-    updateUi();
-}
+///**
+// * @brief MainWindow::clearToolButtonClicked
+// */
+//void MainWindow::clearToolButtonClicked()
+//{
+//    ui->animationPlaylistLW->clear();
+//    updateUi();
+//}
 
 /**
  * @author  Christian Schwarzgruber
@@ -384,29 +384,6 @@ void MainWindow::writeData(const char c) //Function to write data to serial port
 }
 #endif
 
-
-/**
- * @brief
- *
- * @param item
- */
-void MainWindow::on_availableAnimationsLW_itemDoubleClicked(QListWidgetItem *item)
-{
-    ui->animationPlaylistLW->addItem(item->text());
-    updateUi();
-}
-
-/**
- * @brief
- *
- * @param item
- */
-void MainWindow::on_animationPlaylistLW_itemDoubleClicked(QListWidgetItem *item)
-{
-    delete item;
-    updateUi();
-}
-
 /**
  * @brief
  *
@@ -417,18 +394,22 @@ void MainWindow::connectSignals(void) //Connect Signals
              this,&MainWindow::openCloseSerialPort);
     connect(quitAction,&QAction::triggered,
             this,&MainWindow::close);
-    connect (quitAction,&QAction::triggered,
-             this,&MainWindow::clearToolButtonClicked);
+//    connect (quitAction,&QAction::triggered,
+//             this,&MainWindow::clearToolButtonClicked);
     connect (aboutAction,&QAction::triggered,
              this,&MainWindow::about);
     connect(clearAction,&QAction::triggered,
-            this,&MainWindow::clearToolButtonClicked);
+            ui->animationPlaylistLW,&AnimationPlayListWidget::clearList);
     connect(settingAction,&QAction::triggered,
             sdialog,&QWidget::show);
 #ifdef DEBUGWINDOW
     connect(debugDockWidget,&DebugDockWidget::sendStringChanged,
             this,&MainWindow::sendData);
 #endif
+    connect(ui->animationPlaylistLW,&AnimationPlayListWidget::updateUi,
+            this,&MainWindow::updateUi);
+    connect(ui->availableAnimationsLW,&AnimationListWidget::itemDoubleClicked,
+            ui->animationPlaylistLW,&AnimationPlayListWidget::newItem);
 }
 
 /**
@@ -525,15 +506,6 @@ void MainWindow::about()
                           "<p>The <b>3D-LED Cube</b> program was part of my thesis."
                           "This program lets you rearange the animation in the order you like it, you can even adjust speed,"
                           "delay, iterations and much more."));
-}
-
-void MainWindow::on_animationPlaylistLW_itemActivated(QListWidgetItem *item)
-{
-    if(ui->animationPlaylistLW->count()){
-        qDebug() << "Selected item:" << item->text();
-        //TODO: If item in playlist is selected enable paramaters for that animation, disable other
-        ui->animationAdjustGB->setEnabled(true);
-    }
 }
 
 void MainWindow::on_applyPB_clicked()

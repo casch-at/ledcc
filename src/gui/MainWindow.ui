@@ -30,7 +30,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="availableAnimationsLW">
+         <widget class="AnimationListWidget" name="availableAnimationsLW">
           <property name="dragEnabled">
            <bool>true</bool>
           </property>
@@ -51,7 +51,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="animationPlaylistLW">
+         <widget class="AnimationPlayListWidget" name="animationPlaylistLW">
           <property name="dragDropMode">
            <enum>QAbstractItemView::DropOnly</enum>
           </property>
@@ -324,6 +324,18 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AnimationListWidget</class>
+   <extends>QListWidget</extends>
+   <header>AnimationListWidget.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>AnimationPlayListWidget</class>
+   <extends>QListWidget</extends>
+   <header>AnimationPlayListWidget.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

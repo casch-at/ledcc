@@ -56,7 +56,7 @@ private slots:
     void connectSignals(void);
     void createActions(void);
     void createToolbar(void);
-    void clearToolButtonClicked(void);
+//    void clearToolButtonClicked(void);
     void about(void);
     void readData(void);
 #ifdef DEBUGWINDOW
@@ -65,12 +65,6 @@ private slots:
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
     void playAnimationFromList(void);
-
-    void on_availableAnimationsLW_itemDoubleClicked(QListWidgetItem *item);
-
-    void on_animationPlaylistLW_itemDoubleClicked(QListWidgetItem *item);
-
-    void on_animationPlaylistLW_itemActivated(QListWidgetItem *item);
 
     void on_applyPB_clicked();
 

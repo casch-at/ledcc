@@ -28,6 +28,8 @@ set(MAINEXE     ../main.cpp)
 set(GUI         ${gui_DIR}/DebugDockWidget.cpp
                 ${gui_DIR}/MainWindow.cpp
                 ${gui_DIR}/SettingsDialog.cpp
+                ${gui_DIR}/AnimationListWidget.cpp
+                ${gui_DIR}/AnimationPlayListWidget.cpp
 )
 set(CORE        ${core_DIR}/Animations.cpp
                 ${core_DIR}/Draw.cpp

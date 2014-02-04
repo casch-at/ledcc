@@ -52,9 +52,9 @@ typedef enum
  *     ANIMATION STRUCT REPRESENTING THE AVAILABLE PARAMETERS
  ************************************************************************/
 typedef struct{
+    uint8_t id;
     QString name;
     QString text;
-    uint8_t id;
     uint8_t particle;
     uint16_t speed;
     uint16_t delay;
