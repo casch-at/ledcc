@@ -63,7 +63,7 @@ private slots:
     void sendData(void);
 #endif
     void setDirty() { setWindowModified ( true ); }
-    void updateUi(bool state);
+    void updateUi(void);
     void playAnimationFromList(void);
 
     void on_availableAnimationsLW_itemDoubleClicked(QListWidgetItem *item);
@@ -77,7 +77,7 @@ private:
 #endif
     void addToList();
     bool checkPortSettings(void);
-    void closeSerialPort(bool val);
+    void closeSerialPort(void);
     bool openSerialPort(void);
     Ui::MainWindow *ui;
 

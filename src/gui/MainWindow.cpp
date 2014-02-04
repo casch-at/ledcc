@@ -74,8 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     setupAnimationList();
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
-//    qDebug() << "MainWindow parent: " << parent;
-//    qDebug() << "MainWindow aThread  parent: " << aThread->parent();
+    //    qDebug() << "MainWindow parent: " << parent;
+    //    qDebug() << "MainWindow aThread  parent: " << aThread->parent();
     AQP::accelerateWidget (this);  //Give each button a accelerater
 }
 
@@ -86,6 +86,8 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
 
 void MainWindow::closeEvent( QCloseEvent *event ) {  //Close application
     if ( okToContinue() ) {
+        if(serial.isOpen())
+            serial.close();
         saveSettings ();
         close ();
         sdialog->close();
@@ -131,25 +133,28 @@ void MainWindow::clearToolButtonClicked()
     setWindowModified (false);
 }
 
-void MainWindow::updateUi(bool state) // Update Button state
+/**
+ * @author  Christian Schwarzgruber
+ * @brief   MainWindow::updateUi gets called when the serial port gets opened or closed
+ *          and when the animation playlist gets modified.
+ *          Disables/Enables the playbutton and changes the Seriel connect button appropriated
+ */
+void MainWindow::updateUi(void) // Update Button state
 {
-    if(state){
-//        playAction->setEnabled(true);
-        if(serial.isOpen()){
-            openPortAction->setText(tr("Close port O"));
-            openPortAction->setIcon( QIcon( "://images/disconnect.png"));
-            openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
-            if(ui->animationPlaylistLW->count())
-                playAction->setEnabled(true);
-        }
-    }
-    else{
-        if (!serial.isOpen()) {
-            openPortAction->setText(tr("Open port O"));
-            openPortAction->setIcon( QIcon( "://images/connect.png"));
-            openPortAction->setToolTip(tr("Connect to seriell device  O"));
+    if(serial.isOpen()){
+        openPortAction->setText(tr("Close port O"));
+        openPortAction->setIcon( QIcon( "://images/disconnect.png"));
+        openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
+        if(ui->animationPlaylistLW->count())
+            playAction->setEnabled(true);
+        else
             playAction->setDisabled(true);
-        }
+    }else
+    {
+        openPortAction->setText(tr("Open port O"));
+        openPortAction->setIcon( QIcon( "://images/connect.png"));
+        openPortAction->setToolTip(tr("Connect to seriell device  O"));
+        playAction->setDisabled(true);
     }
 }
 
@@ -250,36 +255,36 @@ void MainWindow::openCloseSerialPort(void)  // Open the Serial port
                                         .arg (m_port.name).arg (m_port.stringBaudRate)
                                         .arg (m_port.stringDataBits).arg (m_port.stringParity)
                                         .arg (m_port.stringStopBits).arg (m_port.stringFlowControl));
-            updateUi(true);
         }else
         {
-            serial.close ();
+            serial.close();
             QMessageBox::warning (this,tr("Error"),
                                   tr("Can't open serial port: %1 - error code: %2\n\n\n"
                                      "Check if device is connected properly!")
                                   .arg (m_port.name).arg (serial.error ()));
             ui->statusbar->showMessage(tr("Open error"),3000);
-            updateUi (false);
         }
     }
     else{
         int flag = QMessageBox::information (this,tr("Closing port")
-                                             ,tr("Do you want really close the serial port?\n %1")
+                                             ,tr("Do you really want close the serial port?\n %1")
                                              .arg(m_port.name),QMessageBox::Ok,QMessageBox::Cancel);
-        if(flag == QMessageBox::Ok){
-            closeSerialPort(true);
-        }
-        updateUi(false);
+        if(flag == QMessageBox::Ok)
+            closeSerialPort();
+
     }
+    updateUi ();
 }
 
 bool MainWindow::checkPortSettings(void)
 {
     if( serial.setBaudRate (m_port.baudRate) && serial.setDataBits (m_port.dataBits)
             && serial.setParity (m_port.parity) && serial.setStopBits (m_port.stopBits)
-            && serial.setFlowControl (m_port.flowControl)){
+            && serial.setFlowControl (m_port.flowControl))
+    {
         return true;
-    }else{
+    }else
+    {
         QMessageBox::critical (this,tr("Error"),
                                tr("Can't configure the serial port: %1,\n"
                                   "error code: %2")
@@ -288,16 +293,10 @@ bool MainWindow::checkPortSettings(void)
     }
 }
 
-void MainWindow::closeSerialPort(bool val)
+void MainWindow::closeSerialPort(void)
 {
-    if(val){
-        updateUi (false);
-        serial.close();
-        ui->statusbar->showMessage(tr("Port closed: %1").arg (m_port.name),3000);
-    }
-    else{
-        updateUi (true);
-    }
+    serial.close();
+    ui->statusbar->showMessage(tr("Port closed: %1").arg (m_port.name),3000);
 }
 
 bool MainWindow::openSerialPort(void)
@@ -319,9 +318,9 @@ bool MainWindow::openSerialPort(void)
 
 void MainWindow::readData()
 {
-        //        setData (serial->readAll ());
+    //        setData (serial->readAll ());
 #ifdef DEBUGWINDOW
-        debugDockWidget->addLine("Received: " + QString(m_data) + "\n" );
+    debugDockWidget->addLine("Received: " + QString(m_data) + "\n" );
 #endif
 }
 
@@ -344,15 +343,13 @@ void MainWindow::writeData(const char c) //Function to write data to serial port
 void MainWindow::on_availableAnimationsLW_itemDoubleClicked(QListWidgetItem *item)
 {
     ui->animationPlaylistLW->addItem(item->text());
-    if(ui->animationPlaylistLW->count())
-            playAction->setEnabled(true);
+    updateUi();
 }
 
 void MainWindow::on_animationPlaylistLW_itemDoubleClicked(QListWidgetItem *item)
 {
     delete item;
-    if(!ui->animationPlaylistLW->count())
-        playAction->setDisabled(true);
+    updateUi();
 }
 
 void MainWindow::connectSignals(void) //Connect Signals
@@ -452,9 +449,9 @@ void MainWindow::createToolbar()
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About 3D-LED Cube"),
-                       tr("<h2> 3D-LED Cube 0.1</h2>"
+                       tr("<h2> 3D-LED Cube v0.1</h2>"
                           "<p> Copyright &copy; 2014 Christian Schwarzgruber"
-                          "<p>The <b>3D-LED Cube</b> program was part of my Bachelor Thesis called. "
+                          "<p>The <b>3D-LED Cube</b> program was part of my thesis."
                           "This program lets you rearange the animation in the order you like it, you can even adjust speed,"
                           "delay, iterations and much more."));
 }
