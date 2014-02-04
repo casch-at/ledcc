@@ -2,10 +2,10 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-
 AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     QListWidget(parent)
 {
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 void AnimationPlayListWidget::clearList()
@@ -14,45 +14,60 @@ void AnimationPlayListWidget::clearList()
     emit updateUi();
 }
 
-void AnimationPlayListWidget::newItem(QListWidgetItem *item)
+void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
 {
-    qDebug() << item->text();
-    addItem(item->text());
+    foreach (QListWidgetItem *i, item) {
+        addItem(i->text());
+    }
     emit updateUi();
-    //    addItem("Hello");
 }
 
 void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
 {
     qDebug() << "Event key is: " << QString::number(event->key(),16)
              << "Qt::Key_Delete is: " << QString::number(Qt::Key_Delete,16);
-    int currentRow = -1;
+    int cRow = -1;
     switch (event->key()) {
     case Qt::Key_Delete:
-        delete currentItem();
+        foreach(QListWidgetItem *i,selectedItems())
+            delete i;
         emit updateUi();
         break;
     case Qt::Key_Up:
-        currentRow = currentRow();
-        if(currentRow == 0)
+        cRow = currentRow();
+        if(cRow == 0)
             setCurrentRow(count()-1);
         else
-            setCurrentRow(currentRow-1);
+            setCurrentRow(cRow-1);
         break;
     case Qt::Key_Down:
-        currentRow = currentRow();
+        cRow = currentRow();
         qDebug()<< "Rows: " << count();
-        if(currentRow == count()-1)
+        if(cRow == count()-1)
             setCurrentRow(0);
         else
-            setCurrentRow(currentRow+1);
+            setCurrentRow(cRow+1);
         break;
         //    case Qt::Key_Return:
         //        break;
         //    case Qt::Key_Return:
         break;
+    case Qt::Key_Escape:
+        if(hasFocus()){
+            for(int i=0;i < count();i++){
+                if(item(i)->isSelected())
+                    setItemSelected(item(i),false);
+            }
+        }
+        break;
     default:
         break;
     }
 
+}
+
+void AnimationPlayListWidget::selectAllItems(void)
+{
+    if(hasFocus())
+        selectAll();
 }

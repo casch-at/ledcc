@@ -3,6 +3,7 @@
 
 #include <QListWidget>
 
+class QShortcut;
 class AnimationPlayListWidget : public QListWidget
 {
     Q_OBJECT
@@ -13,9 +14,13 @@ Q_SIGNALS:
     void updateUi(void);
 public Q_SLOTS:
     void clearList(void);
-    void newItem(QListWidgetItem *item);
+    void newItem(QList<QListWidgetItem *> item);
 protected:
     virtual void keyPressEvent(QKeyEvent * event);
+public Q_SLOTS:
+    void selectAllItems(void);
+private:
+    QShortcut *shortCutSA;
 };
 
 #endif // ANIMATIONPLAYLISTWIDGET_HPP

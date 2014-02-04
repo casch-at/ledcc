@@ -15,6 +15,13 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0">
+    <item row="1" column="0">
+     <widget class="AnimationOptionsGroupBox" name="animationAdjustGB">
+      <property name="title">
+       <string>Animation configuration options</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -31,11 +38,26 @@
         </item>
         <item>
          <widget class="AnimationListWidget" name="availableAnimationsLW">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="tabKeyNavigation">
+           <bool>false</bool>
+          </property>
           <property name="dragEnabled">
            <bool>true</bool>
           </property>
           <property name="selectionMode">
            <enum>QAbstractItemView::MultiSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectItems</enum>
           </property>
           <property name="sortingEnabled">
            <bool>true</bool>
@@ -55,8 +77,17 @@
         </item>
         <item>
          <widget class="AnimationPlayListWidget" name="animationPlaylistLW">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="tabKeyNavigation">
+           <bool>false</bool>
+          </property>
           <property name="dragDropMode">
            <enum>QAbstractItemView::DropOnly</enum>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::MultiSelection</enum>
           </property>
           <property name="sortingEnabled">
            <bool>false</bool>
@@ -65,14 +96,6 @@
         </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="AnimationOptionsGroupBox" name="animationAdjustGB">
-      <property name="title">
-       <string>Animation configuration options</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout"/>
      </widget>
     </item>
    </layout>
@@ -107,6 +130,10 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>availableAnimationsLW</tabstop>
+  <tabstop>animationPlaylistLW</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

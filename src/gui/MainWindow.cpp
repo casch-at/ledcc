@@ -61,8 +61,10 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     sdialog(new SettingsDialog),
     playList(new QHash<QString,AnimationStruct>),
     alist(new QHash<QString,AnimationStruct>),
-    serial(new QSerialPort)
+    serial(new QSerialPort),
+    shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 {
+//    shortCutSA = new
     qRegisterMetaType<CubeArray>("CubeArray");
     qRegisterMetaType<AnimationStruct>("AnimationStruct");
     ui->setupUi(this);
@@ -400,8 +402,12 @@ void MainWindow::connectSignals(void) //Connect Signals
 #endif
     connect(ui->animationPlaylistLW,&AnimationPlayListWidget::updateUi,
             this,&MainWindow::updateUi);
-    connect(ui->availableAnimationsLW,&AnimationListWidget::itemDoubleClicked,
+    connect(ui->availableAnimationsLW,&AnimationListWidget::itemsSelected,
             ui->animationPlaylistLW,&AnimationPlayListWidget::newItem);
+    connect(shortCutSA,&QShortcut::activated,
+            ui->animationPlaylistLW,&AnimationPlayListWidget::selectAllItems);
+    connect(shortCutSA,&QShortcut::activated,
+            ui->availableAnimationsLW,&AnimationListWidget::selectAllItems);
 }
 
 /**
