@@ -36,7 +36,7 @@
 #include <QSerialPort>
 #include <QMultiMap>
 #include <iostream>
-
+#include <QShortcut>
 //#ifdef _DEBUG_
 #include <QDebug>
 //#endif

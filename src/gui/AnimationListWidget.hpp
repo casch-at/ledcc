@@ -2,7 +2,6 @@
 #define ANIMATIONLISTWIDGET_HPP
 
 #include <QListWidget>
-#include <QShortcut>
 class AnimationListWidget : public QListWidget
 {
     Q_OBJECT

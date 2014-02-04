@@ -27,10 +27,13 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
     qDebug() << "Event key is: " << QString::number(event->key(),16)
              << "Qt::Key_Delete is: " << QString::number(Qt::Key_Delete,16);
     int cRow = -1;
+
     switch (event->key()) {
     case Qt::Key_Delete:
         foreach(QListWidgetItem *i,selectedItems())
             delete i;
+        if(count())
+            setCurrentRow(0);
         emit updateUi();
         break;
     case Qt::Key_Up:
@@ -48,16 +51,14 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
         else
             setCurrentRow(cRow+1);
         break;
-        //    case Qt::Key_Return:
-        //        break;
-        //    case Qt::Key_Return:
-        break;
+//    case Qt::Key_Return:
+//        break;
+//    case Qt::Key_Return:
+//        break;
     case Qt::Key_Escape:
-        if(hasFocus()){
-            for(int i=0;i < count();i++){
-                if(item(i)->isSelected())
-                    setItemSelected(item(i),false);
-            }
+        for(int i=0;i < count();i++){
+            if(item(i)->isSelected())
+                setItemSelected(item(i),false);
         }
         break;
     default:

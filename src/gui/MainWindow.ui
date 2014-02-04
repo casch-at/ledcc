@@ -14,23 +14,22 @@
    <string>3D-LED Cube </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0">
-    <item row="1" column="0">
-     <widget class="AnimationOptionsGroupBox" name="animationAdjustGB">
-      <property name="title">
-       <string>Animation configuration options</string>
-      </property>
-     </widget>
-    </item>
+   <layout class="QGridLayout" name="gridLayout" rowstretch="1,0" rowminimumheight="1,0">
     <item row="0" column="0">
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout_10">
+       <layout class="QVBoxLayout" name="availableAnimationLayout">
         <item>
          <widget class="QLabel" name="availableAnimationsL">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>Available Animations</string>
           </property>
@@ -66,10 +65,16 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout_11">
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QLabel" name="animationPlaylistL">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>Animation Playlist</string>
           </property>
@@ -96,6 +101,19 @@
         </item>
        </layout>
       </widget>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="AnimationOptionsGroupBox" name="animationAdjustGB">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="title">
+       <string>Animation configuration options</string>
+      </property>
      </widget>
     </item>
    </layout>
@@ -130,10 +148,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>availableAnimationsLW</tabstop>
-  <tabstop>animationPlaylistLW</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>
