@@ -64,7 +64,6 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     serial(new QSerialPort),
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 {
-//    shortCutSA = new
     qRegisterMetaType<CubeArray>("CubeArray");
     qRegisterMetaType<AnimationStruct>("AnimationStruct");
     ui->setupUi(this);
