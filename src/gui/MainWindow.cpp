@@ -78,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
     //    ui->achsesCB->setDisabled(true);
-    ui->animationAdjustGB->setDisabled(true);
+//    ui->animationAdjustGB->setDisabled(true);
     //    qDebug() << "MainWindow parent: " << parent;
     //    qDebug() << "MainWindow aThread  parent: " << aThread->parent();
     AQP::accelerateWidget (this);  //Give each button a accelerater
@@ -149,14 +149,6 @@ void MainWindow::readSettings (void){ //Load geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
     restoreGeometry (settings.value (GeometrySettings).toByteArray ());
 }
-///**
-// * @brief MainWindow::clearToolButtonClicked
-// */
-//void MainWindow::clearToolButtonClicked()
-//{
-//    ui->animationPlaylistLW->clear();
-//    updateUi();
-//}
 
 /**
  * @author  Christian Schwarzgruber
@@ -428,9 +420,9 @@ void MainWindow::createActions(void)  // Creat action for the toolbar
     clearAction->setShortcut( QKeySequence::Refresh );
     clearAction->setStatusTip( tr( "Clear item list" ) );
 
-    aboutAction = new QAction( tr( "About Ctrl+A" ), this );
+    aboutAction = new QAction( tr( "About" ), this );
     aboutAction->setIcon( QIcon( "://images/help-about.png" ) );
-    aboutAction->setShortcut(tr( "Ctrl+A" ));
+//    aboutAction->setShortcut(tr( "Ctrl+A" ));
     aboutAction->setStatusTip( tr( "About Kitchen Scale" ) );
 
     settingAction = new QAction( tr( "Settings Ctrl+I" ), this );

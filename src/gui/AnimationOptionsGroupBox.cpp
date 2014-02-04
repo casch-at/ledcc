@@ -6,6 +6,7 @@ AnimationOptionsGroupBox::AnimationOptionsGroupBox(QWidget *parent) :
     ui(new Ui::AnimationOptionsGroupBox)
 {
     ui->setupUi(this);
+    setDisabled(true);
 }
 
 AnimationOptionsGroupBox::~AnimationOptionsGroupBox()
