@@ -77,6 +77,8 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     setupAnimationList();
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
+    //    ui->achsesCB->setDisabled(true);
+    ui->animationAdjustGB->setDisabled(true);
     //    qDebug() << "MainWindow parent: " << parent;
     //    qDebug() << "MainWindow aThread  parent: " << aThread->parent();
     AQP::accelerateWidget (this);  //Give each button a accelerater
@@ -523,4 +525,18 @@ void MainWindow::about()
                           "<p>The <b>3D-LED Cube</b> program was part of my thesis."
                           "This program lets you rearange the animation in the order you like it, you can even adjust speed,"
                           "delay, iterations and much more."));
+}
+
+void MainWindow::on_animationPlaylistLW_itemActivated(QListWidgetItem *item)
+{
+    if(ui->animationPlaylistLW->count()){
+        qDebug() << "Selected item:" << item->text();
+        //TODO: If item in playlist is selected enable paramaters for that animation, disable other
+        ui->animationAdjustGB->setEnabled(true);
+    }
+}
+
+void MainWindow::on_applyPB_clicked()
+{
+    qDebug() << "Apply clicked";
 }

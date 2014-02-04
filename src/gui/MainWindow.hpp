@@ -70,6 +70,10 @@ private slots:
 
     void on_animationPlaylistLW_itemDoubleClicked(QListWidgetItem *item);
 
+    void on_animationPlaylistLW_itemActivated(QListWidgetItem *item);
+
+    void on_applyPB_clicked();
+
 private:
     void setupAnimationList(void);
 #ifdef DEBUGWINDOW

@@ -14,7 +14,7 @@
    <string>3D-LED Cube </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0">
+   <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0">
     <item row="0" column="0">
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -285,7 +285,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="applyPB">
            <property name="text">
             <string>Apply</string>
            </property>
@@ -307,10 +307,7 @@
         </layout>
        </item>
       </layout>
-      <zorder>pushButton</zorder>
       <zorder></zorder>
-      <zorder>horizontalSpacer</zorder>
-      <zorder>horizontalSpacer_2</zorder>
      </widget>
     </item>
    </layout>
