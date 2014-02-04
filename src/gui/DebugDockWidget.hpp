@@ -13,7 +13,7 @@ class DebugDockWidget : public QDockWidget
     Q_PROPERTY(QString sendString READ sendString WRITE setSendString NOTIFY sendStringChanged)
 
 public:
-    explicit DebugDockWidget(QWidget *parent = 0);
+    explicit DebugDockWidget(QWidget *parent = Q_NULLPTR);
     ~DebugDockWidget();
     void addLine(const QString &line);
     QString sendString() const
@@ -21,7 +21,7 @@ public:
         return m_sendString;
     }
 
-public slots:
+public Q_SLOTS:
     void setSendString(QString arg)
     {
         if(arg.length() > 0){
@@ -30,12 +30,12 @@ public slots:
             }
     }
 
-signals:
+Q_SIGNALS:
     void sendStringChanged(QString arg);
 
 protected:
     void changeEvent(QEvent *e);
-private slots:
+private Q_SLOTS:
 
 private:
     void newStringToSend(void);

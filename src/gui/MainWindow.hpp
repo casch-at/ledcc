@@ -36,17 +36,12 @@ class MainWindow : public QMainWindow
 
 protected:
     void closeEvent (QCloseEvent *);
-
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = Q_NULLPTR);
     ~MainWindow();
-
-public slots:
-
-signals:
+Q_SIGNALS:
     void startAnimation(const AnimationStruct &currentAnimation);
-
-private slots:
+private Q_SLOTS:
     bool okToContinue(void);
     void resizeEvent(QResizeEvent *e);
     void saveSettings(void);
@@ -56,36 +51,33 @@ private slots:
     void connectSignals(void);
     void createActions(void);
     void createToolbar(void);
-//    void clearToolButtonClicked(void);
     void about(void);
     void readData(void);
-#ifdef DEBUGWINDOW
-    void sendData(void);
-#endif
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
     void playAnimationFromList(void);
-
     void on_applyPB_clicked();
-
+private Q_SLOTS:
+#ifdef DEBUGWINDOW
+    void sendData(void);
+#endif
 private:
-    void setupAnimationList(void);
 #ifdef DEBUGWINDOW
     void writeData(const char c);
 #endif
+private:
+    void setupAnimationList(void);
     void addToList();
     bool checkPortSettings(void);
     void closeSerialPort(void);
     bool openSerialPort(void);
+private:
     Ui::MainWindow *ui;
-
-//    ADDDIALOG *adddialog;
     SettingsDialog *sdialog;
     SettingsDialog::SerialSettings m_port;
     DebugDockWidget *debugDockWidget;
     QToolBar *helpToolBar;
     QToolBar *mainToolBar;
-
     QAction *quitAction;
     QAction *clearAction;
     QAction *aboutAction;
@@ -93,13 +85,9 @@ private:
     QAction *openPortAction;
     QAction *playAction;
     QAction *pauseAction;
-
-//    QTimer timer;
-
     AnimationStruct currentAnimation;
     QHash<QString,AnimationStruct> *playList;
     QHash<QString,AnimationStruct> *alist;
-
     Animations *animations;
     QSerialPort serial;
 

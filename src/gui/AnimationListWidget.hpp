@@ -8,7 +8,7 @@ class AnimationListWidget : public QListWidget
     Q_OBJECT
 public:
     AnimationListWidget(QWidget* parent = Q_NULLPTR);
-signals:
+Q_SIGNALS:
 protected:
     virtual void 	keyPressEvent(QKeyEvent * event);
 };

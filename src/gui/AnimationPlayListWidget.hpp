@@ -9,7 +9,7 @@ class AnimationPlayListWidget : public QListWidget
 public:
     explicit AnimationPlayListWidget(QWidget *parent = Q_NULLPTR);
 
-signals:
+Q_SIGNALS:
     void updateUi(void);
 public Q_SLOTS:
     void clearList(void);

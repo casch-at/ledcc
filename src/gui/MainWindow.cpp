@@ -418,7 +418,7 @@ void MainWindow::connectSignals(void) //Connect Signals
  */
 void MainWindow::createActions(void)  // Creat action for the toolbar
 {
-    quitAction = new QAction( tr( "Quit Ctrl+C" ), this );
+    quitAction = new QAction( tr( "Quit Ctrl+Q" ), this );
     quitAction->setIcon( QIcon( "://images/application-exit.png" ) );
     quitAction->setShortcut( QKeySequence::Quit );
     quitAction->setStatusTip( tr( "Exit application" ) );

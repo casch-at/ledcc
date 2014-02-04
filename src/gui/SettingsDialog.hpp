@@ -46,7 +46,7 @@ public:
 
     SerialSettings settings() const;
 
-private slots:
+private Q_SLOTS:
     void showPortInfo(int idx);
     void apply();
     //    void checkCustomBaudRatePolicy(int idx);
