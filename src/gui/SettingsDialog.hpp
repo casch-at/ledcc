@@ -17,19 +17,11 @@
 
 
 namespace Ui {
-class SettingsDialog;
-}
+    class SettingsDialog;
+    }
 /*Forward deceleration*/
 class QIntValidator;
 class QSettings;
-
-/*Use Serialport Libraries*/
-
-//QT_BEGIN_NAMESPACE_SERIALPORT
-//class SerialPort;
-//QT_END_NAMESPACE_SERIALPORT
-
-//QT_USE_NAMESPACE_SERIALPORT
 
 class SettingsDialog : public QDialog
 {
@@ -57,7 +49,7 @@ public:
 private slots:
     void showPortInfo(int idx);
     void apply();
-//    void checkCustomBaudRatePolicy(int idx);
+    //    void checkCustomBaudRatePolicy(int idx);
     void on_updateButton_clicked();
 
 private:

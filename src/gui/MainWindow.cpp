@@ -51,7 +51,10 @@ namespace{
 
 
 
-//Q_DECLARE_METATYPE(AnimationStruct)
+/**
+ * @brief MainWindow::MainWindow
+ * @param parent
+ */
 MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -79,11 +82,18 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     AQP::accelerateWidget (this);  //Give each button a accelerater
 }
 
+/**
+ * @brief MainWindow::~MainWindow
+ */
 MainWindow::~MainWindow(void) //Deinit MainWindow
 {
     delete ui;
 }
 
+/**
+ * @brief MainWindow::closeEvent
+ * @param event
+ */
 void MainWindow::closeEvent( QCloseEvent *event ) {  //Close application
     if ( okToContinue() ) {
         if(serial.isOpen())
@@ -97,6 +107,10 @@ void MainWindow::closeEvent( QCloseEvent *event ) {  //Close application
         event->ignore();
 }
 
+/**
+ * @brief MainWindow::okToContinue
+ * @return
+ */
 bool MainWindow::okToContinue(void) { //Check if window is not modified
     if(isWindowModified ()){
         int r = QMessageBox::warning( this, tr( "3D-LED Cube" ),
@@ -112,25 +126,34 @@ bool MainWindow::okToContinue(void) { //Check if window is not modified
     }
     return true;
 }
-
+/**
+ * @brief MainWindow::resizeEvent
+ * @param e
+ */
 void MainWindow::resizeEvent(QResizeEvent *e){ //Resize Window
     QMainWindow::resizeEvent(e);
 }
-
+/**
+ * @brief MainWindow::saveSettings
+ */
 void MainWindow::saveSettings(void){  //Save geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
     settings.setValue (GeometrySettings,saveGeometry ());
 }
-
+/**
+ * @brief MainWindow::readSettings
+ */
 void MainWindow::readSettings (void){ //Load geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
     restoreGeometry (settings.value (GeometrySettings).toByteArray ());
 }
-
+/**
+ * @brief MainWindow::clearToolButtonClicked
+ */
 void MainWindow::clearToolButtonClicked()
 {
     ui->animationPlaylistLW->clear();
-    setWindowModified (false);
+    updateUi();
 }
 
 /**
@@ -142,22 +165,28 @@ void MainWindow::clearToolButtonClicked()
 void MainWindow::updateUi(void) // Update Button state
 {
     if(serial.isOpen()){
-        openPortAction->setText(tr("Close port O"));
-        openPortAction->setIcon( QIcon( "://images/disconnect.png"));
-        openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
+        if(openPortAction->text() == "Open port"){
+            openPortAction->setText(tr("Close port"));
+            openPortAction->setIcon( QIcon( "://images/disconnect.png"));
+            openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
+        }
         if(ui->animationPlaylistLW->count())
             playAction->setEnabled(true);
         else
             playAction->setDisabled(true);
     }else
     {
-        openPortAction->setText(tr("Open port O"));
-        openPortAction->setIcon( QIcon( "://images/connect.png"));
-        openPortAction->setToolTip(tr("Connect to seriell device  O"));
+        if(openPortAction->text() == "Close port"){
+            openPortAction->setText(tr("Open port"));
+            openPortAction->setIcon( QIcon( "://images/connect.png"));
+            openPortAction->setToolTip(tr("Connect to seriell device  O"));
+        }
         playAction->setDisabled(true);
     }
 }
-
+/**
+ * @brief MainWindow::playAnimationFromList
+ */
 void MainWindow::playAnimationFromList(void)
 {
     static int row;
@@ -173,7 +202,9 @@ void MainWindow::playAnimationFromList(void)
         playAction->setDisabled(true);
     }
 }
-
+/**
+ * @brief MainWindow::setupAnimationList
+ */
 void MainWindow::setupAnimationList()
 {
 
@@ -243,6 +274,8 @@ void MainWindow::setupAnimationList()
         ui->availableAnimationsLW->addItem(i.key());
 }
 
+
+
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port
 {
     m_port = sdialog->settings();
@@ -275,7 +308,10 @@ void MainWindow::openCloseSerialPort(void)  // Open the Serial port
     }
     updateUi ();
 }
-
+/**
+ * @brief MainWindow::checkPortSettings
+ * @return
+ */
 bool MainWindow::checkPortSettings(void)
 {
     if( serial.setBaudRate (m_port.baudRate) && serial.setDataBits (m_port.dataBits)
@@ -292,13 +328,18 @@ bool MainWindow::checkPortSettings(void)
         return false;
     }
 }
-
+/**
+ * @brief MainWindow::closeSerialPort
+ */
 void MainWindow::closeSerialPort(void)
 {
     serial.close();
     ui->statusbar->showMessage(tr("Port closed: %1").arg (m_port.name),3000);
 }
-
+/**
+ * @brief MainWindow::openSerialPort
+ * @return
+ */
 bool MainWindow::openSerialPort(void)
 {
     bool result;
@@ -315,7 +356,9 @@ bool MainWindow::openSerialPort(void)
     }
     return result;
 }
-
+/**
+ * @brief MainWindow::readData
+ */
 void MainWindow::readData()
 {
     //        setData (serial->readAll ());
@@ -340,18 +383,32 @@ void MainWindow::writeData(const char c) //Function to write data to serial port
 #endif
 
 
+/**
+ * @brief
+ *
+ * @param item
+ */
 void MainWindow::on_availableAnimationsLW_itemDoubleClicked(QListWidgetItem *item)
 {
     ui->animationPlaylistLW->addItem(item->text());
     updateUi();
 }
 
+/**
+ * @brief
+ *
+ * @param item
+ */
 void MainWindow::on_animationPlaylistLW_itemDoubleClicked(QListWidgetItem *item)
 {
     delete item;
     updateUi();
 }
 
+/**
+ * @brief
+ *
+ */
 void MainWindow::connectSignals(void) //Connect Signals
 {
     connect (openPortAction,&QAction::triggered,
@@ -372,6 +429,10 @@ void MainWindow::connectSignals(void) //Connect Signals
 #endif
 }
 
+/**
+ * @brief
+ *
+ */
 void MainWindow::createActions(void)  // Creat action for the toolbar
 {
     quitAction = new QAction( tr( "Quit Ctrl+C" ), this );
@@ -404,12 +465,16 @@ void MainWindow::createActions(void)  // Creat action for the toolbar
     pauseAction->setShortcut(tr("P"));
     pauseAction->setToolTip(tr("Pause Animations P"));
 
-    openPortAction = new QAction( tr("Open port O"), this);
+    openPortAction = new QAction( tr("Open port"), this);
     openPortAction->setIcon( QIcon( "://images/connect.png"));
     openPortAction->setShortcut(tr("O"));
     openPortAction->setToolTip(tr("Connect to seriell device  O"));
 }
 
+/**
+ * @brief
+ *
+ */
 void MainWindow::createToolbar()
 {
     QSize size(32,32);
@@ -446,6 +511,10 @@ void MainWindow::createToolbar()
     this->helpToolBar->setObjectName ("Hello");
 }
 
+/**
+ * @brief
+ *
+ */
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About 3D-LED Cube"),
