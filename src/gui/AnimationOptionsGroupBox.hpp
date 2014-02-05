@@ -15,9 +15,9 @@ class AnimationOptionsGroupBox : public QGroupBox
 public:
     explicit AnimationOptionsGroupBox(QWidget *parent = 0);
     ~AnimationOptionsGroupBox();
-    AnimationStruct *getAnimationSettings(void);
+    AnimationStruct& getAnimationSettings(void);
 public Q_SLOTS:
-    void enableProperty(const QString &animation);
+    void enableProperty(const uint8_t &animation);
 protected:
     void changeEvent(QEvent *e);
 

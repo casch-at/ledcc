@@ -20,6 +20,7 @@ protected:
 public Q_SLOTS:
     void selectAllItems(void);
     QHash<QString,AnimationStruct>* getPlaylist(void);
+    const AnimationStruct getNextAnimation(void);
 private:
     QHash<QString,AnimationStruct> playList;
 };

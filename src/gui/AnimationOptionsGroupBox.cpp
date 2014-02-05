@@ -1,7 +1,7 @@
 #include "AnimationOptionsGroupBox.hpp"
 #include "ui_AnimationOptionsGroupBox.h"
 #include <QDebug>
-#include <Global.hpp>
+
 AnimationOptionsGroupBox::AnimationOptionsGroupBox(QWidget *parent) :
     QGroupBox(parent),
     ui(new Ui::AnimationOptionsGroupBox)
@@ -16,7 +16,7 @@ AnimationOptionsGroupBox::~AnimationOptionsGroupBox()
     delete ui;
 }
 
-AnimationStruct AnimationOptionsGroupBox::getAnimationSettings()
+AnimationStruct &AnimationOptionsGroupBox::getAnimationSettings()
 {
     if(ui->achsesCB->currentIndex() == 0)
         animationStruct.axis = X_AXIS;
@@ -29,7 +29,7 @@ AnimationStruct AnimationOptionsGroupBox::getAnimationSettings()
         animationStruct.direction = BACKWARD;
     else if(ui->directionCB->currentIndex() == 1)
         animationStruct.direction = FORWARD;
-    animationStruct.
+//    animationStruct.
     return animationStruct;
 }
 

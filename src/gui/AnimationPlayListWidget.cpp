@@ -51,10 +51,10 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
         else
             setCurrentRow(cRow+1);
         break;
-//    case Qt::Key_Return:
-//        break;
-//    case Qt::Key_Return:
-//        break;
+        //    case Qt::Key_Return:
+        //        break;
+        //    case Qt::Key_Return:
+        //        break;
     case Qt::Key_Escape:
         for(int i=0;i < count();i++){
             if(item(i)->isSelected())
@@ -76,4 +76,12 @@ void AnimationPlayListWidget::selectAllItems(void)
 QHash<QString, AnimationStruct> *AnimationPlayListWidget::getPlaylist()
 {
 
+}
+
+const AnimationStruct AnimationPlayListWidget::getNextAnimation()
+{
+    static int row;
+    if(row >= count())
+        row=0;
+    return playList.value(item(row++)->text());
 }

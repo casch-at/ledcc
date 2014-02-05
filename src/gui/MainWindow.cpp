@@ -59,8 +59,8 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     sdialog(new SettingsDialog),
-    playList(new QHash<QString,AnimationStruct>),
-    alist(new QHash<QString,AnimationStruct>),
+//    playList(new QHash<QString,AnimationStruct>),
+//    alist(new QHash<QString,AnimationStruct>),
     serial(new QSerialPort),
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 {
@@ -178,20 +178,10 @@ void MainWindow::updateUi(void) // Update Button state
 /**
  * @brief MainWindow::playAnimationFromList
  */
-void MainWindow::playAnimationFromList(void)
+void MainWindow::playNextAnimation(void)
 {
-    static int row;
-    int count = ui->animationPlaylistLW->count();
-    if(count){
-        if(row >= count)
-            row=0;
-        playAction->setDisabled(true);
-        pauseAction->setEnabled(true);
-        currentAnimation = alist->value(ui->animationPlaylistLW->item(row++)->text());
-        emit startAnimation(currentAnimation);
-    }else{
-        playAction->setDisabled(true);
-    }
+    currentAnimation = ui->animationPlaylistLW->getNextAnimation();
+    emit startAnimation(currentAnimation);
 }
 /**
  * @brief MainWindow::setupAnimationList
@@ -199,70 +189,71 @@ void MainWindow::playAnimationFromList(void)
 void MainWindow::setupAnimationList()
 {
     QHash<QString,AnimationStruct> alist;
-    AnimationStruct a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13;
-    a1.name = QString("Firework");
-    a1.id = 1;
-    a1.speed = 30;
-    a1.particle = 20;
-    a1.iteration = 10;
-    alist.insert(a1.name,a1);
-    a2.name = QString("Lift");
-    a2.iteration = 5;
-    a2.speed = 100;
-    a2.delay = 200;
-    alist.insert(a2.name,a2);
-    a3.name = QString("Wall");
-    a3.axis = Y_AXIS;
-    a3.direction = FORWARD;
-    a3.speed = 50;
-    alist.insert(a3.name,a3);
-    a4.name = QString("Rain");
-    a4.speed = 50;
-    a4.iteration = 20;
-    alist->insert(a4.name,a4);
-    a5.name = QString("Random Z-Axis Lift");
-    a5.iteration = 10;
-    a5.speed = 40;
-    alist->insert(a5.name,a5);
-    a6.name = QString("Wire Box Corner Shrink Grow");
-    a6.iteration = 8;
-    a6.speed = 50;
-    alist->insert(a6.name,a6);
-    a7.name = QString("Wire Box Center Shrink Grow");
-    a7.speed = 50;
-    a7.invert = true;
-    alist->insert(a7.name,a7);
-    a8.name = QString("Axis Nail Wall");
-    a8.speed = 50;
-    a8.axis = X_AXIS;
-    a8.invert = true;
-    alist->insert(a8.name,a8);
-    a9.name= QString("Loadbar");
-    a9.id = 1;
-    a9.speed = 20;
-    a9.axis = Z_AXIS;
-    a9.iteration = 10;
-    alist->insert(a9.name,a9);
-    a10.name = QString("Random Spark Flash");
-    a10.iteration = 5;
-    a10.speed =50;
-    a10.leds = 20;
-    alist->insert(a10.name,a10);
-    a11.name = QString("Random Spark");
-    a11.leds = 50;
-    a11.speed = 20;
-    alist->insert(a11.name,a11);
-    a12.name = QString("Random Filler");
-    a12.speed = 40;
-    a12.state = ON;
-    alist->insert(a12.name,a12);
-    a13.name = QString("String Fly");
-    a13.text = QString("LED CUBE");
-    a13.speed = 80;
-    alist->insert(a13.name,a13);
+    AnimationStruct animation;
+    animation.name = QString("Firework");
+    animation.id = 1;
+    animation.speed = 30;
+    animation.particle = 20;
+    animation.iteration = 10;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Lift");
+    animation.iteration = 5;
+    animation.speed = 100;
+    animation.delay = 200;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Wall");
+    animation.axis = Y_AXIS;
+    animation.direction = FORWARD;
+    animation.speed = 50;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Rain");
+    animation.speed = 50;
+    animation.iteration = 20;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Random Z-Axis Lift");
+    animation.iteration = 10;
+    animation.speed = 40;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Wire Box Corner Shrink Grow");
+    animation.iteration = 8;
+    animation.speed = 50;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Wire Box Center Shrink Grow");
+    animation.speed = 50;
+    animation.invert = true;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Axis Nail Wall");
+    animation.speed = 50;
+    animation.axis = X_AXIS;
+    animation.invert = true;
+    alist.insert(animation.name,animation);
+    animation.name= QString("Loadbar");
+    animation.id = 1;
+    animation.speed = 20;
+    animation.axis = Z_AXIS;
+    animation.iteration = 10;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Random Spark Flash");
+    animation.iteration = 5;
+    animation.speed =50;
+    animation.leds = 20;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Random Spark");
+    animation.leds = 50;
+    animation.speed = 20;
+    alist.insert(animation.name,animation);
+    animation.name = QString("Random Filler");
+    animation.speed = 40;
+    animation.state = ON;
+    alist.insert(animation.name,animation);
+    animation.name = QString("String Fly");
+    animation.text = QString("LED CUBE");
+    animation.speed = 80;
+    alist.insert(animation.name,animation);
     QHash<QString,AnimationStruct>::const_iterator i;
-    for(i = alist->constBegin(); i!= alist->constEnd(); i++)
+    for(i = alist.constBegin(); i!= alist.constEnd(); i++)
         ui->availableAnimationsLW->addItem(i.key());
+    ui->availableAnimationsLW->setAnimationList(alist);
 
 }
 
