@@ -22,7 +22,6 @@
 class QListWidgetItem;
 class QTimer;
 class DebugDockWidget;
-class AnimationThread;
 class Animations;
 class QShortcut;
 namespace Ui {

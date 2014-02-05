@@ -12,13 +12,10 @@
 #include "ui_MainWindow.h"
 //#include "adddialog.hpp"
 #include "SettingsDialog.hpp"
-#include "./aqp/alt_key.hpp"
-#include "./aqp/aqp.hpp"
+#include "alt_key.hpp"
+#include "aqp.hpp"
 #include "DebugDockWidget.hpp"
-#include "AnimationThread.hpp"
 #include "Animations.hpp"
-#include "SendThread.hpp"
-#include "Global.hpp"
 
 
 //#include <QListWidget>
