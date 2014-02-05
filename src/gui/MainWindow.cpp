@@ -493,7 +493,7 @@ void MainWindow::about()
                           "delay, iterations and much more."));
 }
 
-void MainWindow::on_applyPB_clicked()
+void MainWindow::on_applyPushB_clicked()
 {
     qDebug() << "Apply clicked";
 }

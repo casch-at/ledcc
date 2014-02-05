@@ -19,7 +19,7 @@
   <property name="flat">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_10">
+  <layout class="QVBoxLayout" name="animationOptionsGroupBL">
    <property name="leftMargin">
     <number>2</number>
    </property>
@@ -33,18 +33,18 @@
     <number>2</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="optionsL">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_7">
+      <layout class="QVBoxLayout" name="speedL">
        <item>
-        <widget class="QLabel" name="speedL">
+        <widget class="QLabel" name="speedLabel">
          <property name="text">
           <string>Speed</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="speedSB">
+        <widget class="QSpinBox" name="speedSpinB">
          <property name="minimum">
           <number>1</number>
          </property>
@@ -56,7 +56,7 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_8">
+      <layout class="QVBoxLayout" name="delayL">
        <item>
         <widget class="QLabel" name="delayLabel">
          <property name="text">
@@ -65,7 +65,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="delaySB">
+        <widget class="QSpinBox" name="delaySpinB">
          <property name="minimum">
           <number>1</number>
          </property>
@@ -77,16 +77,16 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <layout class="QVBoxLayout" name="iterationsL">
        <item>
-        <widget class="QLabel" name="iterationsL">
+        <widget class="QLabel" name="iterationsLabel">
          <property name="text">
           <string>Iterations</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="iterationsSB">
+        <widget class="QSpinBox" name="iterationsSpinB">
          <property name="minimum">
           <number>1</number>
          </property>
@@ -98,16 +98,16 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="directionL">
        <item>
-        <widget class="QLabel" name="directionL">
+        <widget class="QLabel" name="directionLabel">
          <property name="text">
           <string>Direction</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="directionCB">
+        <widget class="QComboBox" name="directionComB">
          <property name="currentIndex">
           <number>0</number>
          </property>
@@ -126,16 +126,16 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
+      <layout class="QVBoxLayout" name="axisL">
        <item>
-        <widget class="QLabel" name="achsesL">
+        <widget class="QLabel" name="axisLabel">
          <property name="text">
           <string>Achses</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="achsesCB">
+        <widget class="QComboBox" name="axisComB">
          <item>
           <property name="text">
            <string>X-Axis</string>
@@ -156,16 +156,16 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="textL">
        <item>
-        <widget class="QLabel" name="textAnimationL">
+        <widget class="QLabel" name="textLabel">
          <property name="text">
           <string>Text</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="textAnimationLE">
+        <widget class="QLineEdit" name="textLineE">
          <property name="maxLength">
           <number>50</number>
          </property>
@@ -177,30 +177,30 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="fireworkPartL">
        <item>
-        <widget class="QLabel" name="fireworkParticlL">
+        <widget class="QLabel" name="fireworkPartLabel">
          <property name="text">
           <string>Firework particls</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="fireworkParticlSB"/>
+        <widget class="QSpinBox" name="fireworkPartSpinB"/>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
+      <layout class="QVBoxLayout" name="ledsL">
        <item>
-        <widget class="QLabel" name="ledsL">
+        <widget class="QLabel" name="ledsLabel">
          <property name="text">
           <string>LEDs</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="ledsSB">
+        <widget class="QSpinBox" name="ledsSpinB">
          <property name="minimum">
           <number>1</number>
          </property>
@@ -212,16 +212,16 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_9">
+      <layout class="QVBoxLayout" name="invertL">
        <item>
-        <widget class="QLabel" name="invertL">
+        <widget class="QLabel" name="invertLabel">
          <property name="text">
           <string>Invert</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="invertSB">
+        <widget class="QSpinBox" name="invertSpinB">
          <property name="toolTip">
           <string>Um zu invertieren setze den Wert auf 1</string>
          </property>
@@ -235,9 +235,9 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="applyL">
      <item>
-      <spacer name="horizontalSpacer">
+      <spacer name="spacer1">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -250,14 +250,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="applyPB">
+      <widget class="QPushButton" name="applyPushB">
        <property name="text">
         <string>Apply</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_2">
+      <spacer name="spacer2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

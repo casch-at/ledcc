@@ -7,8 +7,10 @@ AnimationOptionsGroupBox::AnimationOptionsGroupBox(QWidget *parent) :
     ui(new Ui::AnimationOptionsGroupBox)
 {
     ui->setupUi(this);
-    qDebug() << "Current index of ceckbox: " << ui->achsesCB->currentIndex();
     setDisabled(true);
+    foreach (const QObject *o, children()) {
+        qDebug() << o->objectName();
+    }
 }
 
 AnimationOptionsGroupBox::~AnimationOptionsGroupBox()
@@ -18,16 +20,16 @@ AnimationOptionsGroupBox::~AnimationOptionsGroupBox()
 
 AnimationStruct &AnimationOptionsGroupBox::getAnimationSettings()
 {
-    if(ui->achsesCB->currentIndex() == 0)
+    if(ui->axisComB->currentIndex() == 0)
         animationStruct.axis = X_AXIS;
-    else if(ui->achsesCB->currentIndex() == 1)
+    else if(ui->axisComB->currentIndex() == 1)
         animationStruct.axis = Y_AXIS;
-    else if(ui->achsesCB->currentIndex() == 2)
+    else if(ui->axisComB->currentIndex() == 2)
         animationStruct.axis = Z_AXIS;
-    animationStruct.delay = static_cast<uint16_t>(ui->delaySB->value());
-    if(ui->directionCB->currentIndex() == 0)
+    animationStruct.delay = static_cast<uint16_t>(ui->delaySpinB->value());
+    if(ui->directionComB->currentIndex() == 0)
         animationStruct.direction = BACKWARD;
-    else if(ui->directionCB->currentIndex() == 1)
+    else if(ui->directionComB->currentIndex() == 1)
         animationStruct.direction = FORWARD;
 //    animationStruct.
     return animationStruct;

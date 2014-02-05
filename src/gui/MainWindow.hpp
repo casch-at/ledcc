@@ -56,7 +56,7 @@ private Q_SLOTS:
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
     void playNextAnimation(void);
-    void on_applyPB_clicked();
+    void on_applyPushB_clicked();
 private Q_SLOTS:
 #ifdef DEBUGWINDOW
     void sendData(void);

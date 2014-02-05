@@ -22,9 +22,9 @@ set(aqp_DIR "${CMAKE_CURRENT_SOURCE_DIR}/aqp")
 #message(STATUS ${${PROGNAME}_SOURCES_MAINEXE})
  # Get all files from the above set directories
 
-set(HEADERS     ${core_DIR}/Global.hpp)
-set(RESOURCES   icons.qrc)
 set(MAINEXE     ../main.cpp)
+set(RESOURCES   icons.qrc)
+set(HEADERS     ${core_DIR}/Global.hpp)
 set(GUI         ${gui_DIR}/DebugDockWidget.cpp
                 ${gui_DIR}/MainWindow.cpp
                 ${gui_DIR}/SettingsDialog.cpp
