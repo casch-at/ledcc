@@ -108,6 +108,9 @@
        </item>
        <item>
         <widget class="QComboBox" name="directionCB">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
          <item>
           <property name="text">
            <string>Backward</string>

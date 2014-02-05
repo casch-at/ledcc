@@ -86,8 +86,6 @@ private:
     QAction *playAction;
     QAction *pauseAction;
     AnimationStruct currentAnimation;
-    QHash<QString,AnimationStruct> *playList;
-    QHash<QString,AnimationStruct> *alist;
     Animations *animations;
     QSerialPort serial;
     QShortcut *shortCutSA;

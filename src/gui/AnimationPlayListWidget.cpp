@@ -72,3 +72,8 @@ void AnimationPlayListWidget::selectAllItems(void)
     if(hasFocus())
         selectAll();
 }
+
+QHash<QString, AnimationStruct> *AnimationPlayListWidget::getPlaylist()
+{
+
+}

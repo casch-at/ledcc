@@ -37,8 +37,8 @@ typedef enum
 /** @brief: DIRECTION TYPE */
 typedef enum
 {
-    BACKWARED = 0,
-    FORWARED = !BACKWARED
+    BACKWARD = 0,
+    FORWARD = !BACKWARD
 } Direction;
 
 /** @brief: BIXEL STATE */

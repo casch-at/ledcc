@@ -52,4 +52,9 @@ void AnimationListWidget::selectAllItems()
         selectAll();
 }
 
+QHash<QString, AnimationStruct> *AnimationListWidget::getAnimationList()
+{
+    return alist;
+}
+
 

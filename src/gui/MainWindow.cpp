@@ -78,10 +78,6 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     setupAnimationList();
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
-    //    ui->achsesCB->setDisabled(true);
-//    ui->animationAdjustGB->setDisabled(true);
-    //    qDebug() << "MainWindow parent: " << parent;
-    //    qDebug() << "MainWindow aThread  parent: " << aThread->parent();
     AQP::accelerateWidget (this);  //Give each button a accelerater
 }
 
@@ -202,24 +198,24 @@ void MainWindow::playAnimationFromList(void)
  */
 void MainWindow::setupAnimationList()
 {
-
+    QHash<QString,AnimationStruct> alist;
     AnimationStruct a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13;
     a1.name = QString("Firework");
     a1.id = 1;
     a1.speed = 30;
     a1.particle = 20;
     a1.iteration = 10;
-    alist->insert(a1.name,a1);
+    alist.insert(a1.name,a1);
     a2.name = QString("Lift");
     a2.iteration = 5;
     a2.speed = 100;
     a2.delay = 200;
-    alist->insert(a2.name,a2);
+    alist.insert(a2.name,a2);
     a3.name = QString("Wall");
     a3.axis = Y_AXIS;
-    a3.direction = FORWARED;
+    a3.direction = FORWARD;
     a3.speed = 50;
-    alist->insert(a3.name,a3);
+    alist.insert(a3.name,a3);
     a4.name = QString("Rain");
     a4.speed = 50;
     a4.iteration = 20;
@@ -267,6 +263,7 @@ void MainWindow::setupAnimationList()
     QHash<QString,AnimationStruct>::const_iterator i;
     for(i = alist->constBegin(); i!= alist->constEnd(); i++)
         ui->availableAnimationsLW->addItem(i.key());
+
 }
 
 

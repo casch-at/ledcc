@@ -74,7 +74,7 @@ void Animations::effectRain(uint16_t iterations, uint16_t speed)
         }
 
         animationWait(speed);
-        shift(Z_AXIS, BACKWARED);
+        shift(Z_AXIS, BACKWARD);
     }
 }
 
@@ -464,14 +464,14 @@ void Animations::effectString(uint8_t *str, uint16_t speed)
         for (i = 0; i < 6; i++)
         {
             animationWait(speed);
-            shift(Y_AXIS, BACKWARED);
+            shift(Y_AXIS, BACKWARD);
         }
     }
     // Shift the last character out of the cube.
     for (i = 0; i < 8; i++)
     {
 
-        shift(Y_AXIS, BACKWARED);
+        shift(Y_AXIS, BACKWARD);
     }
 }
 
