@@ -78,89 +78,89 @@ void Animations::effectRain(uint16_t iterations, uint16_t speed)
     }
 }
 
-void Animations::effectLift(uint16_t iterations, uint16_t speed, uint16_t delay)
-{
-    uint8_t x = 0;
-    uint8_t y = 0;
-    uint16_t i = 0;
-    uint8_t lastX = 0;
-    uint8_t lastY = 0;
+//void Animations::effectLift(uint16_t iterations, uint16_t speed, uint16_t delay)
+//{
+//    uint8_t x = 0;
+//    uint8_t y = 0;
+//    uint16_t i = 0;
+//    uint8_t lastX = 0;
+//    uint8_t lastY = 0;
 
-    for (x = 0; x < CUBE_SIZE; x++)
-    {
-        for (y = 0; y < CUBE_SIZE; y++)
-        {
-            setBixel(x, y, (qrand() % 2) * 7);
-        }
-    }
+//    for (x = 0; x < CUBE_SIZE; x++)
+//    {
+//        for (y = 0; y < CUBE_SIZE; y++)
+//        {
+//            setBixel(x, y, (qrand() % 2) * 7);
+//        }
+//    }
 
-    for (i = 0; i < iterations; i++)
-    {
-        x = qrand() % CUBE_SIZE;
-        y = qrand() % CUBE_SIZE;
+//    for (i = 0; i < iterations; i++)
+//    {
+//        x = qrand() % CUBE_SIZE;
+//        y = qrand() % CUBE_SIZE;
 
-        if (y != lastY && x != lastX)
-        {
-            if (getBixelState(x, y, 0))
-                sendBixelZ(x, y, 0, speed);
-            else
-                sendBixelZ(x, y, 7, speed);
-            animationWait(delay);
-            lastX = x;
-            lastY = y;
-        }
-    }
-}
+//        if (y != lastY && x != lastX)
+//        {
+//            if (getBixelState(x, y, 0))
+//                sendBixelZ(x, y, 0, speed);
+//            else
+//                sendBixelZ(x, y, 7, speed);
+//            animationWait(delay);
+//            lastX = x;
+//            lastY = y;
+//        }
+//    }
+//}
 
-void Animations::effectRandomZLift(uint16_t iterations, uint16_t speed)
-{
-    uint8_t j = 0;
-    uint16_t i = 0;
+//void Animations::effectRandomZLift(uint16_t iterations, uint16_t speed)
+//{
+//    uint8_t j = 0;
+//    uint16_t i = 0;
 
-    uint8_t destination[CUBE_ARRAY_SIZE] =
-    { 0 };
-    uint8_t position[CUBE_ARRAY_SIZE] =
-    { 0 };
-    for (i = 0; i < CUBE_ARRAY_SIZE; i++)
-    {
-        position[i] = 4;
-        destination[i] = qrand() % 8;
-    }
+//    uint8_t destination[CUBE_ARRAY_SIZE] =
+//    { 0 };
+//    uint8_t position[CUBE_ARRAY_SIZE] =
+//    { 0 };
+//    for (i = 0; i < CUBE_ARRAY_SIZE; i++)
+//    {
+//        position[i] = 4;
+//        destination[i] = qrand() % 8;
+//    }
 
-    for (i = 0; i < iterations; i++)
-    {
-        for (j = 0; j < CUBE_SIZE; j++)
-        {
-            effectZUpDownMove(destination, position, Z_AXIS);
-            animationWait(speed);
-        }
+//    for (i = 0; i < iterations; i++)
+//    {
+//        for (j = 0; j < CUBE_SIZE; j++)
+//        {
+//            effectZUpDownMove(destination, position, Z_AXIS);
+//            animationWait(speed);
+//        }
 
-        animationWait(speed * 4);
+//        animationWait(speed * 4);
 
-        for (j = 0; j < CUBE_ARRAY_SIZE / 2; j++)
-        {
-            destination[qrand() % CUBE_ARRAY_SIZE] = qrand() % CUBE_SIZE;
-        }
-    }
-}
+//        for (j = 0; j < CUBE_ARRAY_SIZE / 2; j++)
+//        {
+//            destination[qrand() % CUBE_ARRAY_SIZE] = qrand() % CUBE_SIZE;
+//        }
+//    }
+//}
 
-void Animations::effectZUpDownMove(uint8_t destination[], uint8_t position[], Axis axe)
-{
-    uint8_t px = 0;
-    for (px = 0; px < CUBE_ARRAY_SIZE; px++)
-    {
-        if (position[px] < destination[px])
-        {
-            position[px]++;
-        }
-        if (position[px] > destination[px])
-        {
-            position[px]--;
-        }
+//void Animations::effectZUpDownMove(uint8_t destination[], uint8_t position[], Axis axe)
+//{
+//    uint8_t px = 0;
+//    for (px = 0; px < CUBE_ARRAY_SIZE; px++)
+//    {
+//        if (position[px] < destination[px])
+//        {
+//            position[px]++;
+//        }
+//        if (position[px] > destination[px])
+//        {
+//            position[px]--;
+//        }
 
-    }
-    drawPositionAxis(Z_AXIS, position, true);
-}
+//    }
+//    drawPositionAxis(Z_AXIS, position, true);
+//}
 
 void Animations::effectFirework(uint16_t iterations, uint16_t speed, uint8_t particles)
 {
@@ -234,26 +234,26 @@ void Animations::effectFirework(uint16_t iterations, uint16_t speed, uint8_t par
     }
 }
 
-void Animations::sendBixelZ(uint8_t x, uint8_t y, uint8_t z, uint16_t speed)
-{
-    uint8_t i = 0;
-    uint8_t ii = 0;
-    for (i = 0; i < CUBE_SIZE; i++)
-    {
-        if (z == ( CUBE_SIZE - 1))
-        {
-            ii = ( CUBE_SIZE - 1) - i;
-            clearBixel(x, y, ii + 1);
-        }
-        else
-        {
-            ii = i;
-            clearBixel(x, y, ii - 1);
-        }
-        setBixel(x, y, ii);
-        animationWait(speed);
-    }
-}
+//void Animations::sendBixelZ(uint8_t x, uint8_t y, uint8_t z, uint16_t speed)
+//{
+//    uint8_t i = 0;
+//    uint8_t ii = 0;
+//    for (i = 0; i < CUBE_SIZE; i++)
+//    {
+//        if (z == ( CUBE_SIZE - 1))
+//        {
+//            ii = ( CUBE_SIZE - 1) - i;
+//            clearBixel(x, y, ii + 1);
+//        }
+//        else
+//        {
+//            ii = i;
+//            clearBixel(x, y, ii - 1);
+//        }
+//        setBixel(x, y, ii);
+//        animationWait(speed);
+//    }
+//}
 
 void Animations::effectWireBoxCornerShrinkGrow(uint16_t iterations, uint16_t speed, uint8_t rotate, uint8_t flip)
 {

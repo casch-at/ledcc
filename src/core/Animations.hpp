@@ -1,13 +1,12 @@
 #ifndef ANIMATIONS_HPP
 #define ANIMATIONS_HPP
 #include "Global.hpp"
-#include "Draw.hpp"
+#include "animations/Draw.hpp"
 #include <QByteArray>
 #include <QThread>
 #include <QReadWriteLock>
 
 class QTimer;
-//class QSerialPort;
 
 class Animations : public Draw
 {
@@ -46,9 +45,5 @@ signals:
 
 private:
     void animationWait(const uint speed);
-    void sendBixelZ(uint8_t x, uint8_t y, uint8_t z, uint16_t speed);
-    void effectZUpDownMove(uint8_t destination[CUBE_ARRAY_SIZE],
-            uint8_t position[CUBE_ARRAY_SIZE], Axis axe);
-
 };
 #endif // ANIMATIONS_HPP

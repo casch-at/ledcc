@@ -1,5 +1,5 @@
 #  Main CMake file
-#  Copyright (C) 2013 Christian Schwarzgruber <c.schwarzgruber.cs@gmail.com>
+#  Copyright (C) 2013 Christian Schwarzgruber <christiandev9@gmail.com>
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
