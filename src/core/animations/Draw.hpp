@@ -9,7 +9,7 @@
 #include <QObject>
 
 //QByteArray lookUpT[455];
-volatile const uint8_t lookUpTable[455]  = {
+volatile const u_int8_t lookUpTable[455]  = {
     0x00,0x00,0x00,0x00,0x00,0x00,0x5f,0x5f,0x00,0x00,	//  !
     0x00,0x03,0x00,0x03,0x00,0x14,0x7f,0x14,0x7f,0x14,	// "#
     0x24,0x2a,0x7f,0x2a,0x12,0x23,0x13,0x08,0x64,0x62,	// $%
@@ -64,7 +64,7 @@ class Draw: public QObject
 public:
     Draw();
     ~Draw();
-    typedef QVector<QVector<uint8_t> > CubeArray;
+    typedef QVector<QVector<u_int8_t> > CubeArray;
 
     /************************************************************************
      *                   ENUMERATION DEFENTIONS
@@ -98,51 +98,51 @@ public:
      *  or in other words first layer, first data bit, and first row is
      *  activated.
      ***********************************************************************/
-//    uint8_t cubeFrame[CUBE_SIZE][CUBE_SIZE];   // [z][y]
-//    uint8_t cubeFrameTemp[CUBE_SIZE][CUBE_SIZE]; // [z][y]
+//    u_int8_t cubeFrame[CUBE_SIZE][CUBE_SIZE];   // [z][y]
+//    u_int8_t cubeFrameTemp[CUBE_SIZE][CUBE_SIZE]; // [z][y]
 
     CubeArray cubeFrame;
     CubeArray cubeFrameTemp;
     void setBixel(int x, int y, int z);
-    void setTempBixel(uint8_t x, uint8_t y, uint8_t z);
-    void clearBixel(uint8_t x, uint8_t y, uint8_t z);
-    void clearTempBixel(uint8_t x, uint8_t y, uint8_t z);
-    BixelState getBixelState(uint8_t x, uint8_t y, uint8_t z);
-    void flipBixels(uint8_t x, uint8_t y, uint8_t z);
-    void alterBixel(uint8_t x, uint8_t y, uint8_t z, BixelState state);
+    void setTempBixel(u_int8_t x, u_int8_t y, u_int8_t z);
+    void clearBixel(u_int8_t x, u_int8_t y, u_int8_t z);
+    void clearTempBixel(u_int8_t x, u_int8_t y, u_int8_t z);
+    BixelState getBixelState(u_int8_t x, u_int8_t y, u_int8_t z);
+    void flipBixels(u_int8_t x, u_int8_t y, u_int8_t z);
+    void alterBixel(u_int8_t x, u_int8_t y, u_int8_t z, BixelState state);
 
-    bool inRange(uint8_t x, uint8_t y, uint8_t z);
+    bool inRange(u_int8_t x, u_int8_t y, u_int8_t z);
     void shift(Axis axis, Direction direction);
-    void checkArgumentOrder(uint8_t from, uint8_t to, uint8_t *newStartPoint,
-                            uint8_t *newEndPoint);
-    void drawPositionAxis(Axis axis, uint8_t position[CUBE_ARRAY_SIZE], bool invert);
-    uint8_t flipByte(uint8_t byte);
+    void checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoint,
+                            u_int8_t *newEndPoint);
+    void drawPositionAxis(Axis axis, u_int8_t position[CUBE_ARRAY_SIZE], bool invert);
+    u_int8_t flipByte(u_int8_t byte);
 
-    void setPlaneZ(uint8_t z);
-    void clearPlaneZ(uint8_t z);
-    void setPlaneX(uint8_t x);
-    void clearPlaneX(uint8_t x);
-    void setPlaneY(uint8_t y);
-    void clearPlaneY(uint8_t y);
-    void setPlane(Axis axis, uint8_t i);
-    void clearPlane(Axis axis, uint8_t i);
+    void setPlaneZ(u_int8_t z);
+    void clearPlaneZ(u_int8_t z);
+    void setPlaneX(u_int8_t x);
+    void clearPlaneX(u_int8_t x);
+    void setPlaneY(u_int8_t y);
+    void clearPlaneY(u_int8_t y);
+    void setPlane(Axis axis, u_int8_t i);
+    void clearPlane(Axis axis, u_int8_t i);
 
-    void boxWireframe(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2,
-                      uint8_t y2, uint8_t z2);
-    void boxFilled(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t y2,
-                   uint8_t z2);
-    void boxWalls(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t y2,
-                  uint8_t z2);
+    void boxWireframe(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2,
+                      u_int8_t y2, u_int8_t z2);
+    void boxFilled(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2,
+                   u_int8_t z2);
+    void boxWalls(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2,
+                  u_int8_t z2);
     void mirrorX(void);
     void mirrorY(void);
     void mirrorZ(void);
     // @brief Function Prototypes for filling cube array
     void fillTempCubeArray(const u_int8_t &pattern);
-    void fillCubeArray(uint8_t pattern);
+    void fillCubeArray(const u_int8_t &pattern);
 
-    uint8_t byteline(uint8_t start, uint8_t end);
+    u_int8_t byteline(const u_int8_t &start, const u_int8_t &end);
     void tmpCubeToCube(void);
-    void fontGetChar(uint8_t chr, uint8_t dst[5]);
+    void fontGetChar(u_int8_t &chr, u_int8_t dst[5]);
 private:
 };
 

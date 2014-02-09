@@ -15,7 +15,7 @@
 #include "alt_key.hpp"
 #include "aqp.hpp"
 #include "DebugDockWidget.hpp"
-//#include "Animations.hpp"
+#include "animations/Draw.hpp"
 
 //#include <QListWidget>
 #include <QMessageBox>
@@ -74,8 +74,15 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
     AQP::accelerateWidget (this);  //Give each button a accelerater
-
-
+    Draw draw;
+    qDebug();
+    draw.fillCubeArray(0xff);
+    qDebug() << "CubeFrame:";
+    qDebug() << draw.cubeFrame;
+    qDebug();
+    qDebug() << "CubeFrameTemp:";
+    qDebug() << draw.cubeFrameTemp;
+    qDebug();
 //    cubeFrameTemp[0].fill(pattern);
 }
 

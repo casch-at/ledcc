@@ -357,7 +357,7 @@ void Draw::mirrorX()
             cubeFrameTemp[z][y] = flipByte(cubeFrame[z][y]);
         }
     }
-    memcpy(&cubeFrame[0], &cubeFrameTemp[0], CUBE_ARRAY_SIZE);
+    cubeFrame = cubeFrameTemp;
 }
 
 void Draw::mirrorY()
@@ -369,7 +369,7 @@ void Draw::mirrorY()
             cubeFrameTemp[z][CUBE_SIZE - y - 1] = cubeFrame[z][y];
         }
     }
-    memcpy(&cubeFrame[0], &cubeFrameTemp[0], CUBE_ARRAY_SIZE);
+    cubeFrame = cubeFrameTemp;
 }
 
 void Draw::mirrorZ()
@@ -381,35 +381,32 @@ void Draw::mirrorZ()
             cubeFrameTemp[CUBE_SIZE - z - 1][y] = cubeFrame[z][y];
         }
     }
-    memcpy(&cubeFrame[0], &cubeFrameTemp[0], CUBE_ARRAY_SIZE);
+    cubeFrame = cubeFrameTemp;
 }
 
 void Draw::fillTempCubeArray(const u_int8_t &pattern)
 {
-    memset(&cubeFrameTemp[0],pattern,CUBE_ARRAY_SIZE);
-
+    for(u_int8_t i = 0; i < CUBE_SIZE; i++)
+        cubeFrameTemp[i].fill(pattern);
 }
 
-void Draw::fillCubeArray(u_int8_t pattern)
+void Draw::fillCubeArray(const u_int8_t &pattern)
 {
-    for (int z = 0; z < CUBE_SIZE; z++) {
-        for (int y = 0; y < CUBE_SIZE; y++) {
-            cubeFrame[z][y] = pattern;
-        }
-    }
+    for(u_int8_t i = 0; i < CUBE_SIZE; i++)
+        cubeFrame[i].fill(pattern);
 }
 
-u_int8_t Draw::byteline(u_int8_t start, u_int8_t end)
+u_int8_t Draw::byteline(const u_int8_t &start, const u_int8_t &end)
 {
     return ( ( 0xff << start ) & ~( 0xff << ( end + 1 ) ) );
 }
 
 void Draw::tmpCubeToCube()
 {
-    memcpy(&cubeFrame[0], &cubeFrameTemp[0], 64);
+    cubeFrame = cubeFrameTemp;
 }
 
-void Draw::fontGetChar(u_int8_t chr, u_int8_t dst[5])
+void Draw::fontGetChar(u_int8_t &chr, u_int8_t dst[5])
 {
     u_int8_t i=0;
     chr -= 32; // bitmap starts at ascii 32 (space)
