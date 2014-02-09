@@ -1,10 +1,5 @@
 #include "Animation.hpp"
 
-Animation::Animation(const QString &name, QObject *parent):
-    Draw(),
-    name(name)
-{
-}
 
 void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed)
 {

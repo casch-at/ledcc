@@ -1,11 +1,12 @@
 #include "AnimationListWidget.hpp"
 #include <QKeyEvent>
 #include <QDebug>
-
+#include "animations/Lift.hpp"
 AnimationListWidget::AnimationListWidget(QWidget *parent):
     QListWidget(parent)
 {
     setFocusPolicy(Qt::StrongFocus);
+    Lift lift;
 }
 
 void AnimationListWidget::keyPressEvent(QKeyEvent *event)

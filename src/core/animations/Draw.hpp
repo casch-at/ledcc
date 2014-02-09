@@ -63,6 +63,33 @@ class Draw: public QObject
 public:
     Draw();
     ~Draw();
+    typedef QVector<QVector<uint8_t> > CubeArray;
+
+    /************************************************************************
+     *                   ENUMERATION DEFENTIONS
+     ************************************************************************/
+    /** @brief: AXIS TYPE */
+    typedef enum
+    {
+        X_AXIS = 0,
+        Y_AXIS,
+        Z_AXIS
+    } Axis;
+
+    /** @brief: DIRECTION TYPE */
+    typedef enum
+    {
+        BACKWARD = 0,
+        FORWARD = !BACKWARD
+    } Direction;
+
+    /** @brief: BIXEL STATE */
+    typedef enum
+    {
+        OFF = 0,
+        ON = !OFF
+    } BixelState;
+
     /***********************************************************************
      *  @brief  Two dimensional array for cube data
      *  cubeFrame[z][y] |= (0x01 << 0) ; where z=y=0
