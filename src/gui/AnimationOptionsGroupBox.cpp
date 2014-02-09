@@ -7,10 +7,7 @@ AnimationOptionsGroupBox::AnimationOptionsGroupBox(QWidget *parent) :
     ui(new Ui::AnimationOptionsGroupBox)
 {
     ui->setupUi(this);
-    setDisabled(true);
-    foreach (const QObject *o, children()) {
-        qDebug() << o->objectName();
-    }
+//    setDisabled(true);
 }
 
 AnimationOptionsGroupBox::~AnimationOptionsGroupBox()
@@ -18,21 +15,14 @@ AnimationOptionsGroupBox::~AnimationOptionsGroupBox()
     delete ui;
 }
 
+Draw::AnimationOptions *AnimationOptionsGroupBox::getAnimationSettings()
+{
+    return &animationOptions;
+}
+
 //AnimationStruct &AnimationOptionsGroupBox::getAnimationSettings()
 //{
-//    if(ui->axisComB->currentIndex() == 0)
-//        animationStruct.axis = X_AXIS;
-//    else if(ui->axisComB->currentIndex() == 1)
-//        animationStruct.axis = Y_AXIS;
-//    else if(ui->axisComB->currentIndex() == 2)
-//        animationStruct.axis = Z_AXIS;
-//    animationStruct.delay = static_cast<uint16_t>(ui->delaySpinB->value());
-//    if(ui->directionComB->currentIndex() == 0)
-//        animationStruct.direction = BACKWARD;
-//    else if(ui->directionComB->currentIndex() == 1)
-//        animationStruct.direction = FORWARD;
-////    animationStruct.
-//    return animationStruct;
+
 //}
 
 void AnimationOptionsGroupBox::enableProperty(const uint8_t &animation)
@@ -59,3 +49,28 @@ void AnimationOptionsGroupBox::changeEvent(QEvent *e)
 }
 
 
+
+void AnimationOptionsGroupBox::on_applyPushB_clicked()
+{
+    if(ui->axisComB->currentIndex() == 0)
+        animationOptions.axis = Draw::X_AXIS;
+    else if(ui->axisComB->currentIndex() == 1)
+        animationOptions.axis = Draw::Y_AXIS;
+    else if(ui->axisComB->currentIndex() == 2)
+        animationOptions.axis = Draw::Z_AXIS;
+    animationOptions.delay = static_cast<u_int16_t>(ui->delaySpinB->value());
+    if(ui->directionComB->currentIndex() == 0)
+        animationOptions.direction = Draw::BACKWARD;
+    else if(ui->directionComB->currentIndex() == 1)
+        animationOptions.direction = Draw::FORWARD;
+    if(ui->invertSpinB->value())
+        animationOptions.invert = true;
+    else
+        animationOptions.invert = false;
+    animationOptions.iteration = static_cast<u_int16_t>(ui->iterationsSpinB->value());
+    animationOptions.leds = static_cast<u_int16_t>(ui->ledsSpinB->value());
+    animationOptions.particle = static_cast<u_int16_t>(ui->fireworkPartSpinB->value());
+    animationOptions.speed = static_cast<u_int16_t>(ui->speedSpinB->value());
+    animationOptions.text = ui->textLineE->text();
+    Q_EMIT optionsReady(&animationOptions);
+}

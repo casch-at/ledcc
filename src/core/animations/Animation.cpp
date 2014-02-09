@@ -1,5 +1,5 @@
 #include "Animation.hpp"
-
+#include "QTimer"
 
 void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed)
 {
@@ -17,7 +17,7 @@ void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed)
             clearBixel(x, y, ii - 1);
         }
         setBixel(x, y, ii);
-//        animationWait(speed);
+        waitMs(speed);
     }
 }
 
@@ -36,4 +36,12 @@ void Animation::effectZUpDownMove(u_int8_t destination[], u_int8_t position[], A
 
     }
     drawPositionAxis(Z_AXIS, position, true);
+}
+
+void Animation::waitMs(const u_int16_t &time)
+{
+    QTimer timer;
+    timer.setSingleShot(true);
+    timer.start(time);
+    while(timer.isActive());
 }

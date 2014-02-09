@@ -3,7 +3,7 @@
 
 #include <QGroupBox>
 #include "Global.hpp"
-
+#include "animations/Draw.hpp"
 namespace Ui {
     class AnimationOptionsGroupBox;
     }
@@ -15,15 +15,20 @@ class AnimationOptionsGroupBox : public QGroupBox
 public:
     explicit AnimationOptionsGroupBox(QWidget *parent = 0);
     ~AnimationOptionsGroupBox();
-//    AnimationStruct& getAnimationSettings(void);
+    Draw::AnimationOptions *getAnimationSettings(void);
+Q_SIGNALS:
+    void optionsReady(const Draw::AnimationOptions *animationOptions);
 public Q_SLOTS:
     void enableProperty(const uint8_t &animation);
 protected:
     void changeEvent(QEvent *e);
 
+private slots:
+    void on_applyPushB_clicked();
+
 private:
     Ui::AnimationOptionsGroupBox *ui;
-//    AnimationStruct animationStruct;
+    Draw::AnimationOptions animationOptions;
 };
 
 #endif // ANIMATIONOPTIONSGROUPBOX_HPP

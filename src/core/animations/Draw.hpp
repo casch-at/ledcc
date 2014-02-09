@@ -62,7 +62,7 @@ class Draw: public QObject
 {
     Q_OBJECT
 public:
-    Draw();
+    explicit Draw(QObject *parent = Q_NULLPTR);
     ~Draw();
     typedef QVector<QVector<u_int8_t> > CubeArray;
 
@@ -90,6 +90,19 @@ public:
         OFF = 0,
         ON = !OFF
     } BixelState;
+
+    struct AnimationOptions{
+        QString text;
+        u_int8_t particle;
+        u_int16_t speed;
+        u_int16_t delay;
+        u_int16_t leds;
+        u_int16_t iteration;
+        Direction direction;
+        Axis axis;
+        bool invert;
+        BixelState state;
+    };
 
     /***********************************************************************
      *  @brief  Two dimensional array for cube data
@@ -145,5 +158,5 @@ public:
     void fontGetChar(u_int8_t &chr, u_int8_t dst[5]);
 private:
 };
-
+Q_DECLARE_METATYPE(Draw::AnimationOptions)
 #endif // DRAW_HPP

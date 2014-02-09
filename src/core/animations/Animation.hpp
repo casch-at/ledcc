@@ -5,8 +5,9 @@
 class Animation : public Draw
 {
 public:
-    Animation(const QString &name,QObject *parent = Q_NULLPTR):
-        Draw(),
+    explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR):
+        Draw(parent),
+        m_speed(speed),
         m_name(name){
     }
 
@@ -32,6 +33,7 @@ public:
             u_int8_t position[CUBE_ARRAY_SIZE], Axis axe);
     virtual void createAnimation(void) = 0;
 private:
+    void waitMs(const u_int16_t &time);
     u_int16_t m_speed;
     QString m_name;
 };

@@ -15,14 +15,14 @@
 #include <SettingsDialog.hpp>
 #include <QThread>
 #include <Global.hpp>
-
+#include "animations/Draw.hpp"
 //#define DEBUGWINDOW
 
 /*Forward deceleration*/
 class QTimer;
 class DebugDockWidget;
 class QShortcut;
-
+class Lift;
 namespace Ui {
     class MainWindow;
 }
@@ -54,8 +54,8 @@ private Q_SLOTS:
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
     void playNextAnimation(void);
-    void on_applyPushB_clicked();
 private Q_SLOTS:
+    void updateAnimation(const Draw::AnimationOptions *animationOptions);
 #ifdef DEBUGWINDOW
     void sendData(void);
 #endif
@@ -85,6 +85,7 @@ private:
     QAction *pauseAction;
     QSerialPort serial;
     QShortcut *shortCutSA;
+    Lift *animationLift;
 };
 
 #endif // MAINWINDOW_H

@@ -5,7 +5,8 @@
 //#include <QByteArray>
 //#include <QBitArray>
 #include <QDebug>
-Draw::Draw()
+Draw::Draw(QObject *parent):
+    QObject(parent)
 {
     QTime time = QTime::currentTime();
     cubeFrame =  CubeArray(8,QVector<u_int8_t>(8)) ;

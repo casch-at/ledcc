@@ -16,7 +16,7 @@
 #include "aqp.hpp"
 #include "DebugDockWidget.hpp"
 #include "animations/Draw.hpp"
-
+#include "animations/Lift.hpp"
 //#include <QListWidget>
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     serial(new QSerialPort),
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 {
+    animationLift = new Lift();
     ui->setupUi(this);
 #ifdef DEBUGWINDOW
     debugDockWidget = new DebugDockWidget(this);
@@ -73,7 +74,18 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     qDebug() << "CubeFrameTemp:";
     qDebug() << draw.cubeFrameTemp;
     qDebug();
-//    cubeFrameTemp[0].fill(pattern);
+    Draw::AnimationOptions *options = ui->animationAdjustGB->getAnimationSettings();
+    qDebug()<< "Axis:       " << options->axis;
+    qDebug()<< "Delay:      " << options->delay;
+    qDebug()<< "Direction:  " << options->direction;
+    qDebug()<< "Invert:     " << options->invert;
+    qDebug()<< "Iteration:  " << options->iteration;
+    qDebug()<< "Leds:       " << options->leds;
+    qDebug()<< "Particle:   " << options->particle;
+    qDebug()<< "Speed:      " << options->speed;
+    qDebug()<< "State:      " << options->state;
+    qDebug()<< "Text:       " << options->text;
+    qDebug();
 }
 
 /**
@@ -176,7 +188,26 @@ void MainWindow::updateUi(void) // Update Button state
 void MainWindow::playNextAnimation(void)
 {
 //    currentAnimation = ui->animationPlaylistLW->getNextAnimation();
-//    emit startAnimation(currentAnimation);
+    //    emit startAnimation(currentAnimation);
+}
+
+void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
+{
+    qDebug();
+    qDebug() << "Befor:";
+    qDebug() << "Speed" << animationLift->getSpeed();
+    qDebug() << "Iterations" << animationLift->getIterations();
+    qDebug() << "Delay" << animationLift->getDelay();
+    qDebug();
+    animationLift->setSpeed(animationOptions->speed);
+    animationLift->setIterations(animationOptions->iteration);
+    animationLift->setDelay(animationOptions->delay);
+    qDebug();
+    qDebug() << "After:";
+    qDebug() << "Speed" << animationLift->getSpeed();
+    qDebug() << "Iterations" << animationLift->getIterations();
+    qDebug() << "Delay" << animationLift->getDelay();
+    qDebug();
 }
 /**
  * @brief MainWindow::setupAnimationList
@@ -336,6 +367,8 @@ void MainWindow::connectSignals(void) //Connect Signals
             ui->animationPlaylistLW,&AnimationPlayListWidget::selectAllItems);
     connect(shortCutSA,&QShortcut::activated,
             ui->availableAnimationsLW,&AnimationListWidget::selectAllItems);
+    connect(ui->animationAdjustGB,&AnimationOptionsGroupBox::optionsReady,
+            this,&MainWindow::updateAnimation);
 }
 
 /**
@@ -432,9 +465,4 @@ void MainWindow::about()
                           "<p>The <b>3D-LED Cube</b> program was part of my thesis."
                           "This program lets you rearange the animation in the order you like it, you can even adjust speed,"
                           "delay, iterations and much more."));
-}
-
-void MainWindow::on_applyPushB_clicked()
-{
-    qDebug() << "Apply clicked";
 }
