@@ -73,15 +73,15 @@ void AnimationPlayListWidget::selectAllItems(void)
         selectAll();
 }
 
-QHash<QString, AnimationStruct> *AnimationPlayListWidget::getPlaylist()
-{
+//QHash<QString, AnimationStruct> *AnimationPlayListWidget::getPlaylist()
+//{
 
-}
+//}
 
-const AnimationStruct AnimationPlayListWidget::getNextAnimation()
-{
-    static int row;
-    if(row >= count())
-        row=0;
-    return playList.value(item(row++)->text());
-}
+//const AnimationStruct AnimationPlayListWidget::getNextAnimation()
+//{
+//    static int row;
+//    if(row >= count())
+//        row=0;
+//    return playList.value(item(row++)->text());
+//}

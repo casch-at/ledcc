@@ -19,11 +19,10 @@
 //#define DEBUGWINDOW
 
 /*Forward deceleration*/
-class QListWidgetItem;
 class QTimer;
 class DebugDockWidget;
-class Animations;
 class QShortcut;
+
 namespace Ui {
     class MainWindow;
 }
@@ -39,7 +38,7 @@ public:
     explicit MainWindow(QWidget *parent = Q_NULLPTR);
     ~MainWindow();
 Q_SIGNALS:
-    void startAnimation(const AnimationStruct &currentAnimation);
+//    void startAnimation(const AnimationStruct &currentAnimation);
 private Q_SLOTS:
     bool okToContinue(void);
     void resizeEvent(QResizeEvent *e);
@@ -84,8 +83,6 @@ private:
     QAction *openPortAction;
     QAction *playAction;
     QAction *pauseAction;
-    AnimationStruct currentAnimation;
-    Animations *animations;
     QSerialPort serial;
     QShortcut *shortCutSA;
 };

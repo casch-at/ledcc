@@ -8,6 +8,7 @@
 #include <QVector>
 #include <QObject>
 
+//QByteArray lookUpT[455];
 volatile const uint8_t lookUpTable[455]  = {
     0x00,0x00,0x00,0x00,0x00,0x00,0x5f,0x5f,0x00,0x00,	//  !
     0x00,0x03,0x00,0x03,0x00,0x14,0x7f,0x14,0x7f,0x14,	// "#
@@ -97,11 +98,11 @@ public:
      *  or in other words first layer, first data bit, and first row is
      *  activated.
      ***********************************************************************/
-    uint8_t cubeFrame[CUBE_SIZE][CUBE_SIZE];   // [z][y]
-    uint8_t cubeFrameTemp[CUBE_SIZE][CUBE_SIZE]; // [z][y]
+//    uint8_t cubeFrame[CUBE_SIZE][CUBE_SIZE];   // [z][y]
+//    uint8_t cubeFrameTemp[CUBE_SIZE][CUBE_SIZE]; // [z][y]
 
-    CubeArray cubeF;
-    CubeArray cubeFTemp;
+    CubeArray cubeFrame;
+    CubeArray cubeFrameTemp;
     void setBixel(int x, int y, int z);
     void setTempBixel(uint8_t x, uint8_t y, uint8_t z);
     void clearBixel(uint8_t x, uint8_t y, uint8_t z);
@@ -136,7 +137,7 @@ public:
     void mirrorY(void);
     void mirrorZ(void);
     // @brief Function Prototypes for filling cube array
-    void fillTempCubeArray(uint8_t pattern);
+    void fillTempCubeArray(const u_int8_t &pattern);
     void fillCubeArray(uint8_t pattern);
 
     uint8_t byteline(uint8_t start, uint8_t end);

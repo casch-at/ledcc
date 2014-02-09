@@ -3,9 +3,8 @@
 
 void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed)
 {
-    u_int8_t i = 0;
     u_int8_t ii = 0;
-    for (i = 0; i < CUBE_SIZE; i++)
+    for (u_int8_t i = 0; i < CUBE_SIZE; i++)
     {
         if (z == ( CUBE_SIZE - 1))
         {
@@ -24,8 +23,7 @@ void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed)
 
 void Animation::effectZUpDownMove(u_int8_t destination[], u_int8_t position[], Axis axe)
 {
-    u_int8_t px = 0;
-    for (px = 0; px < CUBE_ARRAY_SIZE; px++)
+    for (u_int8_t px = 0; px < CUBE_ARRAY_SIZE; px++)
     {
         if (position[px] < destination[px])
         {

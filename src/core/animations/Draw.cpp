@@ -8,9 +8,10 @@
 Draw::Draw()
 {
     QTime time = QTime::currentTime();
-    cubeF =  CubeArray(8,QVector<uint8_t>(8)) ;
-    cubeFTemp =  CubeArray(8,QVector<uint8_t>(8)) ;
+    cubeFrame =  CubeArray(8,QVector<u_int8_t>(8)) ;
+    cubeFrameTemp =  CubeArray(8,QVector<u_int8_t>(8)) ;
     qsrand(static_cast<uint>(time.msecsSinceStartOfDay()));
+    qRegisterMetaType<CubeArray>("CubeArray");
 }
 
 Draw::~Draw()
@@ -21,29 +22,29 @@ Draw::~Draw()
 void Draw::setBixel(int x, int y, int z)
 {
     if (inRange(x, y, z))
-        cubeF[z][y] |= ( 0x01 << x );
+        cubeFrame[z][y] |= ( 0x01 << x );
 //    qDebug("|Z: 0x%02x| Y: 0x%02x| X: 0x%02x|",z,y,x);
 }
 
-void Draw::setTempBixel(uint8_t x, uint8_t y, uint8_t z)
+void Draw::setTempBixel(u_int8_t x, u_int8_t y, u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrameTemp[z][y] |= ( 0x01 << x );
 }
 
-void Draw::clearBixel(uint8_t x, uint8_t y, uint8_t z)
+void Draw::clearBixel(u_int8_t x, u_int8_t y, u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrame[z][y] &= ~( 0x01 << x );
 }
 
-void Draw::clearTempBixel(uint8_t x, uint8_t y, uint8_t z)
+void Draw::clearTempBixel(u_int8_t x, u_int8_t y, u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrameTemp[z][y] &= ~( 0x01 << x );
 }
 
-BixelState Draw::getBixelState(uint8_t x, uint8_t y, uint8_t z)
+Draw::BixelState Draw::getBixelState(u_int8_t x, u_int8_t y, u_int8_t z)
 {
     if (inRange(x, y, z)) {
         if (cubeFrame[z][y] & ( 1 << x ))
@@ -55,13 +56,13 @@ BixelState Draw::getBixelState(uint8_t x, uint8_t y, uint8_t z)
     }
 }
 
-void Draw::flipBixels(uint8_t x, uint8_t y, uint8_t z)
+void Draw::flipBixels(u_int8_t x, u_int8_t y, u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrame[z][y] ^= ( 1 << x );
 }
 
-void Draw::alterBixel(uint8_t x, uint8_t y, uint8_t z, BixelState state)
+void Draw::alterBixel(u_int8_t x, u_int8_t y, u_int8_t z, BixelState state)
 {
     if (state)
         setBixel(x, y, z);
@@ -69,7 +70,7 @@ void Draw::alterBixel(uint8_t x, uint8_t y, uint8_t z, BixelState state)
         clearBixel(x, y, z);
 }
 
-bool Draw::inRange(uint8_t x, uint8_t y, uint8_t z)
+bool Draw::inRange(u_int8_t x, u_int8_t y, u_int8_t z)
 {
     if (x < CUBE_SIZE && y < CUBE_SIZE && z < CUBE_SIZE)
         return true;
@@ -78,7 +79,7 @@ bool Draw::inRange(uint8_t x, uint8_t y, uint8_t z)
 
 void Draw::shift(Axis axis, Direction direction)
 {
-    uint8_t i, x, y, ii, iii;
+    u_int8_t i, x, y, ii, iii;
     for (i = 0; i < CUBE_SIZE; i++) {
         if (direction)
             ii = 7 - i;
@@ -133,10 +134,10 @@ void Draw::shift(Axis axis, Direction direction)
     }
 }
 
-void Draw::checkArgumentOrder(uint8_t from, uint8_t to, uint8_t *newStartPoint, uint8_t *newEndPoint)
+void Draw::checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoint, u_int8_t *newEndPoint)
 {
     if (from > to) {
-        uint8_t tmp;
+        u_int8_t tmp;
         tmp = from;
         from = to;
         to = tmp;
@@ -145,11 +146,11 @@ void Draw::checkArgumentOrder(uint8_t from, uint8_t to, uint8_t *newStartPoint, 
     *newEndPoint = to;
 }
 
-void Draw::drawPositionAxis(Axis axis, uint8_t position[], bool invert)
+void Draw::drawPositionAxis(Axis axis, u_int8_t position[], bool invert)
 {
-    uint8_t x = 0;
-    uint8_t y = 0;
-    uint8_t k = 0;
+    u_int8_t x = 0;
+    u_int8_t y = 0;
+    u_int8_t k = 0;
 
     fillCubeArray(0x00);
 
@@ -180,51 +181,34 @@ void Draw::drawPositionAxis(Axis axis, uint8_t position[], bool invert)
     }
 }
 
-uint8_t Draw::flipByte(uint8_t byte)
+u_int8_t Draw::flipByte(u_int8_t byte)
 {
-    uint8_t b = byte;
+    u_int8_t b = byte;
     b = ( ( ( b * 0x0802LU ) & 0x22110LU ) | ( ( b * 0x8020LU ) & 0x88440LU ) ) * 0x10101LU >> 16;
     return b;
 }
 
-void Draw::setPlaneZ(uint8_t z)
+void Draw::setPlaneZ(u_int8_t z)
 {
-    uint8_t i;
+    u_int8_t i;
     if (z < CUBE_SIZE) {
         for (i = 0; i < CUBE_SIZE; i++)
-            cubeF[z][i] = 0xff;
+            cubeFrame[z][i] = 0xff;
     }
 }
 
-//void Draw::setPlaneZ(uint8_t z)
-//{
-//    uint8_t i;
-//    if (z < CUBE_SIZE) {
-//        for (i = 0; i < CUBE_SIZE; i++)
-//            cubeFrame[z][i] = 0xFF;
-//    }
-//}
-
-//void Draw::clearPlaneZ(uint8_t z)
-//{
-//    uint8_t i;
-//    if (z < CUBE_SIZE) {
-//        for (i = 0; i < CUBE_SIZE; i++)
-//            cubeFrame[z][i] = 0x00;
-//    }
-//}
-void Draw::clearPlaneZ(uint8_t z)
+void Draw::clearPlaneZ(u_int8_t z)
 {
-    uint8_t i;
+    u_int8_t i;
     if (z < CUBE_SIZE) {
         for (i = 0; i < CUBE_SIZE; i++)
-             cubeF[z][i]  = 0x00;
+             cubeFrame[z][i]  = 0x00;
     }
 }
 
-void Draw::setPlaneX(uint8_t x)
+void Draw::setPlaneX(u_int8_t x)
 {
-    uint8_t z, y;
+    u_int8_t z, y;
     if (x < CUBE_SIZE) {
         for (z = 0; z < CUBE_SIZE; z++) {
             for (y = 0; y < CUBE_SIZE; y++)
@@ -233,20 +217,9 @@ void Draw::setPlaneX(uint8_t x)
     }
 }
 
-//void Draw::clearPlaneX(uint8_t x)
-//{
-//    uint8_t z, y;
-//    if (x < CUBE_SIZE) {
-//        for (z = 0; z < CUBE_SIZE; z++) {
-//            for (y = 0; y < CUBE_SIZE; y++)
-//                cubeFrame[z][y] &= ~( 1 << x );
-//        }
-//    }
-//}
-
-void Draw::clearPlaneX(uint8_t x)
+void Draw::clearPlaneX(u_int8_t x)
 {
-    uint8_t z, y;
+    u_int8_t z, y;
     if (x < CUBE_SIZE) {
         for (z = 0; z < CUBE_SIZE; z++) {
             for (y = 0; y < CUBE_SIZE; y++)
@@ -255,25 +228,25 @@ void Draw::clearPlaneX(uint8_t x)
     }
 }
 
-void Draw::setPlaneY(uint8_t y)
+void Draw::setPlaneY(u_int8_t y)
 {
-    uint8_t z;
+    u_int8_t z;
     if (y < CUBE_SIZE) {
         for (z = 0; z < CUBE_SIZE; z++)
             cubeFrame[z][y] = 0xFF;
     }
 }
 
-void Draw::clearPlaneY(uint8_t y)
+void Draw::clearPlaneY(u_int8_t y)
 {
-    uint8_t z;
+    u_int8_t z;
     if (y < CUBE_SIZE) {
         for (z = 0; z < CUBE_SIZE; z++)
             cubeFrame[z][y] = 0x00;
     }
 }
 
-void Draw::setPlane(Axis axis, uint8_t i)
+void Draw::setPlane(Axis axis, u_int8_t i)
 {
     switch (axis) {
     case X_AXIS:
@@ -290,7 +263,7 @@ void Draw::setPlane(Axis axis, uint8_t i)
     }
 }
 
-void Draw::clearPlane(Axis axis, uint8_t i)
+void Draw::clearPlane(Axis axis, u_int8_t i)
 {
     switch (axis) {
     case X_AXIS:
@@ -307,10 +280,10 @@ void Draw::clearPlane(Axis axis, uint8_t i)
     }
 }
 
-void Draw::boxWireframe(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t y2, uint8_t z2)
+void Draw::boxWireframe(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2)
 {
-    uint8_t iy = 0;
-    uint8_t iz = 0;
+    u_int8_t iy = 0;
+    u_int8_t iz = 0;
 
     checkArgumentOrder(x1, x2, &x1, &x2);
     checkArgumentOrder(y1, y2, &y1, &y2);
@@ -339,10 +312,10 @@ void Draw::boxWireframe(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t 
     }
 }
 
-void Draw::boxFilled(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t y2, uint8_t z2)
+void Draw::boxFilled(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2)
 {
-    uint8_t iy;
-    uint8_t iz;
+    u_int8_t iy;
+    u_int8_t iz;
 
     checkArgumentOrder(x1, x2, &x1, &x2);
     checkArgumentOrder(y1, y2, &y1, &y2);
@@ -355,10 +328,10 @@ void Draw::boxFilled(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t y2,
     }
 }
 
-void Draw::boxWalls(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t y2, uint8_t z2)
+void Draw::boxWalls(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2)
 {
-    uint8_t iy = 0;
-    uint8_t iz = 0;
+    u_int8_t iy = 0;
+    u_int8_t iz = 0;
 
     checkArgumentOrder(x1, x2, &x1, &x2);
     checkArgumentOrder(y1, y2, &y1, &y2);
@@ -377,8 +350,8 @@ void Draw::boxWalls(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t y2, 
 
 void Draw::mirrorX()
 {
-    uint8_t y = 0;
-    uint8_t z = 0;
+    u_int8_t y = 0;
+    u_int8_t z = 0;
     for (z = 0; z < CUBE_SIZE; z++) {
         for (y = 0; y < CUBE_SIZE; y++) {
             cubeFrameTemp[z][y] = flipByte(cubeFrame[z][y]);
@@ -389,8 +362,8 @@ void Draw::mirrorX()
 
 void Draw::mirrorY()
 {
-    uint8_t z = 0;
-    uint8_t y = 0;
+    u_int8_t z = 0;
+    u_int8_t y = 0;
     for (z = 0; z < CUBE_SIZE; z++) {
         for (y = 0; y < CUBE_SIZE; y++) {
             cubeFrameTemp[z][CUBE_SIZE - y - 1] = cubeFrame[z][y];
@@ -401,31 +374,32 @@ void Draw::mirrorY()
 
 void Draw::mirrorZ()
 {
-    uint8_t y = 0;
-    uint8_t z = 0;
+    u_int8_t y = 0;
+    u_int8_t z = 0;
     for (z = 0; z < CUBE_SIZE; z++) {
         for (y = 0; y < CUBE_SIZE; y++) {
             cubeFrameTemp[CUBE_SIZE - z - 1][y] = cubeFrame[z][y];
         }
     }
-    memcpy(cubeFrame, cubeFrameTemp, CUBE_ARRAY_SIZE);
+    memcpy(&cubeFrame[0], &cubeFrameTemp[0], CUBE_ARRAY_SIZE);
 }
 
-void Draw::fillTempCubeArray(uint8_t pattern)
+void Draw::fillTempCubeArray(const u_int8_t &pattern)
 {
-    memset(cubeFrameTemp,pattern,CUBE_ARRAY_SIZE);
+    memset(&cubeFrameTemp[0],pattern,CUBE_ARRAY_SIZE);
+
 }
 
-void Draw::fillCubeArray(uint8_t pattern)
+void Draw::fillCubeArray(u_int8_t pattern)
 {
     for (int z = 0; z < CUBE_SIZE; z++) {
         for (int y = 0; y < CUBE_SIZE; y++) {
-            cubeF[z][y] = pattern;
+            cubeFrame[z][y] = pattern;
         }
     }
 }
 
-uint8_t Draw::byteline(uint8_t start, uint8_t end)
+u_int8_t Draw::byteline(u_int8_t start, u_int8_t end)
 {
     return ( ( 0xff << start ) & ~( 0xff << ( end + 1 ) ) );
 }
@@ -435,9 +409,9 @@ void Draw::tmpCubeToCube()
     memcpy(&cubeFrame[0], &cubeFrameTemp[0], 64);
 }
 
-void Draw::fontGetChar(uint8_t chr, uint8_t dst[5])
+void Draw::fontGetChar(u_int8_t chr, u_int8_t dst[5])
 {
-    uint8_t i=0;
+    u_int8_t i=0;
     chr -= 32; // bitmap starts at ascii 32 (space)
 
     for (i = 0; i < 5; i++)

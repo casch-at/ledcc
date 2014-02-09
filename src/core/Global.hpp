@@ -21,50 +21,24 @@
 //typedef unsigned short uint16_t;
 //typedef unsigned int uint32_t;
 //typedef unsigned long int uint64_t;
-typedef QVector<QVector<uint8_t> > CubeArray;
-
-/************************************************************************
- *                   ENUMERATION DEFENTIONS
- ************************************************************************/
-/** @brief: AXIS TYPE */
-typedef enum
-{
-    X_AXIS = 0,
-    Y_AXIS,
-    Z_AXIS
-} Axis;
-
-/** @brief: DIRECTION TYPE */
-typedef enum
-{
-    BACKWARD = 0,
-    FORWARD = !BACKWARD
-} Direction;
-
-/** @brief: BIXEL STATE */
-typedef enum
-{
-    OFF = 0,
-    ON = !OFF
-} BixelState;
 
 /************************************************************************
  *     ANIMATION STRUCT REPRESENTING THE AVAILABLE PARAMETERS
  ************************************************************************/
-typedef struct{
-    uint8_t id;
-    QString name;
-    QString text;
-    uint8_t particle;
-    uint16_t speed;
-    uint16_t delay;
-    uint16_t leds;
-    uint16_t iteration;
-    Direction direction;
-    Axis axis;
-    bool invert;
-    BixelState state;
-}AnimationStruct;
-Q_DECLARE_METATYPE(AnimationStruct)
+//typedef struct{
+//    uint8_t id;
+//    QString name;
+//    QString text;
+//    uint8_t particle;
+//    uint16_t speed;
+//    uint16_t delay;
+//    uint16_t leds;
+//    uint16_t iteration;
+//    Direction direction;
+//    Axis axis;
+//    bool invert;
+//    BixelState state;
+//}AnimationStruct;
+//Q_DECLARE_METATYPE(AnimationStruct)
 
 #endif // GLOBAL_H

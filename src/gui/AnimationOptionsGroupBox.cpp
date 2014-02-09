@@ -18,22 +18,22 @@ AnimationOptionsGroupBox::~AnimationOptionsGroupBox()
     delete ui;
 }
 
-AnimationStruct &AnimationOptionsGroupBox::getAnimationSettings()
-{
-    if(ui->axisComB->currentIndex() == 0)
-        animationStruct.axis = X_AXIS;
-    else if(ui->axisComB->currentIndex() == 1)
-        animationStruct.axis = Y_AXIS;
-    else if(ui->axisComB->currentIndex() == 2)
-        animationStruct.axis = Z_AXIS;
-    animationStruct.delay = static_cast<uint16_t>(ui->delaySpinB->value());
-    if(ui->directionComB->currentIndex() == 0)
-        animationStruct.direction = BACKWARD;
-    else if(ui->directionComB->currentIndex() == 1)
-        animationStruct.direction = FORWARD;
-//    animationStruct.
-    return animationStruct;
-}
+//AnimationStruct &AnimationOptionsGroupBox::getAnimationSettings()
+//{
+//    if(ui->axisComB->currentIndex() == 0)
+//        animationStruct.axis = X_AXIS;
+//    else if(ui->axisComB->currentIndex() == 1)
+//        animationStruct.axis = Y_AXIS;
+//    else if(ui->axisComB->currentIndex() == 2)
+//        animationStruct.axis = Z_AXIS;
+//    animationStruct.delay = static_cast<uint16_t>(ui->delaySpinB->value());
+//    if(ui->directionComB->currentIndex() == 0)
+//        animationStruct.direction = BACKWARD;
+//    else if(ui->directionComB->currentIndex() == 1)
+//        animationStruct.direction = FORWARD;
+////    animationStruct.
+//    return animationStruct;
+//}
 
 void AnimationOptionsGroupBox::enableProperty(const uint8_t &animation)
 {

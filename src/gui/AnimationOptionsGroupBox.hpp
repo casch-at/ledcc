@@ -15,7 +15,7 @@ class AnimationOptionsGroupBox : public QGroupBox
 public:
     explicit AnimationOptionsGroupBox(QWidget *parent = 0);
     ~AnimationOptionsGroupBox();
-    AnimationStruct& getAnimationSettings(void);
+//    AnimationStruct& getAnimationSettings(void);
 public Q_SLOTS:
     void enableProperty(const uint8_t &animation);
 protected:
@@ -23,7 +23,7 @@ protected:
 
 private:
     Ui::AnimationOptionsGroupBox *ui;
-    AnimationStruct animationStruct;
+//    AnimationStruct animationStruct;
 };
 
 #endif // ANIMATIONOPTIONSGROUPBOX_HPP

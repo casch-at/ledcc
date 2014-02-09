@@ -53,14 +53,14 @@ void AnimationListWidget::selectAllItems()
         selectAll();
 }
 
-QHash<QString, AnimationStruct> *AnimationListWidget::getAnimationList()
-{
-    return &alist;
-}
+//QHash<QString, AnimationStruct> *AnimationListWidget::getAnimationList()
+//{
+//    return &alist;
+//}
 
-void AnimationListWidget::setAnimationList(QHash<QString, AnimationStruct> &animations)
-{
-    alist = animations;
-}
+//void AnimationListWidget::setAnimationList(QHash<QString, AnimationStruct> &animations)
+//{
+//    alist = animations;
+//}
 
 
