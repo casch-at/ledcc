@@ -2,7 +2,6 @@
 #define ANIMATIONLISTWIDGET_HPP
 
 #include <QListWidget>
-#include "Global.hpp"
 class AnimationListWidget : public QListWidget
 {
     Q_OBJECT
@@ -14,11 +13,8 @@ protected:
     virtual void 	keyPressEvent(QKeyEvent * event);
 public Q_SLOTS:
     void selectAllItems(void);
-//    QHash<QString,AnimationStruct>* getAnimationList(void);
-//    void setAnimationList(QHash<QString,AnimationStruct> &animations);
+    void insertAnimation(const QString &animation);
 private:
-    QList<QListWidgetItem *> selected;
-//    QHash<QString,AnimationStruct> alist;
 };
 
 #endif // ANIMATIONLISTWIDGET_HPP

@@ -19,19 +19,13 @@
 
 //#include <QListWidget>
 #include <QMessageBox>
-#include <QTreeWidgetItem>
-#include <QModelIndex>
 #include <QCloseEvent>
-#include <QFileDialog>
 #include <QSettings>
-#include <QMenu>
 #include <QMenuBar>
 #include <QToolBar>
 #include <QByteArray>
 #include <QEventLoop>
 #include <QSerialPort>
-#include <QMultiMap>
-#include <iostream>
 #include <QShortcut>
 //#ifdef _DEBUG_
 #include <QDebug>
@@ -54,13 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     sdialog(new SettingsDialog),
-//    playList(new QHash<QString,AnimationStruct>),
-//    alist(new QHash<QString,AnimationStruct>),
     serial(new QSerialPort),
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 {
-
-//    qRegisterMetaType<AnimationStruct>("AnimationStruct");
     ui->setupUi(this);
 #ifdef DEBUGWINDOW
     debugDockWidget = new DebugDockWidget(this);
@@ -193,8 +183,19 @@ void MainWindow::playNextAnimation(void)
  */
 void MainWindow::setupAnimationList()
 {
-
-
+    ui->availableAnimationsLW->addItem("Lift");
+    ui->availableAnimationsLW->addItem("String Fly");
+    ui->availableAnimationsLW->addItem("Random Spark Flash");
+    ui->availableAnimationsLW->addItem("Random Spark");
+    ui->availableAnimationsLW->addItem("Random Filler");
+    ui->availableAnimationsLW->addItem("Loadbar");
+    ui->availableAnimationsLW->addItem("Axis Nail Wall");
+    ui->availableAnimationsLW->addItem("Wire Box Center Shrink Grow");
+    ui->availableAnimationsLW->addItem("Wire Box Corner Shrink Grow");
+    ui->availableAnimationsLW->addItem("Random Z-Axis Lift");
+    ui->availableAnimationsLW->addItem("Rain");
+    ui->availableAnimationsLW->addItem("Wall");
+    ui->availableAnimationsLW->addItem("Firework");
 }
 
 

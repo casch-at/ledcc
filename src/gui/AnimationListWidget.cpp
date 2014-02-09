@@ -53,14 +53,9 @@ void AnimationListWidget::selectAllItems()
         selectAll();
 }
 
-//QHash<QString, AnimationStruct> *AnimationListWidget::getAnimationList()
-//{
-//    return &alist;
-//}
-
-//void AnimationListWidget::setAnimationList(QHash<QString, AnimationStruct> &animations)
-//{
-//    alist = animations;
-//}
+void AnimationListWidget::insertAnimation(const QString &animation)
+{
+    addItem(animation);
+}
 
 
