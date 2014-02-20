@@ -8,6 +8,7 @@
 /************************************************************************
  *                      DEFINES
  ************************************************************************/
+#define AVAILABLEANIMATIONS             13
 #define CUBE_SIZE                       8
 #define IT_CUBE_SIZE                    (CUBE_SIZE - 1)
 #define CUBE_ARRAY_SIZE                 (CUBE_SIZE*CUBE_SIZE)

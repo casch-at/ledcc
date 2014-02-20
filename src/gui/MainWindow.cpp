@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     connectSignals();
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
+    setupAnimationItems();
     AQP::accelerateWidget (this);  //Give each button a accelerater
     Draw draw;
     qDebug();
@@ -85,6 +86,15 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     qDebug()<< "State:      " << options->state;
     qDebug()<< "Text:       " << options->text;
     qDebug();
+//    qDebug() << "Item in main:" << ui->availableAnimationsLW->item(0)->text();
+//    ->setToolTip((QString(tr("<b>Available properties:</b>"
+//                                                             "<ul>"
+//                                                             "<li>Speed %1 (default=80)</li>"
+//                                                             "<li>Delay %2 (default=50)</li>"
+//                                                             "<li>Iterations %3 (default=10)</li>"
+//                                                             "</ul>")).arg(animationLift->getSpeed())
+//                                                                      .arg(animationLift->getDelay())
+//                                                                      .arg(animationLift->getIterations())));
 }
 
 /**
@@ -196,6 +206,7 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
     if(!items.isEmpty())
     {
         QString animation =items.first()->text();
+        if(animation.compare(animationLift->getName()) == 0 ){
         qDebug() << "Animation for update:" << animation;
         qDebug();
         qDebug() << "Befor:";
@@ -212,7 +223,73 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
         qDebug() << "Iterations" << animationLift->getIterations();
         qDebug() << "Delay" << animationLift->getDelay();
         qDebug();
+        }
     }
+}
+
+void MainWindow::setupAnimationItems()
+{
+    QString text = QString(tr("<b>Available properties:</b>"
+                              "<ul>"
+                              "<li>Speed %1 (default=80)</li>"
+                              "%2"
+                              "</ul>"));
+    QListWidgetItem *item = new QListWidgetItem;
+    item->setText("Lift");
+    item->setToolTip(text.arg(animationLift->getSpeed())
+                     .arg(QString("<li>Delay %1 (default=50)</li>"
+                                  "<li>Iterations %2 (default=10)</li>")
+                          .arg(animationLift->getDelay())
+                          .arg(animationLift->getIterations())));
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("String Fly");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Random Spark Flash");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Random Spark");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Random Filler");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Loadbar");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Axis Nail Wall");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Wire Box Center Shrink Grow");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Wire Box Corner Shrink Grow");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Random Z-Axis Lift");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Rain");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Wall");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
+    item = new QListWidgetItem;
+    item->setText("Firework");
+    item->setToolTip("Not yet Set");
+    ui->availableAnimationsLW->addItem(item);
 }
 
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port
