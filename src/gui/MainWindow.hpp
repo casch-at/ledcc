@@ -64,7 +64,6 @@ private:
     void writeData(const char c);
 #endif
 private:
-    void setupAnimationList(void);
     void addToList();
     bool checkPortSettings(void);
     void closeSerialPort(void);

@@ -27,7 +27,8 @@ Draw::AnimationOptions *AnimationOptionsGroupBox::getAnimationSettings()
 
 void AnimationOptionsGroupBox::enableProperty(const uint8_t &animation)
 {
-    switch (animation) {
+    switch (animation)
+    {
     case 1:
 
         break;
@@ -39,7 +40,8 @@ void AnimationOptionsGroupBox::enableProperty(const uint8_t &animation)
 void AnimationOptionsGroupBox::changeEvent(QEvent *e)
 {
     QGroupBox::changeEvent(e);
-    switch (e->type()) {
+    switch (e->type())
+    {
     case QEvent::LanguageChange:
         ui->retranslateUi(this);
         break;

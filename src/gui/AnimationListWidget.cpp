@@ -1,18 +1,35 @@
 #include "AnimationListWidget.hpp"
 #include <QKeyEvent>
 #include <QDebug>
-#include "animations/Lift.hpp"
+//#include <QtWidgets/QAction>
+
 AnimationListWidget::AnimationListWidget(QWidget *parent):
     QListWidget(parent)
 {
+    QListWidgetItem *item = new QListWidgetItem;
+    item->setText("Lift");
+    item->setToolTip("Available properties \n\nSpeed (default=80)\nDelay (default=50)\nIterations (default=10) ");
+//    addItem("Lift");
+    addItem(item);
+    addItem("String Fly");
+    addItem("Random Spark Flash");
+    addItem("Random Spark");
+    addItem("Random Filler");
+    addItem("Loadbar");
+    addItem("Axis Nail Wall");
+    addItem("Wire Box Center Shrink Grow");
+    addItem("Wire Box Corner Shrink Grow");
+    addItem("Random Z-Axis Lift");
+    addItem("Rain");
+    addItem("Wall");
+    addItem("Firework");
     setFocusPolicy(Qt::StrongFocus);
-    Lift lift;
 }
 
 void AnimationListWidget::keyPressEvent(QKeyEvent *event)
 {
-    qDebug() << "Event key is: " << QString::number(event->key(),16)
-             << "Qt::Key_Enter is: " << QString::number(Qt::Key_Enter,16);
+//    qDebug() << "Event key is: " << QString::number(event->key(),16)
+//             << "Qt::Key_Enter is: " << QString::number(Qt::Key_Enter,16);
     int cRow = -1;
 
     switch (event->key()) {
@@ -38,9 +55,11 @@ void AnimationListWidget::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Escape:
         for(int i=0;i < count();i++){
-            if(item(i)->isSelected())
-                setItemSelected(item(i),false);
+            setItemSelected(item(i),false);
         }
+        break;
+    case Qt::Key_Space:
+        item(currentIndex().row())->setSelected(true);
         break;
     default:
         break;

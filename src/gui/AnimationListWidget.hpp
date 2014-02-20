@@ -2,6 +2,12 @@
 #define ANIMATIONLISTWIDGET_HPP
 
 #include <QListWidget>
+
+/**
+ * @brief Class AnimationListWidget handles all available animation
+ *
+ *
+ */
 class AnimationListWidget : public QListWidget
 {
     Q_OBJECT

@@ -61,7 +61,6 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     createActions ();
     createToolbar ();
     connectSignals();
-    setupAnimationList();
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
     AQP::accelerateWidget (this);  //Give each button a accelerater
@@ -187,49 +186,34 @@ void MainWindow::updateUi(void) // Update Button state
  */
 void MainWindow::playNextAnimation(void)
 {
-//    currentAnimation = ui->animationPlaylistLW->getNextAnimation();
+    //    currentAnimation = ui->animationPlaylistLW->getNextAnimation();
     //    emit startAnimation(currentAnimation);
 }
 
 void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
 {
-    qDebug();
-    qDebug() << "Befor:";
-    qDebug() << "Speed" << animationLift->getSpeed();
-    qDebug() << "Iterations" << animationLift->getIterations();
-    qDebug() << "Delay" << animationLift->getDelay();
-    qDebug();
-    animationLift->setSpeed(animationOptions->speed);
-    animationLift->setIterations(animationOptions->iteration);
-    animationLift->setDelay(animationOptions->delay);
-    qDebug();
-    qDebug() << "After:";
-    qDebug() << "Speed" << animationLift->getSpeed();
-    qDebug() << "Iterations" << animationLift->getIterations();
-    qDebug() << "Delay" << animationLift->getDelay();
-    qDebug();
+    QList<QListWidgetItem*> items = ui->animationPlaylistLW->selectedItems();
+    if(!items.isEmpty())
+    {
+        QString animation =items.first()->text();
+        qDebug() << "Animation for update:" << animation;
+        qDebug();
+        qDebug() << "Befor:";
+        qDebug() << "Speed" << animationLift->getSpeed();
+        qDebug() << "Iterations" << animationLift->getIterations();
+        qDebug() << "Delay" << animationLift->getDelay();
+        qDebug();
+        animationLift->setSpeed(animationOptions->speed);
+        animationLift->setIterations(animationOptions->iteration);
+        animationLift->setDelay(animationOptions->delay);
+        qDebug();
+        qDebug() << "After:";
+        qDebug() << "Speed" << animationLift->getSpeed();
+        qDebug() << "Iterations" << animationLift->getIterations();
+        qDebug() << "Delay" << animationLift->getDelay();
+        qDebug();
+    }
 }
-/**
- * @brief MainWindow::setupAnimationList
- */
-void MainWindow::setupAnimationList()
-{
-    ui->availableAnimationsLW->addItem("Lift");
-    ui->availableAnimationsLW->addItem("String Fly");
-    ui->availableAnimationsLW->addItem("Random Spark Flash");
-    ui->availableAnimationsLW->addItem("Random Spark");
-    ui->availableAnimationsLW->addItem("Random Filler");
-    ui->availableAnimationsLW->addItem("Loadbar");
-    ui->availableAnimationsLW->addItem("Axis Nail Wall");
-    ui->availableAnimationsLW->addItem("Wire Box Center Shrink Grow");
-    ui->availableAnimationsLW->addItem("Wire Box Corner Shrink Grow");
-    ui->availableAnimationsLW->addItem("Random Z-Axis Lift");
-    ui->availableAnimationsLW->addItem("Rain");
-    ui->availableAnimationsLW->addItem("Wall");
-    ui->availableAnimationsLW->addItem("Firework");
-}
-
-
 
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port
 {
@@ -347,8 +331,8 @@ void MainWindow::connectSignals(void) //Connect Signals
              this,&MainWindow::openCloseSerialPort);
     connect(quitAction,&QAction::triggered,
             this,&MainWindow::close);
-//    connect (quitAction,&QAction::triggered,
-//             this,&MainWindow::clearToolButtonClicked);
+    //    connect (quitAction,&QAction::triggered,
+    //             this,&MainWindow::clearToolButtonClicked);
     connect (aboutAction,&QAction::triggered,
              this,&MainWindow::about);
     connect(clearAction,&QAction::triggered,
@@ -389,7 +373,7 @@ void MainWindow::createActions(void)  // Creat action for the toolbar
 
     aboutAction = new QAction( tr( "About" ), this );
     aboutAction->setIcon( QIcon( "://images/help-about.png" ) );
-//    aboutAction->setShortcut(tr( "Ctrl+A" ));
+    //    aboutAction->setShortcut(tr( "Ctrl+A" ));
     aboutAction->setStatusTip( tr( "About Kitchen Scale" ) );
 
     settingAction = new QAction( tr( "Settings Ctrl+I" ), this );

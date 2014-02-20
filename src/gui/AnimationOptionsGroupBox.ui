@@ -130,7 +130,7 @@
        <item>
         <widget class="QLabel" name="axisLabel">
          <property name="text">
-          <string>Achses</string>
+          <string>Axis</string>
          </property>
         </widget>
        </item>

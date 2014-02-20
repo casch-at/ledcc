@@ -17,9 +17,11 @@ void AnimationPlayListWidget::clearList()
 void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
 {
     foreach (QListWidgetItem *i, item) {
-        addItem(i->text());
+//        addItem(i->text());
+        addItem(i->clone());
     }
     emit updateUi();
+    qDebug() << "Current items Playlist: " << count();
 }
 
 void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
