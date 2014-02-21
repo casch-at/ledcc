@@ -4,3 +4,5 @@ WireBoxCenterShrinkGrow::WireBoxCenterShrinkGrow(QObject *parent) :
     Animation(parent)
 {
 }
+
+
