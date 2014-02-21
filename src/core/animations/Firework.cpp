@@ -17,11 +17,11 @@ void Firework::createAnimation()
     uint8_t rand_x = 0;
     uint8_t rand_z = 0;
 
-    float slowrate = 0;
-    float gravity = 0;
+    qreal slowrate = 0;
+    qreal gravity = 0;
 
     // Particles and their position, x,y,z and their movement, dx, dy, dz
-    float particlesA[m_particles][6];
+    qreal particlesA[m_particles][6];
 
     for (u_int16_t i = 0; i < m_iterations; i++)
     {
@@ -51,9 +51,9 @@ void Firework::createAnimation()
             rand_z = qrand() % 200;
 
             // Movement
-            particlesA[f][3] = 1 - static_cast<float>( rand_x / 100 ); // dx
-            particlesA[f][4] = 1 - static_cast<float>( rand_y / 100 ); // dy
-            particlesA[f][5] = 1 - static_cast<float>( rand_z / 100 ); // dz
+            particlesA[f][3] = 1 - static_cast<qreal>( rand_x / 100 ); // dx
+            particlesA[f][4] = 1 - static_cast<qreal>( rand_y / 100 ); // dy
+            particlesA[f][5] = 1 - static_cast<qreal>( rand_z / 100 ); // dz
         }
 
         // explode

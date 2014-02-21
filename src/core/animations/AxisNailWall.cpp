@@ -23,7 +23,7 @@ void AxisNailWall::createAnimation()
     waitMs(getSpeed() * 3);
 
     for (u_int8_t i = 0; i < CUBE_ARRAY_SIZE; i++)
-        destination[i] = rand() % CUBE_SIZE;
+        destination[i] = qrand() % CUBE_SIZE;
 
     for (u_int8_t i = 0; i < CUBE_SIZE; i++)
     {
