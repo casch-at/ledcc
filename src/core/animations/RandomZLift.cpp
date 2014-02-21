@@ -8,8 +8,8 @@ RandomZLift::RandomZLift(const u_int16_t &iterations, const u_int16_t &speed, co
 
 void RandomZLift::createAnimation()
 {
-    u_int8_t destination[CUBE_ARRAY_SIZE] = { 0 };
-    u_int8_t position[CUBE_ARRAY_SIZE] = { 0 };
+    QVector<u_int8_t> destination(CUBE_ARRAY_SIZE);
+    QVector<u_int8_t> position(CUBE_ARRAY_SIZE);
 
     for (u_int16_t i = 0; i < CUBE_ARRAY_SIZE; i++)
     {

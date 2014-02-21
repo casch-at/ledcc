@@ -1,6 +1,7 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 #include "Draw.hpp"
+//#include <QVector>
 
 class Animation : public Draw
 {
@@ -29,8 +30,8 @@ public:
     }
 
     void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed);
-    void effectZUpDownMove(u_int8_t destination[CUBE_ARRAY_SIZE],
-            u_int8_t position[CUBE_ARRAY_SIZE], Axis axe);
+    void effectZUpDownMove(QVector<u_int8_t> &destination,
+            QVector<u_int8_t> &position, Axis axe);
     virtual void createAnimation(void) = 0;
     void waitMs(const u_int16_t &time);
 private:

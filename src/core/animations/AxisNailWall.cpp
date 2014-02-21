@@ -9,8 +9,8 @@ AxisNailWall::AxisNailWall(const u_int16_t &speed, const Draw::Axis &axis, const
 
 void AxisNailWall::createAnimation()
 {
-    u_int8_t position[CUBE_ARRAY_SIZE] = { 0 };
-    u_int8_t destination[CUBE_ARRAY_SIZE] = { 0 };
+    QVector<u_int8_t> destination(CUBE_ARRAY_SIZE);
+    QVector<u_int8_t> position(CUBE_ARRAY_SIZE);
 
 
     fillCubeArray(0x00);

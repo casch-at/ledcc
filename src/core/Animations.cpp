@@ -307,10 +307,8 @@ void Animations::effectWireBoxCenterShrinkGrow(uint16_t speed, bool centerStart)
 
 void Animations::effectAxisNailWall(uint16_t speed, Axis axis, bool invert)
 {
-    uint8_t position[CUBE_ARRAY_SIZE] =
-    { 0 };
-    uint8_t destination[CUBE_ARRAY_SIZE] =
-    { 0 };
+    QVector<u_int8_t> destination(CUBE_ARRAY_SIZE);
+    QVector<u_int8_t> position(CUBE_ARRAY_SIZE);
 
     uint8_t i = 0;
     uint8_t px = 0;

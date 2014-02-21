@@ -147,7 +147,7 @@ void Draw::checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoin
     *newEndPoint = to;
 }
 
-void Draw::drawPositionAxis(Axis axis, u_int8_t position[], bool invert)
+void Draw::drawPositionAxis(Axis axis, QVector<u_int8_t> &position, bool invert)
 {
     u_int8_t x = 0;
     u_int8_t y = 0;

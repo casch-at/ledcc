@@ -17,7 +17,7 @@
 #include "DebugDockWidget.hpp"
 #include "animations/Draw.hpp"
 #include "animations/Lift.hpp"
-//#include <QListWidget>
+
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSettings>
@@ -27,11 +27,12 @@
 #include <QEventLoop>
 #include <QSerialPort>
 #include <QShortcut>
+
 //#ifdef _DEBUG_
 #include <QDebug>
 //#endif
+
 using namespace std;
-#define ANIMATIONS 12
 
 namespace{
     const QString GeometrySettings("geometry");
@@ -86,6 +87,11 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     qDebug()<< "State:      " << options->state;
     qDebug()<< "Text:       " << options->text;
     qDebug();
+    QVector<u_int8_t> t(CUBE_ARRAY_SIZE);
+    qDebug()<< "-------------------Testing QVector--------------------";
+    qDebug()<< "QVector size: " << t.size();
+    qDebug()<< "QVector contains:";
+    qDebug()<< t;
 }
 
 /**

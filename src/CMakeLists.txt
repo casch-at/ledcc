@@ -62,6 +62,7 @@ set(CORE        ${core_DIR}/Animations.cpp
                 ${core_DIR}/animations/Firework.cpp
                 ${core_DIR}/animations/WireBoxCornerShrinkGrow.cpp
                 ${core_DIR}/animations/AxisNailWall.cpp
+                ${core_DIR}/animations/Loadbar.cpp
 )
 set(AQP         ${aqp_DIR}/alt_key.cpp
                 ${aqp_DIR}/aqp.cpp
