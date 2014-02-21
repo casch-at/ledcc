@@ -32,8 +32,8 @@ public:
     void effectZUpDownMove(u_int8_t destination[CUBE_ARRAY_SIZE],
             u_int8_t position[CUBE_ARRAY_SIZE], Axis axe);
     virtual void createAnimation(void) = 0;
-private:
     void waitMs(const u_int16_t &time);
+private:
     u_int16_t m_speed;
     QString m_name;
 };

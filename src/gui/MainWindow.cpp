@@ -86,15 +86,6 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     qDebug()<< "State:      " << options->state;
     qDebug()<< "Text:       " << options->text;
     qDebug();
-//    qDebug() << "Item in main:" << ui->availableAnimationsLW->item(0)->text();
-//    ->setToolTip((QString(tr("<b>Available properties:</b>"
-//                                                             "<ul>"
-//                                                             "<li>Speed %1 (default=80)</li>"
-//                                                             "<li>Delay %2 (default=50)</li>"
-//                                                             "<li>Iterations %3 (default=10)</li>"
-//                                                             "</ul>")).arg(animationLift->getSpeed())
-//                                                                      .arg(animationLift->getDelay())
-//                                                                      .arg(animationLift->getIterations())));
 }
 
 /**
@@ -205,91 +196,125 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
     QList<QListWidgetItem*> items = ui->animationPlaylistLW->selectedItems();
     if(!items.isEmpty())
     {
-        QString animation =items.first()->text();
+        QListWidgetItem *item = items.first();
+        QString animation =item->text();
         if(animation.compare(animationLift->getName()) == 0 ){
-        qDebug() << "Animation for update:" << animation;
-        qDebug();
-        qDebug() << "Befor:";
-        qDebug() << "Speed" << animationLift->getSpeed();
-        qDebug() << "Iterations" << animationLift->getIterations();
-        qDebug() << "Delay" << animationLift->getDelay();
-        qDebug();
-        animationLift->setSpeed(animationOptions->speed);
-        animationLift->setIterations(animationOptions->iteration);
-        animationLift->setDelay(animationOptions->delay);
-        qDebug();
-        qDebug() << "After:";
-        qDebug() << "Speed" << animationLift->getSpeed();
-        qDebug() << "Iterations" << animationLift->getIterations();
-        qDebug() << "Delay" << animationLift->getDelay();
-        qDebug();
+            qDebug() << "Animation for update:" << animation;
+            qDebug();
+            qDebug() << "Befor:";
+            qDebug() << "Speed" << animationLift->getSpeed();
+            qDebug() << "Iterations" << animationLift->getIterations();
+            qDebug() << "Delay" << animationLift->getDelay();
+            qDebug();
+            animationLift->setSpeed(animationOptions->speed);
+            animationLift->setIterations(animationOptions->iteration);
+            animationLift->setDelay(animationOptions->delay);
+            qDebug();
+            qDebug() << "After:";
+            qDebug() << "Speed" << animationLift->getSpeed();
+            qDebug() << "Iterations" << animationLift->getIterations();
+            qDebug() << "Delay" << animationLift->getDelay();
+            qDebug();
+            item->setToolTip(item->toolTip().arg(animationLift->getSpeed()));
         }
     }
 }
 
 void MainWindow::setupAnimationItems()
 {
-    QString text = QString(tr("<b>Available properties:</b>"
-                              "<ul>"
-                              "<li>Speed %1 (default=80)</li>"
-                              "%2"
-                              "</ul>"));
-    QListWidgetItem *item = new QListWidgetItem;
-    item->setText("Lift");
-    item->setToolTip(text.arg(animationLift->getSpeed())
-                     .arg(QString("<li>Delay %1 (default=50)</li>"
-                                  "<li>Iterations %2 (default=10)</li>")
-                          .arg(animationLift->getDelay())
-                          .arg(animationLift->getIterations())));
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("String Fly");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Random Spark Flash");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Random Spark");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Random Filler");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Loadbar");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Axis Nail Wall");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Wire Box Center Shrink Grow");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Wire Box Corner Shrink Grow");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Random Z-Axis Lift");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Rain");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Wall");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
-    item = new QListWidgetItem;
-    item->setText("Firework");
-    item->setToolTip("Not yet Set");
-    ui->availableAnimationsLW->addItem(item);
+    QListWidgetItem *item = Q_NULLPTR;
+    QList<QString> aList;
+    aList.append("Lift");
+    aList.append("String Fly");
+    aList.append("Random Spark Flash");
+    aList.append("Random Spark");
+    aList.append("Random Filler");
+    aList.append("Loadbar");
+    aList.append("Axis Nail Wall");
+    aList.append("Wire Box Center Shrink Grow");
+    aList.append("Wire Box Corner Shrink Grow");
+    aList.append("Random Z-Axis Lift");
+    aList.append("Rain");
+    aList.append("Wall");
+    aList.append("Firework");
+    for (int a = 0; a < AVAILABLEANIMATIONS; ++a) {
+        item = new QListWidgetItem(aList.at(a),ui->availableAnimationsLW);
+        item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
+                                    "Speed: %2<br>"
+                                    "Delay: %3<br>"
+                                    "Iterations: %4"))
+                         .arg(aList.at(a)));
+    }
+//    item->setText("Lift");
+//    item->setToolTip(QString(tr("<font color=#00FFFF><b>%1 Animation</b></font><br>"
+//                                "Speed: %2<br>"
+//                                "Delay: %3<br>"
+//                                "Iterations: %4"))
+//                     .arg(animationLift->getName())
+//                     .arg(animationLift->getSpeed())
+//                     .arg(animationLift->getDelay())
+//                     .arg(animationLift->getIterations()));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("String Fly");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("String Fly"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Random Spark Flash");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Random Spark Flash"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Random Spark");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Random Spark"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Random Filler");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Random Filler"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Loadbar");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Loadbar"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Axis Nail Wall");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Axis Nail Wall"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Wire Box Center Shrink Grow");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Wire Box Center Shrink Grow"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Wire Box Corner Shrink Grow");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Wire Box Corner Shrink Grow"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Random Z-Axis Lift");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Random Z-Axis Lift"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Rain");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Rain"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Wall");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Wall"));
+//    ui->availableAnimationsLW->addItem(item);
+//    item = new QListWidgetItem;
+//    item->setText("Firework");
+//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+//                     arg("Firework"));
+//    ui->availableAnimationsLW->addItem(item);
 }
 
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port

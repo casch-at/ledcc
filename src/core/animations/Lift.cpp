@@ -1,5 +1,12 @@
 #include "Lift.hpp"
 
+Lift::Lift(const u_int16_t &delay, const u_int16_t &iterations, const QString &name, const u_int16_t &speed, QObject *parent):
+    Animation(speed,name,parent),
+    m_delay(delay),
+    m_iterations(iterations)
+{
+}
+
 void Lift::createAnimation()
 {
     u_int8_t lastX = 0;
@@ -26,6 +33,7 @@ void Lift::createAnimation()
                 sendBixelZ(x, y, 0, getSpeed());
             else
                 sendBixelZ(x, y, 7, getSpeed());
+            waitMs(m_delay);
             lastX = x;
             lastY = y;
         }

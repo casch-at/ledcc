@@ -56,6 +56,11 @@ set(CORE        ${core_DIR}/Animations.cpp
                 ${core_DIR}/animations/Draw.cpp
                 ${core_DIR}/animations/Animation.cpp
                 ${core_DIR}/animations/Lift.cpp
+                ${core_DIR}/animations/Rain.cpp
+                ${core_DIR}/animations/Wall.cpp
+                ${core_DIR}/animations/RandomZLift.cpp
+                ${core_DIR}/animations/Firework.cpp
+                ${core_DIR}/animations/WireBoxCornerShrinkGrow.cpp
 )
 set(AQP         ${aqp_DIR}/alt_key.cpp
                 ${aqp_DIR}/aqp.cpp
