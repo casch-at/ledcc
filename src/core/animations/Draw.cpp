@@ -407,7 +407,7 @@ void Draw::tmpCubeToCube()
     cubeFrame = cubeFrameTemp;
 }
 
-void Draw::fontGetChar(u_int8_t &chr, u_int8_t dst[5])
+void Draw::fontGetChar(u_int8_t chr, u_int8_t dst[5])
 {
     u_int8_t i=0;
     chr -= 32; // bitmap starts at ascii 32 (space)

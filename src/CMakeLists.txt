@@ -52,8 +52,7 @@ set(GUI         ${gui_DIR}/DebugDockWidget.cpp
                 ${gui_DIR}/AnimationPlayListWidget.cpp
                 ${gui_DIR}/AnimationOptionsGroupBox.cpp
 )
-set(CORE        ${core_DIR}/Animations.cpp
-                ${core_DIR}/animations/Draw.cpp
+set(CORE        ${core_DIR}/animations/Draw.cpp
                 ${core_DIR}/animations/Animation.cpp
                 ${core_DIR}/animations/Lift.cpp
                 ${core_DIR}/animations/Rain.cpp
@@ -64,6 +63,9 @@ set(CORE        ${core_DIR}/Animations.cpp
                 ${core_DIR}/animations/AxisNailWall.cpp
                 ${core_DIR}/animations/Loadbar.cpp
                 ${core_DIR}/animations/RandomSparkFlash.cpp
+                ${core_DIR}/animations/RandomSpark.cpp
+                ${core_DIR}/animations/RandomFiller.cpp
+                ${core_DIR}/animations/StringFly.cpp
 )
 set(AQP         ${aqp_DIR}/alt_key.cpp
                 ${aqp_DIR}/aqp.cpp
