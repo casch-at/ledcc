@@ -60,6 +60,7 @@ set(CORE        ${core_DIR}/animations/Draw.cpp
                 ${core_DIR}/animations/RandomZLift.cpp
                 ${core_DIR}/animations/Firework.cpp
                 ${core_DIR}/animations/WireBoxCornerShrinkGrow.cpp
+                ${core_DIR}/animations/WireBoxCenterShrinkGrow.cpp
                 ${core_DIR}/animations/AxisNailWall.cpp
                 ${core_DIR}/animations/Loadbar.cpp
                 ${core_DIR}/animations/RandomSparkFlash.cpp
