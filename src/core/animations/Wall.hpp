@@ -8,9 +8,11 @@ class Wall : public Animation
     Q_PROPERTY(Direction direction READ getDirection WRITE setDirection)
     Q_PROPERTY(Axis axis READ getAxis WRITE setAxis)
 public:
-    explicit Wall(const Axis &axis,const Direction &direction,
-                  const u_int16_t &speed, QObject *parent = Q_NULLPTR,
-                  const QString &name = "Wall");
+    explicit Wall(const u_int16_t &speed = 50,
+                  const Axis &axis = X_AXIS,
+                  const Direction &direction = FORWARD,
+                  const QString &name = "Wall",
+                  QObject *parent = Q_NULLPTR);
 
     Direction getDirection(void) const{
         return m_direction;

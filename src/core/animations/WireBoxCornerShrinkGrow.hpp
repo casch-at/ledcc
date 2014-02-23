@@ -15,7 +15,7 @@ public:
                                      const u_int8_t &rotate = 1,
                                      const u_int8_t &flip=0,
                                      const QString &name = "Wire Box Corner Shrink Grow",
-                                     QObject *parent = 0);
+                                     QObject *parent = Q_NULLPTR);
 
     virtual void createAnimation();
 

@@ -1,6 +1,6 @@
 #include "Wall.hpp"
 
-Wall::Wall(const Axis &axis, const Direction &direction, const u_int16_t &speed, QObject *parent, const QString &name):
+Wall::Wall(const u_int16_t &speed, const Axis &axis, const Direction &direction, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_direction(direction),
     m_axis(axis)

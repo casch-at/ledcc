@@ -8,7 +8,7 @@ class StringFly : public Animation
     Q_OBJECT
     Q_PROPERTY(QString sToDisplay READ getSToDisplay WRITE setSToDisplay)
 public:
-    explicit StringFly(const u_int16_t &speed,
+    explicit StringFly(const u_int16_t &speed = 50,
                        const QString &string = "3D LED CUBE",
                        const QString &name = "String Fly",
                        QObject *parent = 0);

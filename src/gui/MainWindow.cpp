@@ -17,6 +17,18 @@
 #include "DebugDockWidget.hpp"
 #include "animations/Draw.hpp"
 #include "animations/Lift.hpp"
+#include "animations/Firework.hpp"
+#include "animations/AxisNailWall.hpp"
+#include "animations/WireBoxCenterShrinkGrow.hpp"
+#include "animations/WireBoxCornerShrinkGrow.hpp"
+#include "animations/Loadbar.hpp"
+#include "animations/RandomFiller.hpp"
+#include "animations/RandomSpark.hpp"
+#include "animations/RandomSparkFlash.hpp"
+#include "animations/RandomZLift.hpp"
+#include "animations/Wall.hpp"
+#include "animations/Rain.hpp"
+#include "animations/StringFly.hpp"
 
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -230,6 +242,20 @@ void MainWindow::setupAnimationItems()
 {
     QListWidgetItem *item = Q_NULLPTR;
     QList<QString> aList;
+    QHash<QString,Animation*> animation;
+    animation.insert("Lift",new Lift);
+    animation.insert("String Fly",new StringFly);
+    animation.insert("Random Spark Flash",new RandomSparkFlash);
+    animation.insert("Random Spark",new RandomSpark);
+    animation.insert("Random Filler",new RandomFiller);
+    animation.insert("Loadbar",new Loadbar);
+    animation.insert("Axis Nail Wall",new AxisNailWall);
+    animation.insert("Wire Box Center Shrink Grow",new WireBoxCenterShrinkGrow);
+    animation.insert("Wire Box Corner Shrink Grow",new WireBoxCornerShrinkGrow);
+    animation.insert("Random Z-Axis Lift",new RandomZLift);
+    animation.insert("Rain",new Rain);
+    animation.insert("Wall",new Wall);
+    animation.insert("Firework",new Firework);
     aList.append("Lift");
     aList.append("String Fly");
     aList.append("Random Spark Flash");
@@ -243,84 +269,87 @@ void MainWindow::setupAnimationItems()
     aList.append("Rain");
     aList.append("Wall");
     aList.append("Firework");
-    for (int a = 0; a < AVAILABLEANIMATIONS; ++a) {
-        item = new QListWidgetItem(aList.at(a),ui->availableAnimationsLW);
+    QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
+    while(iter != animation.constEnd()){
+        qDebug() <<  iter.key();
+        item = new QListWidgetItem(iter.key(),ui->availableAnimationsLW);
         item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
                                     "Speed: %2<br>"
                                     "Delay: %3<br>"
                                     "Iterations: %4"))
-                         .arg(aList.at(a)));
+                         .arg(iter.key()));
+        iter++;
     }
-//    item->setText("Lift");
-//    item->setToolTip(QString(tr("<font color=#00FFFF><b>%1 Animation</b></font><br>"
-//                                "Speed: %2<br>"
-//                                "Delay: %3<br>"
-//                                "Iterations: %4"))
-//                     .arg(animationLift->getName())
-//                     .arg(animationLift->getSpeed())
-//                     .arg(animationLift->getDelay())
-//                     .arg(animationLift->getIterations()));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("String Fly");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("String Fly"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Random Spark Flash");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Random Spark Flash"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Random Spark");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Random Spark"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Random Filler");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Random Filler"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Loadbar");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Loadbar"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Axis Nail Wall");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Axis Nail Wall"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Wire Box Center Shrink Grow");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Wire Box Center Shrink Grow"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Wire Box Corner Shrink Grow");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Wire Box Corner Shrink Grow"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Random Z-Axis Lift");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Random Z-Axis Lift"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Rain");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Rain"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Wall");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Wall"));
-//    ui->availableAnimationsLW->addItem(item);
-//    item = new QListWidgetItem;
-//    item->setText("Firework");
-//    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
-//                     arg("Firework"));
-//    ui->availableAnimationsLW->addItem(item);
+    //    item->setText("Lift");
+    //    item->setToolTip(QString(tr("<font color=#00FFFF><b>%1 Animation</b></font><br>"
+    //                                "Speed: %2<br>"
+    //                                "Delay: %3<br>"
+    //                                "Iterations: %4"))
+    //                     .arg(animationLift->getName())
+    //                     .arg(animationLift->getSpeed())
+    //                     .arg(animationLift->getDelay())
+    //                     .arg(animationLift->getIterations()));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("String Fly");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("String Fly"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Random Spark Flash");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Random Spark Flash"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Random Spark");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Random Spark"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Random Filler");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Random Filler"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Loadbar");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Loadbar"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Axis Nail Wall");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Axis Nail Wall"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Wire Box Center Shrink Grow");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Wire Box Center Shrink Grow"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Wire Box Corner Shrink Grow");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Wire Box Corner Shrink Grow"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Random Z-Axis Lift");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Random Z-Axis Lift"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Rain");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Rain"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Wall");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Wall"));
+    //    ui->availableAnimationsLW->addItem(item);
+    //    item = new QListWidgetItem;
+    //    item->setText("Firework");
+    //    item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>")).
+    //                     arg("Firework"));
+    //    ui->availableAnimationsLW->addItem(item);
 }
 
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port
