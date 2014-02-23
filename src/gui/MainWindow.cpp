@@ -78,32 +78,32 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     pauseAction->setDisabled(true);
     setupAnimationItems();
     AQP::accelerateWidget (this);  //Give each button a accelerater
-    Draw draw;
-    qDebug();
-    draw.fillCubeArray(0xff);
-    qDebug() << "CubeFrame:";
-    qDebug() << draw.cubeFrame;
-    qDebug();
-    qDebug() << "CubeFrameTemp:";
-    qDebug() << draw.cubeFrameTemp;
-    qDebug();
-    Draw::AnimationOptions *options = ui->animationAdjustGB->getAnimationSettings();
-    qDebug()<< "Axis:       " << options->axis;
-    qDebug()<< "Delay:      " << options->delay;
-    qDebug()<< "Direction:  " << options->direction;
-    qDebug()<< "Invert:     " << options->invert;
-    qDebug()<< "Iteration:  " << options->iteration;
-    qDebug()<< "Leds:       " << options->leds;
-    qDebug()<< "Particle:   " << options->particle;
-    qDebug()<< "Speed:      " << options->speed;
-    qDebug()<< "State:      " << options->state;
-    qDebug()<< "Text:       " << options->text;
-    qDebug();
-    QVector<u_int8_t> t(CUBE_ARRAY_SIZE);
-    qDebug()<< "-------------------Testing QVector--------------------";
-    qDebug()<< "QVector size: " << t.size();
-    qDebug()<< "QVector contains:";
-    qDebug()<< t;
+//    Draw draw;
+//    qDebug();
+//    draw.fillCubeArray(0xff);
+//    qDebug() << "CubeFrame:";
+//    qDebug() << draw.cubeFrame;
+//    qDebug();
+//    qDebug() << "CubeFrameTemp:";
+//    qDebug() << draw.cubeFrameTemp;
+//    qDebug();
+//    Draw::AnimationOptions *options = ui->animationAdjustGB->getAnimationSettings();
+//    qDebug()<< "Axis:       " << options->axis;
+//    qDebug()<< "Delay:      " << options->delay;
+//    qDebug()<< "Direction:  " << options->direction;
+//    qDebug()<< "Invert:     " << options->invert;
+//    qDebug()<< "Iteration:  " << options->iteration;
+//    qDebug()<< "Leds:       " << options->leds;
+//    qDebug()<< "Particle:   " << options->particle;
+//    qDebug()<< "Speed:      " << options->speed;
+//    qDebug()<< "State:      " << options->state;
+//    qDebug()<< "Text:       " << options->text;
+//    qDebug();
+//    QVector<u_int8_t> t(CUBE_ARRAY_SIZE);
+//    qDebug()<< "-------------------Testing QVector--------------------";
+//    qDebug()<< "QVector size: " << t.size();
+//    qDebug()<< "QVector contains:";
+//    qDebug()<< t;
 }
 
 /**
@@ -111,6 +111,9 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
  */
 MainWindow::~MainWindow(void) //Deinit MainWindow
 {
+    foreach (Animation *a, animation)
+        delete a;
+    animation.clear();
     delete ui;
 }
 
@@ -241,8 +244,7 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
 void MainWindow::setupAnimationItems()
 {
     QListWidgetItem *item = Q_NULLPTR;
-    QList<QString> aList;
-    QHash<QString,Animation*> animation;
+
     animation.insert("Lift",new Lift);
     animation.insert("String Fly",new StringFly);
     animation.insert("Random Spark Flash",new RandomSparkFlash);
@@ -256,30 +258,20 @@ void MainWindow::setupAnimationItems()
     animation.insert("Rain",new Rain);
     animation.insert("Wall",new Wall);
     animation.insert("Firework",new Firework);
-    aList.append("Lift");
-    aList.append("String Fly");
-    aList.append("Random Spark Flash");
-    aList.append("Random Spark");
-    aList.append("Random Filler");
-    aList.append("Loadbar");
-    aList.append("Axis Nail Wall");
-    aList.append("Wire Box Center Shrink Grow");
-    aList.append("Wire Box Corner Shrink Grow");
-    aList.append("Random Z-Axis Lift");
-    aList.append("Rain");
-    aList.append("Wall");
-    aList.append("Firework");
+
     QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
     while(iter != animation.constEnd()){
-        qDebug() <<  iter.key();
+//        qDebug() << "Animation: "<< iter.key()  << "Located at: " << iter.value();
         item = new QListWidgetItem(iter.key(),ui->availableAnimationsLW);
         item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
                                     "Speed: %2<br>"
                                     "Delay: %3<br>"
                                     "Iterations: %4"))
-                         .arg(iter.key()));
+                         .arg(iter.key())
+                         .arg(iter.value()->getSpeed()));
         iter++;
     }
+    qDebug() << animation.constBegin().key();
 }
 
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port

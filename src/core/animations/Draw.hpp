@@ -64,6 +64,7 @@ class Draw: public QObject
 public:
     explicit Draw(QObject *parent = Q_NULLPTR);
     ~Draw();
+    /** @brief CubeArray holds the data of the cube! */
     typedef QVector<QVector<u_int8_t> > CubeArray;
 
     /************************************************************************
@@ -104,19 +105,9 @@ public:
         BixelState state;
     };
 
-    /***********************************************************************
-     *  @brief  Two dimensional array for cube data
-     *  cubeFrame[z][y] |= (0x01 << 0) ; where z=y=0
-     *  which turns on the first LED at position 000 (x,y,z - Coordinate)
-     *  or in other words first layer, first data bit, and first row is
-     *  activated.
-     ***********************************************************************/
-//    u_int8_t cubeFrame[CUBE_SIZE][CUBE_SIZE];   // [z][y]
-//    u_int8_t cubeFrameTemp[CUBE_SIZE][CUBE_SIZE]; // [z][y]
-
     CubeArray cubeFrame;
     CubeArray cubeFrameTemp;
-
+protected:
     void setBixel(int x, int y, int z);
     void setTempBixel(u_int8_t x, u_int8_t y, u_int8_t z);
 
@@ -169,5 +160,5 @@ public:
 
     void fontGetChar(u_int8_t chr, u_int8_t dst[5]);
 };
-Q_DECLARE_METATYPE(Draw::AnimationOptions)
+//Q_DECLARE_METATYPE(Draw::AnimationOptions)
 #endif // DRAW_HPP

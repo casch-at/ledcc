@@ -23,6 +23,7 @@ class QTimer;
 class DebugDockWidget;
 class QShortcut;
 class Lift;
+class Animation;
 namespace Ui {
     class MainWindow;
 }
@@ -85,6 +86,7 @@ private:
     QSerialPort serial;
     QShortcut *shortCutSA;
     Lift *animationLift;
+    QHash<QString,Animation*> animation;
 };
 
 #endif // MAINWINDOW_H
