@@ -40,7 +40,9 @@ public:
         QSerialPort::FlowControl flowControl;
         QString stringFlowControl;
     };
-
+protected:
+    virtual void closeEvent(QCloseEvent *);
+public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
 
@@ -51,7 +53,8 @@ private Q_SLOTS:
     void apply();
     //    void checkCustomBaudRatePolicy(int idx);
     void on_updateButton_clicked();
-
+//Q_SIGNALS:
+//    void hideDialog();
 private:
     void fillPortsParameters();
     void fillPortsInfo();

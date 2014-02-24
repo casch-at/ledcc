@@ -36,7 +36,7 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
 
 void Animation::waitMs(const u_int16_t &time)
 {
-    qDebug()<< "Animation thread it: " << thread()->currentThread();
+//    qDebug()<< "Animation thread it: " << thread()->currentThread();
     QTimer timer;
     timer.setSingleShot(true);
     timer.start(time);

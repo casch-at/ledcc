@@ -34,6 +34,16 @@ namespace{
  *
  * @param parent
  */
+//void SettingsDialog::closeEvent()
+//{
+
+//}
+
+void SettingsDialog::closeEvent(QCloseEvent *)
+{
+    hide();
+}
+
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsDialog)
@@ -48,7 +58,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
             this, SLOT(apply()));
     connect(ui->portsBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(showPortInfo(int)));
-
+//    connect(this,&SettingsDialog::hideDialog,this,&SettingsDialog::accept);
+//    connect(this,&SettingsDialog::close,)
     //        connect(ui->baudRateBox, SIGNAL(currentIndexChanged(int)),
     //                this, SLOT(checkCustomBaudRatePolicy(int)));
 
@@ -106,6 +117,7 @@ void SettingsDialog::apply()
     updateSettings();
     saveValues();
     hide();
+
 }
 
 //void SettingsDialog::checkCustomBaudRatePolicy(int idx)

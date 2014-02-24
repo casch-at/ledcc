@@ -195,7 +195,7 @@ void MainWindow::playNextAnimation(const QString &a)
     //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
     //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
     connect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
-    qDebug()<< "Main thread id: " << thread()->currentThread();
+//    qDebug()<< "Main thread id: " << thread()->currentThread();
     timer.start(2);
     createThread->start();
 
