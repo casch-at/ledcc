@@ -61,25 +61,29 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     sdialog(new SettingsDialog),
-    serial(new QSerialPort),
-    shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
+//    serial(new QSerialPort),
+    shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
+    createThread(new QThread)
 {
     ui->setupUi(this);
 #ifdef DEBUGWINDOW
     debugDockWidget = new DebugDockWidget(this);
     addDockWidget(Qt::RightDockWidgetArea,debugDockWidget,Qt::Vertical );
 #endif
-//    currentAnimation = new Lift;
+    //    currentAnimation = new Lift;
     readSettings ();
     createActions ();
     createToolbar ();
-    connectSignals();
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
     setupAnimationItems();
+    currentAnimation = animation.value("Wall");
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
+//    createThread = new QThread;
     qDebug()<< "Main Thread id: " << thread()->currentThread();
+    connectSignals();
+    timer.setSingleShot(false);
 }
 
 /**
@@ -90,6 +94,7 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
     foreach (Animation *a, animation)
         delete a;
     animation.clear();
+    delete createThread;
     delete ui;
 }
 
@@ -185,15 +190,15 @@ void MainWindow::updateUi(void) // Update Button state
 void MainWindow::playNextAnimation(const QString &a)
 {
     currentAnimation = animation.value(a);
-    createThread = new QThread;
-    currentAnimation->moveToThread(createThread);
     connect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
     connect(currentAnimation, &Animation::done, createThread, &QThread::quit);
-//    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-//    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
-    QThread::connect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+    //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
+    connect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
     qDebug()<< "Main thread id: " << thread()->currentThread();
+    timer.start(2);
     createThread->start();
+
 }
 
 void MainWindow::playAnimations()
@@ -211,10 +216,31 @@ void MainWindow::animationDone()
 {
     disconnect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
     disconnect(currentAnimation, &Animation::done, createThread, &QThread::quit);
-    QThread::disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+    disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
     createThread->wait();
-    delete createThread;
+    Q_EMIT playAnimations();
+//    timer.stop();
+    //    createThread->wait();
+    //    delete createThread;
+}
 
+void MainWindow::sendAnimation()
+{
+    serial.putChar(0xFF);
+    serial.waitForBytesWritten(1000);
+    serial.putChar(0x00);
+    serial.waitForBytesWritten(1000);
+    for (u_int8_t z = 0; z < CUBE_SIZE; z++) {
+        for (u_int8_t y = 0; y < CUBE_SIZE; y++) {
+            serial.putChar(currentAnimation->cubeFrame[z][y]);
+            serial.waitForBytesWritten(1000);
+            if(currentAnimation->cubeFrame[z][y] == 0xFF){
+                serial.putChar(0xFF);
+                serial.waitForBytesWritten(1000);
+            }
+        }
+    }
+    qDebug()<< "SendAnimation executed!!!";
 }
 
 void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
@@ -356,10 +382,10 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
 
         itemToolTip.append(tmp);
     }else if(a.compare("Firework") == 0){
-                itemToolTip.append(QString("Iterations: %1<br>"
-                                           "Particles: %2")
-                                   .arg(dynamic_cast<Firework*>(iter.value())->getIterations())
-                                   .arg(dynamic_cast<Firework*>(iter.value())->getParticles()));
+        itemToolTip.append(QString("Iterations: %1<br>"
+                                   "Particles: %2")
+                           .arg(dynamic_cast<Firework*>(iter.value())->getIterations())
+                           .arg(dynamic_cast<Firework*>(iter.value())->getParticles()));
     }
     item->setToolTip(itemToolTip);
 }
@@ -384,6 +410,8 @@ void MainWindow::setupAnimationItems()
     while(iter != animation.constEnd()){
         QListWidgetItem *item = new QListWidgetItem(iter.key(),ui->availableAnimationsLW);
         updateAnimationItemToolTip(iter.key(),item);
+        iter.value()->moveToThread(createThread);
+//        connect(iter.value(),&Animation::sendData,this,&MainWindow::sendAnimation);
         iter++;
     }
 }
@@ -528,6 +556,7 @@ void MainWindow::connectSignals(void) //Connect Signals
             this,&MainWindow::updateAnimation);
     connect(playAction,&QAction::triggered,this,&MainWindow::playAnimations);
 
+    connect(&timer,&QTimer::timeout,this,&MainWindow::sendAnimation);
 
 }
 

@@ -36,6 +36,7 @@ public:
     void waitMs(const u_int16_t &time);
 Q_SIGNALS:
     void done();
+    void sendData();
 public Q_SLOTS:
     virtual void createAnimation(void) = 0;
 private:

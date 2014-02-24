@@ -16,6 +16,7 @@
 #include <QThread>
 #include <Global.hpp>
 #include "animations/Draw.hpp"
+#include <QTimer>
 //#define DEBUGWINDOW
 
 /*Forward deceleration*/
@@ -57,6 +58,7 @@ private Q_SLOTS:
     void updateUi(void);
     void playAnimations(void);
     void animationDone(void);
+    void sendAnimation(void);
 private Q_SLOTS:
     void updateAnimation(const Draw::AnimationOptions *animationOptions);
     void updateAnimationItemToolTip(const QString &a, QListWidgetItem *item);
@@ -91,6 +93,7 @@ private:
     QShortcut *shortCutSA;
     QThread *createThread;
     Animation *currentAnimation;
+    QTimer timer;
     QHash<QString,Animation*> animation;
 };
 

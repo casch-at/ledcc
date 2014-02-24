@@ -20,4 +20,5 @@ void Loadbar::createAnimation()
         clearPlane(m_axis, i);
         waitMs(getSpeed());
     }
+    Q_EMIT done();
 }

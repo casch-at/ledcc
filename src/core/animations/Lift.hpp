@@ -9,7 +9,7 @@ class Lift : public Animation
     Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
     Q_PROPERTY(u_int16_t delay READ getDelay WRITE setDelay)
 public:
-   explicit Lift(const u_int16_t &delay = 50, const u_int16_t  &iterations = 10,
+   explicit Lift(const u_int16_t &delay = 50, const u_int16_t  &iterations = 20,
          const QString &name = "Lift", const u_int16_t &speed = 80, QObject *parent = Q_NULLPTR);
     u_int16_t getIterations() const
     {
