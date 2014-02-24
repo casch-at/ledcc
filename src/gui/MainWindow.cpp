@@ -196,7 +196,7 @@ void MainWindow::playNextAnimation(const QString &a)
     //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
     connect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
 //    qDebug()<< "Main thread id: " << thread()->currentThread();
-    timer.start(2);
+//    timer.start(2);
     createThread->start();
 
 }
@@ -240,7 +240,7 @@ void MainWindow::sendAnimation()
             }
         }
     }
-    qDebug()<< "SendAnimation executed!!!";
+//    qDebug()<< "SendAnimation executed!!!";
 }
 
 void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
@@ -411,7 +411,7 @@ void MainWindow::setupAnimationItems()
         QListWidgetItem *item = new QListWidgetItem(iter.key(),ui->availableAnimationsLW);
         updateAnimationItemToolTip(iter.key(),item);
         iter.value()->moveToThread(createThread);
-//        connect(iter.value(),&Animation::sendData,this,&MainWindow::sendAnimation);
+        connect(iter.value(),&Animation::sendData,this,&MainWindow::sendAnimation);
         iter++;
     }
 }

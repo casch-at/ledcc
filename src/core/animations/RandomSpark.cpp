@@ -22,4 +22,5 @@ void RandomSpark::createAnimation()
         setLeds(i);
         RandomSparkFlash::createAnimation();
     }
+    Q_EMIT done();
 }

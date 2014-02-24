@@ -32,4 +32,5 @@ void RandomZLift::createAnimation()
             destination[qrand() % CUBE_ARRAY_SIZE] = qrand() % CUBE_SIZE;
         }
     }
+    Q_EMIT done();
 }

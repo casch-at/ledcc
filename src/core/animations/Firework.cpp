@@ -79,4 +79,5 @@ void Firework::createAnimation()
         }
 
     }
+    Q_EMIT done();
 }

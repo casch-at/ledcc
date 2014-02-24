@@ -43,5 +43,5 @@ void StringFly::createAnimation()
         waitMs(getSpeed());
         shift(Y_AXIS, BACKWARD);
     }
-
+    Q_EMIT done();
 }

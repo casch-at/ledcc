@@ -23,6 +23,7 @@ void WireBoxCenterShrinkGrow::createAnimation()
         boxWireframe(xyzStart, xyzStart, xyzStart, xyzEnd, xyzEnd, xyzEnd);
         waitMs(getSpeed());
     }
+    Q_EMIT done();
 }
 
 

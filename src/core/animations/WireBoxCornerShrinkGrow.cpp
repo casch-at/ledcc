@@ -31,6 +31,7 @@ void WireBoxCornerShrinkGrow::createAnimation()
     //			fillCubeArray(0x00);
         }
     }
+    Q_EMIT done();
 }
 
 

@@ -22,4 +22,5 @@ void Rain::createAnimation()
         waitMs(getSpeed());
         shift(Z_AXIS, BACKWARD);
     }
+    Q_EMIT done();
 }

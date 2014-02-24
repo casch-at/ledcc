@@ -26,4 +26,5 @@ void Wall::createAnimation()
         qDebug()<< "Wall thread it: " << thread()->currentThread();
 
     }
+    Q_EMIT done();
 }

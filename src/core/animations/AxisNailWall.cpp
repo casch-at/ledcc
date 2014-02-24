@@ -55,5 +55,5 @@ void AxisNailWall::createAnimation()
         drawPositionAxis(m_axis, position, m_invert);
         waitMs(getSpeed());
     }
-
+    Q_EMIT done();
 }

@@ -41,7 +41,7 @@ void Animation::waitMs(const u_int16_t &time)
     timer.setSingleShot(true);
     timer.start(time);
 //    qDebug() << cubeFrame;
-//    Q_EMIT sendData();
+    Q_EMIT sendData();
     for (int i = 0; i < 10000000; ++i);
 //    while(timer.isActive());
 }

@@ -31,4 +31,5 @@ void RandomFiller::createAnimation()
             leds++;
         }
     }
+    Q_EMIT done();
 }
