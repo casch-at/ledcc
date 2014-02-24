@@ -24,6 +24,7 @@ class DebugDockWidget;
 class QShortcut;
 class Lift;
 class Animation;
+class QListWidgetItem;
 namespace Ui {
     class MainWindow;
 }
@@ -57,7 +58,7 @@ private Q_SLOTS:
     void playNextAnimation(void);
 private Q_SLOTS:
     void updateAnimation(const Draw::AnimationOptions *animationOptions);
-    void updateAnimationItemToolTip(const QString &a = "");
+    void updateAnimationItemToolTip(const QString &a = "", QListWidgetItem *item = Q_NULLPTR);
 #ifdef DEBUGWINDOW
     void sendData(void);
 #endif
