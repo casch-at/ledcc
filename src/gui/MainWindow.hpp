@@ -57,6 +57,7 @@ private Q_SLOTS:
     void playNextAnimation(void);
 private Q_SLOTS:
     void updateAnimation(const Draw::AnimationOptions *animationOptions);
+    void updateAnimationItemToolTip(const QString &a = "");
 #ifdef DEBUGWINDOW
     void sendData(void);
 #endif

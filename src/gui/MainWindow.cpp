@@ -78,32 +78,32 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     pauseAction->setDisabled(true);
     setupAnimationItems();
     AQP::accelerateWidget (this);  //Give each button a accelerater
-//    Draw draw;
-//    qDebug();
-//    draw.fillCubeArray(0xff);
-//    qDebug() << "CubeFrame:";
-//    qDebug() << draw.cubeFrame;
-//    qDebug();
-//    qDebug() << "CubeFrameTemp:";
-//    qDebug() << draw.cubeFrameTemp;
-//    qDebug();
-//    Draw::AnimationOptions *options = ui->animationAdjustGB->getAnimationSettings();
-//    qDebug()<< "Axis:       " << options->axis;
-//    qDebug()<< "Delay:      " << options->delay;
-//    qDebug()<< "Direction:  " << options->direction;
-//    qDebug()<< "Invert:     " << options->invert;
-//    qDebug()<< "Iteration:  " << options->iteration;
-//    qDebug()<< "Leds:       " << options->leds;
-//    qDebug()<< "Particle:   " << options->particle;
-//    qDebug()<< "Speed:      " << options->speed;
-//    qDebug()<< "State:      " << options->state;
-//    qDebug()<< "Text:       " << options->text;
-//    qDebug();
-//    QVector<u_int8_t> t(CUBE_ARRAY_SIZE);
-//    qDebug()<< "-------------------Testing QVector--------------------";
-//    qDebug()<< "QVector size: " << t.size();
-//    qDebug()<< "QVector contains:";
-//    qDebug()<< t;
+    //    Draw draw;
+    //    qDebug();
+    //    draw.fillCubeArray(0xff);
+    //    qDebug() << "CubeFrame:";
+    //    qDebug() << draw.cubeFrame;
+    //    qDebug();
+    //    qDebug() << "CubeFrameTemp:";
+    //    qDebug() << draw.cubeFrameTemp;
+    //    qDebug();
+    //    Draw::AnimationOptions *options = ui->animationAdjustGB->getAnimationSettings();
+    //    qDebug()<< "Axis:       " << options->axis;
+    //    qDebug()<< "Delay:      " << options->delay;
+    //    qDebug()<< "Direction:  " << options->direction;
+    //    qDebug()<< "Invert:     " << options->invert;
+    //    qDebug()<< "Iteration:  " << options->iteration;
+    //    qDebug()<< "Leds:       " << options->leds;
+    //    qDebug()<< "Particle:   " << options->particle;
+    //    qDebug()<< "Speed:      " << options->speed;
+    //    qDebug()<< "State:      " << options->state;
+    //    qDebug()<< "Text:       " << options->text;
+    //    qDebug();
+    //    QVector<u_int8_t> t(CUBE_ARRAY_SIZE);
+    //    qDebug()<< "-------------------Testing QVector--------------------";
+    //    qDebug()<< "QVector size: " << t.size();
+    //    qDebug()<< "QVector contains:";
+    //    qDebug()<< t;
 }
 
 /**
@@ -241,9 +241,110 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
     }
 }
 
+void MainWindow::updateAnimationItemToolTip(const QString &a)
+{
+    QHash<QString,Animation*>::iterator iter = animation.find(a);
+    QString itemToolTip = QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
+                                     "Speed: %2<br>"))
+            .arg(iter.key())
+            .arg(iter.value()->getSpeed());
+    if(a.compare("Lift") == 0){
+        itemToolTip.append(QString("Delay: %1<br>"
+                                   "Iterations: %2")
+                           .arg(dynamic_cast<Lift*>(iter.value())->getDelay())
+                           .arg(dynamic_cast<Lift*>(iter.value())->getIterations()));
+    }else if(a.compare("String Fly") == 0){
+        itemToolTip.append(QString("Current Text: "
+                                   + dynamic_cast<StringFly*>(iter.value())->getSToDisplay().toLatin1()));
+    }else if(a.compare("Random Spark Flash") == 0){
+        itemToolTip.append(QString("LEDs: %1<br>"
+                                   "Iterations: %2")
+                           .arg(dynamic_cast<RandomSparkFlash*>(iter.value())->getLeds())
+                           .arg(dynamic_cast<RandomSparkFlash*>(iter.value())->getIterations()));
+    }else if(a.compare("Random Spark") == 0){
+        itemToolTip.append(QString("Sparks: %1<br>")
+                           .arg(dynamic_cast<RandomSpark*>(iter.value())->getSparks()));
+    }else if(a.compare("Random Filler") == 0){
+        QString tmp;
+
+        if(dynamic_cast<RandomFiller*>(iter.value())->getState() == Draw::ON)
+            tmp = "ON";
+        else
+            tmp = "OFF";
+
+        itemToolTip.append(QString("Start State: " + tmp));
+    }else if(a.compare("Loadbar") == 0){
+        QString tmp;
+
+        if(dynamic_cast<Loadbar*>(iter.value())->getAxis() == Draw::X_AXIS)
+            tmp = "X-Axis";
+        else if(dynamic_cast<Loadbar*>(iter.value())->getAxis() == Draw::Y_AXIS)
+            tmp = "Y-Axis";
+        else
+            tmp = "Z-Axis";
+
+        itemToolTip.append(QString("Axis: " + tmp));
+    }else if(a.compare("Axis Nail Wall") == 0){
+        QString tmp;
+
+        if(dynamic_cast<AxisNailWall*>(iter.value())->getAxis() == Draw::X_AXIS)
+            tmp = "X-Axis<br>";
+        else if(dynamic_cast<AxisNailWall*>(iter.value())->getAxis() == Draw::Y_AXIS)
+            tmp = "Y-Axis<br>";
+        else
+            tmp = "Z-Axis<br>";
+
+        if(dynamic_cast<AxisNailWall*>(iter.value())->getInvert())
+            tmp.append("Invert: Yes");
+        else
+            tmp.append("Invert: No");
+
+        itemToolTip.append(QString("Axis: " + tmp));
+    }else if(a.compare("Wire Box Center Shrink Grow") == 0){
+        QString tmp;
+        if(dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart())
+            tmp = "Yes";
+        else
+            tmp = "No";
+
+        itemToolTip.append(QString("Start in center: " + tmp));
+    }else if(a.compare("Wire Box Corner Shrink Grow") == 0){
+        itemToolTip.append(QString("Iterations: %1")
+                           .arg(dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations()));
+    }else if(a.compare("Random Z-Axis Lift") == 0){
+        itemToolTip.append(QString("Iterations: %1")
+                           .arg(dynamic_cast<RandomZLift*>(iter.value())->getIterations()));
+    }else if(a.compare("Rain") == 0){
+        itemToolTip.append(QString("Iterations: %1")
+                           .arg(dynamic_cast<Rain*>(iter.value())->getIterations()));
+    }else if(a.compare("Wall") == 0){
+        QString tmp;
+
+        if (dynamic_cast<Wall*>(iter.value())->getDirection() == Draw::FORWARD)
+            tmp = "Direction: Forward<br>";
+        else
+            tmp = "Direction: Backward<br>";
+
+        if(dynamic_cast<Wall*>(iter.value())->getAxis() == Draw::X_AXIS)
+            tmp = "Axis: X-Axis";
+        else if(dynamic_cast<Wall*>(iter.value())->getAxis() == Draw::Y_AXIS)
+            tmp = "Axis: Y-Axis";
+        else
+            tmp = "Axis: Z-Axis";
+
+        itemToolTip.append(tmp);
+    }else if(a.compare("Firework") == 0){
+                itemToolTip.append(QString("Iterations: %1<br>"
+                                           "Particles: %2")
+                                   .arg(dynamic_cast<Firework*>(iter.value())->getIterations())
+                                   .arg(dynamic_cast<Firework*>(iter.value())->getParticles()));
+    }
+    QListWidgetItem *item = new QListWidgetItem(a,ui->availableAnimationsLW);
+    item->setToolTip(itemToolTip);
+}
+
 void MainWindow::setupAnimationItems()
 {
-    QListWidgetItem *item = Q_NULLPTR;
 
     animation.insert("Lift",new Lift);
     animation.insert("String Fly",new StringFly);
@@ -261,17 +362,9 @@ void MainWindow::setupAnimationItems()
 
     QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
     while(iter != animation.constEnd()){
-//        qDebug() << "Animation: "<< iter.key()  << "Located at: " << iter.value();
-        item = new QListWidgetItem(iter.key(),ui->availableAnimationsLW);
-        item->setToolTip(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
-                                    "Speed: %2<br>"
-                                    "Delay: %3<br>"
-                                    "Iterations: %4"))
-                         .arg(iter.key())
-                         .arg(iter.value()->getSpeed()));
+        updateAnimationItemToolTip(iter.key());
         iter++;
     }
-    qDebug() << animation.constBegin().key();
 }
 
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port
