@@ -11,13 +11,13 @@ public:
     explicit RandomZLift(const u_int16_t &iterations = 10, const u_int16_t &speed = 50,
                          const QString &name = "Random Z Lift",QObject *parent = Q_NULLPTR);
 
-    virtual void createAnimation();
     u_int16_t getIterations() const
     {
         return m_iterations;
     }
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
     void setIterations(u_int16_t &iterations)
     {
         if (m_iterations != iterations)

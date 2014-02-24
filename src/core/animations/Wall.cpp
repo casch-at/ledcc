@@ -1,5 +1,5 @@
 #include "Wall.hpp"
-
+#include <QDebug>
 Wall::Wall(const u_int16_t &speed, const Axis &axis, const Direction &direction, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_direction(direction),
@@ -22,5 +22,8 @@ void Wall::createAnimation()
     {
         waitMs(getSpeed());
         shift(m_axis, m_direction);
+
+        qDebug()<< "Wall thread it: " << thread()->currentThread();
+
     }
 }

@@ -17,7 +17,6 @@ public:
                                      const QString &name = "Wire Box Corner Shrink Grow",
                                      QObject *parent = Q_NULLPTR);
 
-    virtual void createAnimation();
 
     u_int16_t getIterations() const
     {
@@ -34,7 +33,8 @@ public:
         return m_flip;
     }
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
 
     void setIterations(const u_int16_t &iterations)
     {

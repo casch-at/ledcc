@@ -14,7 +14,6 @@ public:
                          const u_int16_t &sparks = 20,
                          const QString &name = "Random Spark",
                          QObject *parent = 0);
-    virtual void createAnimation();
     u_int16_t getSparks() const
     {
         return m_sparks;
@@ -22,7 +21,8 @@ public:
 
 signals:
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
 
     void setSparks(const u_int16_t sparks)
     {

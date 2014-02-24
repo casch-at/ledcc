@@ -12,7 +12,6 @@ public:
                           const BixelState &state = OFF,
                           const QString &name = "Random Filler",
                           QObject *parent = 0);
-    virtual void createAnimation();
     BixelState getState() const
     {
         return m_state;
@@ -20,7 +19,8 @@ public:
 
 signals:
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
     void setState(const BixelState state)
     {
         if(m_state != state)

@@ -38,4 +38,5 @@ void Lift::createAnimation()
             lastY = y;
         }
     }
+    Q_EMIT done();
 }

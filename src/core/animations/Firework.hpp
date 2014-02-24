@@ -13,7 +13,6 @@ public:
                       const u_int8_t &particles = 10, const QString &name = "Firework",
                       QObject *parent = Q_NULLPTR);
 
-    virtual void createAnimation();
     u_int8_t getIterations() const
     {
         return m_iterations;
@@ -24,7 +23,9 @@ public:
         return m_particles;
     }
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
+
     void setIterations(const u_int8_t &iterations)
     {
         if(m_iterations != iterations)

@@ -64,12 +64,12 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     serial(new QSerialPort),
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 {
-    animationLift = new Lift();
     ui->setupUi(this);
 #ifdef DEBUGWINDOW
     debugDockWidget = new DebugDockWidget(this);
     addDockWidget(Qt::RightDockWidgetArea,debugDockWidget,Qt::Vertical );
 #endif
+//    currentAnimation = new Lift;
     readSettings ();
     createActions ();
     createToolbar ();
@@ -78,32 +78,8 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     pauseAction->setDisabled(true);
     setupAnimationItems();
     AQP::accelerateWidget (this);  //Give each button a accelerater
-    //    Draw draw;
-    //    qDebug();
-    //    draw.fillCubeArray(0xff);
-    //    qDebug() << "CubeFrame:";
-    //    qDebug() << draw.cubeFrame;
-    //    qDebug();
-    //    qDebug() << "CubeFrameTemp:";
-    //    qDebug() << draw.cubeFrameTemp;
-    //    qDebug();
-    //    Draw::AnimationOptions *options = ui->animationAdjustGB->getAnimationSettings();
-    //    qDebug()<< "Axis:       " << options->axis;
-    //    qDebug()<< "Delay:      " << options->delay;
-    //    qDebug()<< "Direction:  " << options->direction;
-    //    qDebug()<< "Invert:     " << options->invert;
-    //    qDebug()<< "Iteration:  " << options->iteration;
-    //    qDebug()<< "Leds:       " << options->leds;
-    //    qDebug()<< "Particle:   " << options->particle;
-    //    qDebug()<< "Speed:      " << options->speed;
-    //    qDebug()<< "State:      " << options->state;
-    //    qDebug()<< "Text:       " << options->text;
-    //    qDebug();
-    //    QVector<u_int8_t> t(CUBE_ARRAY_SIZE);
-    //    qDebug()<< "-------------------Testing QVector--------------------";
-    //    qDebug()<< "QVector size: " << t.size();
-    //    qDebug()<< "QVector contains:";
-    //    qDebug()<< t;
+
+    qDebug()<< "Main Thread id: " << thread()->currentThread();
 }
 
 /**
@@ -206,10 +182,39 @@ void MainWindow::updateUi(void) // Update Button state
 /**
  * @brief MainWindow::playAnimationFromList
  */
-void MainWindow::playNextAnimation(void)
+void MainWindow::playNextAnimation(const QString &a)
 {
-    //    currentAnimation = ui->animationPlaylistLW->getNextAnimation();
-    //    emit startAnimation(currentAnimation);
+    currentAnimation = animation.value(a);
+    createThread = new QThread;
+    currentAnimation->moveToThread(createThread);
+    connect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
+    connect(currentAnimation, &Animation::done, createThread, &QThread::quit);
+//    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+//    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
+    QThread::connect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+    qDebug()<< "Main thread id: " << thread()->currentThread();
+    createThread->start();
+}
+
+void MainWindow::playAnimations()
+{
+    static u_int8_t row;
+    if(row < ui->animationPlaylistLW->count()){
+        qDebug() << ui->animationPlaylistLW->item(row)->text();
+        playNextAnimation(ui->animationPlaylistLW->item(row++)->text());
+    }
+    if(row >= ui->animationPlaylistLW->count())
+        row = 0;
+}
+
+void MainWindow::animationDone()
+{
+    disconnect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
+    disconnect(currentAnimation, &Animation::done, createThread, &QThread::quit);
+    QThread::disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+    createThread->wait();
+    delete createThread;
+
 }
 
 void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
@@ -521,6 +526,9 @@ void MainWindow::connectSignals(void) //Connect Signals
             ui->availableAnimationsLW,&AnimationListWidget::selectAllItems);
     connect(ui->animationAdjustGB,&AnimationOptionsGroupBox::optionsReady,
             this,&MainWindow::updateAnimation);
+    connect(playAction,&QAction::triggered,this,&MainWindow::playAnimations);
+
+
 }
 
 /**

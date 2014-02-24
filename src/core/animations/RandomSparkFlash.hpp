@@ -15,7 +15,6 @@ public:
                               const QString &name = "Random Spark Flash",
                               QObject *parent = 0);
 
-    virtual void createAnimation();
     u_int16_t getIterations() const
     {
         return m_iterations;
@@ -28,7 +27,8 @@ public:
 
 signals:
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
 
     void setIterations(const u_int16_t iterations)
     {

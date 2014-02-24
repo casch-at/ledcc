@@ -22,8 +22,8 @@ public:
         return m_axis;
     }
 
+public Q_SLOTS:
     virtual void createAnimation();
-public slots:
     void setDirection(Direction arg)
     {
         if(m_direction != arg)

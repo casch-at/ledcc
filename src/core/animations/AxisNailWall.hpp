@@ -25,10 +25,10 @@ public:
     {
         return m_axis;
     }
-    virtual void createAnimation();
 signals:
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
 
     void setInvert(const bool invert)
     {

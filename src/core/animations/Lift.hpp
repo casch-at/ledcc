@@ -11,7 +11,6 @@ class Lift : public Animation
 public:
    explicit Lift(const u_int16_t &delay = 50, const u_int16_t  &iterations = 10,
          const QString &name = "Lift", const u_int16_t &speed = 80, QObject *parent = Q_NULLPTR);
-    virtual void createAnimation();
     u_int16_t getIterations() const
     {
         return m_iterations;
@@ -22,7 +21,9 @@ public:
         return m_delay;
     }
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
+
     void setIterations(const u_int16_t &arg)
     {
         if(m_iterations != arg)

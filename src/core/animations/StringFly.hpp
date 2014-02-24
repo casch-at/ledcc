@@ -13,7 +13,6 @@ public:
                        const QString &name = "String Fly",
                        QObject *parent = 0);
 
-    virtual void createAnimation();
     QString getSToDisplay() const
     {
         return m_sToDisplay;
@@ -21,7 +20,8 @@ public:
 
 signals:
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
 
     void setSToDisplay(const QString &string)
     {

@@ -1,10 +1,10 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 #include "Draw.hpp"
-//#include <QVector>
 
 class Animation : public Draw
 {
+    Q_OBJECT
 public:
     explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR):
         Draw(parent),
@@ -32,8 +32,12 @@ public:
     void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed);
     void effectZUpDownMove(QVector<u_int8_t> &destination,
             QVector<u_int8_t> &position, Axis axe);
-    virtual void createAnimation(void) = 0;
+
     void waitMs(const u_int16_t &time);
+Q_SIGNALS:
+    void done();
+public Q_SLOTS:
+    virtual void createAnimation(void) = 0;
 private:
     u_int16_t m_speed;
     QString m_name;

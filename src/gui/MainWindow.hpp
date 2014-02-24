@@ -40,7 +40,7 @@ public:
     explicit MainWindow(QWidget *parent = Q_NULLPTR);
     ~MainWindow();
 Q_SIGNALS:
-//    void startAnimation(const AnimationStruct &currentAnimation);
+    void startAnimation();
 private Q_SLOTS:
     bool okToContinue(void);
     void resizeEvent(QResizeEvent *e);
@@ -55,10 +55,11 @@ private Q_SLOTS:
     void readData(void);
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
-    void playNextAnimation(void);
+    void playAnimations(void);
+    void animationDone(void);
 private Q_SLOTS:
     void updateAnimation(const Draw::AnimationOptions *animationOptions);
-    void updateAnimationItemToolTip(const QString &a = "", QListWidgetItem *item = Q_NULLPTR);
+    void updateAnimationItemToolTip(const QString &a, QListWidgetItem *item);
 #ifdef DEBUGWINDOW
     void sendData(void);
 #endif
@@ -67,6 +68,7 @@ private:
     void writeData(const char c);
 #endif
 private:
+    void playNextAnimation(const QString &a);
     void setupAnimationItems(void);
     bool checkPortSettings(void);
     void closeSerialPort(void);
@@ -87,7 +89,8 @@ private:
     QAction *pauseAction;
     QSerialPort serial;
     QShortcut *shortCutSA;
-    Lift *animationLift;
+    QThread *createThread;
+    Animation *currentAnimation;
     QHash<QString,Animation*> animation;
 };
 

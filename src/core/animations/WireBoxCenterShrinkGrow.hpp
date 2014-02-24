@@ -12,7 +12,6 @@ public:
                                      const bool centerStart = false,
                                      const QString &name = "Wire Box Center Shrink Grow",
                                      QObject *parent = Q_NULLPTR);
-    virtual void createAnimation();
     bool getCenterStart() const
     {
         return m_centerStart;
@@ -20,7 +19,8 @@ public:
 
 signals:
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
     void setCenterStart(bool centerStart)
     {
         if(m_centerStart != centerStart)

@@ -1,6 +1,6 @@
 #include "Animation.hpp"
-#include "QTimer"
-
+#include <QTimer>
+#include <QDebug>
 void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed)
 {
     u_int8_t ii = 0;
@@ -26,13 +26,9 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
     for (u_int8_t px = 0; px < CUBE_ARRAY_SIZE; px++)
     {
         if (position[px] < destination[px])
-        {
             position[px]++;
-        }
-        if (position[px] > destination[px])
-        {
+        else
             position[px]--;
-        }
 
     }
     drawPositionAxis(Z_AXIS, position, true);
@@ -40,8 +36,10 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
 
 void Animation::waitMs(const u_int16_t &time)
 {
+    qDebug()<< "Animation thread it: " << thread()->currentThread();
     QTimer timer;
     timer.setSingleShot(true);
     timer.start(time);
-    while(timer.isActive());
+//    qDebug() << cubeFrame;
+//    while(timer.isActive());
 }

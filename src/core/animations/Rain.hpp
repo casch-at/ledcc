@@ -10,13 +10,14 @@ public:
     explicit Rain(const u_int16_t &iterations = 20, const u_int16_t &speed = 80,
                   const QString &name = "Rain",QObject *parent = Q_NULLPTR);
 
-    virtual void createAnimation();
     u_int16_t getIterations() const
     {
         return m_iterations;
     }
 
-public slots:
+public Q_SLOTS:
+    virtual void createAnimation();
+
     void setIterations(const u_int16_t &arg)
     {
         if(m_iterations != arg)
