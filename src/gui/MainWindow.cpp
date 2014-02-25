@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
     setupAnimationItems();
-    currentAnimation = animation.value("Wall");
+
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
 //    qDebug()<< "Main Thread id: " << thread()->currentThread();
@@ -159,7 +159,7 @@ void MainWindow::readSettings (void){ //Load geometry of application
  *          and when the animation playlist gets modified.
  *          Disables/Enables the playbutton and changes the Seriel connect button appropriated
  */
-void MainWindow::updateUi(void) // Update Button state
+void MainWindow::updateUi(void)
 {
     if(serial.isOpen()){
         if(openPortAction->text() == "Open port"){
@@ -181,8 +181,12 @@ void MainWindow::updateUi(void) // Update Button state
         playAction->setDisabled(true);
     }
 }
+
 /**
- * @brief MainWindow::playAnimationFromList
+ * @author Christian Schwarzgruber
+ * @brief MainWindow::playNextAnimation
+ *
+ * @param QString &a
  */
 void MainWindow::playNextAnimation(const QString &a)
 {
@@ -193,7 +197,6 @@ void MainWindow::playNextAnimation(const QString &a)
     //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
     connect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
     createThread->start();
-
 }
 
 void MainWindow::playAnimations()
@@ -235,6 +238,11 @@ void MainWindow::sendAnimation()
 //    qDebug()<< "SendAnimation executed!!!";
 }
 
+/**
+ * @brief
+ *
+ * @param animationOptions
+ */
 void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
 {
     QList<QListWidgetItem*> items = ui->animationPlaylistLW->selectedItems();
@@ -281,8 +289,10 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
         }else if(aString.compare("Wire Box Center Shrink Grow") == 0){
             dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(animationOptions->invert == 0 ? false : true);
+            dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(animationOptions->iteration);
         }else if(aString.compare("Wire Box Corner Shrink Grow") == 0){
             dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(animationOptions->speed);
+            dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(animationOptions->iteration);
         }else if(aString.compare("Random Z-Axis Lift") == 0){
             dynamic_cast<RandomZLift*>(a)->setSpeed(animationOptions->speed);
         }
@@ -290,6 +300,12 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
     }
 }
 
+/**
+ * @brief
+ *
+ * @param a
+ * @param item
+ */
 void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *item)
 {
     if(item == Q_NULLPTR)
@@ -348,8 +364,9 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
     }else if(a.compare("Wire Box Center Shrink Grow") == 0){
         QString tmp;
 
-        tmp  = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart() ? "YES" : "NO";
-
+        tmp  = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart() ? "YES<br>" : "NO<br>";
+        tmp.append(QString("Iterations: %1")
+                           .arg(dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getIterations()));
         itemToolTip.append(QString("Start in center: " + tmp));
     }else if(a.compare("Wire Box Corner Shrink Grow") == 0){
         itemToolTip.append(QString("Iterations: %1")
@@ -382,6 +399,10 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
     item->setToolTip(itemToolTip);
 }
 
+/**
+ * @brief
+ *
+ */
 void MainWindow::setupAnimationItems()
 {
     animation.insert("Lift",new Lift);
@@ -397,6 +418,8 @@ void MainWindow::setupAnimationItems()
     animation.insert("Rain",new Rain);
     animation.insert("Wall",new Wall);
     animation.insert("Firework",new Firework);
+
+    currentAnimation = animation.value("String Fly");
 
     QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
     while(iter != animation.constEnd()){
