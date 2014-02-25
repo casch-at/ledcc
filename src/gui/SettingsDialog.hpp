@@ -67,5 +67,4 @@ private:
     SerialSettings currentSettings;
     QIntValidator *intValidator;
 };
-
 #endif // SETTINGSDIALOG_H

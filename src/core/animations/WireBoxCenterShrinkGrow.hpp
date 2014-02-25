@@ -9,7 +9,7 @@ class WireBoxCenterShrinkGrow : public Animation
     Q_PROPERTY(bool centerStart READ getCenterStart WRITE setCenterStart)
     Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
 public:
-    explicit WireBoxCenterShrinkGrow(const u_int16_t &speed = 50,
+    explicit WireBoxCenterShrinkGrow(const u_int16_t &speed = 180,
                                      const bool centerStart = false,
                                      const u_int16_t &iterations = 1,
                                      const QString &name = "Wire Box Center Shrink Grow",

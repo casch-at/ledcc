@@ -26,7 +26,7 @@ class QShortcut;
 class Lift;
 class Animation;
 class QListWidgetItem;
-class SendThread;
+class Sender;
 namespace Ui {
     class MainWindow;
 }
@@ -43,6 +43,7 @@ public:
     ~MainWindow();
 Q_SIGNALS:
     void startAnimation();
+    void openSerialInterface(const SettingsDialog::SerialSettings &port);
 private Q_SLOTS:
     bool okToContinue(void);
     void resizeEvent(QResizeEvent *e);
@@ -93,8 +94,9 @@ private:
     QSerialPort serial;
     QShortcut *shortCutSA;
     QThread *createThread;
+    QThread *senderThread;
     Animation *currentAnimation;
-    SendThread *sendThread;
+    Sender *sender;
     QHash<QString,Animation*> animation;
 };
 

@@ -1,25 +1,23 @@
-#include "SendThread.hpp"
+#include "Sender.hpp"
 #include <QSerialPort>
 #include <QDebug>
 
-SendThread::SendThread(QObject *parent) :
+Sender::Sender(QObject *parent) :
     QObject(parent),
     m_stoped(false),
-    m_running(false),
-    m_serial(new QSerialPort)
+    m_running(false)
 {
-
+    m_serial = Q_NULLPTR;
 }
 
 
-
-void SendThread::stop(void)
+void Sender::stop(void)
 {
     if(isRunning())
         m_stoped = true;
 }
 
-void SendThread::sendAnimations(Draw::CubeArray &d)
+void Sender::sendAnimation(const Draw::CubeArray &d)
 {
     m_serial->putChar(0xFF);
     m_serial->waitForBytesWritten(1000);
@@ -38,9 +36,10 @@ void SendThread::sendAnimations(Draw::CubeArray &d)
 }
 
 
-void SendThread::openCloseSerialPort(const SettingsDialog::SerialSettings &s)  // Open the Serial port
+void Sender::openCloseSerialPort(const SettingsDialog::SerialSettings &s)  // Open the Serial port
 {
     m_port = s;
+    m_serial = new QSerialPort;
     if(!m_serial->isOpen()){ // Get the status of the Serial port
         bool result = openSerialPort();
         if(result)
@@ -73,7 +72,7 @@ void SendThread::openCloseSerialPort(const SettingsDialog::SerialSettings &s)  /
  * @brief MainWindow::checkPortSettings
  * @return
  */
-bool SendThread::checkPortSettings(void)
+bool Sender::checkPortSettings(void)
 {
     if( m_serial->setBaudRate (m_port.baudRate) && m_serial->setDataBits (m_port.dataBits)
             && m_serial->setParity (m_port.parity) && m_serial->setStopBits (m_port.stopBits)
@@ -92,7 +91,7 @@ bool SendThread::checkPortSettings(void)
 /**
  * @brief MainWindow::closeSerialPort
  */
-void SendThread::closeSerialPort(void)
+void Sender::closeSerialPort(void)
 {
     m_serial->close();
 //    ui->statusbar->showMessage(tr("Port closed: %1").arg (m_port.name),3000);
@@ -101,7 +100,7 @@ void SendThread::closeSerialPort(void)
  * @brief MainWindow::openSerialPort
  * @return
  */
-bool SendThread::openSerialPort(void)
+bool Sender::openSerialPort(void)
 {
     bool result;
 

@@ -2,9 +2,7 @@
 #include <string.h>
 #include <QTime>
 #include <QtGlobal>
-//#include <QByteArray>
-//#include <QBitArray>
-#include <QDebug>
+
 Draw::Draw(QObject *parent):
     QObject(parent)
 {

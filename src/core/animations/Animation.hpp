@@ -1,7 +1,7 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 #include "Draw.hpp"
-
+#include <QDebug>
 class Animation : public Draw
 {
     Q_OBJECT
@@ -37,7 +37,7 @@ public:
     void waitMs(const u_int16_t &time);
 Q_SIGNALS:
     void done();
-    void sendData();
+    void sendData(const CubeArray &cubeFrame);
 public Q_SLOTS:
     virtual void createAnimation(void) = 0;
 private:

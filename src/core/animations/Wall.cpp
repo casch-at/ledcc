@@ -18,13 +18,10 @@ void Wall::createAnimation()
     else
         setPlane(m_axis, 7);
 
-    for (i = 0; i < CUBE_SIZE - 1; i++)
+    for (i = 0; i < CUBE_SIZE ; i++)
     {
         waitMs(getSpeed());
         shift(m_axis, m_direction);
-
-        qDebug()<< "Wall thread it: " << thread()->currentThread();
-
     }
     Q_EMIT done();
 }

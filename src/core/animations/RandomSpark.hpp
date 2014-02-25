@@ -19,8 +19,6 @@ public:
         return m_sparks;
     }
 
-signals:
-
 public Q_SLOTS:
     virtual void createAnimation();
 

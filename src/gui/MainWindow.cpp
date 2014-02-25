@@ -29,7 +29,7 @@
 #include "animations/Wall.hpp"
 #include "animations/Rain.hpp"
 #include "animations/StringFly.hpp"
-#include "SendThread.hpp"
+#include "Sender.hpp"
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSettings>
@@ -63,8 +63,12 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     sdialog(new SettingsDialog),
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
     createThread(new QThread),
-    sendThread(new SendThread)
+    senderThread(new QThread),
+    sender(new Sender)
 {
+//    sender = new SendThread;
+    sender->moveToThread(senderThread);
+    senderThread->start();
     ui->setupUi(this);
 #ifdef DEBUGWINDOW
     debugDockWidget = new DebugDockWidget(this);
@@ -76,11 +80,14 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
     setupAnimationItems();
-
+    qRegisterMetaType<SettingsDialog::SerialSettings>("SettingsDialog::SerialSettings");
+    playAction->setEnabled(true);
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
-//    qDebug()<< "Main Thread id: " << thread()->currentThread();
+    qDebug()<< "Main Thread id: " << thread()->currentThread();
+
     connectSignals();
+
 }
 
 /**
@@ -170,7 +177,7 @@ void MainWindow::updateUi(void)
         if(ui->animationPlaylistLW->count())
             playAction->setEnabled(true);
         else
-            playAction->setDisabled(true);
+            playAction->setDisabled(false);
     }else
     {
         if(openPortAction->text() == "Close port"){
@@ -178,7 +185,7 @@ void MainWindow::updateUi(void)
             openPortAction->setIcon( QIcon( "://images/connect.png"));
             openPortAction->setToolTip(tr("Connect to seriell device  O"));
         }
-        playAction->setDisabled(true);
+        playAction->setDisabled(false);
     }
 }
 
@@ -426,42 +433,44 @@ void MainWindow::setupAnimationItems()
         QListWidgetItem *item = new QListWidgetItem(iter.key(),ui->availableAnimationsLW);
         updateAnimationItemToolTip(iter.key(),item);
         iter.value()->moveToThread(createThread);
-        connect(iter.value(),&Animation::sendData,this,&MainWindow::sendAnimation);
+        connect(iter.value(),&Animation::sendData,sender,&Sender::sendAnimation);
         iter++;
     }
 }
 
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port
 {
-    m_port = sdialog->settings();
+    Q_EMIT openSerialInterface(sdialog->settings());
+//    m_port = sdialog->settings();
 
-    if(!serial.isOpen()){ // Get the status of the Serial port
-        bool result = openSerialPort();
-        if(result)
-        {
-            ui->statusbar->showMessage (tr("Connected to %1 : %2, %3, %4, %5, %6")
-                                        .arg (m_port.name).arg (m_port.stringBaudRate)
-                                        .arg (m_port.stringDataBits).arg (m_port.stringParity)
-                                        .arg (m_port.stringStopBits).arg (m_port.stringFlowControl));
-        }else
-        {
-            serial.close();
-            QMessageBox::warning (this,tr("Error"),
-                                  tr("Can't open serial port: %1 - error code: %2\n\n\n"
-                                     "Check if device is connected properly!")
-                                  .arg (m_port.name).arg (serial.error ()));
-            ui->statusbar->showMessage(tr("Open error"),3000);
-        }
-    }
-    else{
-        int flag = QMessageBox::information (this,tr("Closing port")
-                                             ,tr("Do you really want close the serial port?\n %1")
-                                             .arg(m_port.name),QMessageBox::Ok,QMessageBox::Cancel);
-        if(flag == QMessageBox::Ok)
-            closeSerialPort();
+//    if(!serial.isOpen()){ // Get the status of the Serial port
+//        bool result = openSerialPort();
+//        if(result)
+//        {
+//            ui->statusbar->showMessage (tr("Connected to %1 : %2, %3, %4, %5, %6")
+//                                        .arg (m_port.name).arg (m_port.stringBaudRate)
+//                                        .arg (m_port.stringDataBits).arg (m_port.stringParity)
+//                                        .arg (m_port.stringStopBits).arg (m_port.stringFlowControl));
+//        }else
+//        {
+//            serial.close();
+//            QMessageBox::warning (this,tr("Error"),
+//                                  tr("Can't open serial port: %1 - error code: %2\n\n\n"
+//                                     "Check if device is connected properly!")
+//                                  .arg (m_port.name).arg (serial.error ()));
+//            ui->statusbar->showMessage(tr("Open error"),3000);
+//        }
+//    }
+//    else{
+//        int flag = QMessageBox::information (this,tr("Closing port")
+//                                             ,tr("Do you really want close the serial port?\n %1")
+//                                             .arg(m_port.name),QMessageBox::Ok,QMessageBox::Cancel);
+//        if(flag == QMessageBox::Ok)
+//            closeSerialPort();
 
-    }
-    updateUi ();
+//    }
+//    serial.moveToThread(senderThread);
+//    updateUi ();
 }
 /**
  * @brief MainWindow::checkPortSettings
@@ -560,6 +569,7 @@ void MainWindow::connectSignals(void) //Connect Signals
     connect(shortCutSA , &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
     connect(ui->animationAdjustGB , &AnimationOptionsGroupBox::optionsReady , this, &MainWindow::updateAnimation);
     connect(playAction , &QAction::triggered , this , &MainWindow::playAnimations);
+    connect(this,&MainWindow::openSerialInterface,sender,&Sender::openCloseSerialPort);
 }
 
 /**

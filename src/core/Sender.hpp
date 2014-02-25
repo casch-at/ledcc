@@ -1,16 +1,16 @@
-#ifndef SENDTHREAD_HPP
-#define SENDTHREAD_HPP
+#ifndef SENDER_HPP
+#define SENDER_HPP
 #include <QThread>
 #include <Global.hpp>
 #include "animations/Draw.hpp"
 #include "SettingsDialog.hpp"
 class QSerialPort;
 
-class SendThread : public QObject
+class Sender : public QObject
 {
     Q_OBJECT
 public:
-    explicit SendThread(QObject *parent = Q_NULLPTR);
+    explicit Sender(QObject *parent = Q_NULLPTR);
 
     bool isRunning(void){
         return m_running;
@@ -19,14 +19,14 @@ public:
 Q_SIGNALS:
 
 public Q_SLOTS:
-    void sendAnimations(Draw::CubeArray &d);
+    void sendAnimation(const Draw::CubeArray &d);
     void stop();
     void openCloseSerialPort(const SettingsDialog::SerialSettings &s);
 
 private:
+    QSerialPort *m_serial;
     bool m_stoped;
     bool m_running;
-    QSerialPort *m_serial;
 private:
     bool openSerialPort();
     void closeSerialPort();
@@ -34,4 +34,4 @@ private:
     SettingsDialog::SerialSettings m_port;
 };
 
-#endif // SENDTHREAD_HPP
+#endif // SENDER_HPP
