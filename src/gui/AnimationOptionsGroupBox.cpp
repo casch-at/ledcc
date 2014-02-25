@@ -65,10 +65,13 @@ void AnimationOptionsGroupBox::on_applyPushB_clicked()
         animationOptions.direction = Draw::BACKWARD;
     else if(ui->directionComB->currentIndex() == 1)
         animationOptions.direction = Draw::FORWARD;
-    if(ui->invertSpinB->value())
+    if(ui->invertSpinB->value()){
         animationOptions.invert = true;
-    else
+        animationOptions.state = Draw::ON;
+    }else{
         animationOptions.invert = false;
+        animationOptions.state = Draw::OFF;
+    }
     animationOptions.iteration = static_cast<u_int16_t>(ui->iterationsSpinB->value());
     animationOptions.leds = static_cast<u_int16_t>(ui->ledsSpinB->value());
     animationOptions.particle = static_cast<u_int16_t>(ui->fireworkPartSpinB->value());

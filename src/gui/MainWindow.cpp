@@ -61,7 +61,6 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     sdialog(new SettingsDialog),
-//    serial(new QSerialPort),
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
     createThread(new QThread)
 {
@@ -70,7 +69,6 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     debugDockWidget = new DebugDockWidget(this);
     addDockWidget(Qt::RightDockWidgetArea,debugDockWidget,Qt::Vertical );
 #endif
-    //    currentAnimation = new Lift;
     readSettings ();
     createActions ();
     createToolbar ();
@@ -80,8 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     currentAnimation = animation.value("Wall");
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
-//    createThread = new QThread;
-    qDebug()<< "Main Thread id: " << thread()->currentThread();
+//    qDebug()<< "Main Thread id: " << thread()->currentThread();
     connectSignals();
     timer.setSingleShot(false);
 }

@@ -1,6 +1,7 @@
 #include "Animation.hpp"
 #include <QTimer>
 #include <QDebug>
+
 void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed)
 {
     u_int8_t ii = 0;
@@ -36,12 +37,12 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
 
 void Animation::waitMs(const u_int16_t &time)
 {
-    qDebug()<< "Animation thread id: " << thread()->currentThread();
-    qDebug()<< "Animation timer id: " << m_timer->thread()->currentThread();
-    m_timer->setSingleShot(true);
-    m_timer->start(time);
+//    qDebug()<< "Animation thread id: " << thread()->currentThread();
+//    qDebug()<< "Animation timer id: " << m_timer->thread()->currentThread();
+//    m_timer->setSingleShot(true);
+//    m_timer->start(time);
 //    qDebug() << cubeFrame;
     Q_EMIT sendData();
 //    for (int i = 0; i < 10000000; ++i);
-    while(m_timer->isActive());
+    thread()->msleep(time);
 }

@@ -67,6 +67,7 @@ set(CORE        ${core_DIR}/animations/Draw.cpp
                 ${core_DIR}/animations/RandomSpark.cpp
                 ${core_DIR}/animations/RandomFiller.cpp
                 ${core_DIR}/animations/StringFly.cpp
+                ${core_DIR}/SendThread.cpp
 )
 set(AQP         ${aqp_DIR}/alt_key.cpp
                 ${aqp_DIR}/aqp.cpp

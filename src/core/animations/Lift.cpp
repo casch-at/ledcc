@@ -9,11 +9,11 @@ Lift::Lift(const u_int16_t &delay, const u_int16_t &iterations, const QString &n
 
 void Lift::createAnimation()
 {
+
     u_int8_t lastX = 0;
     u_int8_t lastY = 0;
     u_int8_t x;
     u_int8_t y;
-
     for (x = 0; x < CUBE_SIZE; x++)
     {
         for (y = 0; y < CUBE_SIZE; y++)
@@ -38,5 +38,7 @@ void Lift::createAnimation()
             lastY = y;
         }
     }
+    fillCubeArray(0x00);
+    Q_EMIT sendData();
     Q_EMIT done();
 }
