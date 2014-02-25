@@ -81,7 +81,6 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
 
 //    qDebug()<< "Main Thread id: " << thread()->currentThread();
     connectSignals();
-    timer.setSingleShot(false);
 }
 
 /**
@@ -193,8 +192,6 @@ void MainWindow::playNextAnimation(const QString &a)
     //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
     //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
     connect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
-//    qDebug()<< "Main thread id: " << thread()->currentThread();
-//    timer.start(2);
     createThread->start();
 
 }
@@ -217,9 +214,6 @@ void MainWindow::animationDone()
     disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
     createThread->wait();
     Q_EMIT playAnimations();
-//    timer.stop();
-    //    createThread->wait();
-    //    delete createThread;
 }
 
 void MainWindow::sendAnimation()
@@ -526,36 +520,23 @@ void MainWindow::writeData(const char c) //Function to write data to serial port
  */
 void MainWindow::connectSignals(void) //Connect Signals
 {
-    connect (openPortAction,&QAction::triggered,
-             this,&MainWindow::openCloseSerialPort);
-    connect(quitAction,&QAction::triggered,
-            this,&MainWindow::close);
+    connect (openPortAction,&QAction::triggered, this,&MainWindow::openCloseSerialPort);
+    connect(quitAction,&QAction::triggered, this,&MainWindow::close);
     //    connect (quitAction,&QAction::triggered,
     //             this,&MainWindow::clearToolButtonClicked);
-    connect (aboutAction,&QAction::triggered,
-             this,&MainWindow::about);
-    connect(clearAction,&QAction::triggered,
-            ui->animationPlaylistLW,&AnimationPlayListWidget::clearList);
-    connect(settingAction,&QAction::triggered,
-            sdialog,&QWidget::show);
+    connect (aboutAction,&QAction::triggered,this,&MainWindow::about);
+    connect(clearAction,&QAction::triggered, ui->animationPlaylistLW,&AnimationPlayListWidget::clearList);
+    connect(settingAction,&QAction::triggered,sdialog,&QWidget::show);
 #ifdef DEBUGWINDOW
     connect(debugDockWidget,&DebugDockWidget::sendStringChanged,
             this,&MainWindow::sendData);
 #endif
-    connect(ui->animationPlaylistLW,&AnimationPlayListWidget::updateUi,
-            this,&MainWindow::updateUi);
-    connect(ui->availableAnimationsLW,&AnimationListWidget::itemsSelected,
-            ui->animationPlaylistLW,&AnimationPlayListWidget::newItem);
-    connect(shortCutSA,&QShortcut::activated,
-            ui->animationPlaylistLW,&AnimationPlayListWidget::selectAllItems);
-    connect(shortCutSA,&QShortcut::activated,
-            ui->availableAnimationsLW,&AnimationListWidget::selectAllItems);
-    connect(ui->animationAdjustGB,&AnimationOptionsGroupBox::optionsReady,
-            this,&MainWindow::updateAnimation);
-    connect(playAction,&QAction::triggered,this,&MainWindow::playAnimations);
-
-    connect(&timer,&QTimer::timeout,this,&MainWindow::sendAnimation);
-
+    connect(ui->animationPlaylistLW , &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
+    connect(ui->availableAnimationsLW , &AnimationListWidget::itemsSelected , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
+    connect(shortCutSA , &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
+    connect(shortCutSA , &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
+    connect(ui->animationAdjustGB , &AnimationOptionsGroupBox::optionsReady , this, &MainWindow::updateAnimation);
+    connect(playAction , &QAction::triggered , this , &MainWindow::playAnimations);
 }
 
 /**

@@ -94,7 +94,6 @@ private:
     QShortcut *shortCutSA;
     QThread *createThread;
     Animation *currentAnimation;
-    QTimer timer;
     SendThread *sendThread;
     QHash<QString,Animation*> animation;
 };
