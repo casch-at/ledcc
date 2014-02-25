@@ -29,7 +29,7 @@
 #include "animations/Wall.hpp"
 #include "animations/Rain.hpp"
 #include "animations/StringFly.hpp"
-
+#include "SendThread.hpp"
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSettings>
@@ -62,7 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     ui(new Ui::MainWindow),
     sdialog(new SettingsDialog),
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
-    createThread(new QThread)
+    createThread(new QThread),
+    sendThread(new SendThread)
 {
     ui->setupUi(this);
 #ifdef DEBUGWINDOW

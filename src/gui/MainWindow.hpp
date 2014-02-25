@@ -26,6 +26,7 @@ class QShortcut;
 class Lift;
 class Animation;
 class QListWidgetItem;
+class SendThread;
 namespace Ui {
     class MainWindow;
 }
@@ -94,6 +95,7 @@ private:
     QThread *createThread;
     Animation *currentAnimation;
     QTimer timer;
+    SendThread *sendThread;
     QHash<QString,Animation*> animation;
 };
 

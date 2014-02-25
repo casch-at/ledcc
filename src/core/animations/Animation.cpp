@@ -39,10 +39,7 @@ void Animation::waitMs(const u_int16_t &time)
 {
 //    qDebug()<< "Animation thread id: " << thread()->currentThread();
 //    qDebug()<< "Animation timer id: " << m_timer->thread()->currentThread();
-//    m_timer->setSingleShot(true);
-//    m_timer->start(time);
-//    qDebug() << cubeFrame;
+
     Q_EMIT sendData();
-//    for (int i = 0; i < 10000000; ++i);
     thread()->msleep(time);
 }
