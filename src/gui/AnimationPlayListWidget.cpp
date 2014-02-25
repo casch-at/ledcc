@@ -6,6 +6,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     QListWidget(parent)
 {
     setFocusPolicy(Qt::StrongFocus);
+
 }
 
 void AnimationPlayListWidget::clearList()
@@ -17,7 +18,6 @@ void AnimationPlayListWidget::clearList()
 void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
 {
     foreach (QListWidgetItem *i, item) {
-//        addItem(i->text());
         addItem(i->clone());
     }
     emit updateUi();
@@ -35,7 +35,7 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
         foreach(QListWidgetItem *i,selectedItems())
             delete i;
         if(count())
-            setCurrentRow(0);
+            setCurrentRow(currentRow());
         emit updateUi();
         break;
     case Qt::Key_Up:

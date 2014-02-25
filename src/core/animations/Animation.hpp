@@ -1,6 +1,7 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 #include "Draw.hpp"
+#include <QTimer>
 
 class Animation : public Draw
 {
@@ -9,7 +10,9 @@ public:
     explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR):
         Draw(parent),
         m_speed(speed),
-        m_name(name){
+        m_name(name),
+        m_timer(new QTimer)
+    {
     }
 
     void setName(const QString &name){
@@ -42,6 +45,7 @@ public Q_SLOTS:
 private:
     u_int16_t m_speed;
     QString m_name;
+    QTimer *m_timer;
 };
 
 #endif // ANIMATION_HPP

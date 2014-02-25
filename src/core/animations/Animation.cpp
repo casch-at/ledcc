@@ -36,12 +36,12 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
 
 void Animation::waitMs(const u_int16_t &time)
 {
-//    qDebug()<< "Animation thread it: " << thread()->currentThread();
-    QTimer timer;
-    timer.setSingleShot(true);
-    timer.start(time);
+    qDebug()<< "Animation thread id: " << thread()->currentThread();
+    qDebug()<< "Animation timer id: " << m_timer->thread()->currentThread();
+    m_timer->setSingleShot(true);
+    m_timer->start(time);
 //    qDebug() << cubeFrame;
     Q_EMIT sendData();
-    for (int i = 0; i < 10000000; ++i);
-//    while(timer.isActive());
+//    for (int i = 0; i < 10000000; ++i);
+    while(m_timer->isActive());
 }

@@ -49,8 +49,20 @@
           <property name="tabKeyNavigation">
            <bool>false</bool>
           </property>
+          <property name="showDropIndicator" stdset="0">
+           <bool>false</bool>
+          </property>
           <property name="dragEnabled">
-           <bool>true</bool>
+           <bool>false</bool>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>false</bool>
+          </property>
+          <property name="dragDropMode">
+           <enum>QAbstractItemView::NoDragDrop</enum>
+          </property>
+          <property name="defaultDropAction">
+           <enum>Qt::IgnoreAction</enum>
           </property>
           <property name="selectionMode">
            <enum>QAbstractItemView::MultiSelection</enum>
@@ -59,7 +71,7 @@
            <enum>QAbstractItemView::SelectItems</enum>
           </property>
           <property name="movement">
-           <enum>QListView::Free</enum>
+           <enum>QListView::Static</enum>
           </property>
           <property name="sortingEnabled">
            <bool>true</bool>
