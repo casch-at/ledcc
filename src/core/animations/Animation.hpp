@@ -13,12 +13,7 @@ public:
     {
     }
 
-    void setName(const QString &name){
-        if(m_name.compare(name) == 0){
-            m_name = name;
-        }
-    }
-    QString getName(void) const{
+   QString getName(void) const{
         return m_name;
     }
     void setSpeed(const u_int16_t &speed){

@@ -8,8 +8,8 @@ class RandomFiller : public Animation
     Q_OBJECT
     Q_PROPERTY(BixelState state READ getState WRITE setState)
 public:
-    explicit RandomFiller(const u_int16_t &speed = 50,
-                          const BixelState &state = OFF,
+    explicit RandomFiller(const u_int16_t &speed = 10,
+                          const BixelState &state = ON,
                           const QString &name = "Random Filler",
                           QObject *parent = 0);
     BixelState getState() const

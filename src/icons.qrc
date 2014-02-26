@@ -11,5 +11,6 @@
         <file>images/view-refresh.png</file>
         <file>images/media-playback-start-9.png</file>
         <file>images/media-playback-pause-7.png</file>
+        <file>images/dialog-error.png</file>
     </qresource>
 </RCC>

@@ -14,7 +14,6 @@
 #include "SettingsDialog.hpp"
 #include "alt_key.hpp"
 #include "aqp.hpp"
-#include "DebugDockWidget.hpp"
 #include "animations/Draw.hpp"
 #include "animations/Lift.hpp"
 #include "animations/Firework.hpp"
@@ -48,10 +47,23 @@ using namespace std;
 
 namespace{
     const QString GeometrySettings("geometry");
-
     }
 
-
+namespace ANIMATIONS{
+    const QString WireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
+    const QString WireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
+    const QString Lift("Lift");
+    const QString Wall("Wall");
+    const QString Firework("Firework");
+    const QString Rain("Rain");
+    const QString RandomSpark("Random Spark");
+    const QString RandomSparkFlash("Random Spark Flash");
+    const QString RandomFiller("Random Filler");
+    const QString RandomZLift("Random Z-Axis Lift");
+    const QString StringFly("String Fly");
+    const QString Loadbar("Loadbar");
+    const QString AxisNailWall("Axis Nail Wall");
+    }
 
 /**
  * @brief MainWindow::MainWindow
@@ -62,18 +74,10 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     ui(new Ui::MainWindow),
     sdialog(new SettingsDialog),
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
-    createThread(new QThread),
-    senderThread(new QThread),
-    sender(new Sender)
+    createThread(new QThread)
 {
-//    sender = new SendThread;
-    sender->moveToThread(senderThread);
-    senderThread->start();
+    setupSenderThread();
     ui->setupUi(this);
-#ifdef DEBUGWINDOW
-    debugDockWidget = new DebugDockWidget(this);
-    addDockWidget(Qt::RightDockWidgetArea,debugDockWidget,Qt::Vertical );
-#endif
     readSettings ();
     createActions ();
     createToolbar ();
@@ -81,13 +85,9 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     pauseAction->setDisabled(true);
     setupAnimationItems();
     qRegisterMetaType<SettingsDialog::SerialSettings>("SettingsDialog::SerialSettings");
-    playAction->setEnabled(true);
+
     AQP::accelerateWidget (this);  //Give each button a accelerater
-
-    qDebug()<< "Main Thread id: " << thread()->currentThread();
-
     connectSignals();
-
 }
 
 /**
@@ -242,7 +242,7 @@ void MainWindow::sendAnimation()
             }
         }
     }
-//    qDebug()<< "SendAnimation executed!!!";
+    //    qDebug()<< "SendAnimation executed!!!";
 }
 
 /**
@@ -258,49 +258,50 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
         QListWidgetItem *item = items.first();
         QString aString =item->text();
         Animation *a = animation.value(aString);
-        if(aString.compare("Lift") == 0){
+        if(aString.compare(ANIMATIONS::Lift) == 0){
             dynamic_cast<Lift*>(a)->setDelay(animationOptions->delay);
             dynamic_cast<Lift*>(a)->setIterations(animationOptions->iteration);
             dynamic_cast<Lift*>(a)->setSpeed(animationOptions->speed);
-        }else if(aString.compare("Rain") == 0){
+        }else if(aString.compare(ANIMATIONS::Rain) == 0){
             dynamic_cast<Rain*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<Rain*>(a)->setIterations(animationOptions->iteration);
-        }else if(aString.compare("String Fly") == 0){
+        }else if(aString.compare(ANIMATIONS::StringFly) == 0){
             dynamic_cast<StringFly*>(a)->setSToDisplay(animationOptions->text);
             dynamic_cast<StringFly*>(a)->setSpeed(animationOptions->speed);
-        }else if(aString.compare("Wall") == 0){
+        }else if(aString.compare(ANIMATIONS::Wall) == 0){
             dynamic_cast<Wall*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<Wall*>(a)->setAxis(animationOptions->axis);
             dynamic_cast<Wall*>(a)->setDirection(animationOptions->direction);
-        }else if(aString.compare("Firework") == 0){
+        }else if(aString.compare(ANIMATIONS::Firework) == 0){
             dynamic_cast<Firework*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<Firework*>(a)->setParticles(animationOptions->particle);
             dynamic_cast<Firework*>(a)->setIterations(animationOptions->iteration);
-        }else if(aString.compare("Random Spark Flash") == 0){
+        }else if(aString.compare(ANIMATIONS::RandomSparkFlash) == 0){
             dynamic_cast<RandomSparkFlash*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<RandomSparkFlash*>(a)->setIterations(animationOptions->iteration);
             dynamic_cast<RandomSparkFlash*>(a)->setLeds(animationOptions->leds);
-        }else if(aString.compare("Random Spark") == 0){
+        }else if(aString.compare(ANIMATIONS::RandomSpark) == 0){
             dynamic_cast<RandomSpark*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<RandomSpark*>(a)->setSparks(animationOptions->leds);
-        }else if(aString.compare("Random Filler") == 0){
+            dynamic_cast<RandomSpark*>(a)->setIterations(animationOptions->iteration);
+        }else if(aString.compare(ANIMATIONS::RandomFiller) == 0){
             dynamic_cast<RandomFiller*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<RandomFiller*>(a)->setState(animationOptions->state);
-        }else if(aString.compare("Axis Nail Wall") == 0){
+        }else if(aString.compare(ANIMATIONS::AxisNailWall) == 0){
             dynamic_cast<AxisNailWall*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<AxisNailWall*>(a)->setAxis(animationOptions->axis);
             dynamic_cast<AxisNailWall*>(a)->setInvert(animationOptions->invert == 0 ? false : true);
-        }else if(aString.compare("Loadbar") == 0){
+        }else if(aString.compare(ANIMATIONS::Loadbar) == 0){
             dynamic_cast<Loadbar*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<Loadbar*>(a)->setAxis(animationOptions->axis);
-        }else if(aString.compare("Wire Box Center Shrink Grow") == 0){
+        }else if(aString.compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
             dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(animationOptions->invert == 0 ? false : true);
             dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(animationOptions->iteration);
-        }else if(aString.compare("Wire Box Corner Shrink Grow") == 0){
+        }else if(aString.compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
             dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(animationOptions->speed);
             dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(animationOptions->iteration);
-        }else if(aString.compare("Random Z-Axis Lift") == 0){
+        }else if(aString.compare(ANIMATIONS::RandomZLift) == 0){
             dynamic_cast<RandomZLift*>(a)->setSpeed(animationOptions->speed);
         }
         updateAnimationItemToolTip(aString,item);
@@ -322,29 +323,29 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
                                      "Speed: %2<br>"))
             .arg(iter.key())
             .arg(iter.value()->getSpeed());
-    if(a.compare("Lift") == 0){
+    if(a.compare(ANIMATIONS::Lift) == 0){
         itemToolTip.append(QString("Delay: %1<br>"
                                    "Iterations: %2")
                            .arg(dynamic_cast<Lift*>(iter.value())->getDelay())
                            .arg(dynamic_cast<Lift*>(iter.value())->getIterations()));
-    }else if(a.compare("String Fly") == 0){
+    }else if(a.compare(ANIMATIONS::StringFly) == 0){
         itemToolTip.append(QString("Current Text: "
                                    + dynamic_cast<StringFly*>(iter.value())->getSToDisplay().toLatin1()));
-    }else if(a.compare("Random Spark Flash") == 0){
+    }else if(a.compare(ANIMATIONS::RandomSparkFlash) == 0){
         itemToolTip.append(QString("LEDs: %1<br>"
                                    "Iterations: %2")
                            .arg(dynamic_cast<RandomSparkFlash*>(iter.value())->getLeds())
                            .arg(dynamic_cast<RandomSparkFlash*>(iter.value())->getIterations()));
-    }else if(a.compare("Random Spark") == 0){
+    }else if(a.compare(ANIMATIONS::RandomSpark) == 0){
         itemToolTip.append(QString("Sparks: %1<br>")
                            .arg(dynamic_cast<RandomSpark*>(iter.value())->getSparks()));
-    }else if(a.compare("Random Filler") == 0){
+    }else if(a.compare(ANIMATIONS::RandomFiller) == 0){
         QString tmp;
 
         tmp  = dynamic_cast<RandomFiller*>(iter.value())->getState() == Draw::ON ? "ON" : "OFF";
 
         itemToolTip.append(QString("Start State: " + tmp));
-    }else if(a.compare("Loadbar") == 0){
+    }else if(a.compare(ANIMATIONS::Loadbar) == 0){
         QString tmp;
 
         if(dynamic_cast<Loadbar*>(iter.value())->getAxis() == Draw::X_AXIS)
@@ -355,7 +356,7 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
             tmp = "Z-Axis";
 
         itemToolTip.append(QString("Axis: " + tmp));
-    }else if(a.compare("Axis Nail Wall") == 0){
+    }else if(a.compare(ANIMATIONS::AxisNailWall) == 0){
         QString tmp;
 
         if(dynamic_cast<AxisNailWall*>(iter.value())->getAxis() == Draw::X_AXIS)
@@ -368,23 +369,23 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
         tmp.append(dynamic_cast<AxisNailWall*>(iter.value())->getInvert() ? "Invert: Yes" : "Invert: No");
 
         itemToolTip.append(QString("Axis: " + tmp));
-    }else if(a.compare("Wire Box Center Shrink Grow") == 0){
+    }else if(a.compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
         QString tmp;
 
         tmp  = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart() ? "YES<br>" : "NO<br>";
         tmp.append(QString("Iterations: %1")
-                           .arg(dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getIterations()));
+                   .arg(dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getIterations()));
         itemToolTip.append(QString("Start in center: " + tmp));
-    }else if(a.compare("Wire Box Corner Shrink Grow") == 0){
+    }else if(a.compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
         itemToolTip.append(QString("Iterations: %1")
                            .arg(dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations()));
-    }else if(a.compare("Random Z-Axis Lift") == 0){
+    }else if(a.compare(ANIMATIONS::RandomZLift) == 0){
         itemToolTip.append(QString("Iterations: %1")
                            .arg(dynamic_cast<RandomZLift*>(iter.value())->getIterations()));
-    }else if(a.compare("Rain") == 0){
+    }else if(a.compare(ANIMATIONS::Rain) == 0){
         itemToolTip.append(QString("Iterations: %1")
                            .arg(dynamic_cast<Rain*>(iter.value())->getIterations()));
-    }else if(a.compare("Wall") == 0){
+    }else if(a.compare(ANIMATIONS::Wall) == 0){
         QString tmp;
 
         tmp = dynamic_cast<Wall*>(iter.value())->getDirection() == Draw::FORWARD ? "Direction: Forward<br>" : "Direction: Backward<br>";
@@ -397,7 +398,7 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
             tmp = "Axis: Z-Axis";
 
         itemToolTip.append(tmp);
-    }else if(a.compare("Firework") == 0){
+    }else if(a.compare(ANIMATIONS::Firework) == 0){
         itemToolTip.append(QString("Iterations: %1<br>"
                                    "Particles: %2")
                            .arg(dynamic_cast<Firework*>(iter.value())->getIterations())
@@ -406,27 +407,47 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
     item->setToolTip(itemToolTip);
 }
 
+void MainWindow::portStatusbarMessage(const QString &message)
+{
+    ui->statusbar->showMessage(message,3000);
+}
+
+void MainWindow::displayPortErrorMessage(const QString &message)
+{
+    QMessageBox msg;
+    msg.setDefaultButton(QMessageBox::Ok);
+    msg.setIconPixmap(QPixmap("://images/dialog-error.png").scaled(QSize(48,48)));
+    if(message.contains("#")){
+        msg.setText(message.split("#").first());
+        msg.setInformativeText(message.split("#").last());
+    }
+    else{
+        msg.setText(message);
+    }
+    msg.exec();
+}
+
 /**
  * @brief
  *
  */
 void MainWindow::setupAnimationItems()
 {
-    animation.insert("Lift",new Lift);
-    animation.insert("String Fly",new StringFly);
-    animation.insert("Random Spark Flash",new RandomSparkFlash);
-    animation.insert("Random Spark",new RandomSpark);
-    animation.insert("Random Filler",new RandomFiller);
-    animation.insert("Loadbar",new Loadbar);
-    animation.insert("Axis Nail Wall",new AxisNailWall);
-    animation.insert("Wire Box Center Shrink Grow",new WireBoxCenterShrinkGrow);
-    animation.insert("Wire Box Corner Shrink Grow",new WireBoxCornerShrinkGrow);
-    animation.insert("Random Z-Axis Lift",new RandomZLift);
-    animation.insert("Rain",new Rain);
-    animation.insert("Wall",new Wall);
-    animation.insert("Firework",new Firework);
+    animation.insert(ANIMATIONS::Lift,new Lift);
+    animation.insert(ANIMATIONS::StringFly,new StringFly);
+    animation.insert(ANIMATIONS::RandomSparkFlash,new RandomSparkFlash);
+    animation.insert(ANIMATIONS::RandomSpark,new RandomSpark);
+    animation.insert(ANIMATIONS::RandomFiller,new RandomFiller);
+    animation.insert(ANIMATIONS::Loadbar,new Loadbar);
+    animation.insert(ANIMATIONS::AxisNailWall,new AxisNailWall);
+    animation.insert(ANIMATIONS::WireBoxCenterShrinkGrow,new WireBoxCenterShrinkGrow);
+    animation.insert(ANIMATIONS::WireBoxCornerShrinkGrow,new WireBoxCornerShrinkGrow);
+    animation.insert(ANIMATIONS::RandomZLift,new RandomZLift);
+    animation.insert(ANIMATIONS::Rain,new Rain);
+    animation.insert(ANIMATIONS::Wall,new Wall);
+    animation.insert(ANIMATIONS::Firework,new Firework);
 
-    currentAnimation = animation.value("String Fly");
+    currentAnimation = animation.value(ANIMATIONS::StringFly);
 
     QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
     while(iter != animation.constEnd()){
@@ -441,36 +462,36 @@ void MainWindow::setupAnimationItems()
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port
 {
     Q_EMIT openSerialInterface(sdialog->settings());
-//    m_port = sdialog->settings();
+    //    m_port = sdialog->settings();
 
-//    if(!serial.isOpen()){ // Get the status of the Serial port
-//        bool result = openSerialPort();
-//        if(result)
-//        {
-//            ui->statusbar->showMessage (tr("Connected to %1 : %2, %3, %4, %5, %6")
-//                                        .arg (m_port.name).arg (m_port.stringBaudRate)
-//                                        .arg (m_port.stringDataBits).arg (m_port.stringParity)
-//                                        .arg (m_port.stringStopBits).arg (m_port.stringFlowControl));
-//        }else
-//        {
-//            serial.close();
-//            QMessageBox::warning (this,tr("Error"),
-//                                  tr("Can't open serial port: %1 - error code: %2\n\n\n"
-//                                     "Check if device is connected properly!")
-//                                  .arg (m_port.name).arg (serial.error ()));
-//            ui->statusbar->showMessage(tr("Open error"),3000);
-//        }
-//    }
-//    else{
-//        int flag = QMessageBox::information (this,tr("Closing port")
-//                                             ,tr("Do you really want close the serial port?\n %1")
-//                                             .arg(m_port.name),QMessageBox::Ok,QMessageBox::Cancel);
-//        if(flag == QMessageBox::Ok)
-//            closeSerialPort();
+    //    if(!serial.isOpen()){ // Get the status of the Serial port
+    //        bool result = openSerialPort();
+    //        if(result)
+    //        {
+    //            ui->statusbar->showMessage (tr("Connected to %1 : %2, %3, %4, %5, %6")
+    //                                        .arg (m_port.name).arg (m_port.stringBaudRate)
+    //                                        .arg (m_port.stringDataBits).arg (m_port.stringParity)
+    //                                        .arg (m_port.stringStopBits).arg (m_port.stringFlowControl));
+    //        }else
+    //        {
+    //            serial.close();
+    //            QMessageBox::warning (this,tr("Error"),
+    //                                  tr("Can't open serial port: %1 - error code: %2\n\n\n"
+    //                                     "Check if device is connected properly!")
+    //                                  .arg (m_port.name).arg (serial.error ()));
+    //            ui->statusbar->showMessage(tr("Open error"),3000);
+    //        }
+    //    }
+    //    else{
+    //        int flag = QMessageBox::information (this,tr("Closing port")
+    //                                             ,tr("Do you really want close the serial port?\n %1")
+    //                                             .arg(m_port.name),QMessageBox::Ok,QMessageBox::Cancel);
+    //        if(flag == QMessageBox::Ok)
+    //            closeSerialPort();
 
-//    }
-//    serial.moveToThread(senderThread);
-//    updateUi ();
+    //    }
+    //    serial.moveToThread(senderThread);
+    //    updateUi ();
 }
 /**
  * @brief MainWindow::checkPortSettings
@@ -520,31 +541,18 @@ bool MainWindow::openSerialPort(void)
     }
     return result;
 }
-/**
- * @brief MainWindow::readData
- */
-void MainWindow::readData()
-{
-    //        setData (serial->readAll ());
-#ifdef DEBUGWINDOW
-    debugDockWidget->addLine("Received: " + QString(m_data) + "\n" );
-#endif
-}
 
-#ifdef DEBUGWINDOW
-void MainWindow::sendData()
+void MainWindow::setupSenderThread()
 {
-    int i = debugDockWidget->sendString().toInt();
-    debugDockWidget->addLine(QString("Sent: %1").arg(i));
-    writeData(i);
+    senderThread = new QThread;
+    sender = new Sender;
+
+    sender->moveToThread(senderThread);
+    senderThread->start();
+    connect(this,&MainWindow::openSerialInterface,sender,&Sender::openCloseSerialPort);
+    connect(sender,&Sender::portStatus,this,&MainWindow::portStatusbarMessage);
+    connect(sender,&Sender::portError,this,&MainWindow::displayPortErrorMessage);
 }
-void MainWindow::writeData(const char c) //Function to write data to serial port
-{
-    qDebug() << "Bytes to write: " + c;
-    if(serial->putChar(c))
-        qDebug() << "Send successfully";
-}
-#endif
 
 /**
  * @brief
@@ -554,22 +562,16 @@ void MainWindow::connectSignals(void) //Connect Signals
 {
     connect (openPortAction,&QAction::triggered, this,&MainWindow::openCloseSerialPort);
     connect(quitAction,&QAction::triggered, this,&MainWindow::close);
-    //    connect (quitAction,&QAction::triggered,
-    //             this,&MainWindow::clearToolButtonClicked);
     connect (aboutAction,&QAction::triggered,this,&MainWindow::about);
     connect(clearAction,&QAction::triggered, ui->animationPlaylistLW,&AnimationPlayListWidget::clearList);
     connect(settingAction,&QAction::triggered,sdialog,&QWidget::show);
-#ifdef DEBUGWINDOW
-    connect(debugDockWidget,&DebugDockWidget::sendStringChanged,
-            this,&MainWindow::sendData);
-#endif
     connect(ui->animationPlaylistLW , &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
     connect(ui->availableAnimationsLW , &AnimationListWidget::itemsSelected , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
     connect(shortCutSA , &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
     connect(shortCutSA , &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
     connect(ui->animationAdjustGB , &AnimationOptionsGroupBox::optionsReady , this, &MainWindow::updateAnimation);
     connect(playAction , &QAction::triggered , this , &MainWindow::playAnimations);
-    connect(this,&MainWindow::openSerialInterface,sender,&Sender::openCloseSerialPort);
+
 }
 
 /**

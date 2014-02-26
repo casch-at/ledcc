@@ -11,7 +11,7 @@ void Rain::createAnimation()
 {
     u_int8_t i = 0;
     u_int16_t ii = 0;
-
+    qDebug() << "Rain thread id: " << thread()->currentThread();
     for (ii = 0; ii < m_iterations; ii++)
     {
         for (i = 0; i < qrand() % (CUBE_SIZE / 2); i++)

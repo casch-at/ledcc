@@ -1,6 +1,8 @@
 #include "Sender.hpp"
 #include <QSerialPort>
+//#ifdef __DEBUG__
 #include <QDebug>
+//#endif
 
 Sender::Sender(QObject *parent) :
     QObject(parent),
@@ -44,29 +46,28 @@ void Sender::openCloseSerialPort(const SettingsDialog::SerialSettings &s)  // Op
         bool result = openSerialPort();
         if(result)
         {
-//            ui->statusbar->showMessage (tr("Connected to %1 : %2, %3, %4, %5, %6")
-//                                        .arg (m_port.name).arg (m_port.stringBaudRate)
-//                                        .arg (m_port.stringDataBits).arg (m_port.stringParity)
-//                                        .arg (m_port.stringStopBits).arg (m_port.stringFlowControl));
+
+            portStatus(QString("Connected to %1 : %2, %3, %4, %5, %6")
+                       .arg (m_port.name).arg (m_port.stringBaudRate)
+                       .arg (m_port.stringDataBits).arg (m_port.stringParity)
+                       .arg (m_port.stringStopBits).arg (m_port.stringFlowControl));
         }else
         {
+            Q_EMIT portError(QString(tr("Can't open serial port: %1 - error code: %2#Check if device is connected properly"))
+                             .arg(m_port.name)
+                             .arg(m_serial->error()));
             m_serial->close();
-//            QMessageBox::warning (this,tr("Error"),
-//                                  tr("Can't open serial port: %1 - error code: %2\n\n\n"
-//                                     "Check if device is connected properly!")
-//                                  .arg (m_port.name).arg (m_serial->error ()));
-//            ui->statusbar->showMessage(tr("Open error"),3000);
         }
     }
     else{
-//        int flag = QMessageBox::information (this,tr("Closing port")
-//                                             ,tr("Do you really want close the serial port?\n %1")
-//                                             .arg(m_port.name),QMessageBox::Ok,QMessageBox::Cancel);
-//        if(flag == QMessageBox::Ok)
-//            closeSerialPort();
+        //        int flag = QMessageBox::information (this,tr("Closing port")
+        //                                             ,tr("Do you really want close the serial port?\n %1")
+        //                                             .arg(m_port.name),QMessageBox::Ok,QMessageBox::Cancel);
+        //        if(flag == QMessageBox::Ok)
+        //            closeSerialPort();
 
     }
-//    updateUi ();
+    //    updateUi ();
 }
 /**
  * @brief MainWindow::checkPortSettings
@@ -81,10 +82,9 @@ bool Sender::checkPortSettings(void)
         return true;
     }else
     {
-//        QMessageBox::critical (this,tr("Error"),
-//                               tr("Can't configure the serial port: %1,\n"
-//                                  "error code: %2")
-//                               .arg (m_port.name).arg (m_serial->error ()));
+        Q_EMIT portError(QString(tr("Can't configure the serial port: %1,\n"
+                                 "error code: %2"))
+                         .arg (m_port.name).arg (m_serial->error ()));
         return false;
     }
 }
@@ -94,7 +94,7 @@ bool Sender::checkPortSettings(void)
 void Sender::closeSerialPort(void)
 {
     m_serial->close();
-//    ui->statusbar->showMessage(tr("Port closed: %1").arg (m_port.name),3000);
+    portStatus(QString("Port closed: %1").arg(m_port.name));
 }
 /**
  * @brief MainWindow::openSerialPort

@@ -9,8 +9,8 @@ class RandomSparkFlash : public Animation
     Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
     Q_PROPERTY(u_int16_t leds READ getLeds WRITE setLeds)
 public:
-    explicit RandomSparkFlash(const u_int16_t &speed = 50,
-                              const u_int16_t &iterations = 10,
+    explicit RandomSparkFlash(const u_int16_t &speed = 40,
+                              const u_int16_t &iterations = 20,
                               const u_int16_t &leds = 40,
                               const QString &name = "Random Spark Flash",
                               QObject *parent = 0);

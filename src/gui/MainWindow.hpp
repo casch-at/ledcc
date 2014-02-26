@@ -50,33 +50,26 @@ private Q_SLOTS:
     void saveSettings(void);
     void readSettings(void);
     void openCloseSerialPort(void);
-//    void portUnpluged(void);
     void connectSignals(void);
     void createActions(void);
     void createToolbar(void);
     void about(void);
-    void readData(void);
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
     void playAnimations(void);
     void animationDone(void);
     void sendAnimation(void);
-private Q_SLOTS:
     void updateAnimation(const Draw::AnimationOptions *animationOptions);
     void updateAnimationItemToolTip(const QString &a, QListWidgetItem *item);
-#ifdef DEBUGWINDOW
-    void sendData(void);
-#endif
-private:
-#ifdef DEBUGWINDOW
-    void writeData(const char c);
-#endif
+    void portStatusbarMessage(const QString &message);
+    void displayPortErrorMessage(const QString &message);
 private:
     void playNextAnimation(const QString &a);
     void setupAnimationItems(void);
     bool checkPortSettings(void);
     void closeSerialPort(void);
     bool openSerialPort(void);
+    void setupSenderThread(void);
 private:
     Ui::MainWindow *ui;
     SettingsDialog *sdialog;
