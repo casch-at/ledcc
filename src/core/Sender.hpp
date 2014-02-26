@@ -12,7 +12,7 @@ class Sender : public QObject
     Q_OBJECT
 public:
     explicit Sender(QObject *parent = Q_NULLPTR);
-
+    ~Sender();
     bool isRunning(void){
         return m_running;
     }

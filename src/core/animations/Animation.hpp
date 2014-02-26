@@ -11,6 +11,7 @@ public:
         m_speed(speed),
         m_name(name)
     {
+        m_abort = false;
     }
 
    QString getName(void) const{
@@ -30,6 +31,7 @@ public:
             QVector<u_int8_t> &position, Axis axe);
 
     void waitMs(const u_int16_t &time);
+    bool m_abort;
 Q_SIGNALS:
     void done();
     void sendData(const CubeArray &cubeFrame);

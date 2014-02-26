@@ -78,8 +78,8 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
     createThread(new QThread)
 {
-    setupSenderThread();
     ui->setupUi(this);
+    setupSenderThread();
     readSettings ();
     createActions ();
     createToolbar ();
@@ -99,8 +99,10 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
 {
     foreach (Animation *a, animation)
         delete a;
-    animation.clear();
+    senderThread->deleteLater();
+    senderThread->deleteLater();
     delete createThread;
+    delete senderThread;
     delete ui;
 }
 
@@ -111,6 +113,8 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
 void MainWindow::closeEvent( QCloseEvent *event ) {  //Close application
     if ( okToContinue() ) {
         Q_EMIT okClosePort();
+        if(createThread->isRunning())
+            stopAnimation();
         saveSettings ();
         sdialog->close();
         event->accept();
@@ -210,6 +214,9 @@ void MainWindow::playNextAnimation(const QString &a)
 void MainWindow::playAnimations()
 {
     stopPlay = true;
+    currentAnimation->m_abort = false;
+    if(!senderThread->isRunning())
+        senderThread->start();
     playAction->setDisabled(true);
     pauseAction->setEnabled(true);
     getNextAnimation();
@@ -231,7 +238,6 @@ void MainWindow::animationDone()
     disconnect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
     disconnect(currentAnimation, &Animation::done, createThread, &QThread::quit);
     disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
-    createThread->wait();
     if(stopPlay)
         Q_EMIT getNextAnimation();
     else
@@ -441,7 +447,15 @@ void MainWindow::portClose(const QString &message)
 void MainWindow::stopAnimation()
 {
     pauseAction->setDisabled(true);
+    currentAnimation->m_abort = true;
     stopPlay = false;
+    createThread->quit();
+    senderThread->quit();
+
+    senderThread->wait();
+    createThread->wait();
+    animationDone();
+
 }
 
 /**
@@ -489,6 +503,7 @@ void MainWindow::setupSenderThread()
 
     sender->moveToThread(senderThread);
     senderThread->start();
+
     connect(this,&MainWindow::openSerialInterface,sender,&Sender::openCloseSerialPort);
     connect(sender,&Sender::portOpened,this,&MainWindow::portOpen);
     connect(sender,&Sender::portClosed,this,&MainWindow::portClose);

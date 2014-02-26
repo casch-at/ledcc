@@ -26,6 +26,8 @@ void Lift::createAnimation()
 
     for (u_int16_t i = 0; i < m_iterations; i++)
     {
+        if(m_abort)
+            return;
         x = qrand() % CUBE_SIZE;
         y = qrand() % CUBE_SIZE;
 
