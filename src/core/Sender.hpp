@@ -18,7 +18,8 @@ public:
     }
 
 Q_SIGNALS:
-    void portStatus(const QString &param);
+    void portOpened(const QString &param);
+    void portClosed(const QString &param);
     void portError(const QString &param);
     void closePort(const QString &param);
 public Q_SLOTS:

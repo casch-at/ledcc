@@ -110,10 +110,8 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
  */
 void MainWindow::closeEvent( QCloseEvent *event ) {  //Close application
     if ( okToContinue() ) {
-        if(serial.isOpen())
-            serial.close();
+        Q_EMIT okClosePort();
         saveSettings ();
-        close ();
         sdialog->close();
         event->accept();
     }
@@ -170,16 +168,17 @@ void MainWindow::readSettings (void){ //Load geometry of application
  */
 void MainWindow::updateUi(void)
 {
-    if(serial.isOpen()){
+    if(portOpened){
         if(openPortAction->text() == "Open port"){
             openPortAction->setText(tr("Close port"));
             openPortAction->setIcon( QIcon( "://images/disconnect.png"));
             openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
         }
-        if(ui->animationPlaylistLW->count())
+        if(ui->animationPlaylistLW->count() && !pauseAction->isEnabled()){
             playAction->setEnabled(true);
-        else
-            playAction->setDisabled(false);
+        }else{
+            playAction->setDisabled(true);
+        }
     }else
     {
         if(openPortAction->text() == "Close port"){
@@ -187,7 +186,7 @@ void MainWindow::updateUi(void)
             openPortAction->setIcon( QIcon( "://images/connect.png"));
             openPortAction->setToolTip(tr("Connect to seriell device  O"));
         }
-        playAction->setDisabled(false);
+        playAction->setDisabled(true);
     }
 }
 
@@ -210,6 +209,14 @@ void MainWindow::playNextAnimation(const QString &a)
 
 void MainWindow::playAnimations()
 {
+    stopPlay = true;
+    playAction->setDisabled(true);
+    pauseAction->setEnabled(true);
+    getNextAnimation();
+}
+
+void MainWindow::getNextAnimation()
+{
     static u_int8_t row;
     if(row < ui->animationPlaylistLW->count()){
         qDebug() << ui->animationPlaylistLW->item(row)->text();
@@ -225,27 +232,13 @@ void MainWindow::animationDone()
     disconnect(currentAnimation, &Animation::done, createThread, &QThread::quit);
     disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
     createThread->wait();
-    Q_EMIT playAnimations();
+    if(stopPlay)
+        Q_EMIT getNextAnimation();
+    else
+        updateUi();
+
 }
 
-void MainWindow::sendAnimation()
-{
-    serial.putChar(0xFF);
-    serial.waitForBytesWritten(1000);
-    serial.putChar(0x00);
-    serial.waitForBytesWritten(1000);
-    for (u_int8_t z = 0; z < CUBE_SIZE; z++) {
-        for (u_int8_t y = 0; y < CUBE_SIZE; y++) {
-            serial.putChar(currentAnimation->cubeFrame[z][y]);
-            serial.waitForBytesWritten(1000);
-            if(currentAnimation->cubeFrame[z][y] == 0xFF){
-                serial.putChar(0xFF);
-                serial.waitForBytesWritten(1000);
-            }
-        }
-    }
-    //    qDebug()<< "SendAnimation executed!!!";
-}
 
 /**
  * @brief
@@ -409,9 +402,11 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
     item->setToolTip(itemToolTip);
 }
 
-void MainWindow::portStatusbarMessage(const QString &message)
+void MainWindow::portOpen(const QString &message)
 {
+    portOpened = true;
     ui->statusbar->showMessage(message,3000);
+    updateUi();
 }
 
 void MainWindow::displayPortErrorMessage(const QString &message)
@@ -434,6 +429,19 @@ void MainWindow::closePort(const QString &message)
         Q_EMIT okClosePort();
 
     delete msg;
+}
+
+void MainWindow::portClose(const QString &message)
+{
+    portOpened = false;
+    ui->statusbar->showMessage(message,3000);
+    updateUi();
+}
+
+void MainWindow::stopAnimation()
+{
+    pauseAction->setDisabled(true);
+    stopPlay = false;
 }
 
 /**
@@ -475,13 +483,15 @@ void MainWindow::openCloseSerialPort(void)  // Open the Serial port
 
 void MainWindow::setupSenderThread()
 {
+    portOpened = false;
     senderThread = new QThread;
     sender = new Sender;
 
     sender->moveToThread(senderThread);
     senderThread->start();
     connect(this,&MainWindow::openSerialInterface,sender,&Sender::openCloseSerialPort);
-    connect(sender,&Sender::portStatus,this,&MainWindow::portStatusbarMessage);
+    connect(sender,&Sender::portOpened,this,&MainWindow::portOpen);
+    connect(sender,&Sender::portClosed,this,&MainWindow::portClose);
     connect(sender,&Sender::portError,this,&MainWindow::displayPortErrorMessage);
     connect(sender,&Sender::closePort,this,&MainWindow::closePort);
     connect(this,&MainWindow::okClosePort,sender,&Sender::closeSerialPort);
@@ -504,6 +514,7 @@ void MainWindow::connectSignals(void) //Connect Signals
     connect(shortCutSA , &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
     connect(ui->animationAdjustGB , &AnimationOptionsGroupBox::optionsReady , this, &MainWindow::updateAnimation);
     connect(playAction , &QAction::triggered , this , &MainWindow::playAnimations);
+    connect(pauseAction , &QAction::triggered , this , &MainWindow::stopAnimation);
 
 }
 

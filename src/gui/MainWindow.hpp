@@ -58,13 +58,15 @@ private Q_SLOTS:
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
     void playAnimations(void);
+    void getNextAnimation(void);
     void animationDone(void);
-    void sendAnimation(void);
     void updateAnimation(const Draw::AnimationOptions *animationOptions);
     void updateAnimationItemToolTip(const QString &a, QListWidgetItem *item);
-    void portStatusbarMessage(const QString &message);
+    void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
     void closePort(const QString &message);
+    void portClose(const QString &message);
+    void stopAnimation(void);
 private:
     void playNextAnimation(const QString &a);
     void setupAnimationItems(void);
@@ -83,13 +85,14 @@ private:
     QAction *openPortAction;
     QAction *playAction;
     QAction *pauseAction;
-    QSerialPort serial;
     QShortcut *shortCutSA;
     QThread *createThread;
     QThread *senderThread;
     Animation *currentAnimation;
     Sender *sender;
     QHash<QString,Animation*> animation;
+    bool portOpened;
+    bool stopPlay;
 };
 
 #endif // MAINWINDOW_H

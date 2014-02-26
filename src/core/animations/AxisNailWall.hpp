@@ -10,7 +10,7 @@ class AxisNailWall : public Animation
     Q_PROPERTY(Axis axis READ getAxis WRITE setAxis)
 
 public:
-    explicit AxisNailWall(const u_int16_t &speed = 40,
+    explicit AxisNailWall(const u_int16_t &speed = 70,
                           const Axis &axis = X_AXIS,
                           const bool invert = false,
                           const QString &name = "Axis Nail Wall",

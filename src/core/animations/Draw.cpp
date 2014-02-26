@@ -15,7 +15,6 @@ Draw::Draw(QObject *parent):
 
 Draw::~Draw()
 {
-
 }
 
 void Draw::setBixel(int x, int y, int z)
