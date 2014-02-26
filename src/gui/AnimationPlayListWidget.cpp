@@ -73,10 +73,10 @@ void AnimationPlayListWidget::selectAllItems(void)
 }
 
 
-QString AnimationPlayListWidget::getNextAnimation() const
+QListWidgetItem *AnimationPlayListWidget::getNextAnimation()
 {
     static int row;
     if(row >= count())
         row=0;
-    return item(row++)->text();
+    return item(row++);
 }

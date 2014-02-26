@@ -18,7 +18,7 @@ protected:
     virtual void keyPressEvent(QKeyEvent * event);
 public Q_SLOTS:
     void selectAllItems(void);
-    QString getNextAnimation(void) const;
+    QListWidgetItem *getNextAnimation(void);
 private:
 };
 

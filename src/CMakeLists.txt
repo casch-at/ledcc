@@ -52,6 +52,7 @@ set(GUI         ${gui_DIR}/DebugDockWidget.cpp
                 ${gui_DIR}/AnimationPlayListWidget.cpp
                 ${gui_DIR}/AnimationOptions.cpp
                 ${gui_DIR}/PortMessageBox.cpp
+                ${gui_DIR}/AnimationItem.cpp
 )
 set(CORE        ${core_DIR}/animations/Draw.cpp
                 ${core_DIR}/animations/Animation.cpp

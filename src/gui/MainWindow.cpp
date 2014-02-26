@@ -28,6 +28,7 @@
 #include "animations/Wall.hpp"
 #include "animations/Rain.hpp"
 #include "animations/StringFly.hpp"
+#include "AnimationItem.hpp"
 #include "Sender.hpp"
 #include "PortMessageBox.hpp"
 
@@ -224,14 +225,8 @@ void MainWindow::playAnimations()
 
 void MainWindow::getNextAnimation()
 {
-    static u_int8_t row;
-    if(row < ui->animationPlaylistLW->count()){
-        QString tooltip = ui->animationPlaylistLW->item(row)->toolTip();
-
-        playNextAnimation(ui->animationPlaylistLW->item(row++)->text());
-    }
-    if(row >= ui->animationPlaylistLW->count())
-        row = 0;
+    QListWidgetItem *item = ui->animationPlaylistLW->getNextAnimation();
+    playNextAnimation(item->text());
 }
 
 void MainWindow::animationDone()
@@ -252,8 +247,12 @@ void MainWindow::updateItemToolTip(const AnimationOptions::Options *aOptions)
     QList<QListWidgetItem*> items = ui->animationPlaylistLW->selectedItems();
     if(!items.isEmpty())
     {
-        QListWidgetItem *item = items.first();
+        AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
         updateAnimationItemToolTip(item,aOptions);
+        if(currentAnimation->getName().compare(item->text()) == 0){
+            updateAnimation(item->text(),aOptions);
+        }
+
     }
 }
 
@@ -485,7 +484,7 @@ void MainWindow::setupAnimationItems()
     QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
     AnimationOptions::Options options;
     while(iter != animation.constEnd()){
-        QListWidgetItem *item = new QListWidgetItem(iter.key(),ui->availableAnimationsLW);
+        AnimationItem *item = new AnimationItem(iter.key(),ui->availableAnimationsLW);
         options.speed = iter.value()->getSpeed();
 
         if(iter.key().compare(ANIMATIONS::AxisNailWall) == 0){
@@ -522,7 +521,7 @@ void MainWindow::setupAnimationItems()
         }else if(iter.key().compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
             options.iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
         }
-
+        item->setOptions(options);
         updateAnimationItemToolTip(item,&options);
 
         iter.value()->moveToThread(createThread);
