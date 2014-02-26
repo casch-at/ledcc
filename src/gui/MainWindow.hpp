@@ -60,13 +60,14 @@ private Q_SLOTS:
     void playAnimations(void);
     void getNextAnimation(void);
     void animationDone(void);
-    void updateAnimation(const Draw::AnimationOptions *animationOptions);
-    void updateAnimationItemToolTip(const QString &a, QListWidgetItem *item);
+    void updateAnimation(const Draw::AnimationOptions *aOptions);
+//    void updatePlayAnimationItemToolTip(const Draw::AnimationOptions *aOptions);
+    void updateAnimationItemToolTip(QListWidgetItem *item);
     void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
     void closePort(const QString &message);
     void portClose(const QString &message);
-    void stopAnimation(void);
+    void stopThreads(void);
 private:
     void playNextAnimation(const QString &a);
     void setupAnimationItems(void);

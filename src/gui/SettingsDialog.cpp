@@ -53,16 +53,11 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     intValidator = new QIntValidator(0, 4000000, this);
 
     ui->baudRateBox->setInsertPolicy(QComboBox::NoInsert);
-
+    ui->updateButton->setShortcut(QKeySequence::Refresh);
     connect(ui->applyButton, SIGNAL(clicked()),
             this, SLOT(apply()));
     connect(ui->portsBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(showPortInfo(int)));
-//    connect(this,&SettingsDialog::hideDialog,this,&SettingsDialog::accept);
-//    connect(this,&SettingsDialog::close,)
-    //        connect(ui->baudRateBox, SIGNAL(currentIndexChanged(int)),
-    //                this, SLOT(checkCustomBaudRatePolicy(int)));
-
     fillPortsParameters();
     fillPortsInfo();
     updateSettings();

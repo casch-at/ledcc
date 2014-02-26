@@ -113,8 +113,8 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
 void MainWindow::closeEvent( QCloseEvent *event ) {  //Close application
     if ( okToContinue() ) {
         Q_EMIT okClosePort();
-        if(createThread->isRunning())
-            stopAnimation();
+        if(createThread->isRunning() || senderThread->isRunning())
+            stopThreads();
         saveSettings ();
         sdialog->close();
         event->accept();
@@ -252,7 +252,7 @@ void MainWindow::animationDone()
  *
  * @param animationOptions
  */
-void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
+void MainWindow::updateAnimation(const Draw::AnimationOptions *aOptions)
 {
     QList<QListWidgetItem*> items = ui->animationPlaylistLW->selectedItems();
     if(!items.isEmpty())
@@ -261,52 +261,52 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
         QString aString =item->text();
         Animation *a = animation.value(aString);
         if(aString.compare(ANIMATIONS::Lift) == 0){
-            dynamic_cast<Lift*>(a)->setDelay(animationOptions->delay);
-            dynamic_cast<Lift*>(a)->setIterations(animationOptions->iteration);
-            dynamic_cast<Lift*>(a)->setSpeed(animationOptions->speed);
+            dynamic_cast<Lift*>(a)->setDelay(aOptions->delay);
+            dynamic_cast<Lift*>(a)->setIterations(aOptions->iteration);
+            dynamic_cast<Lift*>(a)->setSpeed(aOptions->speed);
         }else if(aString.compare(ANIMATIONS::Rain) == 0){
-            dynamic_cast<Rain*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<Rain*>(a)->setIterations(animationOptions->iteration);
+            dynamic_cast<Rain*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<Rain*>(a)->setIterations(aOptions->iteration);
         }else if(aString.compare(ANIMATIONS::StringFly) == 0){
-            dynamic_cast<StringFly*>(a)->setSToDisplay(animationOptions->text);
-            dynamic_cast<StringFly*>(a)->setSpeed(animationOptions->speed);
+            dynamic_cast<StringFly*>(a)->setSToDisplay(aOptions->text);
+            dynamic_cast<StringFly*>(a)->setSpeed(aOptions->speed);
         }else if(aString.compare(ANIMATIONS::Wall) == 0){
-            dynamic_cast<Wall*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<Wall*>(a)->setAxis(animationOptions->axis);
-            dynamic_cast<Wall*>(a)->setDirection(animationOptions->direction);
+            dynamic_cast<Wall*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<Wall*>(a)->setAxis(aOptions->axis);
+            dynamic_cast<Wall*>(a)->setDirection(aOptions->direction);
         }else if(aString.compare(ANIMATIONS::Firework) == 0){
-            dynamic_cast<Firework*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<Firework*>(a)->setParticles(animationOptions->particle);
-            dynamic_cast<Firework*>(a)->setIterations(animationOptions->iteration);
+            dynamic_cast<Firework*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<Firework*>(a)->setParticles(aOptions->particle);
+            dynamic_cast<Firework*>(a)->setIterations(aOptions->iteration);
         }else if(aString.compare(ANIMATIONS::RandomSparkFlash) == 0){
-            dynamic_cast<RandomSparkFlash*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<RandomSparkFlash*>(a)->setIterations(animationOptions->iteration);
-            dynamic_cast<RandomSparkFlash*>(a)->setLeds(animationOptions->leds);
+            dynamic_cast<RandomSparkFlash*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<RandomSparkFlash*>(a)->setIterations(aOptions->iteration);
+            dynamic_cast<RandomSparkFlash*>(a)->setLeds(aOptions->leds);
         }else if(aString.compare(ANIMATIONS::RandomSpark) == 0){
-            dynamic_cast<RandomSpark*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<RandomSpark*>(a)->setSparks(animationOptions->leds);
-            dynamic_cast<RandomSpark*>(a)->setIterations(animationOptions->iteration);
+            dynamic_cast<RandomSpark*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<RandomSpark*>(a)->setSparks(aOptions->leds);
+            dynamic_cast<RandomSpark*>(a)->setIterations(aOptions->iteration);
         }else if(aString.compare(ANIMATIONS::RandomFiller) == 0){
-            dynamic_cast<RandomFiller*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<RandomFiller*>(a)->setState(animationOptions->state);
+            dynamic_cast<RandomFiller*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<RandomFiller*>(a)->setState(aOptions->state);
         }else if(aString.compare(ANIMATIONS::AxisNailWall) == 0){
-            dynamic_cast<AxisNailWall*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<AxisNailWall*>(a)->setAxis(animationOptions->axis);
-            dynamic_cast<AxisNailWall*>(a)->setInvert(animationOptions->invert == 0 ? false : true);
+            dynamic_cast<AxisNailWall*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<AxisNailWall*>(a)->setAxis(aOptions->axis);
+            dynamic_cast<AxisNailWall*>(a)->setInvert(aOptions->invert == 0 ? false : true);
         }else if(aString.compare(ANIMATIONS::Loadbar) == 0){
-            dynamic_cast<Loadbar*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<Loadbar*>(a)->setAxis(animationOptions->axis);
+            dynamic_cast<Loadbar*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<Loadbar*>(a)->setAxis(aOptions->axis);
         }else if(aString.compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
-            dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(animationOptions->invert == 0 ? false : true);
-            dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(animationOptions->iteration);
+            dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(aOptions->invert == 0 ? false : true);
+            dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(aOptions->iteration);
         }else if(aString.compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
-            dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(animationOptions->speed);
-            dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(animationOptions->iteration);
+            dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(aOptions->speed);
+            dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(aOptions->iteration);
         }else if(aString.compare(ANIMATIONS::RandomZLift) == 0){
-            dynamic_cast<RandomZLift*>(a)->setSpeed(animationOptions->speed);
+            dynamic_cast<RandomZLift*>(a)->setSpeed(aOptions->speed);
         }
-        updateAnimationItemToolTip(aString,item);
+        updateAnimationItemToolTip(item);
     }
 }
 
@@ -316,38 +316,38 @@ void MainWindow::updateAnimation(const Draw::AnimationOptions *animationOptions)
  * @param a
  * @param item
  */
-void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *item)
+void MainWindow::updateAnimationItemToolTip(QListWidgetItem *item)
 {
     if(item == Q_NULLPTR)
         return;
-    QHash<QString,Animation*>::iterator iter = animation.find(a);
+    QHash<QString,Animation*>::iterator iter = animation.find(item->text());
     QString itemToolTip = QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
                                      "Speed: %2<br>"))
             .arg(iter.key())
             .arg(iter.value()->getSpeed());
-    if(a.compare(ANIMATIONS::Lift) == 0){
+    if(item->text().compare(ANIMATIONS::Lift) == 0){
         itemToolTip.append(QString("Delay: %1<br>"
                                    "Iterations: %2")
                            .arg(dynamic_cast<Lift*>(iter.value())->getDelay())
                            .arg(dynamic_cast<Lift*>(iter.value())->getIterations()));
-    }else if(a.compare(ANIMATIONS::StringFly) == 0){
+    }else if(item->text().compare(ANIMATIONS::StringFly) == 0){
         itemToolTip.append(QString("Current Text: "
                                    + dynamic_cast<StringFly*>(iter.value())->getSToDisplay().toLatin1()));
-    }else if(a.compare(ANIMATIONS::RandomSparkFlash) == 0){
+    }else if(item->text().compare(ANIMATIONS::RandomSparkFlash) == 0){
         itemToolTip.append(QString("LEDs: %1<br>"
                                    "Iterations: %2")
                            .arg(dynamic_cast<RandomSparkFlash*>(iter.value())->getLeds())
                            .arg(dynamic_cast<RandomSparkFlash*>(iter.value())->getIterations()));
-    }else if(a.compare(ANIMATIONS::RandomSpark) == 0){
+    }else if(item->text().compare(ANIMATIONS::RandomSpark) == 0){
         itemToolTip.append(QString("Sparks: %1<br>")
                            .arg(dynamic_cast<RandomSpark*>(iter.value())->getSparks()));
-    }else if(a.compare(ANIMATIONS::RandomFiller) == 0){
+    }else if(item->text().compare(ANIMATIONS::RandomFiller) == 0){
         QString tmp;
 
         tmp  = dynamic_cast<RandomFiller*>(iter.value())->getState() == Draw::ON ? "ON" : "OFF";
 
         itemToolTip.append(QString("Start State: " + tmp));
-    }else if(a.compare(ANIMATIONS::Loadbar) == 0){
+    }else if(item->text().compare(ANIMATIONS::Loadbar) == 0){
         QString tmp;
 
         if(dynamic_cast<Loadbar*>(iter.value())->getAxis() == Draw::X_AXIS)
@@ -358,7 +358,7 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
             tmp = "Z-Axis";
 
         itemToolTip.append(QString("Axis: " + tmp));
-    }else if(a.compare(ANIMATIONS::AxisNailWall) == 0){
+    }else if(item->text().compare(ANIMATIONS::AxisNailWall) == 0){
         QString tmp;
 
         if(dynamic_cast<AxisNailWall*>(iter.value())->getAxis() == Draw::X_AXIS)
@@ -371,23 +371,23 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
         tmp.append(dynamic_cast<AxisNailWall*>(iter.value())->getInvert() ? "Invert: Yes" : "Invert: No");
 
         itemToolTip.append(QString("Axis: " + tmp));
-    }else if(a.compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
+    }else if(item->text().compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
         QString tmp;
 
         tmp  = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart() ? "YES<br>" : "NO<br>";
         tmp.append(QString("Iterations: %1")
                    .arg(dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getIterations()));
         itemToolTip.append(QString("Start in center: " + tmp));
-    }else if(a.compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
+    }else if(item->text().compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
         itemToolTip.append(QString("Iterations: %1")
                            .arg(dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations()));
-    }else if(a.compare(ANIMATIONS::RandomZLift) == 0){
+    }else if(item->text().compare(ANIMATIONS::RandomZLift) == 0){
         itemToolTip.append(QString("Iterations: %1")
                            .arg(dynamic_cast<RandomZLift*>(iter.value())->getIterations()));
-    }else if(a.compare(ANIMATIONS::Rain) == 0){
+    }else if(item->text().compare(ANIMATIONS::Rain) == 0){
         itemToolTip.append(QString("Iterations: %1")
                            .arg(dynamic_cast<Rain*>(iter.value())->getIterations()));
-    }else if(a.compare(ANIMATIONS::Wall) == 0){
+    }else if(item->text().compare(ANIMATIONS::Wall) == 0){
         QString tmp;
 
         tmp = dynamic_cast<Wall*>(iter.value())->getDirection() == Draw::FORWARD ? "Direction: Forward<br>" : "Direction: Backward<br>";
@@ -400,7 +400,7 @@ void MainWindow::updateAnimationItemToolTip(const QString &a, QListWidgetItem *i
             tmp = "Axis: Z-Axis";
 
         itemToolTip.append(tmp);
-    }else if(a.compare(ANIMATIONS::Firework) == 0){
+    }else if(item->text().compare(ANIMATIONS::Firework) == 0){
         itemToolTip.append(QString("Iterations: %1<br>"
                                    "Particles: %2")
                            .arg(dynamic_cast<Firework*>(iter.value())->getIterations())
@@ -445,7 +445,7 @@ void MainWindow::portClose(const QString &message)
     updateUi();
 }
 
-void MainWindow::stopAnimation()
+void MainWindow::stopThreads()
 {
     pauseAction->setDisabled(true);
     currentAnimation->m_abort = true;
@@ -484,7 +484,7 @@ void MainWindow::setupAnimationItems()
     QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
     while(iter != animation.constEnd()){
         QListWidgetItem *item = new QListWidgetItem(iter.key(),ui->availableAnimationsLW);
-        updateAnimationItemToolTip(iter.key(),item);
+        updateAnimationItemToolTip(item);
         iter.value()->moveToThread(createThread);
         connect(iter.value(),&Animation::sendData,sender,&Sender::sendAnimation);
         iter.value()->m_abort = false;
@@ -531,7 +531,7 @@ void MainWindow::connectSignals(void) //Connect Signals
     connect(shortCutSA , &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
     connect(ui->animationAdjustGB , &AnimationOptionsGroupBox::optionsReady , this, &MainWindow::updateAnimation);
     connect(playAction , &QAction::triggered , this , &MainWindow::playAnimations);
-    connect(pauseAction , &QAction::triggered , this , &MainWindow::stopAnimation);
+    connect(pauseAction , &QAction::triggered , this , &MainWindow::stopThreads);
 
 }
 
@@ -556,9 +556,9 @@ void MainWindow::createActions(void)  // Creat action for the toolbar
     //    aboutAction->setShortcut(tr( "Ctrl+A" ));
     aboutAction->setStatusTip( tr( "About Kitchen Scale" ) );
 
-    settingAction = new QAction( tr( "Settings Ctrl+I" ), this );
+    settingAction = new QAction( tr( "Settings I" ), this );
     settingAction->setIcon( QIcon( "://images/package_settings.png" ) );
-    settingAction->setShortcut(tr( "Ctrl+I" ));
+    settingAction->setShortcut(tr( "I" ));
     settingAction->setStatusTip( tr( "Configure Kitchen Scale" ) );
 
     playAction = new QAction( tr("Play Animation R"),this);
