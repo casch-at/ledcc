@@ -26,7 +26,7 @@ public:
         return m_speed;
     }
 
-    void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed);
+    void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z);
     void effectZUpDownMove(QVector<u_int8_t> &destination,
             QVector<u_int8_t> &position, Axis axe);
 

@@ -14,6 +14,7 @@ void Lift::createAnimation()
     u_int8_t lastY = 0;
     u_int8_t x;
     u_int8_t y;
+
     fillCubeArray(0x00);
 
     for (x = 0; x < CUBE_SIZE; x++)
@@ -34,9 +35,9 @@ void Lift::createAnimation()
         if (y != lastY && x != lastX)
         {
             if (getBixelState(x, y, 0))
-                sendBixelZ(x, y, 0, getSpeed());
+                sendBixelZ(x, y, 0);
             else
-                sendBixelZ(x, y, 7, getSpeed());
+                sendBixelZ(x, y, 7);
             waitMs(m_delay);
             lastX = x;
             lastY = y;

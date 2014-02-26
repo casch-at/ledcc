@@ -214,7 +214,7 @@ void MainWindow::playNextAnimation(const QString &a)
 void MainWindow::playAnimations()
 {
     stopPlay = true;
-    currentAnimation->m_abort = false;
+
     if(!senderThread->isRunning())
         senderThread->start();
     playAction->setDisabled(true);
@@ -226,7 +226,7 @@ void MainWindow::getNextAnimation()
 {
     static u_int8_t row;
     if(row < ui->animationPlaylistLW->count()){
-        qDebug() << ui->animationPlaylistLW->item(row)->text();
+//        qDebug()<< "Animation: " << ui->animationPlaylistLW->item(row)->text() << "abort status: "<< animation.value(ui->animationPlaylistLW->item(row)->text())->m_abort;
         playNextAnimation(ui->animationPlaylistLW->item(row++)->text());
     }
     if(row >= ui->animationPlaylistLW->count())
@@ -238,6 +238,7 @@ void MainWindow::animationDone()
     disconnect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
     disconnect(currentAnimation, &Animation::done, createThread, &QThread::quit);
     disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+    createThread->wait();
     if(stopPlay)
         Q_EMIT getNextAnimation();
     else
@@ -454,8 +455,8 @@ void MainWindow::stopAnimation()
 
     senderThread->wait();
     createThread->wait();
+    currentAnimation->m_abort = false;
     animationDone();
-
 }
 
 /**
@@ -486,6 +487,7 @@ void MainWindow::setupAnimationItems()
         updateAnimationItemToolTip(iter.key(),item);
         iter.value()->moveToThread(createThread);
         connect(iter.value(),&Animation::sendData,sender,&Sender::sendAnimation);
+        iter.value()->m_abort = false;
         iter++;
     }
 }

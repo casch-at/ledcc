@@ -1,7 +1,7 @@
 #include "Animation.hpp"
 #include <QTimer>
 
-void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed)
+void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z)
 {
     u_int8_t ii = 0;
     for (u_int8_t i = 0; i < CUBE_SIZE; i++)
@@ -17,7 +17,7 @@ void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z, u_int16_t speed)
             clearBixel(x, y, ii - 1);
         }
         setBixel(x, y, ii);
-        waitMs(speed);
+        waitMs(m_speed);
     }
 }
 

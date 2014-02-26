@@ -21,13 +21,10 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
         addItem(i->clone());
     }
     emit updateUi();
-    qDebug() << "Current items Playlist: " << count();
 }
 
 void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
 {
-    qDebug() << "Event key is: " << QString::number(event->key(),16)
-             << "Qt::Key_Delete is: " << QString::number(Qt::Key_Delete,16);
     int cRow = -1;
 
     switch (event->key()) {
