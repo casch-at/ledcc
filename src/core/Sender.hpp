@@ -18,12 +18,14 @@ public:
     }
 
 Q_SIGNALS:
-    void portStatus(QString param);
-    void portError(QString param);
+    void portStatus(const QString &param);
+    void portError(const QString &param);
+    void closePort(const QString &param);
 public Q_SLOTS:
     void sendAnimation(const Draw::CubeArray &d);
     void stop();
     void openCloseSerialPort(const SettingsDialog::SerialSettings &s);
+    void closeSerialPort();
 
 private:
     QSerialPort *m_serial;
@@ -33,7 +35,6 @@ private:
     SettingsDialog::SerialSettings m_port;
 private:
     bool openSerialPort();
-    void closeSerialPort();
     bool checkPortSettings();
 };
 

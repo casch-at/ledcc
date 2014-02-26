@@ -29,6 +29,8 @@
 #include "animations/Rain.hpp"
 #include "animations/StringFly.hpp"
 #include "Sender.hpp"
+#include "PortMessageBox.hpp"
+
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSettings>
@@ -45,7 +47,7 @@
 
 using namespace std;
 
-namespace{
+namespace SETTINGS{
     const QString GeometrySettings("geometry");
     }
 
@@ -150,14 +152,14 @@ void MainWindow::resizeEvent(QResizeEvent *e){ //Resize Window
  */
 void MainWindow::saveSettings(void){  //Save geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
-    settings.setValue (GeometrySettings,saveGeometry ());
+    settings.setValue (SETTINGS::GeometrySettings,saveGeometry ());
 }
 /**
  * @brief MainWindow::readSettings
  */
 void MainWindow::readSettings (void){ //Load geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
-    restoreGeometry (settings.value (GeometrySettings).toByteArray ());
+    restoreGeometry (settings.value (SETTINGS::GeometrySettings).toByteArray ());
 }
 
 /**
@@ -414,17 +416,24 @@ void MainWindow::portStatusbarMessage(const QString &message)
 
 void MainWindow::displayPortErrorMessage(const QString &message)
 {
-    QMessageBox msg;
-    msg.setDefaultButton(QMessageBox::Ok);
-    msg.setIconPixmap(QPixmap("://images/dialog-error.png").scaled(QSize(48,48)));
+    PortMessageBox *msg = Q_NULLPTR;
     if(message.contains("#")){
-        msg.setText(message.split("#").first());
-        msg.setInformativeText(message.split("#").last());
+        msg = new PortMessageBox(tr("Error"),message.split("#").first(),message.split("#").last(),this);
+    }else{
+        msg = new PortMessageBox(tr("Error"),message,this);
     }
-    else{
-        msg.setText(message);
-    }
-    msg.exec();
+    msg->exec();
+    delete msg;
+}
+
+void MainWindow::closePort(const QString &message)
+{
+    PortMessageBox *msg = new PortMessageBox(tr("Close Port"),message,this);
+
+    if(msg->exec() == QMessageBox::Ok)
+        Q_EMIT okClosePort();
+
+    delete msg;
 }
 
 /**
@@ -462,84 +471,6 @@ void MainWindow::setupAnimationItems()
 void MainWindow::openCloseSerialPort(void)  // Open the Serial port
 {
     Q_EMIT openSerialInterface(sdialog->settings());
-    //    m_port = sdialog->settings();
-
-    //    if(!serial.isOpen()){ // Get the status of the Serial port
-    //        bool result = openSerialPort();
-    //        if(result)
-    //        {
-    //            ui->statusbar->showMessage (tr("Connected to %1 : %2, %3, %4, %5, %6")
-    //                                        .arg (m_port.name).arg (m_port.stringBaudRate)
-    //                                        .arg (m_port.stringDataBits).arg (m_port.stringParity)
-    //                                        .arg (m_port.stringStopBits).arg (m_port.stringFlowControl));
-    //        }else
-    //        {
-    //            serial.close();
-    //            QMessageBox::warning (this,tr("Error"),
-    //                                  tr("Can't open serial port: %1 - error code: %2\n\n\n"
-    //                                     "Check if device is connected properly!")
-    //                                  .arg (m_port.name).arg (serial.error ()));
-    //            ui->statusbar->showMessage(tr("Open error"),3000);
-    //        }
-    //    }
-    //    else{
-    //        int flag = QMessageBox::information (this,tr("Closing port")
-    //                                             ,tr("Do you really want close the serial port?\n %1")
-    //                                             .arg(m_port.name),QMessageBox::Ok,QMessageBox::Cancel);
-    //        if(flag == QMessageBox::Ok)
-    //            closeSerialPort();
-
-    //    }
-    //    serial.moveToThread(senderThread);
-    //    updateUi ();
-}
-/**
- * @brief MainWindow::checkPortSettings
- * @return
- */
-bool MainWindow::checkPortSettings(void)
-{
-    if( serial.setBaudRate (m_port.baudRate) && serial.setDataBits (m_port.dataBits)
-            && serial.setParity (m_port.parity) && serial.setStopBits (m_port.stopBits)
-            && serial.setFlowControl (m_port.flowControl))
-    {
-        return true;
-    }else
-    {
-        QMessageBox::critical (this,tr("Error"),
-                               tr("Can't configure the serial port: %1,\n"
-                                  "error code: %2")
-                               .arg (m_port.name).arg (serial.error ()));
-        return false;
-    }
-}
-/**
- * @brief MainWindow::closeSerialPort
- */
-void MainWindow::closeSerialPort(void)
-{
-    serial.close();
-    ui->statusbar->showMessage(tr("Port closed: %1").arg (m_port.name),3000);
-}
-/**
- * @brief MainWindow::openSerialPort
- * @return
- */
-bool MainWindow::openSerialPort(void)
-{
-    bool result;
-
-    serial.setPortName (m_port.name);
-
-    if(serial.open(QIODevice::ReadWrite))
-    {
-        result = checkPortSettings();
-
-    }else
-    {
-        result = false;
-    }
-    return result;
 }
 
 void MainWindow::setupSenderThread()
@@ -552,6 +483,8 @@ void MainWindow::setupSenderThread()
     connect(this,&MainWindow::openSerialInterface,sender,&Sender::openCloseSerialPort);
     connect(sender,&Sender::portStatus,this,&MainWindow::portStatusbarMessage);
     connect(sender,&Sender::portError,this,&MainWindow::displayPortErrorMessage);
+    connect(sender,&Sender::closePort,this,&MainWindow::closePort);
+    connect(this,&MainWindow::okClosePort,sender,&Sender::closeSerialPort);
 }
 
 /**

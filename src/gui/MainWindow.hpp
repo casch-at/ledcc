@@ -44,6 +44,7 @@ public:
 Q_SIGNALS:
     void startAnimation();
     void openSerialInterface(const SettingsDialog::SerialSettings &port);
+    void okClosePort();
 private Q_SLOTS:
     bool okToContinue(void);
     void resizeEvent(QResizeEvent *e);
@@ -63,12 +64,10 @@ private Q_SLOTS:
     void updateAnimationItemToolTip(const QString &a, QListWidgetItem *item);
     void portStatusbarMessage(const QString &message);
     void displayPortErrorMessage(const QString &message);
+    void closePort(const QString &message);
 private:
     void playNextAnimation(const QString &a);
     void setupAnimationItems(void);
-    bool checkPortSettings(void);
-    void closeSerialPort(void);
-    bool openSerialPort(void);
     void setupSenderThread(void);
 private:
     Ui::MainWindow *ui;
