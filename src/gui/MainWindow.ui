@@ -122,7 +122,7 @@
      </widget>
     </item>
     <item row="1" column="0">
-     <widget class="AnimationOptionsGroupBox" name="animationAdjustGB">
+     <widget class="AnimationOptions" name="animationAdjustGB">
       <property name="font">
        <font>
         <weight>75</weight>
@@ -160,9 +160,9 @@
    <header>AnimationPlayListWidget.hpp</header>
   </customwidget>
   <customwidget>
-   <class>AnimationOptionsGroupBox</class>
+   <class>AnimationOptions</class>
    <extends>QGroupBox</extends>
-   <header>AnimationOptionsGroupBox.hpp</header>
+   <header>AnimationOptions.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

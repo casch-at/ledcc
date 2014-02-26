@@ -1,6 +1,6 @@
 #include "AxisNailWall.hpp"
 
-AxisNailWall::AxisNailWall(const u_int16_t &speed, const Draw::Axis &axis, const bool invert, const QString &name, QObject *parent):
+AxisNailWall::AxisNailWall(const u_int16_t &speed, const Axis &axis, const bool invert, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_axis(axis),
     m_invert(invert)

@@ -15,18 +15,19 @@
 #include <SettingsDialog.hpp>
 #include <QThread>
 #include <Global.hpp>
-#include "animations/Draw.hpp"
+//#include "animations/Draw.hpp"
+#include "AnimationOptions.hpp"
 #include <QTimer>
 //#define DEBUGWINDOW
 
 /*Forward deceleration*/
 class QTimer;
-class DebugDockWidget;
 class QShortcut;
 class Lift;
 class Animation;
 class QListWidgetItem;
 class Sender;
+
 namespace Ui {
     class MainWindow;
 }
@@ -60,9 +61,9 @@ private Q_SLOTS:
     void playAnimations(void);
     void getNextAnimation(void);
     void animationDone(void);
-    void updateAnimation(const Draw::AnimationOptions *aOptions);
-//    void updatePlayAnimationItemToolTip(const Draw::AnimationOptions *aOptions);
-    void updateAnimationItemToolTip(QListWidgetItem *item);
+    void updateAnimation(const QString &aString, const AnimationOptions::Options *aOptions);
+    void updateItemToolTip(const AnimationOptions::Options *aOptions);
+    void updateAnimationItemToolTip(QListWidgetItem *item, const AnimationOptions::Options *a);
     void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
     void closePort(const QString &message);
@@ -76,7 +77,6 @@ private:
     Ui::MainWindow *ui;
     SettingsDialog *sdialog;
     SettingsDialog::SerialSettings m_port;
-    DebugDockWidget *debugDockWidget;
     QToolBar *helpToolBar;
     QToolBar *mainToolBar;
     QAction *quitAction;

@@ -50,7 +50,7 @@ set(GUI         ${gui_DIR}/DebugDockWidget.cpp
                 ${gui_DIR}/SettingsDialog.cpp
                 ${gui_DIR}/AnimationListWidget.cpp
                 ${gui_DIR}/AnimationPlayListWidget.cpp
-                ${gui_DIR}/AnimationOptionsGroupBox.cpp
+                ${gui_DIR}/AnimationOptions.cpp
                 ${gui_DIR}/PortMessageBox.cpp
 )
 set(CORE        ${core_DIR}/animations/Draw.cpp
@@ -77,7 +77,7 @@ set(AQP         ${aqp_DIR}/alt_key.cpp
 set(FORMS       ${gui_DIR}/DebugDockWidget.ui
                 ${gui_DIR}/MainWindow.ui
                 ${gui_DIR}/SettingsDialog.ui
-                ${gui_DIR}/AnimationOptionsGroupBox.ui
+                ${gui_DIR}/AnimationOptions.ui
 )
 
 #set(CFILES      ${cfiles}/AsciiHex.cpp

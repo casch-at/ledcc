@@ -92,18 +92,6 @@ public:
         ON = !OFF
     } BixelState;
 
-    struct AnimationOptions{
-        QString text;
-        u_int8_t particle;
-        u_int16_t speed;
-        u_int16_t delay;
-        u_int16_t leds;
-        u_int16_t iteration;
-        Direction direction;
-        Axis axis;
-        bool invert;
-        BixelState state;
-    };
 
     CubeArray cubeFrame;
     CubeArray cubeFrameTemp;
