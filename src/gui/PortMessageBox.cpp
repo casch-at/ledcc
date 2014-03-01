@@ -27,8 +27,8 @@ PortMessageBox::PortMessageBox(const QString &title, const QString &text, QWidge
     setText(text);
 }
 
-PortMessageBox::~PortMessageBox()
-{
-    qDebug("PortMessageBox destructor");
-}
+//PortMessageBox::~PortMessageBox()
+//{
+//    qDebug("PortMessageBox destructor");
+//}
 

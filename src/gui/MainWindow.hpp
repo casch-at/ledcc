@@ -15,7 +15,7 @@
 #include <SettingsDialog.hpp>
 #include <QThread>
 #include <Global.hpp>
-//#include "animations/Draw.hpp"
+
 #include "AnimationOptions.hpp"
 #include <QTimer>
 //#define DEBUGWINDOW
@@ -27,7 +27,7 @@ class Lift;
 class Animation;
 class QListWidgetItem;
 class Sender;
-
+class AnimationItem;
 namespace Ui {
     class MainWindow;
 }

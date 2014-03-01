@@ -220,13 +220,13 @@ void MainWindow::playAnimations()
         senderThread->start();
     playAction->setDisabled(true);
     pauseAction->setEnabled(true);
-    getNextAnimation();
+    playNextAnimation(ui->animationPlaylistLW->getNextAnimation()->text());
 }
 
 void MainWindow::getNextAnimation()
 {
-    QListWidgetItem *item = ui->animationPlaylistLW->getNextAnimation();
-    playNextAnimation(item->text());
+//    QListWidgetItem *item =
+//    playNextAnimation();
 }
 
 void MainWindow::animationDone()
@@ -236,7 +236,7 @@ void MainWindow::animationDone()
     disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
     createThread->wait();
     if(stopPlay)
-        Q_EMIT getNextAnimation();
+        playNextAnimation(ui->animationPlaylistLW->getNextAnimation()->text());
     else
         updateUi();
 
@@ -247,9 +247,9 @@ void MainWindow::updateItemToolTip(const AnimationOptions::Options *aOptions)
     QList<QListWidgetItem*> items = ui->animationPlaylistLW->selectedItems();
     if(!items.isEmpty())
     {
-        AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
+        QListWidgetItem *item = items.first();
         updateAnimationItemToolTip(item,aOptions);
-        if(currentAnimation->getName().compare(item->text()) == 0){
+        if(currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/){
             updateAnimation(item->text(),aOptions);
         }
 
