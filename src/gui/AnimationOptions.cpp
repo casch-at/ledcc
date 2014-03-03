@@ -20,16 +20,29 @@ AnimationOptions::Options *AnimationOptions::getAnimationSettings()
 }
 
 
-void AnimationOptions::enableProperty(const uint8_t &animation)
+void AnimationOptions::setItemProperties(const Options *options)
 {
-    switch (animation)
-    {
-    case 1:
-
-        break;
-    default:
-        break;
+//    Options options = options->getOptions();
+    if(options->axis == Draw::X_AXIS )
+        ui->axisComB->setCurrentIndex(0);
+    else if(options->axis == Draw::Y_AXIS )
+        ui->axisComB->setCurrentIndex(1);
+    else if(options->axis == Draw::Z_AXIS )
+        ui->axisComB->setCurrentIndex(0);
+    ui->delaySpinB->setValue(static_cast<int>(options->delay));
+    if( options->direction == Draw::BACKWARD )
+        ui->directionComB->setCurrentIndex(0);
+    else if(options->direction == Draw::FORWARD )
+        ui->directionComB->setCurrentIndex(1);
+    if(options->invert == true && options->state == Draw::ON){
+        ui->invertSpinB->setValue(1);
+    }else{
+        ui->invertSpinB->setValue(0);
     }
+    ui->iterationsSpinB->setValue( static_cast<int>(options->iteration));
+    ui->ledsSpinB->setValue( static_cast<int>(options->leds));
+    ui->speedSpinB->setValue( static_cast<int>(options->speed));
+    ui->textLineE->setText(options->text.isEmpty() == true ? "" : options->text);
 }
 
 void AnimationOptions::changeEvent(QEvent *e)
@@ -71,5 +84,5 @@ void AnimationOptions::on_applyPushB_clicked()
     m_options.leds = static_cast<u_int16_t>(ui->ledsSpinB->value());
     m_options.speed = static_cast<u_int16_t>(ui->speedSpinB->value());
     m_options.text = ui->textLineE->text();
-    Q_EMIT optionsReady(&m_options);
+    Q_EMIT optionsReady(m_options);
 }

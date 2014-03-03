@@ -4,6 +4,8 @@
 #include <QGroupBox>
 #include "Global.hpp"
 #include "animations/Draw.hpp"
+//#include "AnimationItem.hpp"
+
 namespace Ui {
     class AnimationOptions;
     }
@@ -29,9 +31,9 @@ public:
     ~AnimationOptions();
     Options *getAnimationSettings(void);
 Q_SIGNALS:
-    void optionsReady(const Options *animationOptions);
+    void optionsReady(const Options &animationOptions);
 public Q_SLOTS:
-    void enableProperty(const uint8_t &animation);
+    void setItemProperties(const Options *options);
 protected:
     void changeEvent(QEvent *e);
 

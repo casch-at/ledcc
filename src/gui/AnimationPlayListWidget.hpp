@@ -2,6 +2,7 @@
 #define ANIMATIONPLAYLISTWIDGET_HPP
 
 #include <QListWidget>
+#include "AnimationItem.hpp"
 
 class AnimationPlayListWidget : public QListWidget
 {
@@ -18,7 +19,7 @@ protected:
     virtual void keyPressEvent(QKeyEvent * event);
 public Q_SLOTS:
     void selectAllItems(void);
-    QListWidgetItem *getNextAnimation(void);
+    AnimationItem *getNextAnimation(void);
 private:
 };
 

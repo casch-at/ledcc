@@ -61,8 +61,8 @@ private Q_SLOTS:
     void playAnimations(void);
     void getNextAnimation(void);
     void animationDone(void);
-    void updateAnimation(const QString &aString, const AnimationOptions::Options *aOptions);
-    void updateItemToolTip(const AnimationOptions::Options *aOptions);
+    void updateAnimation(const AnimationItem *item);
+    void updateItemToolTip(const AnimationOptions::Options &aOptions);
     void updateAnimationItemToolTip(QListWidgetItem *item, const AnimationOptions::Options *a);
     void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
@@ -70,7 +70,7 @@ private Q_SLOTS:
     void portClosed(const QString &message);
     void stopThreads(void);
 private:
-    void playNextAnimation(const QString &a);
+    void playNextAnimation(const AnimationItem *item);
     void setupAnimationItems(void);
     void setupSenderThread(void);
 private:

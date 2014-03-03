@@ -2,7 +2,7 @@
 #define ANIMATIONLISTWIDGET_HPP
 
 #include <QListWidget>
-
+#include "AnimationItem.hpp"
 /**
  * @brief Class AnimationListWidget handles all available animation
  *
