@@ -12,7 +12,7 @@ public:
     explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = Type);
 
 //    AnimationItem(const AnimationItem &other);
-    ~AnimationItem();
+//    ~AnimationItem();
     AnimationOptions::Options *getOptions(void){
         return &m_options;
     }

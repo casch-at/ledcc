@@ -67,7 +67,7 @@ private Q_SLOTS:
     void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
     void closePort(const QString &message);
-    void portClose(const QString &message);
+    void portClosed(const QString &message);
     void stopThreads(void);
 private:
     void playNextAnimation(const QString &a);

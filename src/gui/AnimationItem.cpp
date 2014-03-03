@@ -11,8 +11,3 @@ AnimationItem::AnimationItem(const QString &text, QListWidget *view, int type):
 {
 
 }
-
-AnimationItem::~AnimationItem()
-{
-
-}

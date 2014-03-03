@@ -428,6 +428,11 @@ void MainWindow::displayPortErrorMessage(const QString &message)
     delete msg;
 }
 
+/**
+ * @brief Gets called when user presses the port close Button and the port is open
+ *
+ * @param message which gets shown
+ */
 void MainWindow::closePort(const QString &message)
 {
     PortMessageBox *msg = new PortMessageBox(tr("Close Port"),message,this);
@@ -438,19 +443,28 @@ void MainWindow::closePort(const QString &message)
     delete msg;
 }
 
-void MainWindow::portClose(const QString &message)
+/**
+ * @brief Gets called when the serial port gets closed
+ *
+ * @param message which gets shown
+ */
+void MainWindow::portClosed(const QString &message)
 {
     portOpened = false;
     ui->statusbar->showMessage(message,3000);
     updateUi();
 }
 
+/**
+ * @brief Stop sender and animation Thread
+ *
+ */
 void MainWindow::stopThreads()
 {
     pauseAction->setDisabled(true);
     currentAnimation->m_abort = true;
     stopPlay = false;
-    createThread->quit();
+    createThread->quit(); // first quit threads befor wait
     senderThread->quit();
 
     senderThread->wait();
@@ -463,7 +477,7 @@ void MainWindow::stopThreads()
  * @brief
  *
  */
-void MainWindow::setupAnimationItems()
+void MainWindow::setupAnimationItems(void)
 {
     animation.insert(ANIMATIONS::Lift,new Lift);
     animation.insert(ANIMATIONS::StringFly,new StringFly);
@@ -524,9 +538,9 @@ void MainWindow::setupAnimationItems()
         item->setOptions(options);
         updateAnimationItemToolTip(item,&options);
 
-        iter.value()->moveToThread(createThread);
+        iter.value()->moveToThread(createThread); // move animations to own thread
 
-        connect(iter.value(),&Animation::sendData,sender,&Sender::sendAnimation);
+        connect(iter.value(),&Animation::sendData,sender,&Sender::sendAnimation); // connect animation thread with sender thread
 
         iter.value()->m_abort = false;
 
@@ -534,33 +548,41 @@ void MainWindow::setupAnimationItems()
     }
 }
 
-void MainWindow::openCloseSerialPort(void)  // Open the Serial port
+/**
+ * @brief Open or close serial port
+ *
+ */
+void MainWindow::openCloseSerialPort(void)
 {
-    Q_EMIT openSerialInterface(sdialog->settings());
+    Q_EMIT openSerialInterface(sdialog->settings()); // call send thread
 }
 
-void MainWindow::setupSenderThread()
+/**
+ * @brief Setup sender Thread and create related connections
+ *
+ */
+void MainWindow::setupSenderThread(void)
 {
     portOpened = false;
     senderThread = new QThread;
     sender = new Sender;
 
-    sender->moveToThread(senderThread);
-    senderThread->start();
+    sender->moveToThread(senderThread); // move data send class to own thread
+    senderThread->start(); // start send thread, is running for the entier live of the mainwindow
 
     connect(this,&MainWindow::openSerialInterface,sender,&Sender::openCloseSerialPort);
     connect(sender,&Sender::portOpened,this,&MainWindow::portOpen);
-    connect(sender,&Sender::portClosed,this,&MainWindow::portClose);
+    connect(sender,&Sender::portClosed,this,&MainWindow::portClosed);
     connect(sender,&Sender::portError,this,&MainWindow::displayPortErrorMessage);
     connect(sender,&Sender::closePort,this,&MainWindow::closePort);
     connect(this,&MainWindow::okClosePort,sender,&Sender::closeSerialPort);
 }
 
 /**
- * @brief
+ * @brief Create connection related to the MainWindow only
  *
  */
-void MainWindow::connectSignals(void) //Connect Signals
+void MainWindow::connectSignals(void)
 {
     connect (openPortAction,&QAction::triggered, this,&MainWindow::openCloseSerialPort);
     connect(quitAction,&QAction::triggered, this,&MainWindow::close);
@@ -578,10 +600,10 @@ void MainWindow::connectSignals(void) //Connect Signals
 }
 
 /**
- * @brief
+ * @brief Create Actions for the MainWindow
  *
  */
-void MainWindow::createActions(void)  // Creat action for the toolbar
+void MainWindow::createActions(void)
 {
     quitAction = new QAction( tr( "Quit Ctrl+Q" ), this );
     quitAction->setIcon( QIcon( "://images/application-exit.png" ) );
@@ -620,7 +642,7 @@ void MainWindow::createActions(void)  // Creat action for the toolbar
 }
 
 /**
- * @brief
+ * @brief Create MainWindow Toolbar and add Actions
  *
  */
 void MainWindow::createToolbar()
@@ -660,7 +682,7 @@ void MainWindow::createToolbar()
 }
 
 /**
- * @brief
+ * @brief About the Application
  *
  */
 void MainWindow::about()

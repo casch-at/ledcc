@@ -1,3 +1,4 @@
+################################################################################
 #  Main CMake file
 #  Copyright (C) 2013 Christian Schwarzgruber <christiandev9@gmail.com>
 #
@@ -13,12 +14,9 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-######################################################
-
-#  !!!!!!!!!!!!!   Run Cmake with !!!!!!!!!!!!!!!!!!!!!!!
-#   -DCMAKE_PREFIX_PATH=/opts/Qt5.2/5.2.0/gcc_64/lib/cmake/ -DCMAKE_BUILD_TYPE=DEBUG
-
-# Executable name
+################################################################################
+#   Run Cmake with: -DCMAKE_PREFIX_PATH=/opts/Qt5.2/5.2.0/gcc_64/lib/cmake/ -DCMAKE_BUILD_TYPE=DEBUG
+################################################################################
 
 # Minimum required cmake tool
 cmake_minimum_required(VERSION 2.8.10)
