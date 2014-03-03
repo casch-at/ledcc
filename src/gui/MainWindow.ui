@@ -64,8 +64,11 @@
           <property name="defaultDropAction">
            <enum>Qt::IgnoreAction</enum>
           </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
           <property name="selectionMode">
-           <enum>QAbstractItemView::MultiSelection</enum>
+           <enum>QAbstractItemView::ExtendedSelection</enum>
           </property>
           <property name="selectionBehavior">
            <enum>QAbstractItemView::SelectRows</enum>
@@ -98,25 +101,37 @@
         <item>
          <widget class="AnimationPlayListWidget" name="animationPlaylistLW">
           <property name="editTriggers">
-           <set>QAbstractItemView::NoEditTriggers</set>
+           <set>QAbstractItemView::DoubleClicked</set>
           </property>
           <property name="tabKeyNavigation">
            <bool>false</bool>
           </property>
           <property name="showDropIndicator" stdset="0">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="dragEnabled">
+           <bool>true</bool>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>true</bool>
           </property>
           <property name="dragDropMode">
-           <enum>QAbstractItemView::NoDragDrop</enum>
+           <enum>QAbstractItemView::DragDrop</enum>
           </property>
           <property name="defaultDropAction">
-           <enum>Qt::IgnoreAction</enum>
+           <enum>Qt::MoveAction</enum>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
           </property>
           <property name="selectionMode">
-           <enum>QAbstractItemView::SingleSelection</enum>
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectItems</enum>
           </property>
           <property name="movement">
-           <enum>QListView::Static</enum>
+           <enum>QListView::Free</enum>
           </property>
           <property name="sortingEnabled">
            <bool>false</bool>

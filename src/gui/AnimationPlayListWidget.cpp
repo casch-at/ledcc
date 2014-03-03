@@ -6,7 +6,8 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     QListWidget(parent)
 {
     setFocusPolicy(Qt::StrongFocus);
-
+    connect(this,&QListWidget::itemDoubleClicked,
+            this,&AnimationPlayListWidget::on_itemDoubleClicked);
 }
 
 void AnimationPlayListWidget::clearList()
@@ -21,6 +22,11 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
         addItem(i->clone());
     }
     emit updateUi();
+}
+
+void AnimationPlayListWidget::on_itemDoubleClicked(QListWidgetItem *item)
+{
+    Q_EMIT displayAnimationOptions(dynamic_cast<AnimationItem*>(item)->getOptions());
 }
 
 void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
@@ -44,7 +50,6 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Down:
         cRow = currentRow();
-        qDebug()<< "Rows: " << count();
         if(cRow == count()-1)
             setCurrentRow(0);
         else
@@ -65,6 +70,27 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
     }
 
 }
+
+void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *e)
+{
+//    QListWidget::dragMoveEvent(e);
+    e->acceptProposedAction();
+}
+
+void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
+{
+    e->accept();
+}
+
+void AnimationPlayListWidget::dropEvent(QDropEvent *event)
+{
+    foreach(QListWidgetItem *i,selectedItems())
+       insertItem(indexAt(event->pos()).row(),i->clone());
+    foreach(QListWidgetItem *i,selectedItems())
+        delete i;
+    event->acceptProposedAction();
+}
+
 
 void AnimationPlayListWidget::selectAllItems(void)
 {

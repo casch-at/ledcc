@@ -600,6 +600,7 @@ void MainWindow::connectSignals(void)
     connect(ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
     connect(playAction , &QAction::triggered , this , &MainWindow::playAnimations);
     connect(pauseAction , &QAction::triggered , this , &MainWindow::stopThreads);
+    connect(ui->animationPlaylistLW, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB,&AnimationOptions::displayAnimationOptions);
 
 }
 
