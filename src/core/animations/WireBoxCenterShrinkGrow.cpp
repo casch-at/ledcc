@@ -23,6 +23,8 @@ void WireBoxCenterShrinkGrow::createAnimation()
             xyzStart = cubeSizeHalf + j;
             xyzEnd = cubeSizeHalf - 1 - j;
             boxWireframe(xyzStart, xyzStart, xyzStart, xyzEnd, xyzEnd, xyzEnd);
+            if(m_abort)
+                return;
             waitMs(getSpeed());
         }
     }

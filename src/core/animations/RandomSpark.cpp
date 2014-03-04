@@ -32,6 +32,8 @@ void RandomSpark::createSparks(const u_int16_t &leds)
             setBixel(qrand() % CUBE_SIZE, qrand() % CUBE_SIZE,
                     qrand() % CUBE_SIZE);
         }
+        if(m_abort)
+            return;
         waitMs(getSpeed());
         fillCubeArray(0x00);
     }

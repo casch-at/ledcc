@@ -33,6 +33,8 @@ void StringFly::createAnimation()
         // before placing the next character
         for (i = 0; i < 6; i++)
         {
+            if(m_abort)
+                return;
             waitMs(getSpeed());
             shift(Y_AXIS, BACKWARD);
         }
@@ -40,6 +42,8 @@ void StringFly::createAnimation()
     // Shift the last character out of the cube.
     for (i = 0; i < 8; i++)
     {
+        if(m_abort)
+            return;
         waitMs(getSpeed());
         shift(Y_AXIS, BACKWARD);
     }

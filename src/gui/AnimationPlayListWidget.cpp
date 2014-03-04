@@ -6,6 +6,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     QListWidget(parent)
 {
     setFocusPolicy(Qt::StrongFocus);
+    setDropIndicatorShown(true);
     connect(this,&QListWidget::itemDoubleClicked,
             this,&AnimationPlayListWidget::on_itemDoubleClicked);
 }
@@ -71,11 +72,22 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
 
 }
 
-void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *e)
+void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-//    QListWidget::dragMoveEvent(e);
-    e->acceptProposedAction();
+//    this->setDropIndicatorShown(true);
+    if ( this->dropIndicatorPosition() == QAbstractItemView::AboveItem )
+    {
+        event->ignore();
+        return;
+    }
+
+    event->accept();
 }
+//void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *e)
+//{
+////    QListWidget::dragMoveEvent(e);
+//    e->acceptProposedAction();
+//}
 
 void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
 {
@@ -84,10 +96,11 @@ void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
 
 void AnimationPlayListWidget::dropEvent(QDropEvent *event)
 {
-    foreach(QListWidgetItem *i,selectedItems())
-       insertItem(indexAt(event->pos()).row(),i->clone());
-    foreach(QListWidgetItem *i,selectedItems())
-        delete i;
+    foreach(QListWidgetItem *i,selectedItems()){
+        insertItem(indexAt(event->pos()).row()+1,i->clone());
+    }
+//    foreach(QListWidgetItem *i,selectedItems())
+//        delete i;
     event->acceptProposedAction();
 }
 
@@ -102,7 +115,11 @@ void AnimationPlayListWidget::selectAllItems(void)
 AnimationItem *AnimationPlayListWidget::getNextAnimation()
 {
     static int row;
+    int rows = count();
     if(row >= count())
         row=0;
-    return dynamic_cast<AnimationItem*>(item(row++));
+    if(rows)
+        return dynamic_cast<AnimationItem*>(item(row++));
+    else
+        return Q_NULLPTR;
 }

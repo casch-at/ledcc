@@ -13,10 +13,8 @@ class Sender : public QObject
 public:
     explicit Sender(QObject *parent = Q_NULLPTR);
     ~Sender();
-    bool isRunning(void){
-        return m_running;
-    }
 
+    bool m_abort;
 Q_SIGNALS:
     void portOpened(const QString &param);
     void portClosed(const QString &param);
@@ -24,15 +22,14 @@ Q_SIGNALS:
     void closePort(const QString &param);
 public Q_SLOTS:
     void sendAnimation(const Draw::CubeArray &d);
-    void stop();
+//    void stop();
     void openCloseSerialPort(const SettingsDialog::SerialSettings &s);
     void closeSerialPort();
 
 private:
     QSerialPort *m_serial;
     QString m_param;
-    bool m_stoped;
-    bool m_running;
+//    bool m_running;
     SettingsDialog::SerialSettings m_port;
 private:
     bool openSerialPort();

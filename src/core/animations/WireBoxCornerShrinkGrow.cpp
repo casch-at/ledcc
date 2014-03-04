@@ -34,6 +34,8 @@ void WireBoxCornerShrinkGrow::createWireBoxCorner(const u_int8_t rotate, const u
                 mirrorY();
             if (rotate == 2 || rotate == 3)
                 mirrorX();
+            if(m_abort)
+                return;
             waitMs(getSpeed());
         }
     }

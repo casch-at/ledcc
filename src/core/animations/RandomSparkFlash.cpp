@@ -16,6 +16,8 @@ void RandomSparkFlash::createAnimation()
             setBixel(qrand() % CUBE_SIZE, qrand() % CUBE_SIZE,
                     qrand() % CUBE_SIZE);
         }
+        if(m_abort)
+            return;
         waitMs(getSpeed());
         fillCubeArray(0x00);
     }

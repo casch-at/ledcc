@@ -8,6 +8,7 @@ AnimationListWidget::AnimationListWidget(QWidget *parent):
     QListWidget(parent)
 {
     setFocusPolicy(Qt::StrongFocus);
+    setDragDropMode(QAbstractItemView::DragOnly);
 }
 
 void AnimationListWidget::keyPressEvent(QKeyEvent *event)

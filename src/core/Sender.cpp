@@ -6,8 +6,8 @@
 
 Sender::Sender(QObject *parent) :
     QObject(parent),
-    m_stoped(false),
-    m_running(false)
+    m_abort(false)
+//    m_running(false)
 {
     m_serial = Q_NULLPTR;
 }
@@ -18,11 +18,10 @@ Sender::~Sender()
 }
 
 
-void Sender::stop(void)
-{
-    if(isRunning())
-        m_stoped = true;
-}
+//void Sender::stop(void)
+//{
+//    m_abort = true;
+//}
 
 void Sender::sendAnimation(const Draw::CubeArray &d)
 {
@@ -34,6 +33,8 @@ void Sender::sendAnimation(const Draw::CubeArray &d)
         for (u_int8_t y = 0; y < CUBE_SIZE; y++) {
             m_serial->putChar(d[z][y]);
             m_serial->waitForBytesWritten(1000);
+            if(m_abort)
+                return;
             if(d[z][y] == 0xFF){
                 m_serial->putChar(0xFF);
                 m_serial->waitForBytesWritten(1000);

@@ -19,7 +19,8 @@ void AxisNailWall::createAnimation()
         setPlane(m_axis, 7);
     else
         setPlane(m_axis, 0);
-
+    if(m_abort)
+        return;
     waitMs(getSpeed() * 3);
 
     for (u_int8_t i = 0; i < CUBE_ARRAY_SIZE; i++)
@@ -33,6 +34,8 @@ void AxisNailWall::createAnimation()
                 position[px]++;
         }
         drawPositionAxis(m_axis, position, m_invert);
+        if(m_abort)
+            return;
         waitMs(getSpeed());
     }
 
@@ -40,7 +43,8 @@ void AxisNailWall::createAnimation()
     {
         destination[i] = CUBE_SIZE - 1;
     }
-
+    if(m_abort)
+        return;
     waitMs(getSpeed() * 10);
 
     for (u_int8_t i = 0; i < CUBE_SIZE; i++)
@@ -53,6 +57,8 @@ void AxisNailWall::createAnimation()
                 position[px]--;
         }
         drawPositionAxis(m_axis, position, m_invert);
+        if(m_abort)
+            return;
         waitMs(getSpeed());
     }
     Q_EMIT done();

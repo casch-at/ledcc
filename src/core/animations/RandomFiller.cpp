@@ -27,6 +27,8 @@ void RandomFiller::createAnimation()
                 || (m_state == ON && getBixelState(x, y, z) == OFF))
         {
             alterBixel(x, y, z, m_state);
+            if(m_abort)
+                return;
             waitMs(getSpeed());
             leds++;
         }

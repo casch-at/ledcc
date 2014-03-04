@@ -27,8 +27,7 @@ void Lift::createAnimation()
 
     for (u_int16_t i = 0; i < m_iterations; i++)
     {
-        if(m_abort)
-            return;
+
         x = qrand() % CUBE_SIZE;
         y = qrand() % CUBE_SIZE;
 
@@ -38,6 +37,8 @@ void Lift::createAnimation()
                 sendBixelZ(x, y, 0);
             else
                 sendBixelZ(x, y, 7);
+            if(m_abort)
+                return;
             waitMs(m_delay);
             lastX = x;
             lastY = y;

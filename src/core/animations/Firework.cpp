@@ -34,6 +34,8 @@ void Firework::createAnimation()
         for (u_int8_t e = 0; e < origin_z; e++)
         {
             setBixel(origin_x, origin_y, e);
+            if(m_abort)
+                return;
             waitMs(getSpeed() * 2);
             fillCubeArray(0x00);
         }
@@ -73,7 +75,8 @@ void Firework::createAnimation()
                 setBixel(particlesA[f][0], particlesA[f][1], particlesA[f][2]);
 
             }
-
+            if(m_abort)
+                return;
             waitMs(getSpeed());
             fillCubeArray(0x00);
         }

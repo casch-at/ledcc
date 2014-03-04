@@ -20,6 +20,8 @@ void Wall::createAnimation()
 
     for (i = 0; i < CUBE_SIZE ; i++)
     {
+        if(m_abort)
+            return;
         waitMs(getSpeed());
         shift(m_axis, m_direction);
     }

@@ -203,12 +203,17 @@ void MainWindow::updateUi(void)
  */
 void MainWindow::playNextAnimation(const AnimationItem *item)
 {
+    if(item == Q_NULLPTR){
+         stopThreads();
+         return;
+    }
     currentAnimation = animation.value(item->text());
     connect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
     connect(currentAnimation, &Animation::done, createThread, &QThread::quit);
     //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
     //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
     connect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+
     updateAnimation(item);
     createThread->start();
 }
@@ -465,8 +470,9 @@ void MainWindow::portClosed(const QString &message)
  */
 void MainWindow::stopThreads()
 {
-    pauseAction->setDisabled(true);
     currentAnimation->m_abort = true;
+    sender->m_abort = true;
+    pauseAction->setDisabled(true);
     stopPlay = false;
     createThread->quit(); // first quit threads befor wait
     senderThread->quit();
@@ -474,6 +480,7 @@ void MainWindow::stopThreads()
     senderThread->wait();
     createThread->wait();
     currentAnimation->m_abort = false;
+    sender->m_abort = false;
     animationDone();
 }
 

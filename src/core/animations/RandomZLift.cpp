@@ -22,9 +22,12 @@ void RandomZLift::createAnimation()
         for (u_int8_t j = 0; j < CUBE_SIZE; j++)
         {
             effectZUpDownMove(destination, position, Z_AXIS);
+            if(m_abort)
+                return;
             waitMs(getSpeed());
         }
-
+        if(m_abort)
+            return;
         waitMs(getSpeed() * 4);
 
         for (u_int8_t j = 0; j < CUBE_ARRAY_SIZE / 2; j++)

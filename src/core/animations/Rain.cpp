@@ -18,7 +18,8 @@ void Rain::createAnimation()
         {
             setBixel(qrand() % CUBE_SIZE, qrand() % CUBE_SIZE, 7);
         }
-
+        if(m_abort)
+            return;
         waitMs(getSpeed());
         shift(Z_AXIS, BACKWARD);
     }
