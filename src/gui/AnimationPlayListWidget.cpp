@@ -7,6 +7,8 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
 {
     setFocusPolicy(Qt::StrongFocus);
     setDropIndicatorShown(true);
+    setMovement(QListView::Free);
+
     connect(this,&QListWidget::itemDoubleClicked,
             this,&AnimationPlayListWidget::on_itemDoubleClicked);
 }
@@ -74,20 +76,16 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
 
 void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-//    this->setDropIndicatorShown(true);
+    //    this->setDropIndicatorShown(true);
     if ( this->dropIndicatorPosition() == QAbstractItemView::AboveItem )
     {
         event->ignore();
         return;
     }
+    qDebug("Playlist");
 
     event->accept();
 }
-//void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *e)
-//{
-////    QListWidget::dragMoveEvent(e);
-//    e->acceptProposedAction();
-//}
 
 void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
 {
@@ -96,12 +94,32 @@ void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
 
 void AnimationPlayListWidget::dropEvent(QDropEvent *event)
 {
-    foreach(QListWidgetItem *i,selectedItems()){
-        insertItem(indexAt(event->pos()).row()+1,i->clone());
-    }
-//    foreach(QListWidgetItem *i,selectedItems())
-//        delete i;
     event->acceptProposedAction();
+    QModelIndex index = indexAt(event->pos());
+//    DropIndicatorPosition dropPos = dropIndicatorPosition();
+    QList<int> altrows;
+    if(event->source() == this){
+//        insertItem(index.row(),sele);
+        foreach(QListWidgetItem *i,selectedItems()){
+            altrows.append(indexFromItem(i).row());
+        }
+        int row = 0;
+        foreach (QListWidgetItem *i, selectedItems()) {
+            insertItem(index.row()+1,i->clone());
+            qDebug() << "Item text:" << item(altrows.at(row))->text() << "Row:" << altrows.at(row);
+            if(item(altrows.at(row))->text().isEmpty()){
+
+                delete item(altrows.at(row++));
+            }
+        }
+        qDebug() << "Row:" << indexFromItem(item(2)).row() << "Item" << item(2)->text() ;
+    }else{
+
+        qDebug() << "Source event:" << event->source();
+        event->accept();
+    }
+    qDebug("Playlist drop");
+
 }
 
 

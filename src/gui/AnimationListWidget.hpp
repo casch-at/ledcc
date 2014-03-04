@@ -16,7 +16,8 @@ public:
 Q_SIGNALS:
     void itemsSelected(QList<QListWidgetItem *> selected);
 protected:
-    virtual void 	keyPressEvent(QKeyEvent * event);
+    virtual void keyPressEvent(QKeyEvent * event);
+    virtual void dragMoveEvent(QDragMoveEvent *e);
 public Q_SLOTS:
     void selectAllItems(void);
     void insertAnimation(const QString &animation);

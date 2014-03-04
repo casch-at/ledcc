@@ -59,7 +59,7 @@
            <bool>false</bool>
           </property>
           <property name="dragDropMode">
-           <enum>QAbstractItemView::NoDragDrop</enum>
+           <enum>QAbstractItemView::DragOnly</enum>
           </property>
           <property name="defaultDropAction">
            <enum>Qt::IgnoreAction</enum>
@@ -74,7 +74,7 @@
            <enum>QAbstractItemView::SelectRows</enum>
           </property>
           <property name="movement">
-           <enum>QListView::Static</enum>
+           <enum>QListView::Free</enum>
           </property>
           <property name="sortingEnabled">
            <bool>true</bool>
@@ -119,7 +119,7 @@
            <enum>QAbstractItemView::DragDrop</enum>
           </property>
           <property name="defaultDropAction">
-           <enum>Qt::CopyAction</enum>
+           <enum>Qt::MoveAction</enum>
           </property>
           <property name="alternatingRowColors">
            <bool>true</bool>

@@ -8,15 +8,17 @@ AnimationListWidget::AnimationListWidget(QWidget *parent):
     QListWidget(parent)
 {
     setFocusPolicy(Qt::StrongFocus);
-    setDragDropMode(QAbstractItemView::DragOnly);
+    setMovement(QListView::Free);
+    setDragDropMode(QAbstractItemView::DragDrop);
 }
 
 void AnimationListWidget::keyPressEvent(QKeyEvent *event)
 {
-    //    qDebug() << "Event key is: " << QString::number(event->key(),16)
-    //             << "Qt::Key_Enter is: " << QString::number(Qt::Key_Enter,16);
     int cRow = -1;
-
+//    QListWidgetItem *listItem;
+    //TODO::Fix space selection!!!
+    //      Actuall behaviour, item stays always selected ones item is selected because
+    //      when moving item item gets selected ;-) Strange behaviour
     switch (event->key()) {
     case Qt::Key_Enter:
         Q_EMIT itemsSelected(selectedItems());
@@ -44,10 +46,24 @@ void AnimationListWidget::keyPressEvent(QKeyEvent *event)
         }
         break;
     case Qt::Key_Space:
-        item(currentIndex().row())->setSelected(true);
+//        listItem = item(currentIndex().row());
+//        setItemSelected(listItem,!listItem->isSelected());
+//        if(listItem->isSelected())
+//            setItemSelected(listItem,true);
+//        else
+//            setItemSelected(listItem,false);
         break;
     default:
         break;
+    }
+}
+
+void AnimationListWidget::dragMoveEvent(QDragMoveEvent *e)
+{
+    if (e->source() != this) {
+        e->accept();
+    } else {
+        e->ignore();
     }
 }
 
