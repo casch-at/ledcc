@@ -17,20 +17,30 @@ void RandomZLift::createAnimation()
         destination[i] = qrand() % 8;
     }
 
+//    for (u_int8_t i = 0; i < CUBE_SIZE; i++)
+//    {
+//        effectZUpDownMove(destination, position, Z_AXIS);
+//        waitMs(getSpeed());
+//    }
+
     for (u_int16_t i = 0; i < m_iterations; i++)
     {
         for (u_int8_t j = 0; j < CUBE_SIZE; j++)
         {
             effectZUpDownMove(destination, position, Z_AXIS);
+
             if(m_abort)
                 return;
+
             waitMs(getSpeed());
         }
+
         if(m_abort)
             return;
+
         waitMs(getSpeed() * 4);
 
-        for (u_int8_t j = 0; j < CUBE_ARRAY_SIZE / 2; j++)
+        for (u_int8_t j = 0; j < CUBE_ARRAY_SIZE / 4; j++)
         {
             destination[qrand() % CUBE_ARRAY_SIZE] = qrand() % CUBE_SIZE;
         }

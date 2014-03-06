@@ -2,6 +2,7 @@
 #define ANIMATION_HPP
 #include "Draw.hpp"
 #include <QDebug>
+
 class Animation : public Draw
 {
     Q_OBJECT

@@ -9,13 +9,13 @@ Firework::Firework(const u_int16_t &iterations, const u_int16_t &speed, const u_
 
 void Firework::createAnimation()
 {
-    uint8_t origin_x = 3;
-    uint8_t origin_y = 3;
-    uint8_t origin_z = 3;
+    u_int8_t origin_x = 3;
+    u_int8_t origin_y = 3;
+    u_int8_t origin_z = 3;
 
-    uint8_t rand_y = 0;
-    uint8_t rand_x = 0;
-    uint8_t rand_z = 0;
+    qreal rand_y = 0;
+    qreal rand_x = 0;
+    qreal rand_z = 0;
 
     qreal slowrate = 0;
     qreal gravity = 0;
@@ -53,9 +53,9 @@ void Firework::createAnimation()
             rand_z = qrand() % 200;
 
             // Movement
-            particlesA[f][3] = 1 - static_cast<qreal>( rand_x / 100 ); // dx
-            particlesA[f][4] = 1 - static_cast<qreal>( rand_y / 100 ); // dy
-            particlesA[f][5] = 1 - static_cast<qreal>( rand_z / 100 ); // dz
+            particlesA[f][3] = 1 - rand_x / 100 ;
+            particlesA[f][4] = 1 - rand_y / 100 ;
+            particlesA[f][5] = 1 - rand_z / 100 ;
         }
 
         // explode

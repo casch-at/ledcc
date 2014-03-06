@@ -1,5 +1,7 @@
 #include "AnimationItem.hpp"
 #include <QDebug>
+
+
 AnimationItem::AnimationItem(QListWidget *view, int type):
     QListWidgetItem(view,type)
 {

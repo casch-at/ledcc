@@ -8,7 +8,7 @@ class RandomZLift : public Animation
     Q_OBJECT
     Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
 public:
-    explicit RandomZLift(const u_int16_t &iterations = 10, const u_int16_t &speed = 50,
+    explicit RandomZLift(const u_int16_t &iterations = 10, const u_int16_t &speed = 100,
                          const QString &name = "Random Z Lift",QObject *parent = Q_NULLPTR);
 
     u_int16_t getIterations() const

@@ -146,15 +146,12 @@ void Draw::checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoin
 
 void Draw::drawPositionAxis(Axis axis, QVector<u_int8_t> &position, bool invert)
 {
-    u_int8_t x = 0;
-    u_int8_t y = 0;
     u_int8_t k = 0;
 
     fillCubeArray(0x00);
-
-    for (x = 0; x < CUBE_SIZE; x++)
+    for (u_int8_t x = 0; x < CUBE_SIZE; x++)
     {
-        for (y = 0; y < CUBE_SIZE; y++)
+        for (u_int8_t y = 0; y < CUBE_SIZE; y++)
         {
             if (invert)
                 k = CUBE_SIZE - 1 - position[x * CUBE_SIZE + y];

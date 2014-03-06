@@ -10,7 +10,7 @@ class Firework : public Animation
     Q_PROPERTY(u_int16_t particles READ getParticles WRITE setParticles)
 public:
     explicit Firework(const u_int16_t &iterations = 15, const u_int16_t &speed = 50,
-                      const u_int8_t &particles = 10, const QString &name = "Firework",
+                      const u_int8_t &particles = 20, const QString &name = "Firework",
                       QObject *parent = Q_NULLPTR);
 
     u_int8_t getIterations() const

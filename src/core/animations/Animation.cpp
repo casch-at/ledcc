@@ -27,10 +27,12 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
     {
         if (position[px] < destination[px])
             position[px]++;
-        else
+        else if(position[px] > destination[px])
             position[px]--;
 
     }
+//    fillCubeArray(0x00);
+//    waitMs(10);
     drawPositionAxis(Z_AXIS, position, true);
 }
 
