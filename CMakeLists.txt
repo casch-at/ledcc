@@ -15,7 +15,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
-#   Run Cmake with: -DCMAKE_PREFIX_PATH=/opts/Qt5.2/5.2.0/gcc_64/lib/cmake/ -DCMAKE_BUILD_TYPE=DEBUG
+#   If you want additional program output or want debug the program set CMAKE_BUILD_TYPE to DEBUG
+#   Debug:      -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake -DCMAKE_BUILD_TYPE=DEBUG
+#   Release:    -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake
 ################################################################################
 
 # Minimum required cmake tool
@@ -35,8 +37,6 @@ set(3D_LED_CUBE_VERSION_NUM "0.11")
 
 set(CMAKE_INCLUDE_PATH )
 
-#add_definitions( -DQ )
-
 # Widgets finds its eon dependencies (QtGui and QtCore)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5SerialPort REQUIRED)
@@ -50,7 +50,7 @@ set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_RELEASE} -fprofile-arcs -ftest-c
  # set up a mapping so that the Release configuration for the Qt imported target is
  # used in the COVERAGE CMake configuration.
 # set_target_properties(Qt5::Core PROPERTIES MAP_IMPORTED_CONFIG_COVERAGE "RELEASE")
- set_target_properties(Qt5::Core PROPERTIES MAP_IMPORTED_CONFIG_COVERAGE "DEBUG")
+# set_target_properties(Qt5::Core PROPERTIES MAP_IMPORTED_CONFIG_COVERAGE "DEBUG")
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
@@ -154,6 +154,13 @@ endif()
 
 # Tell CMake to run moc when necessary!
 set(CMAKE_AUTOMOC ON)
+
+if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+    message("Debug mode")
+    add_definitions(-D_DEBUG_)
+else()
+    message("Release mode")
+endif()
 
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
   set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS QT_NO_DEBUG)

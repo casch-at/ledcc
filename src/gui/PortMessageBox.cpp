@@ -15,7 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "PortMessageBox.hpp"
+#ifdef _DEBUG_
 #include <QDebug>
+#endif
 PortMessageBox::PortMessageBox(const QString &title, QWidget *parent) :
     QMessageBox(parent)
 {

@@ -17,7 +17,9 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 #include "Draw.hpp"
+#ifdef _DEBUG_
 #include <QDebug>
+#endif
 
 class Animation : public Draw
 {
@@ -45,7 +47,7 @@ public:
 
     void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z);
     void effectZUpDownMove(QVector<u_int8_t> &destination,
-            QVector<u_int8_t> &position, Axis axe);
+            QVector<u_int8_t> &position, Axis axis);
 
     void waitMs(const u_int16_t &time);
     bool m_abort;

@@ -16,7 +16,9 @@
  */
 #include "AnimationListWidget.hpp"
 #include <QKeyEvent>
+#ifdef _DEBUG_
 #include <QDebug>
+#endif
 //#include "animations/Lift.hpp"
 //#include <QtWidgets/QAction>
 

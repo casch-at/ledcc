@@ -19,7 +19,7 @@
 #include "stdint.h"
 #include <QVector>
 #include <QString>
-#include <QObject>
+//#include <QObject>
 
 /************************************************************************
  *                      DEFINES

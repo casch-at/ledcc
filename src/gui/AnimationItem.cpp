@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "AnimationItem.hpp"
+#ifdef _DEBUG_
 #include <QDebug>
-
+#endif
 
 AnimationItem::AnimationItem(QListWidget *view, int type):
     QListWidgetItem(view,type)
@@ -30,12 +31,16 @@ AnimationItem::AnimationItem(const QString &text, QListWidget *view, int type):
 //    initOptions();
 }
 
+/**
+ * @brief Reimplemented clone function to clone the settings of the item
+ *
+ * @return AnimationItem
+ */
 AnimationItem *AnimationItem::clone() const
 {
     AnimationItem *item = new AnimationItem(text());
     item->setToolTip(toolTip());
     item->setOptions(getOptions());
-    qDebug() << "hello clone";
     return item;
 }
 

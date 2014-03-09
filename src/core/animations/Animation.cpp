@@ -17,6 +17,14 @@
 #include "Animation.hpp"
 #include <QTimer>
 
+
+/**
+ * @brief
+ *
+ * @param x
+ * @param y
+ * @param z
+ */
 void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z)
 {
     u_int8_t ii = 0;
@@ -37,7 +45,17 @@ void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z)
     }
 }
 
-void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8_t> &position, Axis axe)
+
+/**
+ * @brief If the number at QVector position "x" is greater or lower
+ *        than the number in the destination QVector, the new position
+ *        gets either decrimented or incremented by one.
+ *
+ * @param destination
+ * @param position
+ * @param axe
+ */
+void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8_t> &position, Axis axis)
 {
     for (u_int8_t px = 0; px < CUBE_ARRAY_SIZE; px++)
     {
@@ -49,9 +67,15 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
     }
 //    fillCubeArray(0x00);
 //    waitMs(10);
-    drawPositionAxis(Z_AXIS, position, true);
+    drawPositionAxis(axis, position, true);
 }
 
+
+/**
+ * @brief
+ *
+ * @param time
+ */
 void Animation::waitMs(const u_int16_t &time)
 {
     Q_EMIT sendData(cubeFrame);

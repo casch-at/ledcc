@@ -1,6 +1,24 @@
+/**
+ * Copyright (C) 2014  Christian Schwarzgruber <christiandev9@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "AnimationOptions.hpp"
 #include "ui_AnimationOptions.h"
+#ifdef _DEBUG_
 #include <QDebug>
+#endif
 
 AnimationOptions::AnimationOptions(QWidget *parent) :
     QGroupBox(parent),
@@ -68,11 +86,12 @@ void AnimationOptions::on_applyPushB_clicked()
         m_options.axis = Draw::Y_AXIS;
     else if(ui->axisComB->currentIndex() == 2)
         m_options.axis = Draw::Z_AXIS;
-    m_options.delay = static_cast<u_int16_t>(ui->delaySpinB->value());
+
     if(ui->directionComB->currentIndex() == 0)
         m_options.direction = Draw::BACKWARD;
     else if(ui->directionComB->currentIndex() == 1)
         m_options.direction = Draw::FORWARD;
+
     if(ui->invertSpinB->value()){
         m_options.invert = true;
         m_options.state = Draw::ON;
@@ -80,9 +99,12 @@ void AnimationOptions::on_applyPushB_clicked()
         m_options.invert = false;
         m_options.state = Draw::OFF;
     }
+
+    m_options.delay = static_cast<u_int16_t>(ui->delaySpinB->value());
     m_options.iteration = static_cast<u_int16_t>(ui->iterationsSpinB->value());
     m_options.leds = static_cast<u_int16_t>(ui->ledsSpinB->value());
     m_options.speed = static_cast<u_int16_t>(ui->speedSpinB->value());
     m_options.text = ui->textLineE->text();
+
     Q_EMIT optionsReady(m_options);
 }
