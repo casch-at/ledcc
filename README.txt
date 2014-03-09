@@ -1,4 +1,4 @@
-3D-LED-Cube is a small program which implements the rs_232 interface to send data to a given µC. 
+3D-LED Cube is a small program which implements the rs_232 interface to send data to a given µC. 
 The µC than turns the leds on and off.
 
 ----------------------------------------  REQUIREMENTS --------------------------------------------------

@@ -35,7 +35,7 @@ set(PROGNAME  "3D-LED-Cube")
 set(3D_LED_CUBE_VERSION "0.1" )
 set(3D_LED_CUBE_VERSION_NUM "0.11")
 
-set(CMAKE_INCLUDE_PATH )
+set(CMAKE_INCLUDE_PATH)
 
 # Widgets finds its eon dependencies (QtGui and QtCore)
 find_package(Qt5Widgets REQUIRED)

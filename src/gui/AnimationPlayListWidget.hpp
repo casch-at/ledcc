@@ -42,6 +42,7 @@ public Q_SLOTS:
     void selectAllItems(void);
     AnimationItem *getNextAnimation(void);
 private:
+    void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
 };
 
 #endif // ANIMATIONPLAYLISTWIDGET_HPP

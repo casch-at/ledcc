@@ -26,7 +26,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     setFocusPolicy(Qt::StrongFocus);
     setDropIndicatorShown(true);
     setMovement(QListView::Free);
-
+    setDefaultDropAction(Qt::MoveAction);
     connect(this,&QListWidget::itemDoubleClicked,
             this,&AnimationPlayListWidget::on_itemDoubleClicked);
 }
@@ -100,7 +100,9 @@ void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *event)
         event->ignore();
         return;
     }
+#ifdef _DEBUG_
     qDebug("Playlist");
+#endif
 
     event->accept();
 }
@@ -110,34 +112,24 @@ void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
     e->accept();
 }
 
-void AnimationPlayListWidget::dropEvent(QDropEvent *event)
+void AnimationPlayListWidget::dropEvent(QDropEvent *event) //TODO::Think about another algorithm, thats nasty
 {
-    event->acceptProposedAction();
-    QModelIndex index = indexAt(event->pos());
-//    DropIndicatorPosition dropPos = dropIndicatorPosition();
-    QList<int> altrows;
+    QList<QListWidgetItem*> items;
+
     if(event->source() == this){
-//        insertItem(index.row(),sele);
-        foreach(QListWidgetItem *i,selectedItems()){
-            altrows.append(indexFromItem(i).row());
-        }
-        int row = 0;
         foreach (QListWidgetItem *i, selectedItems()) {
-            insertItem(index.row()+1,i->clone());
-            qDebug() << "Item text:" << item(altrows.at(row))->text() << "Row:" << altrows.at(row);
-            if(item(altrows.at(row))->text().isEmpty()){
-
-                delete item(altrows.at(row++));
-            }
+            items.append(i->clone());
+            delete i;
         }
-        qDebug() << "Row:" << indexFromItem(item(2)).row() << "Item" << item(2)->text() ;
-    }else{
-
-        qDebug() << "Source event:" << event->source();
+        insertItemsAt(items,indexAt(event->pos()).row());
+    }else if(event->source()->objectName().compare("availableAnimationsLW") == 0) {
+        foreach (QListWidgetItem *i, dynamic_cast<QListWidget*>(event->source())->selectedItems()) {
+            items.append(i->clone());
+        }
+        insertItemsAt(items,indexAt(event->pos()).row());
         event->accept();
     }
-    qDebug("Playlist drop");
-
+    event->acceptProposedAction();
 }
 
 
@@ -159,3 +151,11 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
     else
         return Q_NULLPTR;
 }
+
+void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &items, const int row)
+{
+    foreach (QListWidgetItem *i, items) {
+        insertItem(row,i);
+    }
+}
+
