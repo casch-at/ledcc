@@ -17,10 +17,32 @@
 #--------------------------------------------------------------------------------
 #   Run Cmake with: -DCMAKE_PREFIX_PATH=/opts/Qt5.2/5.2.0/gcc_64/lib/cmake/ -DCMAKE_BUILD_TYPE=DEBUG
 #--------------------------------------------------------------------------------
-#   Directory -> src
+#   Directory -> gui
 #--------------------------------------------------------------------------------
 
-add_subdirectory(core)
-add_subdirectory(aqp)
-add_subdirectory(gui)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
+set(GUI  #DebugDockWidget.cpp
+         MainWindow.cpp
+         SettingsDialog.cpp
+         AnimationListWidget.cpp
+         AnimationPlayListWidget.cpp
+         AnimationOptions.cpp
+         PortMessageBox.cpp
+         AnimationItem.cpp
+    )
 
+set(FORMS  #DebugDockWidget.ui
+           MainWindow.ui
+           SettingsDialog.ui
+           AnimationOptions.ui
+    )
+
+qt5_wrap_ui(${PROGNAME}_FORMS_HEADER        ${FORMS})
+qt5_wrap_cpp(${PROGNAME}_HEADERS_MOC        ${HEADERS})
+
+# or ledCube SHARED ... for shared library
+add_library(ledcubegui STATIC ${GUI} ${${PROGNAME}_FORMS_HEADER} ${${PROGNAME}_HEADERS_MOC})
+
+#message(STATUS "CMAKE_LIBRARY_PATH: " "${CMAKE_BINARY_DIR}/aqp")
+# Finally link static library ledCube against QtWidget and QtSerialPort libraries
+target_link_libraries(ledcubegui aqp ledcubecore)

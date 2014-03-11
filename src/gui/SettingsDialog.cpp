@@ -16,8 +16,8 @@
  */
 #include "SettingsDialog.hpp"
 #include "ui_SettingsDialog.h"
-#include "./aqp/alt_key.hpp"
-#include "./aqp/aqp.hpp"
+#include "alt_key.hpp"
+#include "aqp.hpp"
 
 #include <QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
@@ -69,7 +69,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     fillPortsInfo();
     updateSettings();
     restoreValues();
-    AQP::accelerateWidget (this);  //Give each button a accelerater
+//    AQP::accelerateWidget (this);  //Give each button a accelerater
 
 
 }

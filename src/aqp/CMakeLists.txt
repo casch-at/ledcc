@@ -17,10 +17,22 @@
 #--------------------------------------------------------------------------------
 #   Run Cmake with: -DCMAKE_PREFIX_PATH=/opts/Qt5.2/5.2.0/gcc_64/lib/cmake/ -DCMAKE_BUILD_TYPE=DEBUG
 #--------------------------------------------------------------------------------
-#   Directory -> src
+#                       Create shared aqp library
 #--------------------------------------------------------------------------------
 
-add_subdirectory(core)
-add_subdirectory(aqp)
-add_subdirectory(gui)
+# Include current directory header files
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+
+
+# Put all aqp source files into variable AQP
+set( AQP   alt_key.cpp
+           aqp.cpp
+           kuhn_munkres.cpp )
+
+# Create shared LibrarySHARED
+add_library( aqp  ${AQP} )
+
+# Link shared library aqp against QtWidgets libraries
+target_link_libraries( aqp ${Qt5Widgets_LIBRARIES} )
+
 

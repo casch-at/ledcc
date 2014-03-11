@@ -212,6 +212,7 @@ void MainWindow::playNextAnimation(const AnimationItem *item)
          stopThreads();
          return;
     }
+
     currentAnimation = animation.value(item->text());
     connect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
     connect(currentAnimation, &Animation::done, createThread, &QThread::quit);
@@ -606,7 +607,7 @@ void MainWindow::connectSignals(void)
     connect(clearAction,&QAction::triggered, ui->animationPlaylistLW,&AnimationPlayListWidget::clearList);
     connect(settingAction,&QAction::triggered,sdialog,&QWidget::show);
     connect(ui->animationPlaylistLW , &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
-    connect(ui->availableAnimationsLW , &AnimationListWidget::itemsSelected , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
+    connect(ui->availableAnimationsLW , &AnimationListWidget::addToPlaylist , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
     connect(shortCutSA , &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
     connect(shortCutSA , &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
     connect(ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);

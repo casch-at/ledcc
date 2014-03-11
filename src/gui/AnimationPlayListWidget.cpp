@@ -58,8 +58,10 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Delete:
         foreach(QListWidgetItem *i,selectedItems())
             delete i;
+
         if(count())
             setCurrentRow(currentRow());
+
         emit updateUi();
         break;
     case Qt::Key_Up:
@@ -94,16 +96,11 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
 
 void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-    //    this->setDropIndicatorShown(true);
-    if ( this->dropIndicatorPosition() == QAbstractItemView::AboveItem )
+    if (this->dropIndicatorPosition() == QAbstractItemView::AboveItem )
     {
         event->ignore();
         return;
     }
-#ifdef _DEBUG_
-    qDebug("Playlist");
-#endif
-
     event->accept();
 }
 
@@ -112,7 +109,7 @@ void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
     e->accept();
 }
 
-void AnimationPlayListWidget::dropEvent(QDropEvent *event) //TODO::Think about another algorithm, thats nasty
+void AnimationPlayListWidget::dropEvent(QDropEvent *event) //TODO:: Thats nasty :-), read trough the documentation of Qt 5
 {
     QList<QListWidgetItem*> items;
 
@@ -143,13 +140,16 @@ void AnimationPlayListWidget::selectAllItems(void)
 AnimationItem *AnimationPlayListWidget::getNextAnimation()
 {
     static int row;
+
     int rows = count();
-    if(row >= count())
-        row=0;
-    if(rows)
+
+    if(rows){
+        if(row >= rows)
+            row = 0;
         return dynamic_cast<AnimationItem*>(item(row++));
-    else
+    }else {
         return Q_NULLPTR;
+    }
 }
 
 void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &items, const int row)
@@ -157,5 +157,6 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
     foreach (QListWidgetItem *i, items) {
         insertItem(row,i);
     }
+    Q_EMIT updateUi();
 }
 

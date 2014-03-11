@@ -39,10 +39,10 @@ void AnimationListWidget::keyPressEvent(QKeyEvent *event)
     //      when moving item item gets selected ;-) Strange behaviour
     switch (event->key()) {
     case Qt::Key_Enter:
-        Q_EMIT itemsSelected(selectedItems());
+        Q_EMIT addToPlaylist(selectedItems());
         break;
     case Qt::Key_Return:
-        Q_EMIT itemsSelected(selectedItems());
+        Q_EMIT addToPlaylist(selectedItems());
         break;
     case Qt::Key_Up:
         cRow = currentRow();

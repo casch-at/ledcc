@@ -21,7 +21,7 @@
 ################################################################################
 
 # Minimum required cmake tool
-cmake_minimum_required(VERSION 2.8.10)
+cmake_minimum_required(VERSION 2.8.10 FATAL_ERROR)
 # Executable name
 project("3D-LED Cube")
 # Set program Version
@@ -30,19 +30,25 @@ project("3D-LED Cube")
 set(PROGNAME  "3D-LED-Cube")
 
 #set(CMAKE_BUILD_TYPE DEBUG)
-
 # Set version numbers for global.h configuration. See CMakeLists.txt in src directory
-set(3D_LED_CUBE_VERSION "0.1" )
-set(3D_LED_CUBE_VERSION_NUM "0.11")
+set(LED_CUBE_VERSION_MAJOR "0.1" )
+set(LED_CUBE_VERSION_MINOR "0.11")
 
 set(CMAKE_INCLUDE_PATH)
 
 # Widgets finds its eon dependencies (QtGui and QtCore)
+message(STATUS "Searching for dependencies")
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5SerialPort REQUIRED)
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-get_target_property(QtCore_location Qt5::Core LOCATION)
+
+if(Qt5Widgets_FOUND AND Qt5SerialPort_FOUND AND Qt5Core_FOUND AND Qt5Gui_FOUND)
+    message(STATUS "Qt5Widgets:    yes")
+    message(STATUS "Qt5SerialPort: yes")
+    message(STATUS "Qt5Core:       yes")
+    message(STATUS "Qt5Gui:        yes")
+endif()
+
+#get_target_property(QtCore_location Qt5::Core LOCATION)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_RELEASE} -fprofile-arcs -ftest-coverage")
@@ -146,20 +152,39 @@ endif()
 
 
 if( "${CMAKE_PREFIX_PATH}" STREQUAL  "/usr/local/")
-  set(CMAKE_PREFIX_PATH "/usr/local")
+  message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
 elseif("${CMAKE_PREFIX_PATH}" STREQUAL "")
-  message("CMAKE_PREFIX_PATH" is ${CMAKE_PREFIX_PATH})
-  message(FATAL_ERROR "No CMAKE_PREFIX_PATH specified!")
+  set(CMAKE_PREFIX_PATH "/usr/local")
+  message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
+#   message(FATAL_ERROR "No CMAKE_PREFIX_PATH specified!")
 endif()
+
+
 
 # Tell CMake to run moc when necessary!
 set(CMAKE_AUTOMOC ON)
 
 if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
-    message("Debug mode")
+    message(STATUS "Debug mode")
     add_definitions(-D_DEBUG_)
 else()
-    message("Release mode")
+    message(STATUS "Release mode")
+endif()
+
+if(MINGW)
+  set(BIN_INSTALL_DIR    ".")
+  set(PLUGIN_INSTALL_DIR ".")
+  set(DATA_INSTALL_DIR   "share")
+elseif(APPLE)
+  set(BIN_INSTALL_DIR    ".")
+  set(PLUGIN_INSTALL_DIR ".")
+  set(DATA_INSTALL_DIR   "${PROGNAME}.app/Contents/Resources")
+else()
+  include(GNUInstallDirs)
+
+  set(BIN_INSTALL_DIR    "${CMAKE_INSTALL_BINDIR}")
+  set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/${PROGNAME}")
+  set(DATA_INSTALL_DIR   "${CMAKE_INSTALL_DATAROOTDIR}/${PROGNAME}")
 endif()
 
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
@@ -168,18 +193,23 @@ endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
-# if( "${CMAKE_BUILD_TYPE}" STREQUAL "DEBUG")
-#         ADD_DEFINITIONS( -DDEBUG)
-# endif()
 
+set(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
 
-# As moc files are generated in the binary dir,
-# tell CMake to always look for includes there:
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-##INCLUDE(${QT_USE_FILE})
-ADD_DEFINITIONS(${QT_DEFINITIONS})
 # Include subdirectories
-ADD_SUBDIRECTORY( src )
+include_directories(src/gui src/core/ src/animations src/aqp)
 
+# Create resource file *.cpp
 
+qt5_add_resources(${PROGNAME}_RESOURCES_RCC src/icons.qrc)
 
+add_executable(${PROGNAME} main.cpp ${${PROGNAME}_RESOURCES_RCC})
+
+add_dependencies(${PROGNAME} ledcubegui)
+
+# link against ledcube and animations
+target_link_libraries(${PROGNAME} ledcubegui)
+#qt5_use_modules(${PROGNAME} Widgets
+#                            SerialPort
+#)
+add_subdirectory( src )

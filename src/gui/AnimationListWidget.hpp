@@ -30,7 +30,7 @@ class AnimationListWidget : public QListWidget
 public:
     AnimationListWidget(QWidget* parent = Q_NULLPTR);
 Q_SIGNALS:
-    void itemsSelected(QList<QListWidgetItem *> selected);
+    void addToPlaylist(QList<QListWidgetItem *> selected);
 protected:
     virtual void keyPressEvent(QKeyEvent * event);
     virtual void dragMoveEvent(QDragMoveEvent *e);
