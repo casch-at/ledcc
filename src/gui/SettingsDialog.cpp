@@ -81,7 +81,6 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
  */
 SettingsDialog::~SettingsDialog()
 {
-    qDebug("SettingsDialog::~SettingsDialog");
     delete ui;
 }
 

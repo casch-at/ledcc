@@ -29,7 +29,6 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
 
 AnimationOptions::~AnimationOptions()
 {
-    qDebug("AnimationOptions::~AnimationOptions");
     delete ui;
 }
 
@@ -41,7 +40,6 @@ AnimationOptions::Options *AnimationOptions::getAnimationSettings()
 
 void AnimationOptions::displayAnimationOptions(const Options options)
 {
-//    Options options = options->getOptions();
     if(options.axis == Draw::X_AXIS )
         ui->axisComB->setCurrentIndex(0);
     else if(options.axis == Draw::Y_AXIS )

@@ -38,7 +38,6 @@ Sender::Sender(QObject *parent) :
  */
 Sender::~Sender()
 {
-    qDebug("Hello sender deconstructor");
     if(m_serial != Q_NULLPTR )
         if(m_serial->isOpen())
             m_serial->close();
