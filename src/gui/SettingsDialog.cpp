@@ -69,7 +69,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     fillPortsInfo();
     updateSettings();
     restoreValues();
-//    AQP::accelerateWidget (this);  //Give each button a accelerater
+    qRegisterMetaType<SettingsDialog::SerialSettings>("SettingsDialog::SerialSettings");
+    AQP::accelerateWidget (this);  //Give each button a accelerater
 
 
 }
@@ -80,6 +81,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
  */
 SettingsDialog::~SettingsDialog()
 {
+    qDebug("SettingsDialog::~SettingsDialog");
     delete ui;
 }
 

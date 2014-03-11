@@ -72,5 +72,6 @@ private:
     Ui::SettingsDialog *ui;
     SerialSettings currentSettings;
     QIntValidator *intValidator;
+    Q_DISABLE_COPY(SettingsDialog)
 };
 #endif // SETTINGSDIALOG_H

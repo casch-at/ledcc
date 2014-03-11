@@ -19,7 +19,8 @@
 
 
 /**
- * @brief
+ * @brief The sendBixelZ function sends a led either up or down at position
+ *        @param x y.
  *
  * @param x
  * @param y
@@ -65,14 +66,13 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
             position[px]--;
 
     }
-//    fillCubeArray(0x00);
-//    waitMs(10);
     drawPositionAxis(axis, position, true);
 }
 
 
 /**
- * @brief
+ * @brief Function simulates the animation speed. This thread where the animation
+ *        gets actually created are put to sleep for @param milliseconds.
  *
  * @param time
  */

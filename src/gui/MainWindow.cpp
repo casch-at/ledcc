@@ -92,10 +92,8 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     playAction->setDisabled(true);
     pauseAction->setDisabled(true);
     setupAnimationItems();
-    qRegisterMetaType<SettingsDialog::SerialSettings>("SettingsDialog::SerialSettings");
-
-    AQP::accelerateWidget (this);  //Give each button a accelerater
     connectSignals();
+    AQP::accelerateWidget (this);  //Give each button a accelerater
 }
 
 /**
@@ -105,10 +103,10 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
 {
     foreach (Animation *a, animation)
         delete a;
-    senderThread->deleteLater();
-    senderThread->deleteLater();
     delete createThread;
     delete senderThread;
+    delete sdialog;
+    delete sender;
     delete ui;
 }
 

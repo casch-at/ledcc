@@ -20,25 +20,36 @@
 #include <QDebug>
 #endif
 
+/**
+ * @brief Sender constructor
+ *
+ * @param parent
+ */
 Sender::Sender(QObject *parent) :
     QObject(parent),
     m_abort(false)
-//    m_running(false)
 {
     m_serial = Q_NULLPTR;
 }
 
+/**
+ * @brief Sender deconstructor
+ *
+ */
 Sender::~Sender()
 {
+    qDebug("Hello sender deconstructor");
+    if(m_serial != Q_NULLPTR )
+        if(m_serial->isOpen())
+            m_serial->close();
     delete m_serial;
 }
 
-
-//void Sender::stop(void)
-//{
-//    m_abort = true;
-//}
-
+/**
+ * @brief
+ *
+ * @param d
+ */
 void Sender::sendAnimation(const Draw::CubeArray &d)
 {
     m_serial->putChar(0xFF);
@@ -60,6 +71,11 @@ void Sender::sendAnimation(const Draw::CubeArray &d)
 }
 
 
+/**
+ * @brief Function to open and close serial port
+ *
+ * @param s Serial port configurations
+ */
 void Sender::openCloseSerialPort(const SettingsDialog::SerialSettings &s)
 {
     m_port = s;
@@ -89,6 +105,12 @@ void Sender::openCloseSerialPort(const SettingsDialog::SerialSettings &s)
 }
 
 
+/**
+ * @brief Checks the port settings and
+ *        returns true if they are ok otherwise false
+ *
+ * @return bool
+ */
 bool Sender::checkPortSettings(void)
 {
     if( m_serial->setBaudRate (m_port.baudRate) && m_serial->setDataBits (m_port.dataBits)
@@ -105,7 +127,7 @@ bool Sender::checkPortSettings(void)
     }
 }
 /**
- * @brief MainWindow::closeSerialPort
+ * @brief Function to close serial port
  */
 void Sender::closeSerialPort(void)
 {
@@ -115,8 +137,10 @@ void Sender::closeSerialPort(void)
     }
 }
 /**
- * @brief MainWindow::openSerialPort
- * @return
+ * @brief Function to open serial port returns true when serial port
+ *        was opened successfully otherwise false
+ *
+ * @return bool
  */
 bool Sender::openSerialPort(void)
 {

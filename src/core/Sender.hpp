@@ -38,14 +38,12 @@ Q_SIGNALS:
     void closePort(const QString &param);
 public Q_SLOTS:
     void sendAnimation(const Draw::CubeArray &d);
-//    void stop();
     void openCloseSerialPort(const SettingsDialog::SerialSettings &s);
     void closeSerialPort();
 
 private:
     QSerialPort *m_serial;
     QString m_param;
-//    bool m_running;
     SettingsDialog::SerialSettings m_port;
 private:
     bool openSerialPort();

@@ -22,7 +22,6 @@
 
 class AnimationItem : public QListWidgetItem
 {
-//    Q_OBJECT
 public:
     explicit AnimationItem(QListWidget *view = 0, int type = Type);
     explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = Type);
@@ -43,5 +42,4 @@ private:
     AnimationOptions::Options m_options;
 
 };
-
 #endif // ANIMATIONITEM_HPP

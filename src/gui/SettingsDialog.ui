@@ -37,7 +37,7 @@
            <string notr="true"/>
           </property>
           <property name="icon">
-           <iconset resource="icons.qrc">
+           <iconset resource="../icons.qrc">
             <normaloff>:/images/view-refresh.png</normaloff>:/images/view-refresh.png</iconset>
           </property>
           <property name="shortcut">
@@ -186,7 +186,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="icons.qrc"/>
+  <include location="../icons.qrc"/>
  </resources>
  <connections/>
 </ui>

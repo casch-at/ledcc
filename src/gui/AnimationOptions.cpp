@@ -29,6 +29,7 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
 
 AnimationOptions::~AnimationOptions()
 {
+    qDebug("AnimationOptions::~AnimationOptions");
     delete ui;
 }
 

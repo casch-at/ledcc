@@ -43,5 +43,3 @@ AnimationItem *AnimationItem::clone() const
     item->setOptions(getOptions());
     return item;
 }
-
-

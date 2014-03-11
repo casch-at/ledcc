@@ -59,6 +59,7 @@ private slots:
 private:
     Ui::AnimationOptions *ui;
     Options m_options;
+    Q_DISABLE_COPY(AnimationOptions)
 };
 
 #endif // ANIMATIONOPTIONSGROUPBOX_HPP
