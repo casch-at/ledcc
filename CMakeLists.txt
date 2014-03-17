@@ -1,4 +1,4 @@
-################################################################################
+#------------------------------------------------------------------------------
 #  Main CMake file
 #  Copyright (C) 2013 Christian Schwarzgruber <christiandev9@gmail.com>
 #
@@ -14,22 +14,20 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+#------------------------------------------------------------------------------
 #   If you want additional program output or want debug the program set CMAKE_BUILD_TYPE to DEBUG
 #   Debug:      -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake -DCMAKE_BUILD_TYPE=DEBUG
 #   Release:    -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake
-################################################################################
-
+#------------------------------------------------------------------------------
+#                   Root CMakeLists file
+#------------------------------------------------------------------------------
 # Minimum required cmake tool
 cmake_minimum_required(VERSION 2.8.10 FATAL_ERROR)
 # Executable name
-project("3D-LED Cube")
-# Set program Version
+project(ledControl C CXX)
+# Variable for program name!
+set(PROGNAME  ${PROJECT_NAME})
 
-#  Variable for program name!
-set(PROGNAME  "3D-LED-Cube")
-
-#set(CMAKE_BUILD_TYPE DEBUG)
 # Set version numbers for global.h configuration. See CMakeLists.txt in src directory
 set(LED_CUBE_VERSION_MAJOR "0.1" )
 set(LED_CUBE_VERSION_MINOR "0.11")
@@ -49,7 +47,7 @@ if(Qt5Widgets_FOUND AND Qt5SerialPort_FOUND AND Qt5Core_FOUND AND Qt5Gui_FOUND)
 endif()
 
 #get_target_property(QtCore_location Qt5::Core LOCATION)
-
+#--------  SET COMPILER FLAGS
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_RELEASE} -fprofile-arcs -ftest-coverage")
 
@@ -149,7 +147,7 @@ if(MINGW)
   enable_language(RC)
   set(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
 endif()
-
+#------------ END SET COMPILER FLAGS
 
 if( "${CMAKE_PREFIX_PATH}" STREQUAL  "/usr/local/")
   message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
@@ -181,11 +179,15 @@ elseif(APPLE)
   set(DATA_INSTALL_DIR   "${PROGNAME}.app/Contents/Resources")
 else()
   include(GNUInstallDirs)
-
   set(BIN_INSTALL_DIR    "${CMAKE_INSTALL_BINDIR}")
   set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/${PROGNAME}")
   set(DATA_INSTALL_DIR   "${CMAKE_INSTALL_DATAROOTDIR}/${PROGNAME}")
 endif()
+#----------- OUTPUT INSTALL DIRECTORIES
+message(STATUS "GNUInstallDirs: ${GNUInstallDirs}" )
+message(STATUS "BIN_INSTALL_DIR: ${BIN_INSTALL_DIR}" )
+message(STATUS "PLUGIN_INSTALL_DIR: ${PLUGIN_INSTALL_DIR}" )
+message(STATUS "DATA_INSTALL_DIR: ${DATA_INSTALL_DIR}" )
 
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
   set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS QT_NO_DEBUG)
@@ -201,10 +203,9 @@ include_directories(src/gui src/core/ src/animations src/aqp)
 
 # Create resource file *.cpp
 
-qt5_add_resources(${PROGNAME}_RESOURCES_RCC src/icons.qrc)
+qt5_add_resources(${PROGNAME}_RESOURCES_RCC src/icons.qrc OPTIONS -no-compress )
 
 add_executable(${PROGNAME} main.cpp ${${PROGNAME}_RESOURCES_RCC})
-
 add_dependencies(${PROGNAME} ledcubegui)
 
 # link against ledcube and animations

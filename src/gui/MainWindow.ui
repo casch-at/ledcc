@@ -14,7 +14,7 @@
    <string>3D-LED Cube </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="1,0" rowminimumheight="1,0">
+   <layout class="QGridLayout" name="gridLayout" rowstretch="1,0" columnstretch="0">
     <item row="0" column="0">
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -84,7 +84,7 @@
        </layout>
       </widget>
       <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="animationPlaylistLayout">
         <item>
          <widget class="QLabel" name="animationPlaylistL">
           <property name="font">
@@ -168,6 +168,23 @@
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="AnimationPropertiesPreview" name="dockWidget">
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="windowTitle">
+    <string>Animation Properties</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout_2"/>
+   </widget>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -184,6 +201,12 @@
    <class>AnimationOptions</class>
    <extends>QGroupBox</extends>
    <header>AnimationOptions.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AnimationPropertiesPreview</class>
+   <extends>QDockWidget</extends>
+   <header>AnimationPropertiesPreview.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

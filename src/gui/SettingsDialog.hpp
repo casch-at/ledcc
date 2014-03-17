@@ -26,8 +26,10 @@ namespace Ui {
     class SettingsDialog;
     }
 /*Forward deceleration*/
+QT_BEGIN_NAMESPACE
 class QIntValidator;
 class QSettings;
+QT_END_NAMESPACE
 
 class SettingsDialog : public QDialog
 {

@@ -53,26 +53,6 @@
 
 using namespace std;
 
-namespace SETTINGS{
-    const QString GeometrySettings("geometry");
-    }
-
-namespace ANIMATIONS{
-    const QString WireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
-    const QString WireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
-    const QString Lift("Lift");
-    const QString Wall("Wall");
-    const QString Firework("Firework");
-    const QString Rain("Rain");
-    const QString RandomSpark("Random Spark");
-    const QString RandomSparkFlash("Random Spark Flash");
-    const QString RandomFiller("Random Filler");
-    const QString RandomZLift("Random Z-Axis Lift");
-    const QString StringFly("String Fly");
-    const QString Loadbar("Loadbar");
-    const QString AxisNailWall("Axis Nail Wall");
-    }
-
 /**
  * @brief MainWindow::MainWindow
  * @param parent
@@ -94,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     setupAnimationItems();
     connectSignals();
     AQP::accelerateWidget (this);  //Give each button a accelerater
+    ui->dockWidget->setProperties("MainWindow","Hello 123: you 12.3");
 }
 
 /**
@@ -465,6 +446,7 @@ void MainWindow::portClosed(const QString &message)
 {
     portOpened = false;
     ui->statusbar->showMessage(message,3000);
+    stopThreads();
     updateUi();
 }
 
