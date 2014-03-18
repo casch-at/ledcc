@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     sdialog(new SettingsDialog),
-    shortCutSA(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
+    scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
     createThread(new QThread)
 {
     ui->setupUi(this);
@@ -551,6 +551,8 @@ void MainWindow::setupAnimationItems(void)
  */
 void MainWindow::openCloseSerialPort(void)
 {
+    if(!senderThread->isRunning())
+        senderThread->start();
     Q_EMIT openSerialInterface(sdialog->settings()); // call send thread
 }
 
@@ -588,8 +590,8 @@ void MainWindow::connectSignals(void)
     connect(settingAction,&QAction::triggered,sdialog,&QWidget::show);
     connect(ui->animationPlaylistLW , &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
     connect(ui->availableAnimationsLW , &AnimationListWidget::addToPlaylist , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
-    connect(shortCutSA , &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
-    connect(shortCutSA , &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
+    connect(scSellectAll , &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
+    connect(scSellectAll , &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
     connect(ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
     connect(playAction , &QAction::triggered , this , &MainWindow::playAnimations);
     connect(pauseAction , &QAction::triggered , this , &MainWindow::stopThreads);

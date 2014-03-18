@@ -6,6 +6,7 @@
 
 QT_BEGIN_NAMESPACE
 class QVBoxLayout;
+class QShortcut;
 QT_END_NAMESPACE
 
 class AnimationPropertiesPreview : public QDockWidget
@@ -14,14 +15,20 @@ class AnimationPropertiesPreview : public QDockWidget
 public:
     explicit AnimationPropertiesPreview(QWidget *parent = 0);
     ~AnimationPropertiesPreview();
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
     void setProperties(const QString &name, const QString &properties);
+private Q_SLOTS:
+    inline void hideShow(){
+        setVisible(!isVisible());
+    }
+
 private:
     QVBoxLayout *mlayout;
     QVBoxLayout *mlabelLayout;
     QWidget *mcentralWidget;
+    QShortcut *hideShowSC;
 };
 
 #endif // ANIMATIONPROPERTIESPREVIEW_HPP

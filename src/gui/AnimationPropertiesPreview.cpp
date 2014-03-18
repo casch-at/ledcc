@@ -1,14 +1,17 @@
 #include "AnimationPropertiesPreview.hpp"
-#include "QVBoxLayout"
-#include "QHBoxLayout"
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QShortcut>
 
 AnimationPropertiesPreview::AnimationPropertiesPreview( QWidget *parent ) :
     QDockWidget(parent),
     mlayout( new QVBoxLayout ),
-    mcentralWidget( new QWidget )
+    mcentralWidget( new QWidget ),
+    hideShowSC( new QShortcut(QKeySequence("F9"),parent))
 {
     mlayout->setObjectName("animationPropertiesPreviewLay");
     mlayout->setAlignment( this, Qt::AlignCenter );
+    this->connect(hideShowSC,&QShortcut::activated,this,&AnimationPropertiesPreview::hideShow);
 }
 
 AnimationPropertiesPreview::~AnimationPropertiesPreview()
@@ -20,7 +23,7 @@ void AnimationPropertiesPreview::setProperties( const QString &name, const QStri
 {
     QLabel *label = new QLabel( name );
     QFont font;
-
+    bool firstColumn = true;
     font.setBold(true);
     font.setPixelSize(16);
 
@@ -35,15 +38,21 @@ void AnimationPropertiesPreview::setProperties( const QString &name, const QStri
     foreach ( QString line, properties.split(":") )
     {
         QHBoxLayout *hlayout = new QHBoxLayout;
-        hlayout->setSpacing(40);
+        hlayout->setSpacing(5);
 
-        foreach ( QString column, line.split(" ") )
+        foreach ( QString textColumn, line.split(" ") )
         {
-            if( !column.isEmpty() )
-            {
-                label = new QLabel( column );
+            if( !textColumn.isEmpty() )
+            {                
+                label = new QLabel;
+                if(firstColumn){
+                    textColumn.append(":");
+                    label->setAlignment(Qt::AlignRight);
+                }
+                label->setText(textColumn);
                 label->setFont( font );
                 hlayout->addWidget( label );
+                firstColumn = !firstColumn;
             }
         }
 

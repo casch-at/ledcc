@@ -93,7 +93,8 @@ private:
     QAction *openPortAction;
     QAction *playAction;
     QAction *pauseAction;
-    QShortcut *shortCutSA;
+    QShortcut *scSellectAll;
+//    QShortcut *scShowHideAnimationProperties;
     QThread *createThread;
     QThread *senderThread;
     Animation *currentAnimation;
