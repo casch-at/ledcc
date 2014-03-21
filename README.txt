@@ -25,7 +25,7 @@ cmake -DCMAKE_PREFIX_PATH=/PATH/TO/QT5/lib/cmake ../
 3) Finally compile the program with make (replace the number with the available cores on your system or leave "-j4" away).
 make -j4  
 
-The executable should now be in the directory build/src/ , called 3D-Led-Cube.
+The executable should now be in the directory build/src/ , called ledControl.
 
 ---
 One liner :-) (provided that you are already in the root directory, if not switch to the root directory
