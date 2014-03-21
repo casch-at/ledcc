@@ -39,7 +39,7 @@ public Q_SLOTS:
         if(m_iterations != arg)
             m_iterations = arg;
     }
-
+    virtual const QString createAnimationTooltip();
 private:
     u_int16_t m_iterations;
 };

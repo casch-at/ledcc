@@ -47,4 +47,14 @@ void WireBoxCenterShrinkGrow::createAnimation()
     Q_EMIT done();
 }
 
+const QString WireBoxCenterShrinkGrow::createAnimationTooltip()
+{
+    QString itemToolTip;
+    Animation::createAnimationTooltip(&itemToolTip);
+    itemToolTip.append(m_centerStart == true ? "Start in center: YES<br>" : "Start in center: NO<br>");
+    itemToolTip.append(QString("Iterations: %1")
+               .arg(m_iterations));
+    return itemToolTip;
+}
+
 

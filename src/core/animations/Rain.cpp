@@ -41,3 +41,13 @@ void Rain::createAnimation()
     }
     Q_EMIT done();
 }
+
+const QString Rain::createAnimationTooltip()
+{
+    QString itemToolTip;
+    Animation::createAnimationTooltip(&itemToolTip);
+    itemToolTip.append(QString("Iterations: %1")
+                       .arg(m_iterations));
+    return itemToolTip;
+
+}

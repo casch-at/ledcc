@@ -54,6 +54,8 @@ public Q_SLOTS:
             m_iterations = iterations;
     }
 
+    virtual const QString createAnimationTooltip();
+
 private:
     void createSparks(const u_int16_t &leds);
     u_int16_t m_sparks;

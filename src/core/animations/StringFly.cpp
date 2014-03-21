@@ -65,3 +65,13 @@ void StringFly::createAnimation()
     }
     Q_EMIT done();
 }
+
+const QString StringFly::createAnimationTooltip()
+{
+    QString itemToolTip;
+
+    Animation::createAnimationTooltip(&itemToolTip);
+    itemToolTip.append(QString("Current Text: "
+                               + m_sToDisplay.toLatin1()));
+    return itemToolTip;
+}

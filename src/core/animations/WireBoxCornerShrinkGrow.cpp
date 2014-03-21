@@ -31,6 +31,16 @@ void WireBoxCornerShrinkGrow::createAnimation()
     Q_EMIT done();
 }
 
+const QString WireBoxCornerShrinkGrow::createAnimationTooltip()
+{
+    QString itemToolTip;
+
+    Animation::createAnimationTooltip(&itemToolTip);
+    itemToolTip.append(QString("Iterations: %1")
+                       .arg(m_iterations));
+    return itemToolTip;
+}
+
 void WireBoxCornerShrinkGrow::createWireBoxCorner(const u_int8_t rotate, const u_int8_t flip)
 {
     u_int8_t xyz = 0;

@@ -79,3 +79,13 @@ void AxisNailWall::createAnimation()
     }
     Q_EMIT done();
 }
+
+const QString AxisNailWall::createAnimationTooltip()
+{
+    QString itemToolTip;
+
+    Animation::createAnimationTooltip( &itemToolTip, &m_axis );
+    itemToolTip.append(m_invert == 1 ? "Invert: Yes" : "Invert: No");
+
+    return itemToolTip;
+}

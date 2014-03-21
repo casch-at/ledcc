@@ -63,3 +63,13 @@ void RandomZLift::createAnimation()
     }
     Q_EMIT done();
 }
+
+const QString RandomZLift::createAnimationTooltip()
+{
+    QString itemToolTip;
+
+    Animation::createAnimationTooltip(&itemToolTip);
+    itemToolTip.append(QString("Iterations: %1")
+                       .arg(m_iterations));
+    return itemToolTip;
+}

@@ -51,3 +51,13 @@ void RandomFiller::createAnimation()
     }
     Q_EMIT done();
 }
+
+const QString RandomFiller::createAnimationTooltip()
+{
+    QString itemToolTip;
+    Animation::createAnimationTooltip(&itemToolTip);
+
+    itemToolTip.append(m_state == 1 ? "Start State: ON" : "Start State: OFF");
+
+    return itemToolTip;
+}

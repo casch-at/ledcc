@@ -16,9 +16,10 @@
  */
 #include "Loadbar.hpp"
 
-Loadbar::Loadbar(const u_int16_t &speed, const Draw::Axis &axis, const QString &name, QObject *parent):
+Loadbar::Loadbar(const u_int16_t &speed, const Axis &axis, const QString &name, const Direction &direction, QObject *parent):
     Animation(speed,name,parent),
-    m_axis(axis)
+    m_axis(axis),
+    m_direction(direction)
 {
 }
 
@@ -41,4 +42,14 @@ void Loadbar::createAnimation()
         waitMs(getSpeed());
     }
     Q_EMIT done();
+}
+
+const QString Loadbar::createAnimationTooltip()
+{
+    QString itemToolTip;
+    Animation::createAnimationTooltip( &itemToolTip, &m_axis );
+
+    itemToolTip.append(m_direction == FORWARD ? "Direction: Forward" : "Direction: Backward");
+
+    return itemToolTip;
 }

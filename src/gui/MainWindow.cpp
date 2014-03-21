@@ -315,92 +315,7 @@ void MainWindow::updateAnimation(const AnimationItem *item)
 void MainWindow::updateAnimationItemToolTip(QListWidgetItem *item, const AnimationOptions::Options *a)
 {
 
-    QString itemToolTip = QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
-                                     "Speed: %2<br>"))
-            .arg(item->text())
-            .arg(a->speed);
-    if(item->text().compare(ANIMATIONS::Lift) == 0){
-        itemToolTip.append(QString("Delay: %1<br>"
-                                   "Iterations: %2")
-                           .arg(a->delay)
-                           .arg(a->iteration));
-    }else if(item->text().compare(ANIMATIONS::StringFly) == 0){
-        itemToolTip.append(QString("Current Text: "
-                                   + a->text.toLatin1()));
-    }else if(item->text().compare(ANIMATIONS::RandomSparkFlash) == 0){
-        itemToolTip.append(QString("LEDs: %1<br>"
-                                   "Iterations: %2")
-                           .arg(a->leds)
-                           .arg(a->iteration));
-    }else if(item->text().compare(ANIMATIONS::RandomSpark) == 0){
-        itemToolTip.append(QString("Sparks: %1<br>")
-                           .arg(a->leds));
-    }else if(item->text().compare(ANIMATIONS::RandomFiller) == 0){
-        QString tmp;
-
-        tmp  = a->invert == 1 ? "ON" : "OFF";
-
-        itemToolTip.append(QString("Start State: " + tmp));
-    }else if(item->text().compare(ANIMATIONS::Loadbar) == 0){
-        QString tmp;
-
-        if(a->axis == Draw::X_AXIS)
-            tmp = "X-Axis";
-        else if(a->axis == Draw::Y_AXIS)
-            tmp = "Y-Axis";
-        else
-            tmp = "Z-Axis";
-
-        itemToolTip.append(QString("Axis: " + tmp));
-    }else if(item->text().compare(ANIMATIONS::AxisNailWall) == 0){
-        QString tmp;
-
-        if(a->axis == Draw::X_AXIS)
-            tmp = "X-Axis<br>";
-        else if(a->axis == Draw::Y_AXIS)
-            tmp = "Y-Axis<br>";
-        else
-            tmp = "Z-Axis<br>";
-
-        tmp.append(a->invert == 1 ? "Invert: Yes" : "Invert: No");
-
-        itemToolTip.append(QString("Axis: " + tmp));
-    }else if(item->text().compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
-        QString tmp;
-
-        tmp  = a->invert == 1 ? "YES<br>" : "NO<br>";
-        tmp.append(QString("Iterations: %1")
-                   .arg(a->iteration));
-        itemToolTip.append(QString("Start in center: " + tmp));
-    }else if(item->text().compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
-        itemToolTip.append(QString("Iterations: %1")
-                           .arg(a->iteration));
-    }else if(item->text().compare(ANIMATIONS::RandomZLift) == 0){
-        itemToolTip.append(QString("Iterations: %1")
-                           .arg(a->iteration));
-    }else if(item->text().compare(ANIMATIONS::Rain) == 0){
-        itemToolTip.append(QString("Iterations: %1")
-                           .arg(a->iteration));
-    }else if(item->text().compare(ANIMATIONS::Wall) == 0){
-        QString tmp;
-
-        tmp = a->direction == Draw::FORWARD ? "Direction: Forward<br>" : "Direction: Backward<br>";
-
-        if(a->axis == Draw::X_AXIS)
-            tmp = "Axis: X-Axis";
-        else if(a->axis == Draw::Y_AXIS)
-            tmp = "Axis: Y-Axis";
-        else
-            tmp = "Axis: Z-Axis";
-
-        itemToolTip.append(tmp);
-    }else if(item->text().compare(ANIMATIONS::Firework) == 0){
-        itemToolTip.append(QString("Iterations: %1<br>"
-                                   "Particles: %2")
-                           .arg(a->iteration)
-                           .arg(a->leds));
-    }
-    item->setToolTip(itemToolTip);
+//    item->setToolTip(itemToolTip);
 }
 
 void MainWindow::portOpen(const QString &message)
@@ -492,8 +407,9 @@ void MainWindow::setupAnimationItems(void)
 
     currentAnimation = animation.value(ANIMATIONS::StringFly);
 
-    QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
     AnimationOptions::Options options;
+
+    QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
     while(iter != animation.constEnd()){
         AnimationItem *item = new AnimationItem(iter.key(),ui->availableAnimationsLW);
         options.speed = iter.value()->getSpeed();
@@ -533,7 +449,8 @@ void MainWindow::setupAnimationItems(void)
             options.iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
         }
         item->setOptions(options);
-        updateAnimationItemToolTip(item,&options);
+        item->setToolTip(iter.value()->createAnimationTooltip());
+//        updateAnimationItemToolTip(item,&options);
 
         iter.value()->moveToThread(createThread); // move animations to own thread
 

@@ -53,7 +53,7 @@ public Q_SLOTS:
         if(m_particles != particles)
             m_particles = particles;
     }
-
+    virtual const QString createAnimationTooltip();
 private:
     u_int16_t m_iterations;
     u_int8_t m_particles;

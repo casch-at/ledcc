@@ -43,3 +43,14 @@ void Wall::createAnimation()
     }
     Q_EMIT done();
 }
+
+const QString Wall::createAnimationTooltip()
+{
+   QString itemToolTip;
+
+   Animation::createAnimationTooltip(&itemToolTip,&m_axis);
+
+   itemToolTip.append(m_direction == Draw::FORWARD ? "Direction: Forward<br>" : "Direction: Backward<br>");
+
+   return itemToolTip;
+}

@@ -38,12 +38,14 @@ signals:
 
 public Q_SLOTS:
     virtual void createAnimation();
+    virtual const QString createAnimationTooltip();
 
     void setSToDisplay(const QString &string)
     {
         if(m_sToDisplay.compare(string) != 0)
             m_sToDisplay = string;
     }
+
 private:
     QString m_sToDisplay;
 };

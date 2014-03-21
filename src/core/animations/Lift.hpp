@@ -52,6 +52,7 @@ public Q_SLOTS:
             m_delay = arg;
     }
 
+    virtual const QString createAnimationTooltip();
 private:
     u_int16_t m_delay;
     u_int16_t m_iterations;

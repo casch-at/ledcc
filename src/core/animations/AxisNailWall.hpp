@@ -45,12 +45,14 @@ signals:
 
 public Q_SLOTS:
     virtual void createAnimation();
+    virtual const QString createAnimationTooltip();
 
     void setInvert(const bool invert)
     {
         if(m_invert != invert)
             m_invert = invert;
     }
+
     void setAxis(const Axis axis)
     {
         if(m_axis != axis)

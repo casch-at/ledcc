@@ -42,7 +42,7 @@ public Q_SLOTS:
         if(m_state != state)
             m_state = state;
     }
-
+    virtual const QString createAnimationTooltip();
 private:
     BixelState m_state;
 };

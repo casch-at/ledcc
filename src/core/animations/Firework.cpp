@@ -101,3 +101,15 @@ void Firework::createAnimation()
     fillCubeArray(0x00);
     Q_EMIT done();
 }
+
+const QString Firework::createAnimationTooltip()
+{
+    QString itemToolTip;
+    Animation::createAnimationTooltip(&itemToolTip);
+
+    itemToolTip.append(QString("Iterations: %1<br>"
+                               "Particles: %2")
+                       .arg(m_iterations)
+                       .arg(m_particles));
+    return itemToolTip;
+}

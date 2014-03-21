@@ -23,18 +23,25 @@ class Loadbar : public Animation
 {
     Q_OBJECT
     Q_PROPERTY(Axis axis READ getAxis WRITE setAxis)
+    Q_PROPERTY(Direction direction READ getDirection WRITE setDirection)
 public:
     explicit Loadbar(const u_int16_t &speed = 50, const Axis &axis = X_AXIS,
-                     const QString &name = "Loadbar", QObject *parent = 0);
+                     const QString &name = "Loadbar", const Direction &direction = FORWARD, QObject *parent = 0);
     Axis getAxis() const
     {
         return m_axis;
+    }
+
+    Direction getDirection() const
+    {
+        return m_direction;
     }
 
 signals:
 
 public Q_SLOTS:
     virtual void createAnimation();
+    virtual const QString createAnimationTooltip();
 
     void setAxis(const Axis axis)
     {
@@ -42,9 +49,16 @@ public Q_SLOTS:
             m_axis = axis;
     }
 
+    void setDirection(const Direction direction)
+    {
+        if(m_direction != direction)
+            m_direction = direction;
+    }
+
 private:
 
     Axis m_axis;
+    Direction m_direction;
 };
 
 #endif // LOADBAR_HPP

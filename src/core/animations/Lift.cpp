@@ -62,3 +62,16 @@ void Lift::createAnimation()
     }
     Q_EMIT done();
 }
+
+const QString Lift::createAnimationTooltip()
+{
+    QString itemToolTip;
+    Animation::createAnimationTooltip(&itemToolTip);
+
+    itemToolTip.append(QString("Delay: %1<br>"
+                               "Iterations: %2")
+                       .arg(m_delay)
+                       .arg(m_iterations));
+
+    return itemToolTip;
+}
