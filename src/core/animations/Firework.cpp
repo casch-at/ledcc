@@ -102,22 +102,11 @@ void Firework::createAnimation()
     Q_EMIT done();
 }
 
-const QString Firework::createAnimationTooltip()
-{
-    QString itemToolTip;
-    Animation::createAnimationTooltip(&itemToolTip);
-
-    itemToolTip.append(QString("Iterations: %1<br>"
-                               "Particles: %2")
-                       .arg(m_iterations)
-                       .arg(m_particles));
-    return itemToolTip;
-}
 
 void Firework::createAnimationTooltip(AnimationItem *item)
 {
     QString itemToolTip;
-    Animation::createAnimationTooltip(&itemToolTip, item);
+    setItemToolTipNameSpeed(&itemToolTip, item);
     itemToolTip.append(QString("Iterations: %1<br>"
                                "Particles: %2")
                        .arg(item->getOptions().iteration)

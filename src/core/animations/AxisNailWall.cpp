@@ -80,28 +80,19 @@ void AxisNailWall::createAnimation()
     Q_EMIT done();
 }
 
-const QString AxisNailWall::createAnimationTooltip()
-{
-    QString itemToolTip;
-
-    Animation::createAnimationTooltip( &itemToolTip );
-
-    if(m_axis == X_AXIS)
-        itemToolTip.append("Axis: X-Axis<br>");
-    else if(m_axis == Y_AXIS)
-        itemToolTip.append("Axis: Y-Axis<br>");
-    else
-        itemToolTip.append("Axis: Z-Axis<br>");
-
-    itemToolTip.append(m_invert == 1 ? "Invert: Yes" : "Invert: No");
-
-    return itemToolTip;
-}
 
 void AxisNailWall::createAnimationTooltip(AnimationItem *item)
 {
     QString itemToolTip;
-    Animation::createAnimationTooltip( &itemToolTip, item );
+    setItemToolTipNameSpeed(&itemToolTip, item);
+
+    if(item->getOptions().axis == X_AXIS)
+        itemToolTip.append("Axis: X-Axis<br>");
+    else if(item->getOptions().axis == Y_AXIS)
+        itemToolTip.append("Axis: Y-Axis<br>");
+    else
+        itemToolTip.append("Axis: Z-Axis<br>");
     itemToolTip.append(item->getOptions().invert == true ? "Invert: Yes" : "Invert: No");
+
     item->setToolTip ( itemToolTip );
 }

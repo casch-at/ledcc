@@ -39,16 +39,7 @@ void RandomSpark::createAnimation()
     Q_EMIT done();
 }
 
-const QString RandomSpark::createAnimationTooltip()
-{
-    QString itemToolTip;
 
-    Animation::createAnimationTooltip(&itemToolTip);
-
-    itemToolTip.append(QString("Sparks: %1<br>")
-                       .arg(m_sparks));
-    return itemToolTip;
-}
 
 void RandomSpark::createSparks(const u_int16_t &leds)
 {
@@ -66,3 +57,14 @@ void RandomSpark::createSparks(const u_int16_t &leds)
     }
 }
 
+void RandomSpark::createAnimationTooltip(AnimationItem *item)
+{
+    QString itemToolTip;
+
+    setItemToolTipNameSpeed( &itemToolTip, item );
+
+    itemToolTip.append(QString("Sparks: %1")
+                       .arg(item->getOptions().leds));
+
+    item->setToolTip(itemToolTip);
+}

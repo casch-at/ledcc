@@ -44,20 +44,20 @@ void Wall::createAnimation()
     Q_EMIT done();
 }
 
-const QString Wall::createAnimationTooltip()
+void Wall::createAnimationTooltip(AnimationItem *item)
 {
    QString itemToolTip;
 
-   Animation::createAnimationTooltip(&itemToolTip);
+   setItemToolTipNameSpeed( &itemToolTip, item );
 
-   if(m_axis == X_AXIS)
+   if(item->getOptions().axis == X_AXIS)
        itemToolTip.append("Axis: X-Axis<br>");
-   else if(m_axis == Y_AXIS)
+   else if(item->getOptions().axis == Y_AXIS)
        itemToolTip.append("Axis: Y-Axis<br>");
    else
        itemToolTip.append("Axis: Z-Axis<br>");
 
-   itemToolTip.append(m_direction == Draw::FORWARD ? "Direction: Forward<br>" : "Direction: Backward<br>");
+   itemToolTip.append(item->getOptions().direction == Draw::FORWARD ? "Direction: Forward" : "Direction: Backward");
 
-   return itemToolTip;
+   item->setToolTip(itemToolTip);
 }

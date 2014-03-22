@@ -23,6 +23,7 @@ AnimationItem::AnimationItem(QListWidget *view, int type):
     QListWidgetItem(view,type)
 {
 //    initOptions();
+//    qRegisterMetaType<AnimationItem>("AnimationItem");
 }
 
 AnimationItem::AnimationItem(const QString &text, QListWidget *view, int type):

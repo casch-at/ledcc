@@ -44,7 +44,6 @@ void StringFly::createAnimation()
                 }
             }
         }
-
         // Shift the entire contents of the cube forward by 6 steps
         // before placing the next character
         for (i = 0; i < 6; i++)
@@ -66,12 +65,14 @@ void StringFly::createAnimation()
     Q_EMIT done();
 }
 
-const QString StringFly::createAnimationTooltip()
+void StringFly::createAnimationTooltip(AnimationItem *item)
 {
     QString itemToolTip;
 
-    Animation::createAnimationTooltip(&itemToolTip);
+    setItemToolTipNameSpeed( &itemToolTip, item);
+
     itemToolTip.append(QString("Current Text: "
-                               + m_sToDisplay.toLatin1()));
-    return itemToolTip;
+                               + item->getOptions().text.toLatin1()));
+
+    item->setToolTip(itemToolTip);
 }

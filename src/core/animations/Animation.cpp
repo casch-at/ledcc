@@ -82,16 +82,8 @@ void Animation::waitMs(const u_int16_t &time)
     thread()->msleep(time);
 }
 
-void Animation::createAnimationTooltip(QString *itemToolTip)
-{
-    itemToolTip->append(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
-                                   "Speed: %2<br>"))
-                        .arg(m_name)
-                        .arg(m_speed));
-}
 
-
-void Animation::createAnimationTooltip(QString *itemToolTip, AnimationItem *item)
+void Animation::setItemToolTipNameSpeed(QString *itemToolTip, AnimationItem *item)
 {
     itemToolTip->append(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
                                    "Speed: %2<br>"))

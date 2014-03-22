@@ -143,18 +143,22 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
 
     int rows = count();
 
-    if(rows){
+    if(rows)
+    {
         if(row >= rows)
             row = 0;
+
         return dynamic_cast<AnimationItem*>(item(row++));
-    }else {
+    }else
+    {
         return Q_NULLPTR;
     }
 }
 
 void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &items, const int row)
 {
-    foreach (QListWidgetItem *i, items) {
+    foreach (QListWidgetItem *i, items)
+    {
         insertItem(row,i);
     }
     Q_EMIT updateUi();

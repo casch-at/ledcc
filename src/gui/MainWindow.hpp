@@ -54,29 +54,27 @@ Q_SIGNALS:
     void openSerialInterface(const SettingsDialog::SerialSettings &port);
     void okClosePort();
 private Q_SLOTS:
-    bool okToContinue(void);
     void resizeEvent(QResizeEvent *e);
-    void saveSettings(void);
-    void readSettings(void);
     void openCloseSerialPort(void);
-    void connectSignals(void);
-    void createActions(void);
-    void createToolbar(void);
     void about(void);
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
     void playAnimations(void);
-    void getNextAnimation(void);
     void animationDone(void);
     void updateAnimation(const AnimationItem *item);
     void updateItemToolTip(const AnimationOptions::Options &aOptions);
-    void updateAnimationItemToolTip(AnimationItem *item);
     void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
     void closePort(const QString &message);
     void portClosed(const QString &message);
     void stopThreads(void);
 private:
+    bool okToContinue(void);
+    void readSettings(void);
+    void saveSettings(void);
+    void connectSignals(void);
+    void createActions(void);
+    void createToolbar(void);
     void playNextAnimation(const AnimationItem *item);
     void setupAnimationItems(void);
     void setupSenderThread(void);

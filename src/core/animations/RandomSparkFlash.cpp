@@ -40,14 +40,16 @@ void RandomSparkFlash::createAnimation()
     Q_EMIT done();
 }
 
-const QString RandomSparkFlash::createAnimationTooltip()
+void RandomSparkFlash::createAnimationTooltip(AnimationItem *item)
 {
     QString itemToolTip;
 
-    Animation::createAnimationTooltip(&itemToolTip);
+    setItemToolTipNameSpeed( &itemToolTip, item );
+
     itemToolTip.append(QString("LEDs: %1<br>"
                                "Iterations: %2")
-                       .arg(m_leds)
-                       .arg(m_iterations));
-    return itemToolTip;
+                       .arg(item->getOptions().leds)
+                       .arg(item->getOptions().iteration));
+
+    item->setToolTip(itemToolTip);
 }

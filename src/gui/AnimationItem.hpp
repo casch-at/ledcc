@@ -17,7 +17,7 @@
 #ifndef ANIMATIONITEM_HPP
 #define ANIMATIONITEM_HPP
 
-#include <QtWidgets/QListWidgetItem>
+#include <QListWidgetItem>
 #include "AnimationOptions.hpp"
 
 class AnimationItem : public QListWidgetItem

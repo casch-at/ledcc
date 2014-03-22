@@ -64,12 +64,14 @@ void RandomZLift::createAnimation()
     Q_EMIT done();
 }
 
-const QString RandomZLift::createAnimationTooltip()
+void RandomZLift::createAnimationTooltip(AnimationItem *item)
 {
     QString itemToolTip;
 
-    Animation::createAnimationTooltip(&itemToolTip);
+    setItemToolTipNameSpeed( &itemToolTip, item );
+
     itemToolTip.append(QString("Iterations: %1")
-                       .arg(m_iterations));
-    return itemToolTip;
+                       .arg(item->getOptions().iteration));
+
+    item->setToolTip(itemToolTip);
 }

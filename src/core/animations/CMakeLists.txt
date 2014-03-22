@@ -38,4 +38,4 @@ set( SOURCES    Draw.cpp
 
 add_library( animations STATIC ${SOURCES} )
 
-target_link_libraries( animations ${Qt5Core_LIBRARIES} )
+target_link_libraries( animations ${Qt5Widgets_LIBRARIES} ${Qt5Core_LIBRARIES} )

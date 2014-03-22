@@ -37,7 +37,6 @@ signals:
 
 public Q_SLOTS:
     virtual void createAnimation();
-    virtual const QString createAnimationTooltip();
     virtual void createAnimationTooltip(AnimationItem *item);
 
     void setState(const BixelState state)

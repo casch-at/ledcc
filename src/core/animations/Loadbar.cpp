@@ -44,27 +44,20 @@ void Loadbar::createAnimation()
     Q_EMIT done();
 }
 
-const QString Loadbar::createAnimationTooltip()
-{
-    QString itemToolTip;
-    Animation::createAnimationTooltip( &itemToolTip );
-
-    if(m_axis == X_AXIS)
-        itemToolTip.append("Axis: X-Axis<br>");
-    else if(m_axis == Y_AXIS)
-        itemToolTip.append("Axis: Y-Axis<br>");
-    else
-        itemToolTip.append("Axis: Z-Axis<br>");
-
-    itemToolTip.append(m_direction == FORWARD ? "Direction: Forward" : "Direction: Backward");
-
-    return itemToolTip;
-}
 
 void Loadbar::createAnimationTooltip(AnimationItem *item)
 {
     QString itemToolTip;
-    Animation::createAnimationTooltip(&itemToolTip, item);
+
+    setItemToolTipNameSpeed(&itemToolTip, item);
+
+    if(item->getOptions().axis == X_AXIS)
+        itemToolTip.append("Axis: X-Axis<br>");
+    else if(item->getOptions().axis == Y_AXIS)
+        itemToolTip.append("Axis: Y-Axis<br>");
+    else
+        itemToolTip.append("Axis: Z-Axis<br>");
+
     itemToolTip.append(item->getOptions().direction == FORWARD ? "Direction: Forward" : "Direction: Backward");
     item->setToolTip(itemToolTip);
 }

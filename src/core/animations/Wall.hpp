@@ -40,7 +40,7 @@ public:
 
 public Q_SLOTS:
     virtual void createAnimation();
-    virtual const QString createAnimationTooltip();
+    virtual void createAnimationTooltip(AnimationItem *item);
     void setDirection(Direction arg)
     {
         if(m_direction != arg)

@@ -34,7 +34,7 @@ configure_file (
     )
 
 add_library(ledcubecore Sender.cpp )
-target_link_libraries(ledcubecore animations ${Qt5Widgets_LIBRARIES} ${Qt5SerialPort_LIBRARIES} )
+target_link_libraries(ledcubecore animations  ${Qt5SerialPort_LIBRARIES} )
 add_dependencies(ledcubecore animations)
 
 

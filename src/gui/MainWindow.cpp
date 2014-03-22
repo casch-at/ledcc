@@ -95,7 +95,7 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
  * @brief MainWindow::closeEvent
  * @param event
  */
-void MainWindow::closeEvent( QCloseEvent *event ) {  //Close application
+void MainWindow::closeEvent( QCloseEvent *event ) {
     if ( okToContinue() ) {
         Q_EMIT okClosePort();
         if(createThread->isRunning() || senderThread->isRunning())
@@ -112,8 +112,10 @@ void MainWindow::closeEvent( QCloseEvent *event ) {  //Close application
  * @brief MainWindow::okToContinue
  * @return
  */
-bool MainWindow::okToContinue(void) { //Check if window is not modified
-    if(isWindowModified ()){
+bool MainWindow::okToContinue(void)
+{ //Check if window is not modified
+    if(isWindowModified ())
+    {
         int r = QMessageBox::warning( this, tr( "3D-LED Cube" ),
                                       tr( "Do you really want to exit the programm?" ),
                                       QMessageBox::Yes | QMessageBox::Default,
@@ -127,13 +129,16 @@ bool MainWindow::okToContinue(void) { //Check if window is not modified
     }
     return true;
 }
+
 /**
  * @brief MainWindow::resizeEvent
- * @param e
+ * @param e3D LED CUB
  */
-void MainWindow::resizeEvent(QResizeEvent *e){ //Resize Window
+void MainWindow::resizeEvent(QResizeEvent *e)
+{
     QMainWindow::resizeEvent(e);
 }
+
 /**
  * @brief MainWindow::saveSettings
  */
@@ -141,6 +146,7 @@ void MainWindow::saveSettings(void){  //Save geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
     settings.setValue (SETTINGS::GeometrySettings,saveGeometry ());
 }
+
 /**
  * @brief MainWindow::readSettings
  */
@@ -157,20 +163,25 @@ void MainWindow::readSettings (void){ //Load geometry of application
  */
 void MainWindow::updateUi(void)
 {
-    if(portOpened){
-        if(openPortAction->text() == "Open port"){
+    if(portOpened)
+    {
+        if(openPortAction->text() == "Open port")
+        {
             openPortAction->setText(tr("Close port"));
             openPortAction->setIcon( QIcon( "://images/disconnect.png"));
             openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
         }
-        if(ui->animationPlaylistLW->count() && !pauseAction->isEnabled()){
+        if(ui->animationPlaylistLW->count() && !pauseAction->isEnabled())
+        {
             playAction->setEnabled(true);
-        }else{
+        }else
+        {
             playAction->setDisabled(true);
         }
     }else
     {
-        if(openPortAction->text() == "Close port"){
+        if(openPortAction->text() == "Close port")
+        {
             openPortAction->setText(tr("Open port"));
             openPortAction->setIcon( QIcon( "://images/connect.png"));
             openPortAction->setToolTip(tr("Connect to seriell device  O"));
@@ -188,8 +199,8 @@ void MainWindow::updateUi(void)
 void MainWindow::playNextAnimation(const AnimationItem *item)
 {
     if(item == Q_NULLPTR){
-         stopThreads();
-         return;
+        stopThreads();
+        return;
     }
 
     currentAnimation = animation.value(item->text());
@@ -209,23 +220,21 @@ void MainWindow::playAnimations()
 
     if(!senderThread->isRunning())
         senderThread->start();
+
     playAction->setDisabled(true);
     pauseAction->setEnabled(true);
     playNextAnimation(ui->animationPlaylistLW->getNextAnimation());
 }
 
-void MainWindow::getNextAnimation()
-{
-//    QListWidgetItem *item =
-//    playNextAnimation();
-}
 
 void MainWindow::animationDone()
 {
     disconnect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
     disconnect(currentAnimation, &Animation::done, createThread, &QThread::quit);
     disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+
     createThread->wait();
+
     if(stopPlay)
         playNextAnimation(ui->animationPlaylistLW->getNextAnimation());
     else
@@ -240,11 +249,13 @@ void MainWindow::updateItemToolTip(const AnimationOptions::Options &aOptions)
     {
         AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
         item->setOptions(const_cast<AnimationOptions::Options&>(aOptions));
-        updateAnimationItemToolTip(item);
-        if(currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/){
+
+        animation.value(item->text())->createAnimationTooltip(item);
+
+        if(currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
+        {
             updateAnimation(item);
         }
-
     }
 }
 
@@ -258,6 +269,7 @@ void MainWindow::updateAnimation(const AnimationItem *item)
     QString text = item->text();
     Animation *a = animation.value(text);
     AnimationOptions::Options options = item->getOptions();
+
     if(text.compare(ANIMATIONS::Lift) == 0){
         dynamic_cast<Lift*>(a)->setDelay(options.delay);
         dynamic_cast<Lift*>(a)->setIterations(options.iteration);
@@ -304,22 +316,6 @@ void MainWindow::updateAnimation(const AnimationItem *item)
     }else if(text.compare(ANIMATIONS::RandomZLift) == 0){
         dynamic_cast<RandomZLift*>(a)->setSpeed(options.speed);
     }
-}
-
-/**
- * @brief
- *
- * @param a
- * @param item
- */
-void MainWindow::updateAnimationItemToolTip(AnimationItem *item)
-{
-    Animation *a = animation.value(item->text());
-    QString itemToolTip;
-
-    a->createAnimationTooltip(&itemToolTip,item->getOptions());
-
-    item->setToolTip(itemToolTip);
 }
 
 void MainWindow::portOpen(const QString &message)
@@ -453,8 +449,7 @@ void MainWindow::setupAnimationItems(void)
             options.iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
         }
         item->setOptions(options);
-        item->setToolTip(iter.value()->createAnimationTooltip());
-//        updateAnimationItemToolTip(item,&options);
+        iter.value()->createAnimationTooltip(item);
 
         iter.value()->moveToThread(createThread); // move animations to own thread
 

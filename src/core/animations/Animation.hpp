@@ -57,15 +57,13 @@ public:
 
     void waitMs(const u_int16_t &time);
     bool m_abort;
-    void createAnimationTooltip(QString *itemToolTip);
-    void createAnimationTooltip(QString *itemToolTip, AnimationItem *item);
-    virtual void createAnimationTooltip(AnimationItem *item) = 0;
+    void setItemToolTipNameSpeed(QString *itemToolTip, AnimationItem *item);
 Q_SIGNALS:
     void done();
     void sendData(const CubeArray &cubeFrame);
 public Q_SLOTS:
+    virtual void createAnimationTooltip(AnimationItem *item) = 0;
     virtual void createAnimation(void) = 0;
-    virtual const QString createAnimationTooltip() = 0;
 private:
     u_int16_t m_speed;
     QString m_name;
