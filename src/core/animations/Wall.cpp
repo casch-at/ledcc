@@ -48,7 +48,14 @@ const QString Wall::createAnimationTooltip()
 {
    QString itemToolTip;
 
-   Animation::createAnimationTooltip(&itemToolTip,&m_axis);
+   Animation::createAnimationTooltip(&itemToolTip);
+
+   if(m_axis == X_AXIS)
+       itemToolTip.append("Axis: X-Axis<br>");
+   else if(m_axis == Y_AXIS)
+       itemToolTip.append("Axis: Y-Axis<br>");
+   else
+       itemToolTip.append("Axis: Z-Axis<br>");
 
    itemToolTip.append(m_direction == Draw::FORWARD ? "Direction: Forward<br>" : "Direction: Backward<br>");
 

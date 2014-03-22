@@ -41,7 +41,8 @@ public:
 
 public Q_SLOTS:
     virtual void createAnimation();
-
+    virtual const QString createAnimationTooltip();
+    virtual void createAnimationTooltip(AnimationItem *item);
     void setIterations(const u_int8_t &iterations)
     {
         if(m_iterations != iterations)
@@ -53,7 +54,6 @@ public Q_SLOTS:
         if(m_particles != particles)
             m_particles = particles;
     }
-    virtual const QString createAnimationTooltip();
 private:
     u_int16_t m_iterations;
     u_int8_t m_particles;

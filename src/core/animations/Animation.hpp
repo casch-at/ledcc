@@ -18,9 +18,12 @@
 #define ANIMATION_HPP
 #include "Draw.hpp"
 //#include "AnimationOptions.hpp"
+#include "AnimationItem.hpp"
+//#include "AnimationOptions.hpp"
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
+
 
 class Animation : public Draw
 {
@@ -37,12 +40,14 @@ public:
    QString getName(void) const{
         return m_name;
     }
-    void setSpeed(const u_int16_t &speed){
+    void setSpeed(const u_int16_t &speed)
+    {
         if(m_speed != speed){
             m_speed = speed;
         }
     }
-    u_int16_t getSpeed(void) const{
+    u_int16_t getSpeed(void) const
+    {
         return m_speed;
     }
 
@@ -53,7 +58,8 @@ public:
     void waitMs(const u_int16_t &time);
     bool m_abort;
     void createAnimationTooltip(QString *itemToolTip);
-    void createAnimationTooltip(QString *itemToolTip, const Axis *axis);
+    void createAnimationTooltip(QString *itemToolTip, AnimationItem *item);
+    virtual void createAnimationTooltip(AnimationItem *item) = 0;
 Q_SIGNALS:
     void done();
     void sendData(const CubeArray &cubeFrame);

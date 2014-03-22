@@ -17,7 +17,7 @@
 #ifndef ANIMATIONOPTIONS_HPP
 #define ANIMATIONOPTIONS_HPP
 
-#include <QGroupBox>
+#include <QtWidgets/QGroupBox>
 #include "Global.hpp"
 #include "animations/Draw.hpp"
 //#include "AnimationItem.hpp"

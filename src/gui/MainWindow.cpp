@@ -240,7 +240,7 @@ void MainWindow::updateItemToolTip(const AnimationOptions::Options &aOptions)
     {
         AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
         item->setOptions(const_cast<AnimationOptions::Options&>(aOptions));
-        updateAnimationItemToolTip(item,&aOptions);
+        updateAnimationItemToolTip(item);
         if(currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/){
             updateAnimation(item);
         }
@@ -312,10 +312,14 @@ void MainWindow::updateAnimation(const AnimationItem *item)
  * @param a
  * @param item
  */
-void MainWindow::updateAnimationItemToolTip(QListWidgetItem *item, const AnimationOptions::Options *a)
+void MainWindow::updateAnimationItemToolTip(AnimationItem *item)
 {
+    Animation *a = animation.value(item->text());
+    QString itemToolTip;
 
-//    item->setToolTip(itemToolTip);
+    a->createAnimationTooltip(&itemToolTip,item->getOptions());
+
+    item->setToolTip(itemToolTip);
 }
 
 void MainWindow::portOpen(const QString &message)
@@ -457,7 +461,6 @@ void MainWindow::setupAnimationItems(void)
         connect(iter.value(),&Animation::sendData,sender,&Sender::sendAnimation); // connect animation thread with sender thread
 
         iter.value()->m_abort = false;
-
         iter++;
     }
 }

@@ -75,3 +75,14 @@ const QString Lift::createAnimationTooltip()
 
     return itemToolTip;
 }
+
+void Lift::createAnimationTooltip(AnimationItem *item)
+{
+    QString itemToolTip;
+    Animation::createAnimationTooltip(&itemToolTip, item);
+    itemToolTip.append(QString("Delay: %1<br>"
+                               "Iterations: %2")
+                       .arg(item->getOptions().delay)
+                       .arg(item->getOptions().iteration));
+    item->setToolTip(itemToolTip);
+}

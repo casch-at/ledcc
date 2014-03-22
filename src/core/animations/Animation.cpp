@@ -90,18 +90,11 @@ void Animation::createAnimationTooltip(QString *itemToolTip)
                         .arg(m_speed));
 }
 
-void Animation::createAnimationTooltip(QString *itemToolTip, const Axis *axis)
+
+void Animation::createAnimationTooltip(QString *itemToolTip, AnimationItem *item)
 {
     itemToolTip->append(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
                                    "Speed: %2<br>"))
-                        .arg(m_name)
-                        .arg(m_speed));
-
-    if(*axis == X_AXIS)
-        itemToolTip->append("Axis: X-Axis<br>");
-    else if(*axis == Y_AXIS)
-        itemToolTip->append("Axis: Y-Axis<br>");
-    else
-        itemToolTip->append("Axis: Z-Axis<br>");
-
+                        .arg(item->text())
+                        .arg(item->getOptions().speed));
 }

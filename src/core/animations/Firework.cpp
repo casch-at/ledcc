@@ -113,3 +113,14 @@ const QString Firework::createAnimationTooltip()
                        .arg(m_particles));
     return itemToolTip;
 }
+
+void Firework::createAnimationTooltip(AnimationItem *item)
+{
+    QString itemToolTip;
+    Animation::createAnimationTooltip(&itemToolTip, item);
+    itemToolTip.append(QString("Iterations: %1<br>"
+                               "Particles: %2")
+                       .arg(item->getOptions().iteration)
+                       .arg(item->getOptions().leds));
+    item->setToolTip(itemToolTip);
+}

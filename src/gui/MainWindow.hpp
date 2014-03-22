@@ -70,7 +70,7 @@ private Q_SLOTS:
     void animationDone(void);
     void updateAnimation(const AnimationItem *item);
     void updateItemToolTip(const AnimationOptions::Options &aOptions);
-    void updateAnimationItemToolTip(QListWidgetItem *item, const AnimationOptions::Options *a);
+    void updateAnimationItemToolTip(AnimationItem *item);
     void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
     void closePort(const QString &message);
