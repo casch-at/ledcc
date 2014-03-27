@@ -28,7 +28,7 @@ project(ledControl C CXX)
 # Variable for program name!
 set(PROGNAME  ${PROJECT_NAME})
 
-# Set version numbers for global.h configuration. See CMakeLists.txt in src directory
+# Set version numbers for global.h configuration. See CMakeLists.txt in /src/core directory
 set(LED_CUBE_VERSION_MAJOR "0.1" )
 set(LED_CUBE_VERSION_MINOR "0.11")
 

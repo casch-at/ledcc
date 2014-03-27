@@ -46,7 +46,7 @@ signals:
 public Q_SLOTS:
     virtual void createAnimation();
     virtual void createAnimationTooltip(AnimationItem *item);
-
+    virtual QStringList &getAnimationProperties( void );
     void setInvert(const bool invert)
     {
         if(m_invert != invert)
@@ -59,6 +59,7 @@ public Q_SLOTS:
         m_axis = axis;
     }
 private:
+    QStringList list;
     Axis m_axis;
     bool m_invert;
 

@@ -36,6 +36,7 @@ set(FORMS  #DebugDockWidget.ui
            MainWindow.ui
            SettingsDialog.ui
            AnimationOptions.ui
+           AnimationPropertiesPreview.ui
     )
 
 qt5_wrap_ui(${PROGNAME}_FORMS_HEADER        ${FORMS})

@@ -19,7 +19,6 @@
 #include "Draw.hpp"
 //#include "AnimationOptions.hpp"
 #include "AnimationItem.hpp"
-//#include "AnimationOptions.hpp"
 #ifdef _DEBUG_
 #include <QDebug>
 #endif

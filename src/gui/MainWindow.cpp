@@ -74,7 +74,10 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     setupAnimationItems();
     connectSignals();
     AQP::accelerateWidget (this);  //Give each button a accelerater
-    ui->dockWidget->setProperties("MainWindow","Hello 123: you 12.3");
+    QStringList list;
+    list.append("Hello 123");
+    list.append("You 12.3");
+    ui->dockWidget->createPropertiePreview(dynamic_cast<AxisNailWall*>(animation.value(ANIMATIONS::AxisNailWall))->getAnimationProperties());
 }
 
 /**

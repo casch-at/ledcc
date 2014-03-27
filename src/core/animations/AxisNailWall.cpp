@@ -23,6 +23,7 @@ AxisNailWall::AxisNailWall(const u_int16_t &speed, const Axis &axis, const bool 
 {
 }
 
+
 void AxisNailWall::createAnimation()
 {
     QVector<u_int8_t> destination(CUBE_ARRAY_SIZE);
@@ -81,6 +82,7 @@ void AxisNailWall::createAnimation()
 }
 
 
+
 void AxisNailWall::createAnimationTooltip(AnimationItem *item)
 {
     QString itemToolTip;
@@ -95,4 +97,23 @@ void AxisNailWall::createAnimationTooltip(AnimationItem *item)
     itemToolTip.append(item->getOptions().invert == true ? "Invert: Yes" : "Invert: No");
 
     item->setToolTip ( itemToolTip );
+}
+
+
+
+QStringList& AxisNailWall::getAnimationProperties()
+{
+    list.clear();
+
+    list.append(getName());
+    list.append(QString("Speed:%1").arg(getSpeed()));
+    if( m_axis == X_AXIS )
+        list.append( QString("Axis:X_AXIS") );
+    else if( m_axis == Y_AXIS )
+        list.append( QString("Axis:Y_AXIS") );
+    else
+        list.append( QString("Axis:Z_AXIS") );
+    list.append( QString("Invert:%1").arg(m_invert == true ? "Yes" : "No"));
+
+    return list;
 }
