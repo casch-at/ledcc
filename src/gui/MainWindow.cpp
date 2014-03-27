@@ -74,10 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     setupAnimationItems();
     connectSignals();
     AQP::accelerateWidget (this);  //Give each button a accelerater
-    QStringList list;
-    list.append("Hello 123");
-    list.append("You 12.3");
-    ui->dockWidget->createPropertiePreview(dynamic_cast<AxisNailWall*>(animation.value(ANIMATIONS::AxisNailWall))->getAnimationProperties());
+
 }
 
 /**
@@ -388,6 +385,20 @@ void MainWindow::stopThreads()
     animationDone();
 }
 
+
+/**
+ * @brief     QStringList list;
+    list.append("Hello 123");
+    list.append("You 12.3");
+    ui->dockWidget->createPropertiePreview(dynamic_cast<AxisNailWall*>(animation.value(ANIMATIONS::AxisNailWall))->getAnimationProperties());
+ *
+ * @param item
+ */
+void MainWindow::showPropertiesPreview(const QListWidgetItem *item)
+{
+    ui->animationPropertiesPreview->createPropertiePreview( animation.value( item->text() )->getAnimationProperties() );
+}
+
 /**
  * @brief
  *
@@ -501,20 +512,21 @@ void MainWindow::setupSenderThread(void)
  */
 void MainWindow::connectSignals(void)
 {
-    connect (openPortAction,&QAction::triggered, this,&MainWindow::openCloseSerialPort);
-    connect(quitAction,&QAction::triggered, this,&MainWindow::close);
-    connect (aboutAction,&QAction::triggered,this,&MainWindow::about);
-    connect(clearAction,&QAction::triggered, ui->animationPlaylistLW,&AnimationPlayListWidget::clearList);
-    connect(settingAction,&QAction::triggered,sdialog,&QWidget::show);
-    connect(ui->animationPlaylistLW , &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
-    connect(ui->availableAnimationsLW , &AnimationListWidget::addToPlaylist , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
-    connect(scSellectAll , &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
-    connect(scSellectAll , &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
-    connect(ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
-    connect(playAction , &QAction::triggered , this , &MainWindow::playAnimations);
-    connect(pauseAction , &QAction::triggered , this , &MainWindow::stopThreads);
-    connect(ui->animationPlaylistLW, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB,&AnimationOptions::displayAnimationOptions);
-
+    connect( openPortAction, &QAction::triggered, this,&MainWindow::openCloseSerialPort);
+    connect( quitAction, &QAction::triggered, this,&MainWindow::close);
+    connect( aboutAction, &QAction::triggered,this,&MainWindow::about);
+    connect( clearAction, &QAction::triggered, ui->animationPlaylistLW,&AnimationPlayListWidget::clearList);
+    connect( settingAction, &QAction::triggered,sdialog,&QWidget::show);
+    connect( ui->availableAnimationsLW , &AnimationListWidget::addToPlaylist , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
+    connect( ui->availableAnimationsLW , &AnimationListWidget::showPropertiePreview , this , &MainWindow::showPropertiesPreview);
+    connect( scSellectAll, &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
+    connect( scSellectAll, &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
+    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
+    connect( playAction, &QAction::triggered , this , &MainWindow::playAnimations);
+    connect( pauseAction, &QAction::triggered , this , &MainWindow::stopThreads);
+    connect( ui->animationPlaylistLW, &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
+    connect( ui->animationPlaylistLW, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
+    connect( ui->animationPlaylistLW, &AnimationPlayListWidget::showPropertiePreview, this, &MainWindow::showPropertiesPreview);
 }
 
 /**

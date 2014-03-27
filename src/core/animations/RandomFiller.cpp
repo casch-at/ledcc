@@ -62,3 +62,14 @@ void RandomFiller::createAnimationTooltip(AnimationItem *item)
 
     item->setToolTip(itemToolTip);
 }
+
+QStringList& RandomFiller::getAnimationProperties()
+{
+    list.clear();
+
+    list.append( getName() );
+    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
+    list.append( QString( "Initial State:%1" ).arg( m_state == ON ? "On" : "Off" ) );
+
+    return list;
+}

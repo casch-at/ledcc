@@ -27,7 +27,7 @@ class QFrame;
 QT_END_NAMESPACE
 
 namespace Ui {
-    class AnimationPropertiesPreview;
+    class animationPropertiesPreview;
     }
 
 class AnimationPropertiesPreview : public QDockWidget
@@ -47,7 +47,7 @@ protected:
     void changeEvent( QEvent *e );
 private:
     void clearFrame( void );
-    Ui::AnimationPropertiesPreview *ui;
+    Ui::animationPropertiesPreview *ui;
     QVBoxLayout *mlayout;
     QVBoxLayout *mlabelLayout;
     QShortcut *hideShowSC;

@@ -61,3 +61,20 @@ void Wall::createAnimationTooltip(AnimationItem *item)
 
    item->setToolTip(itemToolTip);
 }
+
+QStringList& Wall::getAnimationProperties()
+{
+    list.clear();
+
+    list.append( getName() );
+    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
+    if( m_axis == X_AXIS )
+        list.append( QString( "Axis:X_AXIS" ) );
+    else if( m_axis == Y_AXIS )
+        list.append( QString( "Axis:Y_AXIS" ) );
+    else
+        list.append( QString( "Axis:Z_AXIS" ) );
+    list.append( QString( "Direction:%1" ).arg( m_direction == FORWARD ? "Forward" : "Backward" ) );
+
+    return list;
+}

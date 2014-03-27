@@ -28,6 +28,8 @@ AnimationListWidget::AnimationListWidget(QWidget *parent):
     setFocusPolicy(Qt::StrongFocus);
     setMovement(QListView::Free);
     setDragDropMode(QAbstractItemView::DragDrop);
+    connect( this, &QListWidget::itemSelectionChanged, this, &AnimationListWidget::on_itemSelectionChanged);
+
 }
 
 void AnimationListWidget::keyPressEvent(QKeyEvent *event)
@@ -96,4 +98,10 @@ void AnimationListWidget::insertAnimation(const QString &animation)
     addItem(animation);
 }
 
+void AnimationListWidget::on_itemSelectionChanged()
+{
+    QList<QListWidgetItem*> items = selectedItems();
+    if( !items.isEmpty() && count())
+        Q_EMIT showPropertiePreview(  items.first() );
+}
 

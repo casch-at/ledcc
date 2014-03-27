@@ -40,7 +40,7 @@ public:
 public Q_SLOTS:
     virtual void createAnimation();
     virtual void createAnimationTooltip(AnimationItem *item);
-
+    virtual QStringList& getAnimationProperties();
     void setIterations(const u_int16_t &arg)
     {
         if(m_iterations != arg)

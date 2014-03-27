@@ -27,8 +27,8 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     setDropIndicatorShown(true);
     setMovement(QListView::Free);
     setDefaultDropAction(Qt::MoveAction);
-    connect(this,&QListWidget::itemDoubleClicked,
-            this,&AnimationPlayListWidget::on_itemDoubleClicked);
+    connect( this, &QListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::on_itemDoubleClicked);
+    connect( this, &QListWidget::itemSelectionChanged, this, &AnimationPlayListWidget::on_itemSelectionChanged);
 }
 
 void AnimationPlayListWidget::clearList()
@@ -153,6 +153,13 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
     {
         return Q_NULLPTR;
     }
+}
+
+void AnimationPlayListWidget::on_itemSelectionChanged()
+{
+    QList<QListWidgetItem*> items = selectedItems();
+    if( !items.isEmpty() && count())
+        Q_EMIT showPropertiePreview(  items.first() );
 }
 
 void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &items, const int row)

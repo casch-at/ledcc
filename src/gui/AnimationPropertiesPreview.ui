@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AnimationPropertiesPreview</class>
- <widget class="QDockWidget" name="AnimationPropertiesPreview">
+ <class>animationPropertiesPreview</class>
+ <widget class="QDockWidget" name="animationPropertiesPreview">
   <property name="geometry">
    <rect>
     <x>0</x>

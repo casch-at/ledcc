@@ -31,12 +31,14 @@ public:
     AnimationListWidget(QWidget* parent = Q_NULLPTR);
 Q_SIGNALS:
     void addToPlaylist(QList<QListWidgetItem *> selected);
+    void showPropertiePreview(const QListWidgetItem *item);
 protected:
     virtual void keyPressEvent(QKeyEvent * event);
     virtual void dragMoveEvent(QDragMoveEvent *e);
 public Q_SLOTS:
     void selectAllItems(void);
     void insertAnimation(const QString &animation);
+    void on_itemSelectionChanged();
 private:
 };
 

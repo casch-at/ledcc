@@ -53,3 +53,15 @@ void RandomSparkFlash::createAnimationTooltip(AnimationItem *item)
 
     item->setToolTip(itemToolTip);
 }
+
+QStringList& RandomSparkFlash::getAnimationProperties()
+{
+    list.clear();
+
+    list.append( getName() );
+    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
+    list.append( QString( "Iterations:%1" ).arg( m_iterations ) );
+    list.append( QString( "Leds:%1" ).arg( m_leds ) );
+
+    return list;
+}

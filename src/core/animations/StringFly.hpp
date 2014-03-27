@@ -39,7 +39,7 @@ signals:
 public Q_SLOTS:
     virtual void createAnimation();
     virtual void createAnimationTooltip(AnimationItem *item);
-
+    virtual QStringList& getAnimationProperties();
     void setSToDisplay(const QString &string)
     {
         if(m_sToDisplay.compare(string) != 0)

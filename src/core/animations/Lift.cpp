@@ -63,6 +63,16 @@ void Lift::createAnimation()
     Q_EMIT done();
 }
 
+QStringList& Lift::getAnimationProperties()
+{
+    list.clear();
+
+    list.append(getName());
+    list.append(QString("Speed:%1").arg(getSpeed()));
+    list.append(QString("Iterations:%1").arg(m_iterations));
+
+    return list;
+}
 
 void Lift::createAnimationTooltip(AnimationItem *item)
 {

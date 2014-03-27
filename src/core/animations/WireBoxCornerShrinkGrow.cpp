@@ -69,4 +69,13 @@ void WireBoxCornerShrinkGrow::createWireBoxCorner(const u_int8_t rotate, const u
     }
 }
 
+QStringList& WireBoxCornerShrinkGrow::getAnimationProperties()
+{
+    list.clear();
 
+    list.append(getName());
+    list.append(QString("Speed:%1").arg(getSpeed()));
+    list.append( QString( "Iterations:%1" ).arg( m_iterations ) );
+
+    return list;
+}

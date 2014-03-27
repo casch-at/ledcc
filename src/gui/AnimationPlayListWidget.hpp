@@ -29,10 +29,12 @@ public:
 Q_SIGNALS:
     void updateUi(void);
     void displayAnimationOptions(const AnimationOptions::Options options);
+    void showPropertiePreview(const QListWidgetItem *item);
 public Q_SLOTS:
     void clearList(void);
     void newItem(QList<QListWidgetItem *> item);
     void on_itemDoubleClicked(QListWidgetItem *item);
+    void on_itemSelectionChanged();
 protected:
     virtual void keyPressEvent(QKeyEvent * event);
     virtual void dragMoveEvent(QDragMoveEvent *e);
@@ -41,6 +43,7 @@ protected:
 public Q_SLOTS:
     void selectAllItems(void);
     AnimationItem *getNextAnimation(void);
+private Q_SLOTS:
 private:
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
 };

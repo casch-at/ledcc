@@ -45,6 +45,7 @@ signals:
 public Q_SLOTS:
     virtual void createAnimation();
     virtual void createAnimationTooltip(AnimationItem *item);
+    virtual QStringList& getAnimationProperties();
     void setCenterStart(bool centerStart)
     {
         if(m_centerStart != centerStart)

@@ -20,9 +20,12 @@
 #include <QHBoxLayout>
 #include <QShortcut>
 
+//FIXME:: Properties which are shown are always the last stored values from the animation.
+//        Use the animation item struct properties to generate the preview
+//FIXME:: Application crashes when last item is removed from the list because it tries to show the preview
 AnimationPropertiesPreview::AnimationPropertiesPreview( QWidget *parent ) :
     QDockWidget(parent),
-    ui(new Ui::AnimationPropertiesPreview),
+    ui(new Ui::animationPropertiesPreview),
     hideShowSC( new QShortcut(QKeySequence("F9"),parent)),
     frame(new QFrame)
 {
@@ -31,6 +34,7 @@ AnimationPropertiesPreview::AnimationPropertiesPreview( QWidget *parent ) :
 
     this->connect(hideShowSC,&QShortcut::activated,this,&AnimationPropertiesPreview::hideShow);
     this->setMaximumWidth(190);
+    this->setMinimumWidth(100);
 }
 
 AnimationPropertiesPreview::~AnimationPropertiesPreview()
@@ -68,22 +72,22 @@ void AnimationPropertiesPreview::createPropertiePreview(QStringList &properties 
     if(!frame->children().isEmpty())
         clearFrame();
 
-    QFont font;
     bool firstColumn = true;
-    QLabel *label = new QLabel( properties.first() );
-    properties.removeAt(0);
-    QFrame *f = new QFrame;
-    mlayout =  new QVBoxLayout;
-
-    mlayout->setObjectName("animationPropertiesPreviewLay");
-    mlayout->setAlignment( this, Qt::AlignCenter );
-
+    QFont font;
     font.setBold(true);
     font.setPixelSize(PIXEL_SIZE_NAME);
 
+    mlayout =  new QVBoxLayout;
+    mlayout->setObjectName("animationPropertiesPreviewLay");
+    mlayout->setAlignment( this, Qt::AlignCenter );
+
+    QLabel *label = new QLabel( properties.first() );
+    properties.removeAt(0);
+    label->setWordWrap(true);
     label->setFont(font);
     label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
+    QFrame *f = new QFrame;
     f->setFrameStyle(QFrame::HLine | QFrame::Raised);
     f->setMidLineWidth(1);
     f->setLineWidth(0);
@@ -99,13 +103,14 @@ void AnimationPropertiesPreview::createPropertiePreview(QStringList &properties 
         if(propertie.isEmpty())
             continue;
         QHBoxLayout *hlayout = new QHBoxLayout;
-        hlayout->setSpacing(25);
+        hlayout->setSpacing(10);
 
         foreach ( QString propertieValue, propertie.split(":") )
         {
             if( propertieValue.isEmpty() )
                 continue;
             label = new QLabel;
+            label->setWordWrap(true);
             /**
  * Property name is first column and is Right aligned,
  * second column is property value default aligned

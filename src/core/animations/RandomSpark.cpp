@@ -68,3 +68,14 @@ void RandomSpark::createAnimationTooltip(AnimationItem *item)
 
     item->setToolTip(itemToolTip);
 }
+
+QStringList& RandomSpark::getAnimationProperties()
+{
+    list.clear();
+
+    list.append( getName() );
+    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
+    list.append( QString( "Iterations:%1" ).arg( m_iterations ) );
+
+    return list;
+}

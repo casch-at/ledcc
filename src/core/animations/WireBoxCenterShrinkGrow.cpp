@@ -21,6 +21,7 @@ WireBoxCenterShrinkGrow::WireBoxCenterShrinkGrow(const u_int16_t &speed, const b
     m_centerStart(centerStart),
     m_iterations(iterations)
 {
+
 }
 
 void WireBoxCenterShrinkGrow::createAnimation()
@@ -59,4 +60,14 @@ void WireBoxCenterShrinkGrow::createAnimationTooltip(AnimationItem *item)
     item->setToolTip(itemToolTip);
 }
 
+QStringList& WireBoxCenterShrinkGrow::getAnimationProperties()
+{
+    list.clear();
 
+    list.append( getName() );
+    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
+    list.append( QString( "Iterations:%1" ).arg( m_iterations ) );
+    list.append( QString( "Center Start:%1" ).arg( m_centerStart == true ? "Yes" : "No" ) );
+
+    return list;
+}

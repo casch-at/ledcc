@@ -76,3 +76,14 @@ void StringFly::createAnimationTooltip(AnimationItem *item)
 
     item->setToolTip(itemToolTip);
 }
+
+QStringList& StringFly::getAnimationProperties()
+{
+    list.clear();
+
+    list.append( getName() );
+    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
+    list.append( QString( "Text:%1" ).arg( m_sToDisplay ) );
+
+    return list;
+}
