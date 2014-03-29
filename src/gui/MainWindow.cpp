@@ -135,7 +135,7 @@ bool MainWindow::okToContinue(void)
 
 /**
  * @brief MainWindow::resizeEvent
- * @param e3D LED CUB
+ * @param e
  */
 void MainWindow::resizeEvent(QResizeEvent *e)
 {

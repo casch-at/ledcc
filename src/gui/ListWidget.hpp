@@ -24,7 +24,7 @@ public Q_SLOTS:
     void selectAllItems(void);
     void on_itemSelectionChanged();
     void on_showPropertiesPreviewTimerTimeout();
-    void focus();
+    inline void focus() { setFocus(); }
 private:
     QTimer *m_showPropertiesPreview;
     QListWidgetItem *itemToShowProperties;

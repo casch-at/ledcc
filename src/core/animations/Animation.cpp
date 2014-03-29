@@ -26,11 +26,6 @@ Animation::Animation(const u_int16_t &speed, const QString &name, QObject *paren
     m_abort = false;
 }
 
-Animation::~Animation()
-{
-
-}
-
 /**
  * @brief The sendBixelZ function sends a led either up or down at position
  *        @param x y.

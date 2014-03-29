@@ -48,7 +48,7 @@ protected:
     void closeEvent (QCloseEvent *);
 public:
     explicit MainWindow(QWidget *parent = Q_NULLPTR);
-    ~MainWindow();
+    virtual ~MainWindow();
 Q_SIGNALS:
     void startAnimation();
     void openSerialInterface(const SettingsDialog::SerialSettings &port);
