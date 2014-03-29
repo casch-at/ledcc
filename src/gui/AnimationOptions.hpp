@@ -49,7 +49,7 @@ public:
 Q_SIGNALS:
     void optionsReady(const Options &animationOptions);
 public Q_SLOTS:
-    void displayAnimationOptions(const Options options);
+    void displayAnimationOptions(const Options *options);
 protected:
     void changeEvent(QEvent *e);
 

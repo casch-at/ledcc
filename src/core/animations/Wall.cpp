@@ -44,37 +44,37 @@ void Wall::createAnimation()
     Q_EMIT done();
 }
 
-void Wall::createAnimationTooltip(AnimationItem *item)
+void Wall::createAnimationTooltipAsRichText(AnimationItem *item)
 {
    QString itemToolTip;
 
    setItemToolTipNameSpeed( &itemToolTip, item );
 
-   if(item->getOptions().axis == X_AXIS)
+   if( item->getOptions()->axis == X_AXIS )
        itemToolTip.append("Axis: X-Axis<br>");
-   else if(item->getOptions().axis == Y_AXIS)
+   else if( item->getOptions()->axis == Y_AXIS )
        itemToolTip.append("Axis: Y-Axis<br>");
    else
        itemToolTip.append("Axis: Z-Axis<br>");
 
-   itemToolTip.append(item->getOptions().direction == Draw::FORWARD ? "Direction: Forward" : "Direction: Backward");
+   itemToolTip.append( item->getOptions()->direction == Draw::FORWARD ? "Direction: Forward" : "Direction: Backward");
 
-   item->setToolTip(itemToolTip);
+   item->setToolTip( itemToolTip );
 }
 
-QStringList& Wall::getAnimationProperties()
+QStringList& Wall::getAnimationPropertiesAsPlainText(const AnimationItem *item)
 {
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
-    if( m_axis == X_AXIS )
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
+    if( item->getOptions()->axis == X_AXIS )
         list.append( QString( "Axis:X_AXIS" ) );
-    else if( m_axis == Y_AXIS )
+    else if( item->getOptions()->axis == Y_AXIS )
         list.append( QString( "Axis:Y_AXIS" ) );
     else
         list.append( QString( "Axis:Z_AXIS" ) );
-    list.append( QString( "Direction:%1" ).arg( m_direction == FORWARD ? "Forward" : "Backward" ) );
+    list.append( QString( "Direction:%1" ).arg( item->getOptions()->direction == FORWARD ? "Forward" : "Backward" ) );
 
     return list;
 }

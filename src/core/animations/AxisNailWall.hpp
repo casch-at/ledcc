@@ -45,8 +45,8 @@ signals:
 
 public Q_SLOTS:
     virtual void createAnimation();
-    virtual void createAnimationTooltip(AnimationItem *item);
-    virtual QStringList& getAnimationProperties();
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
     void setInvert(const bool invert)
     {
         if(m_invert != invert)

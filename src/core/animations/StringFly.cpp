@@ -65,25 +65,25 @@ void StringFly::createAnimation()
     Q_EMIT done();
 }
 
-void StringFly::createAnimationTooltip(AnimationItem *item)
+void StringFly::createAnimationTooltipAsRichText(AnimationItem *item)
 {
     QString itemToolTip;
 
     setItemToolTipNameSpeed( &itemToolTip, item);
 
-    itemToolTip.append(QString("Current Text: "
-                               + item->getOptions().text.toLatin1()));
+    itemToolTip.append( QString("Current Text: "
+                               + item->getOptions()->text.toLatin1()));
 
-    item->setToolTip(itemToolTip);
+    item->setToolTip( itemToolTip );
 }
 
-QStringList& StringFly::getAnimationProperties()
+QStringList& StringFly::getAnimationPropertiesAsPlainText(const AnimationItem *item)
 {
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
-    list.append( QString( "Text:%1" ).arg( m_sToDisplay ) );
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
+    list.append( QString( "Text:%1" ).arg( item->getOptions()->text ) );
 
     return list;
 }

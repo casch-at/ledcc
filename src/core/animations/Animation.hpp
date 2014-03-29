@@ -61,9 +61,9 @@ Q_SIGNALS:
     void done();
     void sendData(const CubeArray &cubeFrame);
 public Q_SLOTS:
-    virtual void createAnimationTooltip(AnimationItem *item) = 0;
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item) = 0;
     virtual void createAnimation(void) = 0;
-    virtual QStringList& getAnimationProperties( void ) = 0;
+    virtual QStringList& getAnimationPropertiesAsPlainText(const AnimationItem *item ) = 0;
 protected:
     QStringList list;
 private:

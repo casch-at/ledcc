@@ -41,6 +41,8 @@ AnimationItem *AnimationItem::clone() const
 {
     AnimationItem *item = new AnimationItem(text());
     item->setToolTip(toolTip());
-    item->setOptions(getOptions());
+    item->setOptions(*getOptions());
     return item;
 }
+
+

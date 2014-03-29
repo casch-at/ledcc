@@ -64,25 +64,25 @@ void RandomZLift::createAnimation()
     Q_EMIT done();
 }
 
-void RandomZLift::createAnimationTooltip(AnimationItem *item)
+void RandomZLift::createAnimationTooltipAsRichText(AnimationItem *item)
 {
     QString itemToolTip;
 
     setItemToolTipNameSpeed( &itemToolTip, item );
 
     itemToolTip.append(QString("Iterations: %1")
-                       .arg(item->getOptions().iteration));
+                       .arg(item->getOptions()->iteration));
 
     item->setToolTip(itemToolTip);
 }
 
-QStringList& RandomZLift::getAnimationProperties()
+QStringList& RandomZLift::getAnimationPropertiesAsPlainText(const AnimationItem *item)
 {
     list.clear();
 
     list.append(getName());
-    list.append(QString("Speed:%1").arg(getSpeed()));
-    list.append( QString( "Iterations:%1" ).arg( m_iterations ) );
+    list.append(QString("Speed:%1").arg( item->getOptions()->speed ));
+    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->iteration ) );
 
     return list;
 }

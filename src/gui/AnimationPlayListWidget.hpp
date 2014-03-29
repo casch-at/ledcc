@@ -28,13 +28,14 @@ public:
 
 Q_SIGNALS:
     void updateUi(void);
-    void displayAnimationOptions(const AnimationOptions::Options options);
-    void showPropertiePreview(const QListWidgetItem *item);
+    void displayAnimationOptions(const AnimationOptions::Options *options);
+    void showPropertiePreview(QListWidgetItem *item);
 public Q_SLOTS:
     void clearList(void);
     void newItem(QList<QListWidgetItem *> item);
     void on_itemDoubleClicked(QListWidgetItem *item);
     void on_itemSelectionChanged();
+    void on_entered(const QModelIndex &index);
 protected:
     virtual void keyPressEvent(QKeyEvent * event);
     virtual void dragMoveEvent(QDragMoveEvent *e);

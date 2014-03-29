@@ -68,7 +68,7 @@ private Q_SLOTS:
     void closePort(const QString &message);
     void portClosed(const QString &message);
     void stopThreads(void);
-    void showPropertiesPreview(const QListWidgetItem *item);
+    void showPropertiesPreview(QListWidgetItem *item);
 
 private:
     bool okToContinue(void);

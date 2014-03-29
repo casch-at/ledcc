@@ -37,8 +37,8 @@ signals:
 
 public Q_SLOTS:
     virtual void createAnimation();
-    virtual void createAnimationTooltip(AnimationItem *item);
-    virtual QStringList& getAnimationProperties();
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
     void setState(const BixelState state)
     {
         if(m_state != state)

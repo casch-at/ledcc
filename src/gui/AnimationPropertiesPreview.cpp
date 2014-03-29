@@ -22,7 +22,6 @@
 
 //FIXME:: Properties which are shown are always the last stored values from the animation.
 //        Use the animation item struct properties to generate the preview
-//FIXME:: Application crashes when last item is removed from the list because it tries to show the preview
 AnimationPropertiesPreview::AnimationPropertiesPreview( QWidget *parent ) :
     QDockWidget(parent),
     ui(new Ui::animationPropertiesPreview),
@@ -34,7 +33,7 @@ AnimationPropertiesPreview::AnimationPropertiesPreview( QWidget *parent ) :
 
     this->connect(hideShowSC,&QShortcut::activated,this,&AnimationPropertiesPreview::hideShow);
     this->setMaximumWidth(190);
-    this->setMinimumWidth(100);
+    this->setMinimumWidth(150);
 }
 
 AnimationPropertiesPreview::~AnimationPropertiesPreview()

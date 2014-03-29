@@ -250,8 +250,9 @@ void MainWindow::updateItemToolTip(const AnimationOptions::Options &aOptions)
         AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
         item->setOptions(const_cast<AnimationOptions::Options&>(aOptions));
 
-        animation.value(item->text())->createAnimationTooltip(item);
-
+        animation.value(item->text())->createAnimationTooltipAsRichText(item);
+        ui->animationPropertiesPreview->createPropertiePreview(
+                    animation.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
         if(currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
         {
             updateAnimation(item);
@@ -268,53 +269,53 @@ void MainWindow::updateAnimation(const AnimationItem *item)
 {
     QString text = item->text();
     Animation *a = animation.value(text);
-    AnimationOptions::Options options = item->getOptions();
+    const AnimationOptions::Options *options = item->getOptions();
 
     if(text.compare(ANIMATIONS::Lift) == 0){
-        dynamic_cast<Lift*>(a)->setDelay(options.delay);
-        dynamic_cast<Lift*>(a)->setIterations(options.iteration);
-        dynamic_cast<Lift*>(a)->setSpeed(options.speed);
+        dynamic_cast<Lift*>(a)->setDelay(options->delay);
+        dynamic_cast<Lift*>(a)->setIterations(options->iteration);
+        dynamic_cast<Lift*>(a)->setSpeed(options->speed);
     }else if(text.compare(ANIMATIONS::Rain) == 0){
-        dynamic_cast<Rain*>(a)->setSpeed(options.speed);
-        dynamic_cast<Rain*>(a)->setIterations(options.iteration);
+        dynamic_cast<Rain*>(a)->setSpeed(options->speed);
+        dynamic_cast<Rain*>(a)->setIterations(options->iteration);
     }else if(text.compare(ANIMATIONS::StringFly) == 0){
-        dynamic_cast<StringFly*>(a)->setSToDisplay(options.text);
-        dynamic_cast<StringFly*>(a)->setSpeed(options.speed);
+        dynamic_cast<StringFly*>(a)->setSToDisplay(options->text);
+        dynamic_cast<StringFly*>(a)->setSpeed(options->speed);
     }else if(text.compare(ANIMATIONS::Wall) == 0){
-        dynamic_cast<Wall*>(a)->setSpeed(options.speed);
-        dynamic_cast<Wall*>(a)->setAxis(options.axis);
-        dynamic_cast<Wall*>(a)->setDirection(options.direction);
+        dynamic_cast<Wall*>(a)->setSpeed(options->speed);
+        dynamic_cast<Wall*>(a)->setAxis(options->axis);
+        dynamic_cast<Wall*>(a)->setDirection(options->direction);
     }else if(text.compare(ANIMATIONS::Firework) == 0){
-        dynamic_cast<Firework*>(a)->setSpeed(options.speed);
-        dynamic_cast<Firework*>(a)->setParticles(options.leds);
-        dynamic_cast<Firework*>(a)->setIterations(options.iteration);
+        dynamic_cast<Firework*>(a)->setSpeed(options->speed);
+        dynamic_cast<Firework*>(a)->setParticles(options->leds);
+        dynamic_cast<Firework*>(a)->setIterations(options->iteration);
     }else if(text.compare(ANIMATIONS::RandomSparkFlash) == 0){
-        dynamic_cast<RandomSparkFlash*>(a)->setSpeed(options.speed);
-        dynamic_cast<RandomSparkFlash*>(a)->setIterations(options.iteration);
-        dynamic_cast<RandomSparkFlash*>(a)->setLeds(options.leds);
+        dynamic_cast<RandomSparkFlash*>(a)->setSpeed(options->speed);
+        dynamic_cast<RandomSparkFlash*>(a)->setIterations(options->iteration);
+        dynamic_cast<RandomSparkFlash*>(a)->setLeds(options->leds);
     }else if(text.compare(ANIMATIONS::RandomSpark) == 0){
-        dynamic_cast<RandomSpark*>(a)->setSpeed(options.speed);
-        dynamic_cast<RandomSpark*>(a)->setSparks(options.leds);
-        dynamic_cast<RandomSpark*>(a)->setIterations(options.iteration);
+        dynamic_cast<RandomSpark*>(a)->setSpeed(options->speed);
+        dynamic_cast<RandomSpark*>(a)->setSparks(options->leds);
+        dynamic_cast<RandomSpark*>(a)->setIterations(options->iteration);
     }else if(text.compare(ANIMATIONS::RandomFiller) == 0){
-        dynamic_cast<RandomFiller*>(a)->setSpeed(options.speed);
-        dynamic_cast<RandomFiller*>(a)->setState(options.state);
+        dynamic_cast<RandomFiller*>(a)->setSpeed(options->speed);
+        dynamic_cast<RandomFiller*>(a)->setState(options->state);
     }else if(text.compare(ANIMATIONS::AxisNailWall) == 0){
-        dynamic_cast<AxisNailWall*>(a)->setSpeed(options.speed);
-        dynamic_cast<AxisNailWall*>(a)->setAxis(options.axis);
-        dynamic_cast<AxisNailWall*>(a)->setInvert(options.invert == 0 ? false : true);
+        dynamic_cast<AxisNailWall*>(a)->setSpeed(options->speed);
+        dynamic_cast<AxisNailWall*>(a)->setAxis(options->axis);
+        dynamic_cast<AxisNailWall*>(a)->setInvert(options->invert == 0 ? false : true);
     }else if(text.compare(ANIMATIONS::Loadbar) == 0){
-        dynamic_cast<Loadbar*>(a)->setSpeed(options.speed);
-        dynamic_cast<Loadbar*>(a)->setAxis(options.axis);
+        dynamic_cast<Loadbar*>(a)->setSpeed(options->speed);
+        dynamic_cast<Loadbar*>(a)->setAxis(options->axis);
     }else if(text.compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
-        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(options.speed);
-        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(options.invert == 0 ? false : true);
-        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(options.iteration);
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(options->speed);
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(options->invert == 0 ? false : true);
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(options->iteration);
     }else if(text.compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
-        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(options.speed);
-        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(options.iteration);
+        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(options->speed);
+        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(options->iteration);
     }else if(text.compare(ANIMATIONS::RandomZLift) == 0){
-        dynamic_cast<RandomZLift*>(a)->setSpeed(options.speed);
+        dynamic_cast<RandomZLift*>(a)->setSpeed(options->speed);
     }
 }
 
@@ -394,9 +395,11 @@ void MainWindow::stopThreads()
  *
  * @param item
  */
-void MainWindow::showPropertiesPreview(const QListWidgetItem *item)
+void MainWindow::showPropertiesPreview(QListWidgetItem *item)
 {
-    ui->animationPropertiesPreview->createPropertiePreview( animation.value( item->text() )->getAnimationProperties() );
+    ui->animationPropertiesPreview->createPropertiePreview(
+                animation.value( item->text() )->getAnimationPropertiesAsPlainText(
+                    dynamic_cast<AnimationItem*>(item) ) );
 }
 
 /**
@@ -463,7 +466,7 @@ void MainWindow::setupAnimationItems(void)
             options.iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
         }
         item->setOptions(options);
-        iter.value()->createAnimationTooltip(item);
+        iter.value()->createAnimationTooltipAsRichText(item);
 
         iter.value()->moveToThread(createThread); // move animations to own thread
 

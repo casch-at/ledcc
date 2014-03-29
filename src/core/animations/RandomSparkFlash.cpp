@@ -40,7 +40,7 @@ void RandomSparkFlash::createAnimation()
     Q_EMIT done();
 }
 
-void RandomSparkFlash::createAnimationTooltip(AnimationItem *item)
+void RandomSparkFlash::createAnimationTooltipAsRichText(AnimationItem *item)
 {
     QString itemToolTip;
 
@@ -48,20 +48,20 @@ void RandomSparkFlash::createAnimationTooltip(AnimationItem *item)
 
     itemToolTip.append(QString("LEDs: %1<br>"
                                "Iterations: %2")
-                       .arg(item->getOptions().leds)
-                       .arg(item->getOptions().iteration));
+                       .arg( item->getOptions()->leds )
+                       .arg( item->getOptions()->iteration ) );
 
     item->setToolTip(itemToolTip);
 }
 
-QStringList& RandomSparkFlash::getAnimationProperties()
+QStringList& RandomSparkFlash::getAnimationPropertiesAsPlainText( const AnimationItem *item )
 {
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
-    list.append( QString( "Iterations:%1" ).arg( m_iterations ) );
-    list.append( QString( "Leds:%1" ).arg( m_leds ) );
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
+    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->iteration ) );
+    list.append( QString( "Leds:%1" ).arg( item->getOptions()->leds ) );
 
     return list;
 }

@@ -38,28 +38,28 @@ AnimationOptions::Options *AnimationOptions::getAnimationSettings()
 }
 
 
-void AnimationOptions::displayAnimationOptions(const Options options)
+void AnimationOptions::displayAnimationOptions(const Options *options)
 {
-    if(options.axis == Draw::X_AXIS )
+    if(options->axis == Draw::X_AXIS )
         ui->axisComB->setCurrentIndex(0);
-    else if(options.axis == Draw::Y_AXIS )
+    else if(options->axis == Draw::Y_AXIS )
         ui->axisComB->setCurrentIndex(1);
-    else if(options.axis == Draw::Z_AXIS )
+    else if(options->axis == Draw::Z_AXIS )
         ui->axisComB->setCurrentIndex(0);
-    ui->delaySpinB->setValue(static_cast<int>(options.delay));
-    if( options.direction == Draw::BACKWARD )
+    ui->delaySpinB->setValue(static_cast<int>(options->delay));
+    if( options->direction == Draw::BACKWARD )
         ui->directionComB->setCurrentIndex(0);
-    else if(options.direction == Draw::FORWARD )
+    else if(options->direction == Draw::FORWARD )
         ui->directionComB->setCurrentIndex(1);
-    if(options.invert == true && options.state == Draw::ON){
+    if(options->invert == true && options->state == Draw::ON){
         ui->invertSpinB->setValue(1);
     }else{
         ui->invertSpinB->setValue(0);
     }
-    ui->iterationsSpinB->setValue( static_cast<int>(options.iteration));
-    ui->ledsSpinB->setValue( static_cast<int>(options.leds));
-    ui->speedSpinB->setValue( static_cast<int>(options.speed));
-    ui->textLineE->setText(options.text.isEmpty() == true ? "" : options.text);
+    ui->iterationsSpinB->setValue( static_cast<int>(options->iteration));
+    ui->ledsSpinB->setValue( static_cast<int>(options->leds));
+    ui->speedSpinB->setValue( static_cast<int>(options->speed));
+    ui->textLineE->setText(options->text.isEmpty() == true ? "" : options->text);
 }
 
 void AnimationOptions::changeEvent(QEvent *e)

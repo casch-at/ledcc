@@ -48,26 +48,26 @@ void WireBoxCenterShrinkGrow::createAnimation()
     Q_EMIT done();
 }
 
-void WireBoxCenterShrinkGrow::createAnimationTooltip(AnimationItem *item)
+void WireBoxCenterShrinkGrow::createAnimationTooltipAsRichText(AnimationItem *item)
 {
     QString itemToolTip;
 
     setItemToolTipNameSpeed( &itemToolTip, item );
 
-    itemToolTip.append(item->getOptions().invert == true ? "Start in center: YES<br>" : "Start in center: NO<br>");
+    itemToolTip.append(item->getOptions()->invert == true ? "Start in center: YES<br>" : "Start in center: NO<br>");
     itemToolTip.append(QString("Iterations: %1")
-               .arg(item->getOptions().iteration));
+               .arg(item->getOptions()->iteration));
     item->setToolTip(itemToolTip);
 }
 
-QStringList& WireBoxCenterShrinkGrow::getAnimationProperties()
+QStringList& WireBoxCenterShrinkGrow::getAnimationPropertiesAsPlainText( const AnimationItem *item  )
 {
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
-    list.append( QString( "Iterations:%1" ).arg( m_iterations ) );
-    list.append( QString( "Center Start:%1" ).arg( m_centerStart == true ? "Yes" : "No" ) );
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
+    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->iteration ) );
+    list.append( QString( "Center Start:%1" ).arg( item->getOptions()->invert == true ? "Yes" : "No" ) );
 
     return list;
 }

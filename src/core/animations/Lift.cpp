@@ -63,24 +63,24 @@ void Lift::createAnimation()
     Q_EMIT done();
 }
 
-QStringList& Lift::getAnimationProperties()
+QStringList& Lift::getAnimationPropertiesAsPlainText(const AnimationItem *item)
 {
     list.clear();
 
-    list.append(getName());
-    list.append(QString("Speed:%1").arg(getSpeed()));
-    list.append(QString("Iterations:%1").arg(m_iterations));
+    list.append( getName() );
+    list.append( QString("Speed:%1").arg( item->getOptions()->speed ) );
+    list.append( QString("Iterations:%1").arg( item->getOptions()->iteration ) );
 
     return list;
 }
 
-void Lift::createAnimationTooltip(AnimationItem *item)
+void Lift::createAnimationTooltipAsRichText(AnimationItem *item)
 {
     QString itemToolTip;
-    setItemToolTipNameSpeed(&itemToolTip, item);
+    setItemToolTipNameSpeed( &itemToolTip, item );
     itemToolTip.append(QString("Delay: %1<br>"
                                "Iterations: %2")
-                       .arg(item->getOptions().delay)
-                       .arg(item->getOptions().iteration));
-    item->setToolTip(itemToolTip);
+                       .arg( item->getOptions()->delay )
+                       .arg( item->getOptions()->iteration ) );
+    item->setToolTip( itemToolTip );
 }

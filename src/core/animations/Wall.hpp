@@ -40,8 +40,8 @@ public:
 
 public Q_SLOTS:
     virtual void createAnimation();
-    virtual void createAnimationTooltip(AnimationItem *item);
-    virtual QStringList& getAnimationProperties();
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
     void setDirection(Direction arg)
     {
         if(m_direction != arg)

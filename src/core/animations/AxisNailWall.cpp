@@ -83,37 +83,37 @@ void AxisNailWall::createAnimation()
 
 
 
-void AxisNailWall::createAnimationTooltip(AnimationItem *item)
+void AxisNailWall::createAnimationTooltipAsRichText(AnimationItem *item)
 {
     QString itemToolTip;
     setItemToolTipNameSpeed(&itemToolTip, item);
 
-    if(item->getOptions().axis == X_AXIS)
+    if(item->getOptions()->axis == X_AXIS)
         itemToolTip.append("Axis: X-Axis<br>");
-    else if(item->getOptions().axis == Y_AXIS)
+    else if(item->getOptions()->axis == Y_AXIS)
         itemToolTip.append("Axis: Y-Axis<br>");
     else
         itemToolTip.append("Axis: Z-Axis<br>");
-    itemToolTip.append(item->getOptions().invert == true ? "Invert: Yes" : "Invert: No");
+    itemToolTip.append(item->getOptions()->invert == true ? "Invert: Yes" : "Invert: No");
 
     item->setToolTip ( itemToolTip );
 }
 
 
 
-QStringList& AxisNailWall::getAnimationProperties()
+QStringList& AxisNailWall::getAnimationPropertiesAsPlainText(const AnimationItem *item)
 {
     list.clear();
 
     list.append(getName());
-    list.append(QString("Speed:%1").arg(getSpeed()));
-    if( m_axis == X_AXIS )
+    list.append(QString("Speed:%1").arg( item->getOptions()->speed));
+    if( item->getOptions()->axis == X_AXIS )
         list.append( QString("Axis:X_AXIS") );
-    else if( m_axis == Y_AXIS )
+    else if( item->getOptions()->axis == Y_AXIS )
         list.append( QString("Axis:Y_AXIS") );
     else
         list.append( QString("Axis:Z_AXIS") );
-    list.append( QString("Invert:%1").arg(m_invert == true ? "Yes" : "No"));
+    list.append( QString("Invert:%1").arg( item->getOptions()->invert == true ? "Yes" : "No"));
 
     return list;
 }

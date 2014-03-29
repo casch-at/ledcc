@@ -52,24 +52,24 @@ void RandomFiller::createAnimation()
     Q_EMIT done();
 }
 
-void RandomFiller::createAnimationTooltip(AnimationItem *item)
+void RandomFiller::createAnimationTooltipAsRichText(AnimationItem *item)
 {
     QString itemToolTip;
 
     setItemToolTipNameSpeed( &itemToolTip, item );
 
-    itemToolTip.append(item->getOptions().state == ON ? "Start State: ON" : "Start State: OFF");
+    itemToolTip.append( item->getOptions()->state == ON ? "Start State: ON" : "Start State: OFF");
 
-    item->setToolTip(itemToolTip);
+    item->setToolTip( itemToolTip );
 }
 
-QStringList& RandomFiller::getAnimationProperties()
+QStringList& RandomFiller::getAnimationPropertiesAsPlainText(const AnimationItem *item)
 {
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( getSpeed() ) );
-    list.append( QString( "Initial State:%1" ).arg( m_state == ON ? "On" : "Off" ) );
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
+    list.append( QString( "Initial State:%1" ).arg( item->getOptions()->invert == ON ? "On" : "Off" ) );
 
     return list;
 }

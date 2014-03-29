@@ -51,8 +51,8 @@ public:
 
 public Q_SLOTS:
     virtual void createAnimation();
-    virtual void createAnimationTooltip(AnimationItem *item);
-    virtual QStringList& getAnimationProperties();
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
     void setIterations(const u_int16_t &iterations)
     {
         if(m_iterations != iterations)

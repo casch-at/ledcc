@@ -31,7 +31,7 @@ public:
     AnimationListWidget(QWidget* parent = Q_NULLPTR);
 Q_SIGNALS:
     void addToPlaylist(QList<QListWidgetItem *> selected);
-    void showPropertiePreview(const QListWidgetItem *item);
+    void showPropertiePreview(QListWidgetItem *item);
 protected:
     virtual void keyPressEvent(QKeyEvent * event);
     virtual void dragMoveEvent(QDragMoveEvent *e);

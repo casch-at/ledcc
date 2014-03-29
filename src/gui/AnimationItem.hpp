@@ -29,10 +29,11 @@ public:
     virtual AnimationItem *clone() const;
 //    AnimationItem(const AnimationItem &other);
 //    ~AnimationItem();
-    AnimationOptions::Options getOptions(void) const{
-        return m_options;
+    inline const AnimationOptions::Options * getOptions(void) const{
+        return &m_options;
     }
-    void setOptions(const AnimationOptions::Options &options){
+
+    inline void setOptions(const AnimationOptions::Options &options){
         m_options = options;
     }
 
