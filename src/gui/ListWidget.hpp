@@ -10,7 +10,7 @@ class ListWidget : public QListWidget
     Q_OBJECT
 public:
     explicit ListWidget(QWidget *parent = Q_NULLPTR);
-    ~ListWidget();
+    virtual ~ListWidget();
 Q_SIGNALS:
     void showPropertiePreview(QListWidgetItem *item);
 protected:
@@ -24,6 +24,7 @@ public Q_SLOTS:
     void selectAllItems(void);
     void on_itemSelectionChanged();
     void on_showPropertiesPreviewTimerTimeout();
+    void focus();
 private:
     QTimer *m_showPropertiesPreview;
     QListWidgetItem *itemToShowProperties;

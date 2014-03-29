@@ -27,7 +27,7 @@ class AnimationPlayListWidget : public ListWidget
     Q_OBJECT
 public:
     explicit AnimationPlayListWidget(QWidget *parent = Q_NULLPTR);
-
+    virtual ~AnimationPlayListWidget();
 Q_SIGNALS:
     void updateUi(void);
     void displayAnimationOptions(const AnimationOptions::Options *options);
@@ -39,6 +39,7 @@ protected:
     virtual void dragMoveEvent(QDragMoveEvent *e);
     virtual void dragLeaveEvent(QDragLeaveEvent *e);
     virtual void dropEvent(QDropEvent *e);
+
 public Q_SLOTS:
     AnimationItem *getNextAnimation(void);
 private Q_SLOTS:

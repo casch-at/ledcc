@@ -31,6 +31,7 @@ class AnimationListWidget : public ListWidget
     Q_OBJECT
 public:
     AnimationListWidget(QWidget* parent = Q_NULLPTR);
+    virtual ~AnimationListWidget();
 Q_SIGNALS:
     void addToPlaylist(QList<QListWidgetItem *> selected);
     void showPropertiePreview(QListWidgetItem *item);
@@ -38,6 +39,7 @@ protected:
     virtual void keyPressEvent(QKeyEvent * event);
 public Q_SLOTS:
     void insertAnimation(const QString &animation);
+
 private:
 };
 

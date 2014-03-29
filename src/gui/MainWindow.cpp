@@ -62,6 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     ui(new Ui::MainWindow),
     sdialog(new SettingsDialog),
     scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
+    focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
+    focusAnimationPlayList(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
     createThread(new QThread)
 {
     ui->setupUi(this);
@@ -529,6 +531,8 @@ void MainWindow::connectSignals(void)
     // ListWidget shortcut sellect all connections
     connect( scSellectAll, &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
     connect( scSellectAll, &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
+    connect( focusAnimationList, &QShortcut::activated, ui->availableAnimationsLW, &ListWidget::focus);
+    connect( focusAnimationPlayList, &QShortcut::activated, ui->animationPlaylistLW, &ListWidget::focus);
     // ListWidget interconnections
     connect( ui->availableAnimationsLW , &AnimationListWidget::addToPlaylist , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
     connect( ui->availableAnimationsLW , &ListWidget::showPropertiePreview , this , &MainWindow::showPropertiesPreview);

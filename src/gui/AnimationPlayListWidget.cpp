@@ -30,6 +30,11 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     connect( this, &QListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::on_itemDoubleClicked);
 }
 
+AnimationPlayListWidget::~AnimationPlayListWidget()
+{
+
+}
+
 void AnimationPlayListWidget::clearList()
 {
     clear();
@@ -100,6 +105,8 @@ void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *event)
         event->ignore();
         return;
     }
+
+    qDebug("dragMoveEvent");
     event->accept();
 }
 

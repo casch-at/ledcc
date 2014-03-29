@@ -29,6 +29,11 @@ AnimationListWidget::AnimationListWidget(QWidget *parent):
 
 }
 
+AnimationListWidget::~AnimationListWidget()
+{
+
+}
+
 void AnimationListWidget::keyPressEvent(QKeyEvent *event)
 {
     int cRow = -1;

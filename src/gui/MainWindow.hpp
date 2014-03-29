@@ -94,6 +94,8 @@ private:
     QAction *playAction;
     QAction *pauseAction;
     QShortcut *scSellectAll;
+    QShortcut *focusAnimationList;
+    QShortcut *focusAnimationPlayList;
 //    QShortcut *scShowHideAnimationProperties;
     QThread *createThread;
     QThread *senderThread;

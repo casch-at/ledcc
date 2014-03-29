@@ -18,6 +18,19 @@
 #include <QTimer>
 
 
+Animation::Animation(const u_int16_t &speed, const QString &name, QObject *parent):
+    Draw(parent),
+    m_speed(speed),
+    m_name(name)
+{
+    m_abort = false;
+}
+
+Animation::~Animation()
+{
+
+}
+
 /**
  * @brief The sendBixelZ function sends a led either up or down at position
  *        @param x y.

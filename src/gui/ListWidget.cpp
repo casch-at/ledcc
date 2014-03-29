@@ -90,3 +90,8 @@ void ListWidget::on_showPropertiesPreviewTimerTimeout()
         Q_EMIT showPropertiePreview( m_itemToShowProperties );
 }
 
+void ListWidget::focus()
+{
+    setFocus();
+}
+

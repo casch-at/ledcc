@@ -29,7 +29,11 @@ AnimationItem::AnimationItem(QListWidget *view, int type):
 AnimationItem::AnimationItem(const QString &text, QListWidget *view, int type):
     QListWidgetItem(text,view,type)
 {
-//    initOptions();
+    //    initOptions();
+}
+
+AnimationItem::~AnimationItem()
+{
 }
 
 /**

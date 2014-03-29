@@ -79,7 +79,6 @@ class Draw: public QObject
     Q_OBJECT
 public:
     explicit Draw(QObject *parent = Q_NULLPTR);
-    ~Draw();
     /** @brief CubeArray holds the data of the cube! */
     typedef QVector<QVector<u_int8_t> > CubeArray;
 
@@ -112,6 +111,7 @@ public:
     CubeArray cubeFrame;
     CubeArray cubeFrameTemp;
 protected:
+    virtual ~Draw();
     void setBixel(int x, int y, int z);
     void setTempBixel(u_int8_t x, u_int8_t y, u_int8_t z);
 

@@ -28,13 +28,8 @@ class Animation : public Draw
 {
     Q_OBJECT
 public:
-    explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR):
-        Draw(parent),
-        m_speed(speed),
-        m_name(name)
-    {
-        m_abort = false;
-    }
+    explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR);
+    virtual ~Animation();
 
    QString getName(void) const{
         return m_name;

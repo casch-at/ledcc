@@ -31,6 +31,8 @@ Draw::Draw(QObject *parent):
 
 Draw::~Draw()
 {
+    cubeFrame.clear();
+    cubeFrameTemp.clear();
 }
 
 void Draw::setBixel(int x, int y, int z)
