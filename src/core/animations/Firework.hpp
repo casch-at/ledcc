@@ -57,6 +57,7 @@ public Q_SLOTS:
 private:
     u_int16_t m_iterations;
     u_int8_t m_particles;
+    u_int8_t m_tempParticles;
 };
 
 #endif // FIREWORK_HPP

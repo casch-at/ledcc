@@ -16,6 +16,8 @@
  */
 #include "AnimationOptions.hpp"
 #include "ui_AnimationOptions.h"
+#include "alt_key.hpp"
+#include "aqp.hpp"
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -25,6 +27,7 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
     ui(new Ui::AnimationOptions)
 {
     ui->setupUi(this);
+    AQP::accelerateWidget(this);
 }
 
 AnimationOptions::~AnimationOptions()

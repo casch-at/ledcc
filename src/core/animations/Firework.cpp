@@ -37,10 +37,11 @@ void Firework::createAnimation()
     qreal gravity = 0;
 
     // Particles and their position, x,y,z and their movement, dx, dy, dz
-    qreal particlesA[m_particles][6];
-
     for (u_int16_t i = 0; i < m_iterations; i++)
     {
+
+        m_tempParticles = m_particles;
+        qreal particlesA[m_tempParticles][6];
 
         origin_x = qrand() % 4 + 2;
         origin_y = qrand() % 4 + 2;
@@ -57,7 +58,7 @@ void Firework::createAnimation()
         }
 
         // Fill particle array
-        for (u_int8_t f = 0; f < m_particles; f++)
+        for (u_int8_t f = 0; f < m_tempParticles; f++)
         {
             // Position
             particlesA[f][0] = origin_x;
@@ -75,13 +76,13 @@ void Firework::createAnimation()
         }
 
         // explode
-        for (u_int8_t e = 0; e < m_particles; e++)
+        for (u_int8_t e = 0; e < m_tempParticles; e++)
         {
             slowrate = 1 + tan((e + 0.1) / 20) * 10;
 
             gravity = tan((e + 0.1) / 20) / 2;
 
-            for (u_int8_t f = 0; f < m_particles; f++)
+            for (u_int8_t f = 0; f < m_tempParticles; f++)
             {
                 particlesA[f][0] += particlesA[f][3] / slowrate;
                 particlesA[f][1] += particlesA[f][4] / slowrate;
