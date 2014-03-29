@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "AnimationPlayListWidget.hpp"
+#include <QScrollBar>
+#include <QTimer>
 #include <QKeyEvent>
 #ifdef _DEBUG_
 #include <QDebug>
@@ -22,17 +24,22 @@
 //TODO:: Scroll viewport when draging item
 AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     ListWidget(parent),
-    m_lastPlayedAnimationRow(0)
+    m_scrollTimer(new QTimer),
+    m_lastPlayedAnimationRow(0),
+    m_mousePressRow(-1),
+    m_mouseReleaseRow(-1)
 {
     setDefaultDropAction(Qt::MoveAction);
-
+    m_scrollTimer->setInterval(50);
+    m_scrollTimer->setSingleShot(false);
     // Create connection
     connect( this, &QListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::on_itemDoubleClicked);
+    connect( m_scrollTimer, &QTimer::timeout, this, &AnimationPlayListWidget::scrollUpDown);
 }
 
 AnimationPlayListWidget::~AnimationPlayListWidget()
 {
-
+    delete m_scrollTimer;
 }
 
 void AnimationPlayListWidget::clearList()
@@ -52,6 +59,14 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
 void AnimationPlayListWidget::on_itemDoubleClicked(QListWidgetItem *item)
 {
     Q_EMIT displayAnimationOptions(dynamic_cast<AnimationItem*>(item)->getOptions());
+}
+
+void AnimationPlayListWidget::scrollUpDown()
+{
+    if(m_scrollDown)
+        verticalScrollBar()->setValue(verticalScrollBar()->value() + 1);
+    else
+        verticalScrollBar()->setValue(verticalScrollBar()->value() - 1);
 }
 
 void AnimationPlayListWidget::keyPressEvent(QKeyEvent *e)
@@ -106,13 +121,29 @@ void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *event)
         return;
     }
 
-    qDebug("dragMoveEvent");
+    if(  viewport()->geometry().bottom() - 10  <  event->pos().y() )
+    {
+        m_scrollDown = true;
+        m_scrollTimer->start();
+    }
+    else if( viewport()->geometry().top() + 10 > event->pos().y()  )
+    {
+        m_scrollTimer->start();
+        m_scrollDown = false;
+    }
+    else
+    {
+        m_scrollTimer->stop();
+    }
+//    qDebug("dragMoveEvent");
     event->accept();
+//    QListWidget::dragMoveEvent(event);
 }
 
 void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
 {
     e->accept();
+//    QListWidget::dragLeaveEvent(e);
 }
 
 void AnimationPlayListWidget::dropEvent(QDropEvent *e)
@@ -133,11 +164,41 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
         {
             items.append( i->clone() );
         }
-        insertItemsAt( items, indexAt(e->pos()).row() );
+        insertItemsAt( items, indexAt( e->pos() ).row() );
         e->accept();
     }
     e->acceptProposedAction();
+    if(m_scrollTimer->isActive())
+        m_scrollTimer->stop();
+//    QListWidget::dropEvent(e);
 }
+
+//void AnimationPlayListWidget::mousePressEvent(QMouseEvent *e)
+//{
+//    if( e->button() == Qt::LeftButton )
+//    {
+//        m_mousePressRow = indexAt(e->pos()).row();
+//    }
+//    else if ( e->button() == Qt::RightButton )
+//    {
+
+//    }
+//    ListWidget::mousePressEvent(e);
+//}
+
+//void AnimationPlayListWidget::mouseReleaseEvent(QMouseEvent *e)
+//{
+//    if( e->button() == Qt::LeftButton )
+//    {
+//        m_mouseReleaseRow = indexAt(e->pos()).row();
+//    }
+//    else if ( e->button() == Qt::RightButton )
+//    {
+
+//    }
+//    ListWidget::mouseReleaseEvent(e);
+//}
+
 
 
 AnimationItem *AnimationPlayListWidget::getNextAnimation()

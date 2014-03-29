@@ -76,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     setupAnimationItems();
     connectSignals();
     ui->splitter->setStretchFactor(1,2);
+    ui->availableAnimationsLW->setFocus();
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
 }
