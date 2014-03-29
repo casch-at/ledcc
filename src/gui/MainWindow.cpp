@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     pauseAction->setDisabled(true);
     setupAnimationItems();
     connectSignals();
+    ui->splitter->setStretchFactor(1,2);
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
 }
@@ -499,7 +500,7 @@ void MainWindow::setupSenderThread(void)
     sender = new Sender;
 
     sender->moveToThread(senderThread); // move data send class to own thread
-    senderThread->start(); // start send thread, is running for the entier live of the mainwindow
+    senderThread->start(); // start sender thread, which is running for the entier live of the mainwindow
 
     connect(this,&MainWindow::openSerialInterface,sender,&Sender::openCloseSerialPort);
     connect(sender,&Sender::portOpened,this,&MainWindow::portOpen);
@@ -510,26 +511,30 @@ void MainWindow::setupSenderThread(void)
 }
 
 /**
- * @brief Create connection related to the MainWindow only
+ * @brief Create connections
  *
  */
 void MainWindow::connectSignals(void)
 {
+    // Action connections
     connect( openPortAction, &QAction::triggered, this,&MainWindow::openCloseSerialPort);
     connect( quitAction, &QAction::triggered, this,&MainWindow::close);
     connect( aboutAction, &QAction::triggered,this,&MainWindow::about);
     connect( clearAction, &QAction::triggered, ui->animationPlaylistLW,&AnimationPlayListWidget::clearList);
     connect( settingAction, &QAction::triggered,sdialog,&QWidget::show);
-    connect( ui->availableAnimationsLW , &AnimationListWidget::addToPlaylist , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
-    connect( ui->availableAnimationsLW , &AnimationListWidget::showPropertiePreview , this , &MainWindow::showPropertiesPreview);
-    connect( scSellectAll, &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
-    connect( scSellectAll, &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
-    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
     connect( playAction, &QAction::triggered , this , &MainWindow::playAnimations);
     connect( pauseAction, &QAction::triggered , this , &MainWindow::stopThreads);
+    // Animation properties ready connection
+    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
+    // ListWidget shortcut sellect all connections
+    connect( scSellectAll, &QShortcut::activated,ui->animationPlaylistLW , &AnimationPlayListWidget::selectAllItems);
+    connect( scSellectAll, &QShortcut::activated,ui->availableAnimationsLW , &AnimationListWidget::selectAllItems);
+    // ListWidget interconnections
+    connect( ui->availableAnimationsLW , &AnimationListWidget::addToPlaylist , ui->animationPlaylistLW , &AnimationPlayListWidget::newItem);
+    connect( ui->availableAnimationsLW , &ListWidget::showPropertiePreview , this , &MainWindow::showPropertiesPreview);
     connect( ui->animationPlaylistLW, &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
     connect( ui->animationPlaylistLW, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
-    connect( ui->animationPlaylistLW, &AnimationPlayListWidget::showPropertiePreview, this, &MainWindow::showPropertiesPreview);
+    connect( ui->animationPlaylistLW, &ListWidget::showPropertiePreview, this, &MainWindow::showPropertiesPreview);
 }
 
 /**

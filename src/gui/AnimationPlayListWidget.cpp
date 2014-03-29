@@ -19,17 +19,15 @@
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-
+//TODO:: Scroll viewport when draging item
 AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
-    QListWidget(parent)
+    ListWidget(parent),
+    m_lastPlayedAnimationRow(0)
 {
-    setFocusPolicy(Qt::StrongFocus);
-    setDropIndicatorShown(true);
-    setMovement(QListView::Free);
     setDefaultDropAction(Qt::MoveAction);
+
+    // Create connection
     connect( this, &QListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::on_itemDoubleClicked);
-    connect( this, &QListWidget::itemSelectionChanged, this, &AnimationPlayListWidget::on_itemSelectionChanged);
-    connect( this, &QListWidget::entered, this, &AnimationPlayListWidget::on_entered);
 }
 
 void AnimationPlayListWidget::clearList()
@@ -51,11 +49,11 @@ void AnimationPlayListWidget::on_itemDoubleClicked(QListWidgetItem *item)
     Q_EMIT displayAnimationOptions(dynamic_cast<AnimationItem*>(item)->getOptions());
 }
 
-void AnimationPlayListWidget::keyPressEvent(QKeyEvent *event)
+void AnimationPlayListWidget::keyPressEvent(QKeyEvent *e)
 {
     int cRow = -1;
 
-    switch (event->key()) {
+    switch (e->key()) {
     case Qt::Key_Delete:
         foreach(QListWidgetItem *i,selectedItems())
             delete i;
@@ -110,63 +108,47 @@ void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
     e->accept();
 }
 
-void AnimationPlayListWidget::dropEvent(QDropEvent *event) //TODO:: Thats nasty :-), read trough the documentation of Qt 5
+void AnimationPlayListWidget::dropEvent(QDropEvent *e)
 {
     QList<QListWidgetItem*> items;
 
-    if(event->source() == this){
-        foreach (QListWidgetItem *i, selectedItems()) {
-            items.append(i->clone());
+    if( e->source() == this )
+    {
+        foreach (QListWidgetItem *i, selectedItems())
+        {
+            items.append( i->clone() );
             delete i;
         }
-        insertItemsAt(items,indexAt(event->pos()).row());
-    }else if(event->source()->objectName().compare("availableAnimationsLW") == 0) {
-        foreach (QListWidgetItem *i, dynamic_cast<QListWidget*>(event->source())->selectedItems()) {
-            items.append(i->clone());
+        insertItemsAt (items, indexAt( e->pos() ).row() );
+    }else if( e->source()->objectName().compare("availableAnimationsLW") == 0 ) //TODO:: Thats nasty :-), read trough the documentation of Qt 5
+    {
+        foreach (QListWidgetItem *i, dynamic_cast<QListWidget*>(e->source())->selectedItems())
+        {
+            items.append( i->clone() );
         }
-        insertItemsAt(items,indexAt(event->pos()).row());
-        event->accept();
+        insertItemsAt( items, indexAt(e->pos()).row() );
+        e->accept();
     }
-    event->acceptProposedAction();
-}
-
-
-void AnimationPlayListWidget::selectAllItems(void)
-{
-    if(hasFocus())
-        selectAll();
+    e->acceptProposedAction();
 }
 
 
 AnimationItem *AnimationPlayListWidget::getNextAnimation()
 {
-    static int row;
-
     int rows = count();
 
-    if(rows)
+    if( rows )
     {
-        if(row >= rows)
-            row = 0;
+        if( m_lastPlayedAnimationRow >= rows )
+            m_lastPlayedAnimationRow = 0;
 
-        return dynamic_cast<AnimationItem*>(item(row++));
+        return dynamic_cast<AnimationItem*>( item( m_lastPlayedAnimationRow++ ) );
     }else
     {
         return Q_NULLPTR;
     }
 }
 
-void AnimationPlayListWidget::on_itemSelectionChanged()
-{
-    QList<QListWidgetItem*> items = selectedItems();
-    if( !items.isEmpty() && count())
-        Q_EMIT showPropertiePreview(  items.first() );
-}
-
-void AnimationPlayListWidget::on_entered(const QModelIndex &index)
-{
-    qDebug() << item(index.row())->text();
-}
 
 void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &items, const int row)
 {
@@ -176,4 +158,3 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
     }
     Q_EMIT updateUi();
 }
-

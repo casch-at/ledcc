@@ -20,8 +20,7 @@
 #include <QHBoxLayout>
 #include <QShortcut>
 
-//FIXME:: Properties which are shown are always the last stored values from the animation.
-//        Use the animation item struct properties to generate the preview
+
 AnimationPropertiesPreview::AnimationPropertiesPreview( QWidget *parent ) :
     QDockWidget(parent),
     ui(new Ui::animationPropertiesPreview),
@@ -32,8 +31,8 @@ AnimationPropertiesPreview::AnimationPropertiesPreview( QWidget *parent ) :
     frame->setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
 
     this->connect(hideShowSC,&QShortcut::activated,this,&AnimationPropertiesPreview::hideShow);
-    this->setMaximumWidth(190);
-    this->setMinimumWidth(150);
+    this->setMaximumWidth(250);
+    this->setMinimumWidth(190);
 }
 
 AnimationPropertiesPreview::~AnimationPropertiesPreview()

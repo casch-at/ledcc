@@ -75,7 +75,7 @@ QStringList& RandomSpark::getAnimationPropertiesAsPlainText(const AnimationItem 
 
     list.append( getName() );
     list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
-    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->iteration ) );
+    list.append( QString( "Sparks:%1" ).arg( item->getOptions()->leds ) );
 
     return list;
 }

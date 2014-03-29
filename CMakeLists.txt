@@ -135,12 +135,12 @@ if(WITH_LTO)
   endif()
 endif()
 
-#if (WITH_CXX11)
-#  add_gcc_compiler_cxxflags("-std=c++0x")
-#  add_gcc_compiler_cflags("-ansi")
-#else()
-#  add_gcc_compiler_flags("-ansi")
-#endif()
+if (WITH_CXX11)
+  add_gcc_compiler_cxxflags("-std=c++0x")
+  add_gcc_compiler_cflags("-ansi")
+else()
+  add_gcc_compiler_flags("-ansi")
+endif()
 
 if(MINGW)
   set(CMAKE_RC_COMPILER_INIT windres)
@@ -183,6 +183,7 @@ else()
   set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/${PROGNAME}")
   set(DATA_INSTALL_DIR   "${CMAKE_INSTALL_DATAROOTDIR}/${PROGNAME}")
 endif()
+
 #----------- OUTPUT INSTALL DIRECTORIES
 message(STATUS "GNUInstallDirs: ${GNUInstallDirs}" )
 message(STATUS "BIN_INSTALL_DIR: ${BIN_INSTALL_DIR}" )
@@ -210,7 +211,9 @@ add_dependencies(${PROGNAME} ledcubegui)
 
 # link against ledcube and animations
 target_link_libraries(${PROGNAME} ledcubegui)
+
 #qt5_use_modules(${PROGNAME} Widgets
 #                            SerialPort
 #)
+
 add_subdirectory( src )

@@ -17,10 +17,12 @@
 #ifndef ANIMATIONPLAYLISTWIDGET_HPP
 #define ANIMATIONPLAYLISTWIDGET_HPP
 
-#include <QListWidget>
+#include <ListWidget.hpp>
 #include "AnimationItem.hpp"
 
-class AnimationPlayListWidget : public QListWidget
+class Timer;
+
+class AnimationPlayListWidget : public ListWidget
 {
     Q_OBJECT
 public:
@@ -29,23 +31,20 @@ public:
 Q_SIGNALS:
     void updateUi(void);
     void displayAnimationOptions(const AnimationOptions::Options *options);
-    void showPropertiePreview(QListWidgetItem *item);
 public Q_SLOTS:
     void clearList(void);
     void newItem(QList<QListWidgetItem *> item);
-    void on_itemDoubleClicked(QListWidgetItem *item);
-    void on_itemSelectionChanged();
-    void on_entered(const QModelIndex &index);
 protected:
-    virtual void keyPressEvent(QKeyEvent * event);
+    virtual void keyPressEvent(QKeyEvent *e);
     virtual void dragMoveEvent(QDragMoveEvent *e);
     virtual void dragLeaveEvent(QDragLeaveEvent *e);
-    virtual void dropEvent(QDropEvent *event);
+    virtual void dropEvent(QDropEvent *e);
 public Q_SLOTS:
-    void selectAllItems(void);
     AnimationItem *getNextAnimation(void);
 private Q_SLOTS:
+    void on_itemDoubleClicked(QListWidgetItem *item);
 private:
+    int m_lastPlayedAnimationRow;
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
 };
 

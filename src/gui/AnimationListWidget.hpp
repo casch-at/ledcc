@@ -17,14 +17,16 @@
 #ifndef ANIMATIONLISTWIDGET_HPP
 #define ANIMATIONLISTWIDGET_HPP
 
-#include <QListWidget>
+#include "ListWidget.hpp"
 #include "AnimationItem.hpp"
 /**
  * @brief Class AnimationListWidget handles all available animation
  *
  *
  */
-class AnimationListWidget : public QListWidget
+class Timer;
+
+class AnimationListWidget : public ListWidget
 {
     Q_OBJECT
 public:
@@ -34,11 +36,8 @@ Q_SIGNALS:
     void showPropertiePreview(QListWidgetItem *item);
 protected:
     virtual void keyPressEvent(QKeyEvent * event);
-    virtual void dragMoveEvent(QDragMoveEvent *e);
 public Q_SLOTS:
-    void selectAllItems(void);
     void insertAnimation(const QString &animation);
-    void on_itemSelectionChanged();
 private:
 };
 

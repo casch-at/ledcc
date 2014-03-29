@@ -30,6 +30,7 @@ set(GUI  #DebugDockWidget.cpp
          PortMessageBox.cpp
          AnimationItem.cpp
          AnimationPropertiesPreview.cpp
+         ListWidget.cpp
     )
 
 set(FORMS  #DebugDockWidget.ui

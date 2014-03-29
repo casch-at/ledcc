@@ -23,8 +23,8 @@
 class AnimationItem : public QListWidgetItem
 {
 public:
-    explicit AnimationItem(QListWidget *view = 0, int type = Type);
-    explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = Type);
+    explicit AnimationItem(QListWidget *view = 0, int type = UserType);
+    explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = UserType);
 
     virtual AnimationItem *clone() const;
 //    AnimationItem(const AnimationItem &other);

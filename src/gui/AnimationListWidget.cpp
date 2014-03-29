@@ -16,6 +16,7 @@
  */
 #include "AnimationListWidget.hpp"
 #include <QKeyEvent>
+#include <QTimer>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -23,12 +24,8 @@
 //#include <QtWidgets/QAction>
 
 AnimationListWidget::AnimationListWidget(QWidget *parent):
-    QListWidget(parent)
+    ListWidget(parent)
 {
-    setFocusPolicy(Qt::StrongFocus);
-    setMovement(QListView::Free);
-    setDragDropMode(QAbstractItemView::DragDrop);
-    connect( this, &QListWidget::itemSelectionChanged, this, &AnimationListWidget::on_itemSelectionChanged);
 
 }
 
@@ -41,10 +38,10 @@ void AnimationListWidget::keyPressEvent(QKeyEvent *event)
     //      when moving item item gets selected ;-) Strange behaviour
     switch (event->key()) {
     case Qt::Key_Enter:
-        Q_EMIT addToPlaylist(selectedItems());
+        Q_EMIT addToPlaylist(this->selectedItems());
         break;
     case Qt::Key_Return:
-        Q_EMIT addToPlaylist(selectedItems());
+        Q_EMIT addToPlaylist(this->selectedItems());
         break;
     case Qt::Key_Up:
         cRow = currentRow();
@@ -78,30 +75,10 @@ void AnimationListWidget::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void AnimationListWidget::dragMoveEvent(QDragMoveEvent *e)
-{
-    if (e->source() != this) {
-        e->accept();
-    } else {
-        e->ignore();
-    }
-}
-
-void AnimationListWidget::selectAllItems()
-{
-    if(hasFocus())
-        selectAll();
-}
 
 void AnimationListWidget::insertAnimation(const QString &animation)
 {
     addItem(animation);
 }
 
-void AnimationListWidget::on_itemSelectionChanged()
-{
-    QList<QListWidgetItem*> items = selectedItems();
-    if( !items.isEmpty() && count())
-        Q_EMIT showPropertiePreview(  items.first() );
-}
 
