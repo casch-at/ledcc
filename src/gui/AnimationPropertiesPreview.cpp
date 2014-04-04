@@ -20,7 +20,6 @@
 #include <QHBoxLayout>
 #include <QShortcut>
 
-
 AnimationPropertiesPreview::AnimationPropertiesPreview( QWidget *parent ) :
     QDockWidget(parent),
     ui(new Ui::animationPropertiesPreview),

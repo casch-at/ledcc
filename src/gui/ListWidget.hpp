@@ -16,10 +16,11 @@ Q_SIGNALS:
 protected:
 //    virtual void dragMoveEvent(QDragMoveEvent *e);
     virtual void dragLeaveEvent(QDragLeaveEvent *e);
-    virtual void dropEvent(QDropEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void leaveEvent(QEvent *e);
     QListWidgetItem *m_itemToShowProperties;
+    QPoint m_dragStartPos;
+    QPoint m_dragStopPos;
 public Q_SLOTS:
     void selectAllItems(void);
     void on_itemSelectionChanged();
@@ -28,6 +29,7 @@ public Q_SLOTS:
 private:
     QTimer *m_showPropertiesPreview;
     QListWidgetItem *itemToShowProperties;
+
 };
 
 #endif // LISTWIDGET_HPP

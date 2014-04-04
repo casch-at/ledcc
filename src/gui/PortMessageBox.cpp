@@ -22,6 +22,8 @@ PortMessageBox::PortMessageBox(const QString &title, QWidget *parent) :
     QMessageBox(parent)
 {
     setTextFormat(Qt::RichText);
+    setStandardButtons( Cancel | Ok);
+    setDefaultButton(Cancel);
     setIconPixmap(QPixmap("://images/dialog-error.png").scaled(QSize(48,48)));
     setWindowTitle(title);
 }
@@ -30,6 +32,8 @@ PortMessageBox::PortMessageBox(const QString &title, const QString &text, const 
     QMessageBox(parent)
 {
     setTextFormat(Qt::RichText);
+    setStandardButtons( Cancel | Ok);
+    setDefaultButton(Cancel);
     setIconPixmap(QPixmap("://images/dialog-error.png").scaled(QSize(48,48)));
     setWindowTitle(title);
     setText(text);
@@ -40,6 +44,8 @@ PortMessageBox::PortMessageBox(const QString &title, const QString &text, QWidge
     QMessageBox(parent)
 {
     setTextFormat(Qt::RichText);
+    setStandardButtons( Cancel | Ok);
+    setDefaultButton(Cancel);
     setIconPixmap(QPixmap("://images/dialog-error.png").scaled(QSize(48,48)));
     setWindowTitle(title);
     setText(text);

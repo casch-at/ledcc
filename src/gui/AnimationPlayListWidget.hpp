@@ -39,20 +39,22 @@ protected:
     virtual void dragMoveEvent(QDragMoveEvent *e);
     virtual void dragLeaveEvent(QDragLeaveEvent *e);
     virtual void dropEvent(QDropEvent *e);
-//    virtual void mousePressEvent(QMouseEvent *e);
-//    virtual void mouseReleaseEvent(QMouseEvent *e);
+    virtual void mousePressEvent(QMouseEvent *e);
+    virtual void mouseReleaseEvent(QMouseEvent *e);
+
+    virtual void dragEnterEvent(QDragEnterEvent *e);
+
 public Q_SLOTS:
     AnimationItem *getNextAnimation(void);
 private Q_SLOTS:
     void on_itemDoubleClicked(QListWidgetItem *item);
-    void scrollUpDown();
-private:
-    QTimer *m_scrollTimer;
-    bool m_scrollDown;
-    int m_lastPlayedAnimationRow;
-    int m_mousePressRow;
-    int m_mouseReleaseRow;
+    void valueChanged();
 
+private:
+    int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */
+    int m_mousePressRow;
+
+    bool dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex);
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
 };
 

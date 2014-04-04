@@ -1,6 +1,7 @@
 #include "ListWidget.hpp"
 #include <QTimer>
 #include <QKeyEvent>
+#include <QApplication>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -12,14 +13,16 @@ ListWidget::ListWidget(QWidget *parent) :
     // QListWidget setup
     setDropIndicatorShown(true);
     setFocusPolicy(Qt::StrongFocus);
-    setMovement(QListView::Free);
-    setDragDropMode(QAbstractItemView::DragDrop);
+    setMovement(Free);
+    setDragDropMode(DragDrop);
 
     // Change background color when hovering over item
     setMouseTracking(true);
     setStyleSheet("QListWidget::item:hover {background:lightblue;}");
 
-
+    setSelectionRectVisible(true);
+    setAutoScroll(true);
+    setAutoScrollMargin(10);
 
     // Timer setup for animation properties preview
     m_showPropertiesPreview->setSingleShot(true);
@@ -39,15 +42,17 @@ void ListWidget::dragLeaveEvent(QDragLeaveEvent *e)
     e->accept();
 }
 
-void ListWidget::dropEvent(QDropEvent *e)
-{
-    e->accept();
-}
 
 void ListWidget::mouseMoveEvent(QMouseEvent *e)
 {
+
+    if( !(e->buttons()) & Qt::LeftButton
+            && (e->pos() - m_dragStartPos).manhattanLength() < QApplication::startDragDistance() ){
+        e->ignore();
+        return;
+    }
     QListWidgetItem *item = itemAt(e->pos());
-    e->accept();
+
     if( item )
     {
         if( item != m_itemToShowProperties )
@@ -55,7 +60,6 @@ void ListWidget::mouseMoveEvent(QMouseEvent *e)
             m_itemToShowProperties = item;
         }
         m_showPropertiesPreview->start();
-//        qDebug("Item under mouse");
     }
     else
     {
