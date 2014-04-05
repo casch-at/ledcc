@@ -53,7 +53,7 @@ private Q_SLOTS:
 private:
     int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
-
+    u_int8_t m_scrollThrough;
     bool dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex);
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
 };

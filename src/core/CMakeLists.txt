@@ -15,8 +15,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
-#  Run Cmake with: -DCMAKE_PREFIX_PATH=/opts/Qt5.2/5.2.0/gcc_64/lib/cmake/ -DCMAKE_BUILD_TYPE=DEBUG
-################################################################################
 #  core CMakeFile ->          Configure Global.hpp
 ###############################################################################
 
@@ -32,12 +30,8 @@ configure_file (
     "Global.hpp"
     @ONLY
     )
-
 add_library(ledcubecore Sender.cpp )
 target_link_libraries(ledcubecore animations  ${Qt5SerialPort_LIBRARIES} )
 add_dependencies(ledcubecore animations)
-
-
 add_subdirectory(animations)
-# The Qt5Widgets_LIBARIES variable also includes QtGui and QtCore
 

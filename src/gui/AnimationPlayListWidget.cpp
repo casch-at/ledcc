@@ -16,11 +16,10 @@
 #include <QScrollBar>
 #include <QTimer>
 #include <QKeyEvent>
+
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-
-
 
 
 /*!
@@ -32,7 +31,8 @@
 */
 AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     ListWidget(parent),
-    m_lastPlayedAnimation(0)
+    m_lastPlayedAnimation(0),
+    m_scrollThrough(0)
 {
     setDragDropMode(InternalMove);
     setDefaultDropAction(Qt::MoveAction);
@@ -102,39 +102,39 @@ bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropC
 
     QModelIndex index;
     // rootIndex() (i.e. the viewport) might be a valid index
-//    if (viewport->rect().contains(event->pos())) {
-//        index = q->indexAt(event->pos());
-//        if (!index.isValid() || visualRect(index).contains(event->pos()))
-//            index = root;
-//    }
+    //    if (viewport->rect().contains(event->pos())) {
+    //        index = q->indexAt(event->pos());
+    //        if (!index.isValid() || visualRect(index).contains(event->pos()))
+    //            index = root;
+    //    }
 
     // If we are allowed to do the drop
     if (model()->supportedDropActions() & event->dropAction()) {
         int row = -1;
         int col = -1;
-//        if (index != root) {
+        //        if (index != root) {
         qDebug() << dropIndicatorPosition();
-            switch (dropIndicatorPosition()) {
-            case QAbstractItemView::AboveItem:
-                row = index.row();
-                col = index.column();
-                index = index.parent();
-                break;
-            case QAbstractItemView::BelowItem:
-                row = index.row() + 1;
-                col = index.column();
-                index = index.parent();
-                break;
-            case QAbstractItemView::OnItem:
-            case QAbstractItemView::OnViewport:
-                break;
-            }
+        switch (dropIndicatorPosition()) {
+        case QAbstractItemView::AboveItem:
+            row = index.row();
+            col = index.column();
+            index = index.parent();
+            break;
+        case QAbstractItemView::BelowItem:
+            row = index.row() + 1;
+            col = index.column();
+            index = index.parent();
+            break;
+        case QAbstractItemView::OnItem:
+        case QAbstractItemView::OnViewport:
+            break;
+        }
         *dropIndex = index;
         *dropRow = row;
         *dropCol = col;
-            return true;
-//        if (!droppingOnItself(event, index))
-//            return true;
+        return true;
+        //        if (!droppingOnItself(event, index))
+        //            return true;
     }
     return false;
 }
@@ -161,24 +161,61 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *e)
         break;
     case Qt::Key_Up:
         index = moveCursor( QAbstractItemView::MoveUp, e->modifiers() );
-        if( index.row() == 0 )
-            setCurrentRow( count() - 1, selectionCommand(index,static_cast<QEvent*>(e)) );
-        else
-            setCurrentRow( index.row(), selectionCommand(index,static_cast<QEvent*>(e)) );
+
+        if( index.row() > 0)
+            m_scrollThrough = 0;
+
+        if ( index.row()  == 0 ){
+            m_scrollThrough++;
+
+            switch (m_scrollThrough)
+            {
+            case 1:
+                setCurrentRow( 0, selectionCommand(index,dynamic_cast<QEvent*>(e)) );
+                break;
+            case 2:
+                setCurrentRow( count() - 1, selectionCommand(index,dynamic_cast<QEvent*>(e)) );
+                m_scrollThrough = 0;
+                break;
+            default:
+                break;
+            }
+        }
+        else{
+            setCurrentRow( index.row(), selectionCommand(index,dynamic_cast<QEvent*>(e)) );
+        }
         break;
     case Qt::Key_Down:
         index = moveCursor( QAbstractItemView::MoveDown, e->modifiers() );
-        if( index.row() + 1 == count() )
-            setCurrentRow( 0, selectionCommand(index,static_cast<QEvent*>(e)) );
-        else
-            setCurrentRow( index.row(), selectionCommand(index,static_cast<QEvent*>(e)) );
+        if (index.row() + 1 < count())
+            m_scrollThrough = 0;
+
+        if( index.row() + 1 == count() ){
+            m_scrollThrough++;
+
+            switch (m_scrollThrough)
+            {
+            case 1:
+                setCurrentRow( count() -1, selectionCommand(index,dynamic_cast<QEvent*>(e)) );
+                break;
+            case 2:
+                setCurrentRow( 0, selectionCommand(index,dynamic_cast<QEvent*>(e)) );
+                m_scrollThrough = 0;
+                break;
+            default:
+                break;
+            }
+        }
+        else{
+            setCurrentRow( index.row(), selectionCommand(index,dynamic_cast<QEvent*>(e)) );
+        }
+
         break;
     case Qt::Key_Return:
         break;
     case Qt::Key_Escape:
         for(int i=0;i < count();i++){
-            if(item(i)->isSelected())
-                setItemSelected(item(i),false);
+            setItemSelected(item(i),false);
         }
         break;
     default:
@@ -224,7 +261,7 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
             int col = -1;
             dropOn(e,&row,&col,&index);
             row = index.row();
-//            index = index.parent();
+            //            index = index.parent();
             insertItemsAt (items, row );
 
             qDebug() << "Viewport rect contains:" << viewport()->rect().contains(e->pos());
@@ -248,7 +285,7 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
         insertItemsAt( items, indexAt( e->pos() ).row() );
         e->accept();
     }
-//    e->acceptProposedAction();
+    //    e->acceptProposedAction();
     stopAutoScroll();
     setState(NoState);
     viewport()->update();
