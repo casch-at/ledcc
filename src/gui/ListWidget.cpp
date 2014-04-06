@@ -2,6 +2,7 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QApplication>
+#include <QShortcut>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -10,11 +11,9 @@ ListWidget::ListWidget(QWidget *parent) :
     QListWidget(parent),
     m_showPropertiesPreview(new QTimer)
 {
+    qDebug() << "Parent Widget:" << parentWidget();
     // QListWidget setup
-    setDropIndicatorShown(true);
     setFocusPolicy(Qt::StrongFocus);
-    setMovement(Free);
-    setDragDropMode(DragDrop);
 
     // Change background color when hovering over item
     setMouseTracking(true);
@@ -23,7 +22,9 @@ ListWidget::ListWidget(QWidget *parent) :
     setSelectionRectVisible(true);
     setAutoScroll(true);
     setAutoScrollMargin(10);
-
+    setSelectionBehavior(SelectItems);
+    setSelectionMode(ExtendedSelection);
+    setAlternatingRowColors(true);
     // Timer setup for animation properties preview
     m_showPropertiesPreview->setSingleShot(true);
     m_showPropertiesPreview->setInterval(200);

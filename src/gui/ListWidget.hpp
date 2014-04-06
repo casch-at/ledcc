@@ -4,6 +4,7 @@
 #include <QListWidget>
 
 class QTimer;
+class QShortcut;
 
 class ListWidget : public QListWidget
 {

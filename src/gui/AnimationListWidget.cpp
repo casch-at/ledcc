@@ -26,7 +26,13 @@
 AnimationListWidget::AnimationListWidget(QWidget *parent):
     ListWidget(parent)
 {
-
+    setDropIndicatorShown(false);
+    setMovement(Static);
+    setDefaultDropAction(Qt::IgnoreAction);
+    setDragDropMode(DragOnly);
+    setDragEnabled(true);
+    setAcceptDrops(false);
+    setSortingEnabled(true);
 }
 
 AnimationListWidget::~AnimationListWidget()
@@ -79,6 +85,7 @@ void AnimationListWidget::keyPressEvent(QKeyEvent *event)
         break;
     }
 }
+
 
 
 void AnimationListWidget::insertAnimation(const QString &animation)

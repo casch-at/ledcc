@@ -34,6 +34,9 @@ class Animation;
 class QListWidgetItem;
 class Sender;
 class AnimationItem;
+class AnimationListWidget;
+class AnimationPlayListWidget;
+
 QT_END_NAMESPACE
 namespace Ui {
     class MainWindow;
@@ -86,24 +89,26 @@ private:
     SettingsDialog::SerialSettings m_port;
     QToolBar *helpToolBar;
     QToolBar *mainToolBar;
-    QAction *quitAction;
+    QAction *m_quitAction;
     QAction *clearAction;
-    QAction *aboutAction;
-    QAction *settingAction;
-    QAction *openPortAction;
-    QAction *playAction;
-    QAction *pauseAction;
-    QShortcut *scSellectAll;
-    QShortcut *focusAnimationList;
-    QShortcut *focusAnimationPlayList;
+    QAction *m_aboutAction;
+    QAction *m_settingAction;
+    QAction *m_openPortAction;
+    QAction *m_playAction;
+    QAction *m_pauseAction;
+    QShortcut *m_focusAnimationList;
+    QShortcut *m_focusAnimationPlaylist;
+    QShortcut *m_scSellectAll;
 //    QShortcut *scShowHideAnimationProperties;
     QThread *createThread;
-    QThread *senderThread;
+    QThread *m_senderThread;
     Animation *currentAnimation;
-    Sender *sender;
+    Sender *m_sender;
     QHash<QString,Animation*> animation;
-    bool portOpened;
+    bool m_portOpened;
     bool stopPlay;
+    AnimationListWidget *m_animationList;
+    AnimationPlayListWidget *m_animationPlaylist;
 
 };
 

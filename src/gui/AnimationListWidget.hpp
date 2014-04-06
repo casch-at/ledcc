@@ -35,6 +35,7 @@ public:
 Q_SIGNALS:
     void addToPlaylist(QList<QListWidgetItem *> selected);
     void showPropertiePreview(QListWidgetItem *item);
+
 protected:
     virtual void keyPressEvent(QKeyEvent * event);
 public Q_SLOTS:

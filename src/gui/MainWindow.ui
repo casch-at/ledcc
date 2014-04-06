@@ -14,39 +14,14 @@
    <string>3D-LED Cube </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="1,0" columnstretch="0">
-    <item row="1" column="0">
-     <widget class="AnimationOptions" name="animationAdjustGB">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="title">
-       <string>Animation configuration options</string>
-      </property>
-     </widget>
-    </item>
+   <layout class="QGridLayout" name="gridLayout" rowstretch="1,0">
     <item row="0" column="0">
      <widget class="QSplitter" name="splitter">
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <property name="opaqueResize">
-       <bool>true</bool>
-      </property>
       <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="availableAnimationLayout">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetMinimumSize</enum>
-        </property>
+       <layout class="QVBoxLayout" name="m_animationListLay">
         <item>
          <widget class="QLabel" name="availableAnimationsL">
           <property name="font">
@@ -60,65 +35,10 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="AnimationListWidget" name="availableAnimationsLW">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="editTriggers">
-           <set>QAbstractItemView::NoEditTriggers</set>
-          </property>
-          <property name="tabKeyNavigation">
-           <bool>false</bool>
-          </property>
-          <property name="showDropIndicator" stdset="0">
-           <bool>false</bool>
-          </property>
-          <property name="dragEnabled">
-           <bool>false</bool>
-          </property>
-          <property name="dragDropOverwriteMode">
-           <bool>false</bool>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::DragOnly</enum>
-          </property>
-          <property name="defaultDropAction">
-           <enum>Qt::IgnoreAction</enum>
-          </property>
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-          <property name="selectionMode">
-           <enum>QAbstractItemView::ExtendedSelection</enum>
-          </property>
-          <property name="selectionBehavior">
-           <enum>QAbstractItemView::SelectRows</enum>
-          </property>
-          <property name="movement">
-           <enum>QListView::Free</enum>
-          </property>
-          <property name="sortingEnabled">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="animationPlaylistLayout">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetMinimumSize</enum>
-        </property>
+       <layout class="QVBoxLayout" name="m_animationPlaylistLay">
         <item>
          <widget class="QLabel" name="animationPlaylistL">
           <property name="font">
@@ -132,69 +52,21 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="AnimationPlayListWidget" name="animationPlaylistLW">
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="contextMenuPolicy">
-           <enum>Qt::CustomContextMenu</enum>
-          </property>
-          <property name="acceptDrops">
-           <bool>true</bool>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::Box</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <property name="lineWidth">
-           <number>1</number>
-          </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="editTriggers">
-           <set>QAbstractItemView::DoubleClicked</set>
-          </property>
-          <property name="tabKeyNavigation">
-           <bool>false</bool>
-          </property>
-          <property name="showDropIndicator" stdset="0">
-           <bool>true</bool>
-          </property>
-          <property name="dragEnabled">
-           <bool>true</bool>
-          </property>
-          <property name="dragDropOverwriteMode">
-           <bool>true</bool>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::DragDrop</enum>
-          </property>
-          <property name="defaultDropAction">
-           <enum>Qt::MoveAction</enum>
-          </property>
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-          <property name="selectionMode">
-           <enum>QAbstractItemView::ExtendedSelection</enum>
-          </property>
-          <property name="selectionBehavior">
-           <enum>QAbstractItemView::SelectRows</enum>
-          </property>
-          <property name="movement">
-           <enum>QListView::Free</enum>
-          </property>
-          <property name="sortingEnabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="AnimationOptions" name="animationAdjustGB">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="title">
+       <string>Animation configuration options</string>
+      </property>
      </widget>
     </item>
    </layout>
@@ -227,16 +99,6 @@
   </widget>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>AnimationListWidget</class>
-   <extends>QListWidget</extends>
-   <header>AnimationListWidget.hpp</header>
-  </customwidget>
-  <customwidget>
-   <class>AnimationPlayListWidget</class>
-   <extends>QListWidget</extends>
-   <header>AnimationPlayListWidget.hpp</header>
-  </customwidget>
   <customwidget>
    <class>AnimationOptions</class>
    <extends>QGroupBox</extends>

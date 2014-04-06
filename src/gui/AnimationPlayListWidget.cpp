@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2014  Christian Schwarzgruber <christiandev9@gmail.com>
  *
@@ -16,7 +17,6 @@
 #include <QScrollBar>
 #include <QTimer>
 #include <QKeyEvent>
-
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -34,10 +34,13 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     m_lastPlayedAnimation(0),
     m_scrollThrough(0)
 {
-    setDragDropMode(InternalMove);
+    setDropIndicatorShown(true);
+    setMovement(Free);
+    setDragDropMode(DragDrop);
     setDefaultDropAction(Qt::MoveAction);
-    setDragDropOverwriteMode(true);
+//    setDragDropOverwriteMode(true);
     setAcceptDrops(true);
+
     // Create connection
     connect( this, &QListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::on_itemDoubleClicked);
 }
@@ -101,12 +104,13 @@ bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropC
         return false;
 
     QModelIndex index;
-    // rootIndex() (i.e. the viewport) might be a valid index
-    //    if (viewport->rect().contains(event->pos())) {
-    //        index = q->indexAt(event->pos());
-    //        if (!index.isValid() || visualRect(index).contains(event->pos()))
-    //            index = root;
-    //    }
+    //     rootIndex() (i.e. the viewport) might be a valid index
+    if (viewport()->rect().contains(event->pos())) {
+        index = indexAt(event->pos());
+        if (!index.isValid() || visualRect(index).contains(event->pos()))
+            index = rootIndex();
+    }
+
 
     // If we are allowed to do the drop
     if (model()->supportedDropActions() & event->dropAction()) {
@@ -118,6 +122,7 @@ bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropC
         case QAbstractItemView::AboveItem:
             row = index.row();
             col = index.column();
+            qDebug() << "Parent index:" << index.parent();
             index = index.parent();
             break;
         case QAbstractItemView::BelowItem:
@@ -247,16 +252,17 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
 {
     QList<QListWidgetItem*> items;
 
-    if( e->source() == this )
+    if ( e->source() == this  )
     {
-        if( count() > 1 /*&& indexAt( mapToGlobal( e->pos()) ).isValid()*/   )
+        QModelIndex index = indexAt(e->pos());
+
+        if (index.isValid())
         {
             foreach (QListWidgetItem *i, selectedItems())
             {
                 items.append( i->clone() );
                 delete i;
             }
-            QModelIndex index = indexAt(e->pos());
             int row = -1;
             int col = -1;
             dropOn(e,&row,&col,&index);
@@ -276,7 +282,7 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
             return;
         }
     }
-    else if( e->source()->objectName().compare("availableAnimationsLW") == 0 ) //TODO:: Thats nasty :-), read trough the documentation of Qt 5
+    else //TODO:: Thats nasty :-), read trough the documentation of Qt 5
     {
         foreach (QListWidgetItem *i, dynamic_cast<QListWidget*>(e->source())->selectedItems())
         {
@@ -285,7 +291,7 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
         insertItemsAt( items, indexAt( e->pos() ).row() );
         e->accept();
     }
-    //    e->acceptProposedAction();
+    e->acceptProposedAction();
     stopAutoScroll();
     setState(NoState);
     viewport()->update();
