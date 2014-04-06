@@ -15,8 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "AnimationListWidget.hpp"
+
+// Qt includes
 #include <QKeyEvent>
-#include <QTimer>
+#include <QAction>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -26,13 +28,23 @@
 AnimationListWidget::AnimationListWidget(QWidget *parent):
     ListWidget(parent)
 {
-    setDropIndicatorShown(false);
-    setMovement(Static);
-    setDefaultDropAction(Qt::IgnoreAction);
-    setDragDropMode(DragOnly);
-    setDragEnabled(true);
-    setAcceptDrops(false);
-    setSortingEnabled(true);
+//    setDropIndicatorShown(false);
+//    setMovement(Free);
+//    setDefaultDropAction(Qt::IgnoreAction);
+//    setEditTriggers(DoubleClicked | EditKeyPressed);
+//    setDragDropMode(DragOnly);
+//    setDragEnabled(true);
+//    setAcceptDrops(false);
+//    setSortingEnabled(true);
+    setDropIndicatorShown(true);
+    setMovement(Free);
+    setDragDropMode(DragDrop);
+    setDefaultDropAction(Qt::MoveAction);
+    setAcceptDrops(true);
+
+    createActions();
+
+    connect( m_addToPlaylistAction, &QAction::triggered, this, &AnimationListWidget::addSelectedItemsToPlaylist);
 }
 
 AnimationListWidget::~AnimationListWidget()
@@ -40,50 +52,34 @@ AnimationListWidget::~AnimationListWidget()
 
 }
 
-void AnimationListWidget::keyPressEvent(QKeyEvent *event)
+void AnimationListWidget::keyPressEvent(QKeyEvent *e)
 {
-    int cRow = -1;
-//    QListWidgetItem *listItem;
     //TODO::Fix space selection!!!
     //      Actuall behaviour, item stays always selected ones item is selected because
     //      when moving item item gets selected ;-) Strange behaviour
-    switch (event->key()) {
+    switch (e->key()) {
     case Qt::Key_Enter:
-        Q_EMIT addToPlaylist(this->selectedItems());
+        addSelectedItemsToPlaylist();
         break;
     case Qt::Key_Return:
-        Q_EMIT addToPlaylist(this->selectedItems());
+        addSelectedItemsToPlaylist();
         break;
     case Qt::Key_Up:
-        cRow = currentRow();
-        if(cRow == 0)
-            setCurrentRow(count()-1);
-        else
-            setCurrentRow(cRow-1);
+        ListWidget::keyPressEvent(e);
         break;
     case Qt::Key_Down:
-        cRow = currentRow();
-        if(cRow == count()-1)
-            setCurrentRow(0);
-        else
-            setCurrentRow(cRow+1);
+        ListWidget::keyPressEvent(e);
         break;
     case Qt::Key_Escape:
-        for(int i=0;i < count();i++){
-            setItemSelected(item(i),false);
-        }
+        ListWidget::keyPressEvent(e);
         break;
     case Qt::Key_Space:
-//        listItem = item(currentIndex().row());
-//        setItemSelected(listItem,!listItem->isSelected());
-//        if(listItem->isSelected())
-//            setItemSelected(listItem,true);
-//        else
-//            setItemSelected(listItem,false);
         break;
     default:
+        e->ignore();
         break;
     }
+    e->accept();
 }
 
 
@@ -93,4 +89,14 @@ void AnimationListWidget::insertAnimation(const QString &animation)
     addItem(animation);
 }
 
+void AnimationListWidget::createActions()
+{
+    m_addToPlaylistAction = createAction(tr("Add to Playlist"));
+    addAction(m_addToPlaylistAction);
+}
 
+
+void AnimationListWidget::addSelectedItemsToPlaylist()
+{
+    Q_EMIT addToPlaylist(selectedItems());
+}

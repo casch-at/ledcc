@@ -24,24 +24,26 @@
  *
  *
  */
-class Timer;
 
 class AnimationListWidget : public ListWidget
 {
     Q_OBJECT
 public:
-    AnimationListWidget(QWidget* parent = Q_NULLPTR);
+    explicit AnimationListWidget(QWidget* parent = Q_NULLPTR);
     virtual ~AnimationListWidget();
 Q_SIGNALS:
     void addToPlaylist(QList<QListWidgetItem *> selected);
     void showPropertiePreview(QListWidgetItem *item);
 
 protected:
-    virtual void keyPressEvent(QKeyEvent * event);
+    virtual void keyPressEvent(QKeyEvent * e);
 public Q_SLOTS:
     void insertAnimation(const QString &animation);
 
+    void addSelectedItemsToPlaylist();
 private:
+    void createActions();
+    QAction *m_addToPlaylistAction;
 };
 
 #endif // ANIMATIONLISTWIDGET_HPP

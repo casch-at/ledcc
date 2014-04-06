@@ -2,6 +2,7 @@
 #define LISTWIDGET_HPP
 
 #include <QListWidget>
+#include "AnimationItem.hpp"
 
 class QTimer;
 class QShortcut;
@@ -12,25 +13,35 @@ class ListWidget : public QListWidget
 public:
     explicit ListWidget(QWidget *parent = Q_NULLPTR);
     virtual ~ListWidget();
+
 Q_SIGNALS:
     void showPropertiePreview(QListWidgetItem *item);
+    void displayAnimationOptions(const AnimationOptions::Options *options);
+public Q_SLOTS:
+    void selectAllItems();
+    void on_itemSelectionChanged();
+    void on_showPropertiesPreviewTimerTimeout();
+    void on_customContextMenuRequest(const QPoint &pos);
+    void on_itemDoubleClicked(QListWidgetItem *item);
+    void editItem();
+    inline void focus() { setFocus(); }
 protected:
-//    virtual void dragMoveEvent(QDragMoveEvent *e);
+    virtual void keyPressEvent(QKeyEvent *e);
     virtual void dragLeaveEvent(QDragLeaveEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void leaveEvent(QEvent *e);
     QListWidgetItem *m_itemToShowProperties;
     QPoint m_dragStartPos;
     QPoint m_dragStopPos;
-public Q_SLOTS:
-    void selectAllItems(void);
-    void on_itemSelectionChanged();
-    void on_showPropertiesPreviewTimerTimeout();
-    inline void focus() { setFocus(); }
+
+    QAction *m_editAction;
+    QAction *createAction(const QString &text, const QString &tooltip = "");
+
 private:
+    void createActions();
+    u_int8_t m_scrollThrough;
     QTimer *m_showPropertiesPreview;
     QListWidgetItem *itemToShowProperties;
-
 };
 
 #endif // LISTWIDGET_HPP

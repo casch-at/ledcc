@@ -14,9 +14,11 @@
  */
 
 #include "AnimationPlayListWidget.hpp"
+
+// Qt includes
 #include <QScrollBar>
-#include <QTimer>
 #include <QKeyEvent>
+#include <QAction>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -25,24 +27,25 @@
 /*!
  \brief AnimationPlayListWidget Constructor
 
- \todo Create custrom context menu
-
  \param[in,out] parent  Parent QWidget past over to \link ListWidget()
 */
 AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     ListWidget(parent),
-    m_lastPlayedAnimation(0),
-    m_scrollThrough(0)
+    m_lastPlayedAnimation(0)
 {
+    // QListWidget settings
     setDropIndicatorShown(true);
     setMovement(Free);
     setDragDropMode(DragDrop);
     setDefaultDropAction(Qt::MoveAction);
-//    setDragDropOverwriteMode(true);
     setAcceptDrops(true);
 
+    // Internal
+    createActions();
+
     // Create connection
-    connect( this, &QListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::on_itemDoubleClicked);
+    connect( m_clearAction, &QAction::triggered, this, &AnimationPlayListWidget::clearList);
+    connect( m_duplicateAction, &QAction::triggered, this, &AnimationPlayListWidget::duplicateItems);
 }
 
 
@@ -52,6 +55,13 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
 */
 AnimationPlayListWidget::~AnimationPlayListWidget()
 {
+//    delete m_clearAction;
+//    delete m_stopAction;
+//    delete m_playAction;
+//    delete m_duplicateAction;
+//    delete m_moveDownAction;
+//    delete m_moveUpAction;
+//    delete m_removeAction;
 }
 
 
@@ -62,6 +72,7 @@ AnimationPlayListWidget::~AnimationPlayListWidget()
 void AnimationPlayListWidget::clearList()
 {
     clear();
+    m_clearAction->setDisabled(true);
     emit updateUi();
 }
 
@@ -78,24 +89,55 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
     foreach (QListWidgetItem *i, item) {
         addItem(i->clone());
     }
+
+    if (count()) {
+        m_clearAction->setEnabled(true);
+    }
     emit updateUi();
+
+
 }
 
-
-/*!
- \brief Function gets called when item is double clicked and di
-
- \param item
-*/
-void AnimationPlayListWidget::on_itemDoubleClicked(QListWidgetItem *item)
+void AnimationPlayListWidget::duplicateItems()
 {
-    Q_EMIT displayAnimationOptions(dynamic_cast<AnimationItem*>(item)->getOptions());
+    foreach (QListWidgetItem *item, selectedItems()) {
+        insertItem(indexFromItem(item).row(),dynamic_cast<AnimationItem *>(item)->clone());
+    }
 }
 
 
 void AnimationPlayListWidget::valueChanged()
 {
     qDebug() << verticalScrollBar()->value();
+}
+
+void AnimationPlayListWidget::createActions()
+{
+    m_moveDownAction = createAction(tr("Move Down"));
+    m_moveUpAction = createAction(tr("Move up"));
+    m_duplicateAction = createAction(tr("Duplicate"));
+    m_removeAction = createAction(tr("Remove"));
+
+    m_playAction = createAction(tr("Play"));
+    m_playAction->setIcon(QIcon("://images/media-playback-start-9.png"));
+    m_playAction->setShortcut(tr("R"));
+    m_playAction->setToolTip(tr("Play Animation R"));
+
+    m_stopAction = createAction(tr("Stop"));
+    m_stopAction->setIcon(QIcon("://images/media-playback-pause-7.png"));
+    m_stopAction->setShortcut(tr("P"));
+    m_stopAction->setToolTip(tr("Pause Animations P"));
+
+
+    m_clearAction = createAction(tr("Clear List"), tr("This can not be undone!"));
+    m_clearAction->setIcon( QIcon( "://images/clear.png" ) );
+    m_clearAction->setShortcut( QKeySequence::Refresh );
+
+    actions().first()->setShortcut(tr("Ctrl+E"));
+    if (!count())
+        m_clearAction->setDisabled(true);
+    addActions(QList<QAction *>() << m_playAction << m_stopAction << m_moveUpAction << m_moveDownAction << m_duplicateAction << m_removeAction << m_clearAction);
+
 }
 
 bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex)
@@ -107,7 +149,7 @@ bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropC
     //     rootIndex() (i.e. the viewport) might be a valid index
     if (viewport()->rect().contains(event->pos())) {
         index = indexAt(event->pos());
-        if (!index.isValid() || visualRect(index).contains(event->pos()))
+        if (!index.isValid() || !visualRect(index).contains(event->pos()))
             index = rootIndex();
     }
 
@@ -116,19 +158,16 @@ bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropC
     if (model()->supportedDropActions() & event->dropAction()) {
         int row = -1;
         int col = -1;
-        //        if (index != root) {
-        qDebug() << dropIndicatorPosition();
         switch (dropIndicatorPosition()) {
         case QAbstractItemView::AboveItem:
             row = index.row();
             col = index.column();
-            qDebug() << "Parent index:" << index.parent();
-            index = index.parent();
+//            index = index.parent();
             break;
         case QAbstractItemView::BelowItem:
-            row = index.row() + 1;
+            row = index.row();
             col = index.column();
-            index = index.parent();
+//            index = index.parent();
             break;
         case QAbstractItemView::OnItem:
         case QAbstractItemView::OnViewport:
@@ -138,8 +177,6 @@ bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropC
         *dropRow = row;
         *dropCol = col;
         return true;
-        //        if (!droppingOnItself(event, index))
-        //            return true;
     }
     return false;
 }
@@ -152,8 +189,6 @@ bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropC
 */
 void AnimationPlayListWidget::keyPressEvent(QKeyEvent *e)
 {
-    QModelIndex index;
-
     switch (e->key()) {
     case Qt::Key_Delete:
         foreach(QListWidgetItem *i,selectedItems())
@@ -165,63 +200,15 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *e)
         emit updateUi();
         break;
     case Qt::Key_Up:
-        index = moveCursor( QAbstractItemView::MoveUp, e->modifiers() );
-
-        if( index.row() > 0)
-            m_scrollThrough = 0;
-
-        if ( index.row()  == 0 ){
-            m_scrollThrough++;
-
-            switch (m_scrollThrough)
-            {
-            case 1:
-                setCurrentRow( 0, selectionCommand(index,dynamic_cast<QEvent*>(e)) );
-                break;
-            case 2:
-                setCurrentRow( count() - 1, selectionCommand(index,dynamic_cast<QEvent*>(e)) );
-                m_scrollThrough = 0;
-                break;
-            default:
-                break;
-            }
-        }
-        else{
-            setCurrentRow( index.row(), selectionCommand(index,dynamic_cast<QEvent*>(e)) );
-        }
+        ListWidget::keyPressEvent(e);
         break;
     case Qt::Key_Down:
-        index = moveCursor( QAbstractItemView::MoveDown, e->modifiers() );
-        if (index.row() + 1 < count())
-            m_scrollThrough = 0;
-
-        if( index.row() + 1 == count() ){
-            m_scrollThrough++;
-
-            switch (m_scrollThrough)
-            {
-            case 1:
-                setCurrentRow( count() -1, selectionCommand(index,dynamic_cast<QEvent*>(e)) );
-                break;
-            case 2:
-                setCurrentRow( 0, selectionCommand(index,dynamic_cast<QEvent*>(e)) );
-                m_scrollThrough = 0;
-                break;
-            default:
-                break;
-            }
-        }
-        else{
-            setCurrentRow( index.row(), selectionCommand(index,dynamic_cast<QEvent*>(e)) );
-        }
-
+        ListWidget::keyPressEvent(e);
         break;
     case Qt::Key_Return:
         break;
     case Qt::Key_Escape:
-        for(int i=0;i < count();i++){
-            setItemSelected(item(i),false);
-        }
+        ListWidget::keyPressEvent(e);
         break;
     default:
         e->ignore();
@@ -254,26 +241,20 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
 
     if ( e->source() == this  )
     {
-        QModelIndex index = indexAt(e->pos());
-
-        if (index.isValid())
+        QModelIndex index;
+        int row = -1;
+        int col = -1;
+        if (dropOn(e,&row,&col,&index))
         {
             foreach (QListWidgetItem *i, selectedItems())
             {
                 items.append( i->clone() );
                 delete i;
             }
-            int row = -1;
-            int col = -1;
-            dropOn(e,&row,&col,&index);
-            row = index.row();
-            //            index = index.parent();
+            e->setDropAction(Qt::MoveAction);
             insertItemsAt (items, row );
+            scrollToItem(item(index.row()));
 
-            qDebug() << "Viewport rect contains:" << viewport()->rect().contains(e->pos());
-            qDebug() << "Index row:" << row << "Index column:" << col;
-            if (dragDropMode() == InternalMove)
-                e->setDropAction(Qt::MoveAction);
             e->accept();
         }
         else
@@ -282,7 +263,7 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
             return;
         }
     }
-    else //TODO:: Thats nasty :-), read trough the documentation of Qt 5
+    else //FIXME::Dangerous!!! When source of the event is not a QListWidget application will crash
     {
         foreach (QListWidgetItem *i, dynamic_cast<QListWidget*>(e->source())->selectedItems())
         {
@@ -291,11 +272,9 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
         insertItemsAt( items, indexAt( e->pos() ).row() );
         e->accept();
     }
-    e->acceptProposedAction();
     stopAutoScroll();
     setState(NoState);
     viewport()->update();
-    //    ListWidget::dropEvent(e);
 }
 
 void AnimationPlayListWidget::mousePressEvent(QMouseEvent *e)

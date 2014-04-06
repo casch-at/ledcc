@@ -18,9 +18,8 @@
 #define ANIMATIONPLAYLISTWIDGET_HPP
 
 #include <ListWidget.hpp>
-#include "AnimationItem.hpp"
 
-class Timer;
+
 
 class AnimationPlayListWidget : public ListWidget
 {
@@ -28,12 +27,16 @@ class AnimationPlayListWidget : public ListWidget
 public:
     explicit AnimationPlayListWidget(QWidget *parent = Q_NULLPTR);
     virtual ~AnimationPlayListWidget();
+    QAction *m_playAction;
+    QAction *m_stopAction;
+    QAction *m_clearAction;
 Q_SIGNALS:
     void updateUi(void);
-    void displayAnimationOptions(const AnimationOptions::Options *options);
+
 public Q_SLOTS:
     void clearList(void);
     void newItem(QList<QListWidgetItem *> item);
+    void duplicateItems();
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
     virtual void dragMoveEvent(QDragMoveEvent *e);
@@ -47,15 +50,19 @@ protected:
 public Q_SLOTS:
     AnimationItem *getNextAnimation(void);
 private Q_SLOTS:
-    void on_itemDoubleClicked(QListWidgetItem *item);
     void valueChanged();
 
 private:
+    void createActions();
     int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
-    u_int8_t m_scrollThrough;
     bool dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex);
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
+
+    QAction *m_moveDownAction;
+    QAction *m_moveUpAction;
+    QAction *m_removeAction;
+    QAction *m_duplicateAction;
 };
 
 #endif // ANIMATIONPLAYLISTWIDGET_HPP
