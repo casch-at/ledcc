@@ -48,7 +48,7 @@ void AnimationOptions::displayAnimationOptions(const Options *options)
     else if(options->axis == Draw::Y_AXIS )
         ui->axisComB->setCurrentIndex(1);
     else if(options->axis == Draw::Z_AXIS )
-        ui->axisComB->setCurrentIndex(0);
+        ui->axisComB->setCurrentIndex(2);
     ui->delaySpinB->setValue(static_cast<int>(options->delay));
     if( options->direction == Draw::BACKWARD )
         ui->directionComB->setCurrentIndex(0);

@@ -17,6 +17,7 @@ public:
 Q_SIGNALS:
     void showPropertiePreview(QListWidgetItem *item);
     void displayAnimationOptions(const AnimationOptions::Options *options);
+    void updateUi(void);
 public Q_SLOTS:
     void selectAllItems();
     void on_itemSelectionChanged();

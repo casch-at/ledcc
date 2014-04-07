@@ -30,13 +30,12 @@ public:
     QAction *m_playAction;
     QAction *m_stopAction;
     QAction *m_clearAction;
-Q_SIGNALS:
-    void updateUi(void);
-
 public Q_SLOTS:
     void clearList(void);
     void newItem(QList<QListWidgetItem *> item);
     void duplicateItems();
+    void removeItems();
+    bool moveItemsUpDown();
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
     virtual void dragMoveEvent(QDragMoveEvent *e);
@@ -44,14 +43,9 @@ protected:
     virtual void dropEvent(QDropEvent *e);
     virtual void mousePressEvent(QMouseEvent *e);
     virtual void mouseReleaseEvent(QMouseEvent *e);
-
     virtual void dragEnterEvent(QDragEnterEvent *e);
-
 public Q_SLOTS:
     AnimationItem *getNextAnimation(void);
-private Q_SLOTS:
-    void valueChanged();
-
 private:
     void createActions();
     int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */

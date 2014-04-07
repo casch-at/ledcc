@@ -152,7 +152,9 @@ void ListWidget::editItem()
         AnimationItem *item = dynamic_cast<AnimationItem*>(selectedItems().first());
         Q_EMIT displayAnimationOptions(item->getOptions());
 
+        Q_EMIT updateUi();
     }
+
 }
 
 void ListWidget::keyPressEvent(QKeyEvent *e)

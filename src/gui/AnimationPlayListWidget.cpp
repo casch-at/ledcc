@@ -49,6 +49,9 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     // Create connection
     connect( m_clearAction, &QAction::triggered, this, &AnimationPlayListWidget::clearList);
     connect( m_duplicateAction, &QAction::triggered, this, &AnimationPlayListWidget::duplicateItems);
+    connect( m_removeAction, &QAction::triggered, this, &AnimationPlayListWidget::removeItems);
+    connect( m_moveUpAction, &QAction::triggered, this, &AnimationPlayListWidget::moveItemsUpDown);
+    connect( m_moveDownAction, &QAction::triggered, this, &AnimationPlayListWidget::moveItemsUpDown);
 }
 
 
@@ -58,13 +61,13 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
 */
 AnimationPlayListWidget::~AnimationPlayListWidget()
 {
-//    delete m_clearAction;
-//    delete m_stopAction;
-//    delete m_playAction;
-//    delete m_duplicateAction;
-//    delete m_moveDownAction;
-//    delete m_moveUpAction;
-//    delete m_removeAction;
+    //    delete m_clearAction;
+    //    delete m_stopAction;
+    //    delete m_playAction;
+    //    delete m_duplicateAction;
+    //    delete m_moveDownAction;
+    //    delete m_moveUpAction;
+    //    delete m_removeAction;
 }
 
 
@@ -76,7 +79,7 @@ void AnimationPlayListWidget::clearList()
 {
     clear();
     m_clearAction->setDisabled(true);
-    emit updateUi();
+    Q_EMIT updateUi();
 }
 
 
@@ -96,7 +99,7 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
     if (count()) {
         m_clearAction->setEnabled(true);
     }
-    emit updateUi();
+    Q_EMIT updateUi();
 
 
 }
@@ -108,18 +111,66 @@ void AnimationPlayListWidget::duplicateItems()
     }
 }
 
-
-void AnimationPlayListWidget::valueChanged()
+void AnimationPlayListWidget::removeItems()
 {
-    qDebug() << verticalScrollBar()->value();
+    QList<QListWidgetItem *> items = selectedItems();
+    foreach (QListWidgetItem *item, items) {
+        delete item;
+    }
+    if (!count()){
+        m_clearAction->setDisabled(true);
+        Q_EMIT updateUi();
+    }
+
+}
+
+bool AnimationPlayListWidget::moveItemsUpDown()
+{
+    QObject *emitedObject = QObject::sender();
+    if (emitedObject == NULL)
+        return false;
+
+    int upDown = 0;
+    if (emitedObject->objectName().compare("UP") == 0)
+        upDown = -1;
+    else if (emitedObject->objectName().compare("DOWN") == 0)
+        upDown = 1;
+
+    if (!upDown)
+        return false;
+
+    QList<QListWidgetItem*> items = selectedItems();
+    QMap<int, QListWidgetItem *> newItemRow;
+
+    //FIXME:: Not working crap :-)))
+    foreach (QListWidgetItem *item, items){
+        qDebug() << "Item:" << item->text() <<  "Row:" << indexFromItem(item).row();
+        newItemRow.insert(indexFromItem(item).row() + upDown, takeItem(indexFromItem(item).row()));
+    }
+
+    QMapIterator<int, QListWidgetItem *> iter(newItemRow);
+    while (iter.hasNext()) {
+        iter.next();
+        qDebug() << "Name:" << iter.value()->text();
+        insertItem( iter.key(), iter.value());
+        setItemSelected(iter.value(),true);
+    }
+    return true;
 }
 
 void AnimationPlayListWidget::createActions()
 {
     m_moveDownAction = createAction(tr("Move Down"));
+    m_moveDownAction->setObjectName("DOWN");
+
     m_moveUpAction = createAction(tr("Move up"));
+    m_moveUpAction->setObjectName("UP");
+
     m_duplicateAction = createAction(tr("Duplicate"));
+
     m_removeAction = createAction(tr("Remove"));
+    m_removeAction->setToolTip(tr("Remove one or more selected Animation(s)"));
+    m_removeAction->setStatusTip(tr("Remove one or more selected Animation(s)"));
 
     m_playAction = createAction(tr("Play"));
     m_playAction->setIcon(QIcon("://images/media-playback-start-9.png"));
@@ -165,12 +216,12 @@ bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropC
         case QAbstractItemView::AboveItem:
             row = index.row();
             col = index.column();
-//            index = index.parent();
+            //            index = index.parent();
             break;
         case QAbstractItemView::BelowItem:
             row = index.row();
             col = index.column();
-//            index = index.parent();
+            //            index = index.parent();
             break;
         case QAbstractItemView::OnItem:
         case QAbstractItemView::OnViewport:

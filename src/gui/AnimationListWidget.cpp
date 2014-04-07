@@ -29,23 +29,19 @@
 //#include "animations/Lift.hpp"
 //#include <QtWidgets/QAction>
 
+// FIXME:: Edit signal not working in AnimationListWidget because connection between AnimationListWidge object and AnimationOptions object are missing
+//         However there is no need anymore because the AnimationOptions class gets modified anyway and a object of the new class will be in the base class
 AnimationListWidget::AnimationListWidget(QWidget *parent):
     ListWidget(parent)
 {
-//    setDropIndicatorShown(false);
-//    setMovement(Free);
-//    setDefaultDropAction(Qt::IgnoreAction);
-//    setEditTriggers(DoubleClicked | EditKeyPressed);
-//    setDragDropMode(DragOnly);
-//    setDragEnabled(true);
-//    setAcceptDrops(false);
-//    setSortingEnabled(true);
-    setDropIndicatorShown(true);
+    setDropIndicatorShown(false);
     setMovement(Free);
-    setDragDropMode(DragDrop);
-    setDefaultDropAction(Qt::MoveAction);
-    setAcceptDrops(true);
-
+    setDefaultDropAction(Qt::IgnoreAction);
+    setEditTriggers(DoubleClicked | EditKeyPressed);
+    setDragDropMode(DragOnly);
+    setDragEnabled(true);
+    setAcceptDrops(false);
+    setSortingEnabled(true);
     createActions();
 
     connect( m_addToPlaylistAction, &QAction::triggered, this, &AnimationListWidget::addSelectedItemsToPlaylist);

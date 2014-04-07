@@ -16,6 +16,9 @@
  */
 #include "AxisNailWall.hpp"
 
+
+//TODO:: Change bool invert with Draw::Direction
+
 AxisNailWall::AxisNailWall(const u_int16_t &speed, const Axis &axis, const bool invert, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_axis(axis),

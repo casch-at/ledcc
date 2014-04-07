@@ -86,7 +86,6 @@ else()
 endif()
 
 #----------- OUTPUT INSTALL DIRECTORIES
-message(STATUS "GNUInstallDirs: ${GNUInstallDirs}" )
 message(STATUS "BIN_INSTALL_DIR: ${BIN_INSTALL_DIR}" )
 message(STATUS "PLUGIN_INSTALL_DIR: ${PLUGIN_INSTALL_DIR}" )
 message(STATUS "DATA_INSTALL_DIR: ${DATA_INSTALL_DIR}" )
