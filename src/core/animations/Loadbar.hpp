@@ -37,8 +37,6 @@ public:
         return m_direction;
     }
 
-signals:
-
 public Q_SLOTS:
     virtual void createAnimation();
     virtual void createAnimationTooltipAsRichText(AnimationItem *item);

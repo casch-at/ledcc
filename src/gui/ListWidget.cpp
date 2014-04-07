@@ -1,6 +1,5 @@
 #include "ListWidget.hpp"
-#include "aqp.hpp"
-#include "alt_key.hpp"
+
 
 #include <QTimer>
 #include <QKeyEvent>
@@ -124,7 +123,7 @@ void ListWidget::createActions()
     m_editAction = createAction(tr("Edit"));
 
     addActions(QList<QAction*>() <<  m_editAction );
-    AQP::accelerateActions(actions());
+
 }
 
 QAction *ListWidget::createAction(const QString &text, const QString &tooltip)
@@ -148,7 +147,12 @@ void ListWidget::on_itemDoubleClicked(QListWidgetItem *item)
 
 void ListWidget::editItem()
 {
-    Q_EMIT displayAnimationOptions(dynamic_cast<AnimationItem*>(selectedItems().first())->getOptions());
+    QList<QListWidgetItem *> items = selectedItems();
+    if (!items.isEmpty()) {
+        AnimationItem *item = dynamic_cast<AnimationItem*>(selectedItems().first());
+        Q_EMIT displayAnimationOptions(item->getOptions());
+
+    }
 }
 
 void ListWidget::keyPressEvent(QKeyEvent *e)

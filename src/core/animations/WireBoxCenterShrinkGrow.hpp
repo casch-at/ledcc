@@ -40,8 +40,6 @@ public:
         return m_iterations;
     }
 
-signals:
-
 public Q_SLOTS:
     virtual void createAnimation();
     virtual void createAnimationTooltipAsRichText(AnimationItem *item);

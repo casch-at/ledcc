@@ -53,7 +53,7 @@ public Q_SLOTS:
 protected:
     void changeEvent(QEvent *e);
 
-private slots:
+private Q_SLOTS:
     void on_applyPushB_clicked();
 
 private:

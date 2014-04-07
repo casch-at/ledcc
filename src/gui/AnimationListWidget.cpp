@@ -16,6 +16,10 @@
  */
 #include "AnimationListWidget.hpp"
 
+// Third Party
+#include "aqp.hpp"
+#include "alt_key.hpp"
+
 // Qt includes
 #include <QKeyEvent>
 #include <QAction>
@@ -93,6 +97,7 @@ void AnimationListWidget::createActions()
 {
     m_addToPlaylistAction = createAction(tr("Add to Playlist"));
     addAction(m_addToPlaylistAction);
+    AQP::accelerateActions(actions());
 }
 
 

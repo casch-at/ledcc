@@ -15,6 +15,9 @@
 
 #include "AnimationPlayListWidget.hpp"
 
+// Third Party
+#include "aqp.hpp"
+#include "alt_key.hpp"
 // Qt includes
 #include <QScrollBar>
 #include <QKeyEvent>
@@ -137,7 +140,7 @@ void AnimationPlayListWidget::createActions()
     if (!count())
         m_clearAction->setDisabled(true);
     addActions(QList<QAction *>() << m_playAction << m_stopAction << m_moveUpAction << m_moveDownAction << m_duplicateAction << m_removeAction << m_clearAction);
-
+    AQP::accelerateActions(actions());
 }
 
 bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex)
