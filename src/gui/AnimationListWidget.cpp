@@ -35,7 +35,7 @@ AnimationListWidget::AnimationListWidget(QWidget *parent):
     ListWidget(parent)
 {
     setDropIndicatorShown(false);
-    setMovement(Free);
+    setMovement(Static);
     setDefaultDropAction(Qt::IgnoreAction);
     setEditTriggers(DoubleClicked | EditKeyPressed);
     setDragDropMode(DragOnly);

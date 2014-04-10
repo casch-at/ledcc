@@ -104,6 +104,10 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
 
 }
 
+/*!
+ \brief
+
+*/
 void AnimationPlayListWidget::duplicateItems()
 {
     foreach (QListWidgetItem *item, selectedItems()) {
@@ -111,6 +115,10 @@ void AnimationPlayListWidget::duplicateItems()
     }
 }
 
+/*!
+ \brief
+
+*/
 void AnimationPlayListWidget::removeItems()
 {
     QList<QListWidgetItem *> items = selectedItems();
@@ -124,13 +132,23 @@ void AnimationPlayListWidget::removeItems()
 
 }
 
+/*!
+ \brief
+
+ \return bool
+*/
 bool AnimationPlayListWidget::moveItemsUpDown()
 {
     QObject *emitedObject = QObject::sender();
+    QModelIndexList selectedIndx;
+    int upDown = 0;
+    int firstItemRowList = -1;
+    int lastItemRowList = -1;
+    int inListWidget = count();
+
     if (emitedObject == NULL)
         return false;
 
-    int upDown = 0;
     if (emitedObject->objectName().compare("UP") == 0)
         upDown = -1;
     else if (emitedObject->objectName().compare("DOWN") == 0)
@@ -139,31 +157,56 @@ bool AnimationPlayListWidget::moveItemsUpDown()
     if (!upDown)
         return false;
 
-    QList<QListWidgetItem*> items = selectedItems();
-    QMap<int, QListWidgetItem *> newItemRow;
+    selectedIndx = selectedIndexes();
+    if(selectedIndx.count() == inListWidget) /* If all items are selected we don't need to move them */
+        return false;
+    firstItemRowList = selectedIndx.first().row();
+    lastItemRowList = selectedIndx.last().row();
+
+    /* Swap rows if needed */
+    if (firstItemRowList > lastItemRowList) {
+        int tmp = firstItemRowList;
+        firstItemRowList = lastItemRowList;
+        lastItemRowList = tmp;
+    }
+
+    if(lastItemRowList + 1 == inListWidget && upDown == 1) /* If we are already at the bottom of the list we don't need to move */
+        return false;
+    else if (!firstItemRowList) /* If we are already at the top of the list we don't need to move */
+        return false;
+
+    QMap<int, QModelIndex> newItemRow;
 
     //FIXME:: Not working crap :-)))
-    foreach (QListWidgetItem *item, items){
-        qDebug() << "Item:" << item->text() <<  "Row:" << indexFromItem(item).row();
-        newItemRow.insert(indexFromItem(item).row() + upDown, takeItem(indexFromItem(item).row()));
+    foreach (QModelIndex index, selectedIndx){
+        qDebug() << "Item:" << itemFromIndex(index)->text() <<  "\t\tRow:" << index.row();
+        newItemRow.insert(index.row() + upDown, index);
     }
 
-    QMapIterator<int, QListWidgetItem *> iter(newItemRow);
+    int at = 0;
+    QMapIterator<int, QModelIndex> iter(newItemRow);
+
     while (iter.hasNext()) {
         iter.next();
-        qDebug() << "Name:" << iter.value()->text();
-        insertItem( iter.key(), iter.value());
-        setItemSelected(iter.value(),true);
+        qDebug() << "Row" << iter.key() << "Name:" << itemFromIndex(iter.value())->text() ;
+        insertItem( iter.key(), itemFromIndex(iter.value()));
+//        items.insert(at++,iter.value());
+        setItemSelected(itemFromIndex(iter.value()),true);
     }
+//    insertItemsAt(items,newItemRow.begin().key());
     return true;
 }
 
+/*!
+ \brief
+
+*/
 void AnimationPlayListWidget::createActions()
 {
     m_moveDownAction = createAction(tr("Move Down"));
     m_moveDownAction->setObjectName("DOWN");
 
-    m_moveUpAction = createAction(tr("Move up"));
+    m_moveUpAction = createAction(tr("Move Up"));
     m_moveUpAction->setObjectName("UP");
 
     m_duplicateAction = createAction(tr("Duplicate"));
@@ -194,6 +237,15 @@ void AnimationPlayListWidget::createActions()
     AQP::accelerateActions(actions());
 }
 
+/*!
+ \brief
+
+ \param event
+ \param dropRow
+ \param dropCol
+ \param dropIndex
+ \return bool
+*/
 bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex)
 {
     if (event->isAccepted())
@@ -272,12 +324,22 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *e)
     e->accept();
 }
 
+/*!
+ \brief
+
+ \param event
+*/
 void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *event)
 {
 
     ListWidget::dragMoveEvent(event);
 }
 
+/*!
+ \brief
+
+ \param e
+*/
 void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
 {
     ListWidget::dragLeaveEvent(e);
@@ -298,7 +360,7 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
         QModelIndex index;
         int row = -1;
         int col = -1;
-        if (dropOn(e,&row,&col,&index))
+        if (dropOn(e,&row,&col,&index)) /* Evalute the row where to item(s) should be droped befor clone */
         {
             foreach (QListWidgetItem *i, selectedItems())
             {
@@ -308,7 +370,6 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
             e->setDropAction(Qt::MoveAction);
             insertItemsAt (items, row );
             scrollToItem(item(index.row()));
-
             e->accept();
         }
         else
@@ -331,6 +392,11 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
     viewport()->update();
 }
 
+/*!
+ \brief
+
+ \param e
+*/
 void AnimationPlayListWidget::mousePressEvent(QMouseEvent *e)
 {
     if( e->button() == Qt::LeftButton )
@@ -344,6 +410,11 @@ void AnimationPlayListWidget::mousePressEvent(QMouseEvent *e)
     ListWidget::mousePressEvent(e);
 }
 
+/*!
+ \brief
+
+ \param e
+*/
 void AnimationPlayListWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     if( e->button() == Qt::LeftButton )
@@ -357,14 +428,22 @@ void AnimationPlayListWidget::mouseReleaseEvent(QMouseEvent *e)
     ListWidget::mouseReleaseEvent(e);
 }
 
+/*!
+ \brief
+
+ \param e
+*/
 void AnimationPlayListWidget::dragEnterEvent(QDragEnterEvent *e)
 {
     if(e->mimeData())
         e->acceptProposedAction();
 }
 
+/*!
+ \brief
 
-
+ \return AnimationItem
+*/
 AnimationItem *AnimationPlayListWidget::getNextAnimation()
 {
     int rows = count();
@@ -381,12 +460,18 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
     }
 }
 
+/*!
+ \brief
 
+ \param items
+ \param row
+*/
 void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &items, const int row)
 {
     foreach (QListWidgetItem *i, items)
     {
         insertItem(row,i);
+        setItemSelected(i,true);
     }
     Q_EMIT updateUi();
 }
