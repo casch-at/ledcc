@@ -132,6 +132,9 @@ void AnimationPlayListWidget::removeItems()
 
 }
 
+
+//TODO:: What is when items gets mixed selected, e.g., second and last row and the user wants move them up
+// Create a function where item for item gets
 /*!
  \brief
 
@@ -141,25 +144,28 @@ bool AnimationPlayListWidget::moveItemsUpDown()
 {
     QObject *emitedObject = QObject::sender();
     QModelIndexList selectedIndx;
-    int upDown = 0;
+    QList<QListWidgetItem *> items;
     int firstItemRowList = -1;
     int lastItemRowList = -1;
     int inListWidget = count();
+    bool reverse = true;
+    bool up;
 
     if (emitedObject == NULL)
         return false;
 
     if (emitedObject->objectName().compare("UP") == 0)
-        upDown = -1;
+        up = true;
     else if (emitedObject->objectName().compare("DOWN") == 0)
-        upDown = 1;
-
-    if (!upDown)
+        up = false;
+    else
         return false;
 
-    selectedIndx = selectedIndexes();
-    if(selectedIndx.count() == inListWidget) /* If all items are selected we don't need to move them */
+    /* If all alle items are selected moveing them makes no sense also return if no item is selected*/
+    if( !(selectedIndx = selectedIndexes()).count() || selectedIndx.count() == inListWidget)
         return false;
+
+
     firstItemRowList = selectedIndx.first().row();
     lastItemRowList = selectedIndx.last().row();
 
@@ -168,32 +174,42 @@ bool AnimationPlayListWidget::moveItemsUpDown()
         int tmp = firstItemRowList;
         firstItemRowList = lastItemRowList;
         lastItemRowList = tmp;
+        if(lastItemRowList + 1 == inListWidget && up) /* If we are already at the bottom of the list we don't need to move */
+            return false;
+        else if (!firstItemRowList) /* If we are already at the top of the list we don't need to move */
+            return false;
+
+        reverse = !reverse;
     }
 
-    if(lastItemRowList + 1 == inListWidget && upDown == 1) /* If we are already at the bottom of the list we don't need to move */
-        return false;
-    else if (!firstItemRowList) /* If we are already at the top of the list we don't need to move */
-        return false;
-
-    QMap<int, QModelIndex> newItemRow;
-
-    //FIXME:: Not working crap :-)))
-    foreach (QModelIndex index, selectedIndx){
-        qDebug() << "Item:" << itemFromIndex(index)->text() <<  "\t\tRow:" << index.row();
-        newItemRow.insert(index.row() + upDown, index);
+    foreach (QModelIndex index, selectedIndx) {
+        items.append(takeItem(index.row()));
     }
+    qDebug() << "LastItemRow:" << lastItemRowList << "FirstItemRow:" << firstItemRowList << "Differnce:" << lastItemRowList - firstItemRowList;
+    int insertAt = lastItemRowList - firstItemRowList;
 
-    int at = 0;
-    QMapIterator<int, QModelIndex> iter(newItemRow);
+    if (up)
+        insertAt = firstItemRowList - 1;
+    else
+        insertAt = firstItemRowList + 1;
 
-    while (iter.hasNext()) {
-        iter.next();
-        qDebug() << "Row" << iter.key() << "Name:" << itemFromIndex(iter.value())->text() ;
-        insertItem( iter.key(), itemFromIndex(iter.value()));
-//        items.insert(at++,iter.value());
-        setItemSelected(itemFromIndex(iter.value()),true);
+    qDebug() << "insertAt:" << insertAt;
+    QListWidgetItem *itemToInsert;
+    QListIterator<QListWidgetItem*> itemsIter(items);
+    if (reverse){
+        itemsIter.toBack();
+        while (itemsIter.hasPrevious()){
+            itemToInsert = itemsIter.previous();
+            insertItem(insertAt, itemToInsert);
+            setItemSelected(itemToInsert, true);
+        }
+    } else {
+        while (itemsIter.hasNext()) {
+            itemToInsert = itemsIter.next();
+            insertItem(insertAt, itemToInsert);
+            setItemSelected(itemToInsert, true);
+        }
     }
-//    insertItemsAt(items,newItemRow.begin().key());
     return true;
 }
 
