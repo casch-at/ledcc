@@ -134,82 +134,76 @@ void AnimationPlayListWidget::removeItems()
 
 
 //TODO:: What is when items gets mixed selected, e.g., second and last row and the user wants move them up
-// Create a function where item for item gets
+// Create another function where the selected items gets
 /*!
  \brief
 
+/*
+ * function(){
+ *      selectedItems;
+ *      call moveitemsUpDown with only one item at time, if items should be moved up start with the upper row else with the last row
  \return bool
 */
-bool AnimationPlayListWidget::moveItemsUpDown()
+void AnimationPlayListWidget::moveItemsUpDown()
 {
     QObject *emitedObject = QObject::sender();
     QModelIndexList selectedIndx;
-    QList<QListWidgetItem *> items;
-    int firstItemRowList = -1;
-    int lastItemRowList = -1;
-    int inListWidget = count();
-    bool reverse = true;
     bool up;
 
-    if (emitedObject == NULL)
+
+    if(!moveItem(emitedObject, &selectedIndx, &up))
+        return;
+
+    qDebug() << "Befor sort:";
+    foreach (QModelIndex i, selectedIndx) {
+        qDebug() << "Row:" << i.row();
+    }
+    sortIndexes(up,&selectedIndx);
+    qDebug() << "After sort:";
+    foreach (QModelIndex i, selectedIndx) {
+        qDebug() << "Row:" << i.row();
+    }
+//    foreach (QModelIndex index, selectedIndx) {
+//        items.append(takeItem(index.row()));
+    //}
+
+        //    qDebug() << "insertAt:" << insertAt;
+        //    QListWidgetItem *itemToInsert;
+        //    QListIterator<QListWidgetItem*> itemsIter(items);
+        //    if (reverse){
+        //        itemsIter.toBack();
+        //        while (itemsIter.hasPrevious()){
+        //            itemToInsert = itemsIter.previous();
+        //            insertItem(insertAt, itemToInsert);
+        //            setItemSelected(itemToInsert, true);
+        //        }
+        //    } else {
+        //        while (itemsIter.hasNext()) {
+        //            itemToInsert = itemsIter.next();
+        //            insertItem(insertAt, itemToInsert);
+        //            setItemSelected(itemToInsert, true);
+        //        }
+        //    }
+}
+
+bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *list,  bool *up)
+{
+    int inListWidget = count();
+    if (object == NULL)
         return false;
 
-    if (emitedObject->objectName().compare("UP") == 0)
-        up = true;
-    else if (emitedObject->objectName().compare("DOWN") == 0)
-        up = false;
+    if (object->objectName().compare("UP") == 0)
+        *up = true;
+    else if (object->objectName().compare("DOWN") == 0)
+        *up = false;
     else
         return false;
 
-    /* If all alle items are selected moveing them makes no sense also return if no item is selected*/
-    if( !(selectedIndx = selectedIndexes()).count() || selectedIndx.count() == inListWidget)
+    /* If all alle items are selected moveing them makes no sense also return if no item is selected at all*/
+    if( !( *list = selectedIndexes() ).count() || list->count() == inListWidget)
         return false;
 
 
-    firstItemRowList = selectedIndx.first().row();
-    lastItemRowList = selectedIndx.last().row();
-
-    /* Swap rows if needed */
-    if (firstItemRowList > lastItemRowList) {
-        int tmp = firstItemRowList;
-        firstItemRowList = lastItemRowList;
-        lastItemRowList = tmp;
-        if(lastItemRowList + 1 == inListWidget && up) /* If we are already at the bottom of the list we don't need to move */
-            return false;
-        else if (!firstItemRowList) /* If we are already at the top of the list we don't need to move */
-            return false;
-
-        reverse = !reverse;
-    }
-
-    foreach (QModelIndex index, selectedIndx) {
-        items.append(takeItem(index.row()));
-    }
-    qDebug() << "LastItemRow:" << lastItemRowList << "FirstItemRow:" << firstItemRowList << "Differnce:" << lastItemRowList - firstItemRowList;
-    int insertAt = lastItemRowList - firstItemRowList;
-
-    if (up)
-        insertAt = firstItemRowList - 1;
-    else
-        insertAt = firstItemRowList + 1;
-
-    qDebug() << "insertAt:" << insertAt;
-    QListWidgetItem *itemToInsert;
-    QListIterator<QListWidgetItem*> itemsIter(items);
-    if (reverse){
-        itemsIter.toBack();
-        while (itemsIter.hasPrevious()){
-            itemToInsert = itemsIter.previous();
-            insertItem(insertAt, itemToInsert);
-            setItemSelected(itemToInsert, true);
-        }
-    } else {
-        while (itemsIter.hasNext()) {
-            itemToInsert = itemsIter.next();
-            insertItem(insertAt, itemToInsert);
-            setItemSelected(itemToInsert, true);
-        }
-    }
     return true;
 }
 
@@ -455,6 +449,7 @@ void AnimationPlayListWidget::dragEnterEvent(QDragEnterEvent *e)
         e->acceptProposedAction();
 }
 
+
 /*!
  \brief
 
@@ -490,4 +485,40 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
         setItemSelected(i,true);
     }
     Q_EMIT updateUi();
+}
+
+
+/*!
+ \brief Sort the indexes after the row order.
+  A insertion algorithm is used for sorting the \a QModelIndex.
+ \param ascending Sort the indexes ascending if true otherwise descending.
+ \param list Pointer to \a QModelIndexList to sort.
+*/
+void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList *list)
+{
+    QModelIndex index;
+    int i = 0;
+    int length = list->length();
+
+    if (ascending){ // Sort indexes ascending 0,1,2,...
+        for (int j = 1; j < length; ++j) {
+            index = list->at(j);
+            i = j - 1;
+            while (i >= 0 && list->at(i).row() > index.row()) {
+                list->replace(i + 1, list->at(i));
+                i -= 1;
+            }
+            list->replace(i + 1, index);
+        }
+    } else { // Sort indexes descending row ...,3,2,1,0
+        for (int j =  1 ; j < length; ++j) {
+            index = list->at(j);
+            i = j - 1;
+            while (i >= 0 && list->at(i).row() < index.row()) {
+                list->replace(i + 1, list->at(i));
+                i -= 1;
+            }
+            list->replace(i + 1, index);
+        }
+    }
 }
