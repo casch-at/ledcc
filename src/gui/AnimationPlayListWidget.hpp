@@ -54,7 +54,7 @@ private:
     bool dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex);
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
 
-    void sortIndexes(const bool up, QModelIndexList *list);
+    void sortIndexes(const bool ascending, QModelIndexList *list);
 
 //    template<typename
     QAction *m_moveDownAction;

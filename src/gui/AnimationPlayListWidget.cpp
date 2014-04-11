@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2014  Christian Schwarzgruber <christiandev9@gmail.com>
  *
@@ -18,14 +17,15 @@
 // Third Party
 #include "aqp.hpp"
 #include "alt_key.hpp"
+
 // Qt includes
 #include <QScrollBar>
 #include <QKeyEvent>
 #include <QAction>
+
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-
 
 /*!
  \brief AnimationPlayListWidget Constructor
@@ -53,7 +53,6 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     connect( m_moveUpAction, &QAction::triggered, this, &AnimationPlayListWidget::moveItemsUpDown);
     connect( m_moveDownAction, &QAction::triggered, this, &AnimationPlayListWidget::moveItemsUpDown);
 }
-
 
 /*!
  \brief Virtual destructor
@@ -132,16 +131,9 @@ void AnimationPlayListWidget::removeItems()
 
 }
 
-
-//TODO:: What is when items gets mixed selected, e.g., second and last row and the user wants move them up
-// Create another function where the selected items gets
 /*!
  \brief
 
-/*
- * function(){
- *      selectedItems;
- *      call moveitemsUpDown with only one item at time, if items should be moved up start with the upper row else with the last row
  \return bool
 */
 void AnimationPlayListWidget::moveItemsUpDown()
@@ -149,49 +141,59 @@ void AnimationPlayListWidget::moveItemsUpDown()
     QObject *emitedObject = QObject::sender();
     QModelIndexList selectedIndx;
     bool up;
-
+    int inListWidget = count();
+    int addToRow;
 
     if(!moveItem(emitedObject, &selectedIndx, &up))
         return;
 
-    qDebug() << "Befor sort:";
-    foreach (QModelIndex i, selectedIndx) {
-        qDebug() << "Row:" << i.row();
-    }
     sortIndexes(up,&selectedIndx);
-    qDebug() << "After sort:";
-    foreach (QModelIndex i, selectedIndx) {
-        qDebug() << "Row:" << i.row();
+
+    QModelIndex index = selectedIndx.first();
+    /*
+     * If items should be moved up and the top most is selected too insert
+     * the item from row zero at the bottom and return, all other get moved anyway.
+     */
+    if (up){
+        if ( index.row() == 0 ){
+            insertItem(inListWidget - 1,takeItem(index.row()));
+            return;
+        }
+        addToRow = -1;
+    } else {
+     /*
+     * If items should be moved down and the bottom most is selected too insert the
+     * the item from the last row at the top and return, all other get moved anyway.
+     */
+        if ( index.row() == inListWidget - 1 ){
+            insertItem(0,takeItem(index.row()));
+            return;
+        }
+        addToRow = 1;
     }
-//    foreach (QModelIndex index, selectedIndx) {
-//        items.append(takeItem(index.row()));
-    //}
 
-        //    qDebug() << "insertAt:" << insertAt;
-        //    QListWidgetItem *itemToInsert;
-        //    QListIterator<QListWidgetItem*> itemsIter(items);
-        //    if (reverse){
-        //        itemsIter.toBack();
-        //        while (itemsIter.hasPrevious()){
-        //            itemToInsert = itemsIter.previous();
-        //            insertItem(insertAt, itemToInsert);
-        //            setItemSelected(itemToInsert, true);
-        //        }
-        //    } else {
-        //        while (itemsIter.hasNext()) {
-        //            itemToInsert = itemsIter.next();
-        //            insertItem(insertAt, itemToInsert);
-        //            setItemSelected(itemToInsert, true);
-        //        }
-        //    }
+    foreach (index, selectedIndx) {
+        insertItem(index.row() + addToRow, takeItem(index.row()));
+    }
+
 }
+/*!
+ \brief Check if the items should be moved.
+ Check if a object exists when yes check if it was either the moveUp or moveDown
+ action. Also return
 
+ \param[in] object Caller object
+ \param[out] list Pointer to the QModelIndexList where indexes should be stored.
+ \param[out] up Pointer to boolean where the move direction gets stored, true if the item(s) should be moved up otherwise false.
+ \return bool Return true if items should be moved otherwise false.
+*/
 bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *list,  bool *up)
 {
-    int inListWidget = count();
+
     if (object == NULL)
         return false;
 
+    /* Check if caller was the moveUp(Down) action */
     if (object->objectName().compare("UP") == 0)
         *up = true;
     else if (object->objectName().compare("DOWN") == 0)
@@ -199,10 +201,9 @@ bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *l
     else
         return false;
 
-    /* If all alle items are selected moveing them makes no sense also return if no item is selected at all*/
-    if( !( *list = selectedIndexes() ).count() || list->count() == inListWidget)
+    /* If all alle items are selected moveing them makes no sense? also return if no item is selected at all*/
+    if( !( *list = selectedIndexes() ).count() /*|| list->count() == *itemsInListWidget*/)
         return false;
-
 
     return true;
 }
@@ -248,13 +249,13 @@ void AnimationPlayListWidget::createActions()
 }
 
 /*!
- \brief
+ \brief Determine where the items should be droped.
 
- \param event
- \param dropRow
- \param dropCol
- \param dropIndex
- \return bool
+ \param event  Pointer to the QDropEvent.
+ \param dropRow Row the items should be droped.
+ \param dropCol Column the items should be droped.
+ \param dropIndex QModelIndex on which the items should be droped.
+ \return bool Return true if the items should be droped, otherwise false.
 */
 bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex)
 {
@@ -451,7 +452,7 @@ void AnimationPlayListWidget::dragEnterEvent(QDragEnterEvent *e)
 
 
 /*!
- \brief
+ \brief Get the next animationn which should be shown next.
 
  \return AnimationItem
 */
@@ -472,7 +473,7 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
 }
 
 /*!
- \brief
+ \brief Insert items at a given row.
 
  \param items
  \param row
@@ -487,10 +488,9 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
     Q_EMIT updateUi();
 }
 
-
 /*!
  \brief Sort the indexes after the row order.
-  A insertion algorithm is used for sorting the \a QModelIndex.
+  A insertion algorithm is used for sorting the \a QModelIndexList.
  \param ascending Sort the indexes ascending if true otherwise descending.
  \param list Pointer to \a QModelIndexList to sort.
 */
