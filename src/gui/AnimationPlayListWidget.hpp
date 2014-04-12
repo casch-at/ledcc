@@ -19,6 +19,7 @@
 
 #include <ListWidget.hpp>
 
+class AnimationOptions;
 /*!
  \brief Holds the animation to play
 
@@ -36,12 +37,14 @@ public:
     QAction *m_moveUpAction;
     QAction *m_removeAction;
     QAction *m_duplicateAction;
+    QAction *m_editAction;
 public Q_SLOTS:
     void clearList(void);
     void newItem(QList<QListWidgetItem *> item);
     void duplicateItems();
     void removeItems();
     void moveItemsUpDown();
+    void editItem();
     AnimationItem *getNextAnimation(void);
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
@@ -59,6 +62,8 @@ private:
     void sortIndexes(const bool ascending, QModelIndexList *list);
     int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
+    AnimationOptions *m_adjustOptionDialog;
+
 };
 
 #endif // ANIMATIONPLAYLISTWIDGET_HPP

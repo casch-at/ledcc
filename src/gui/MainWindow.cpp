@@ -86,11 +86,11 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     ui->splitter->setStretchFactor(1,2);
     ui->m_animationListLay->addWidget(m_animationList);
     ui->m_animationPlaylistLay->addWidget(m_animationPlaylist);
-    updateUi();
     m_animationList->setFocus();
 
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
+    Q_EMIT updateUi();
 }
 
 /**
@@ -181,6 +181,8 @@ void MainWindow::readSettings (void){ //Load geometry of application
  */
 void MainWindow::updateUi(void)
 {
+    int inPlayList = m_animationPlaylist->count();
+
     if(m_portOpened)
     {
         if(m_openPortAction->text() == "Open port")
@@ -189,15 +191,13 @@ void MainWindow::updateUi(void)
             m_openPortAction->setIcon( QIcon( "://images/disconnect.png"));
             m_openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
         }
-
-        if(m_animationPlaylist->count() && !m_animationPlaylist->m_stopAction->isEnabled()){
+        if( inPlayList && !m_animationPlaylist->m_stopAction->isEnabled()){
             m_animationPlaylist->m_playAction->setEnabled(true);
             m_animationPlaylist->m_stopAction->setDisabled(true);
         }
         else{
             m_animationPlaylist->m_playAction->setDisabled(true);
         }
-
     }else
     {
         if(m_openPortAction->text() == "Close port")
@@ -208,6 +208,22 @@ void MainWindow::updateUi(void)
         }
         m_animationPlaylist->m_playAction->setDisabled(true);
         m_animationPlaylist->m_stopAction->setDisabled(true);
+    }
+
+    if(inPlayList){
+        m_animationPlaylist->m_editAction->setEnabled(true);
+        m_animationPlaylist->m_clearAction->setEnabled(true);
+        m_animationPlaylist->m_removeAction->setEnabled(true);
+        m_animationPlaylist->m_moveDownAction->setEnabled(true);
+        m_animationPlaylist->m_moveUpAction->setEnabled(true);
+        m_animationPlaylist->m_duplicateAction->setEnabled(true);
+    } else {
+        m_animationPlaylist->m_editAction->setDisabled(true);
+        m_animationPlaylist->m_clearAction->setDisabled(true);
+        m_animationPlaylist->m_removeAction->setDisabled(true);
+        m_animationPlaylist->m_moveDownAction->setDisabled(true);
+        m_animationPlaylist->m_moveUpAction->setDisabled(true);
+        m_animationPlaylist->m_duplicateAction->setDisabled(true);
     }
 }
 
@@ -556,7 +572,7 @@ void MainWindow::connectSignals(void)
     connect( m_animationPlaylist->m_stopAction, &QAction::triggered , this , &MainWindow::stopThreads);
 
     // Animation properties ready connection
-//    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
+    //    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
 
     // ListWidget shortcut sellect all connections
     connect( m_focusAnimationList, &QShortcut::activated, m_animationList, &ListWidget::focus);
@@ -568,7 +584,7 @@ void MainWindow::connectSignals(void)
     connect( m_animationList , &AnimationListWidget::addToPlaylist , m_animationPlaylist , &AnimationPlayListWidget::newItem);
     connect( m_animationList , &ListWidget::showPropertiePreview , this , &MainWindow::showPropertiesPreview);
     connect( m_animationPlaylist, &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
-//    connect( m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
+    //    connect( m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
     connect( m_animationPlaylist, &ListWidget::showPropertiePreview, this, &MainWindow::showPropertiesPreview);
 }
 
@@ -618,18 +634,15 @@ void MainWindow::createToolbar()
     mainToolBar->setWindowTitle("Main Toolbar");
     this->addToolBar (mainToolBar);
 
-    animationToolBar = new QToolBar("Animation Toolbar");
-    animationToolBar->addAction(m_animationPlaylist->m_playAction);
-    animationToolBar->addAction(m_animationPlaylist->m_stopAction);
-    animationToolBar->addSeparator();
-    animationToolBar->addAction(m_animationPlaylist->m_moveUpAction);
-    animationToolBar->addAction(m_animationPlaylist->m_moveDownAction);
-    animationToolBar->addAction(m_animationPlaylist->m_duplicateAction);
-    animationToolBar->addSeparator();
-    animationToolBar->addAction(m_animationPlaylist->m_removeAction);
-    animationToolBar->addAction(m_animationPlaylist->m_clearAction);
-    animationToolBar->setIconSize(size);
-    this->addToolBar(animationToolBar);
+    QList<QAction*> actionList = m_animationPlaylist->actions();
+    if(!actionList.isEmpty()){
+        animationToolBar = new QToolBar("Animation Toolbar");
+        foreach (QAction *action, actionList) {
+            animationToolBar->addAction(action);
+        }
+        animationToolBar->setIconSize(size);
+        this->addToolBar(animationToolBar);
+    }
 
     helpToolBar = new QToolBar( );
     helpToolBar->setObjectName ("Help Toolbar");

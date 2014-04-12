@@ -20,12 +20,16 @@
 #include <QtWidgets/QDialog>
 #include "Global.hpp"
 #include "animations/Draw.hpp"
-//#include "AnimationItem.hpp"
+
 
 namespace Ui {
     class AnimationOptions;
     }
 
+class AnimationItem;
+/*!
+ \brief Dialog to adjust the animation properties
+*/
 class AnimationOptions : public QDialog
 {
     Q_OBJECT
@@ -66,14 +70,12 @@ public:
 Q_SIGNALS:
     void optionsReady(const Options &animationOptions);
 public Q_SLOTS:
-    void displayAnimationOptions(const Options *options);
+    void adjustAnimationOptions(QList<AnimationItem*> &items);
 protected:
     void changeEvent(QEvent *e);
 
-private Q_SLOTS:
-    void on_applyPushB_clicked();
-
 private:
+    bool m_animationOptionsModefied;
     Ui::AnimationOptions *ui;
     Options m_options;
     Q_DISABLE_COPY(AnimationOptions)

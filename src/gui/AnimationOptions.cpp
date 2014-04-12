@@ -18,13 +18,16 @@
 #include "ui_AnimationOptions.h"
 #include "alt_key.hpp"
 #include "aqp.hpp"
+#include "AnimationItem.hpp"
 
+// Qt Includes
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
 
 AnimationOptions::AnimationOptions(QWidget *parent) :
     QDialog(parent),
+    m_animationOptionsModefied(false),
     ui(new Ui::AnimationOptions)
 {
     ui->setupUi(this);
@@ -36,28 +39,29 @@ AnimationOptions::~AnimationOptions()
     delete ui;
 }
 
-void AnimationOptions::displayAnimationOptions(const Options *options)
+void AnimationOptions::adjustAnimationOptions(QList<AnimationItem*> &itemsList)
 {
-    if(options->axis == Draw::X_AXIS )
-        ui->axisComB->setCurrentIndex(0);
-    else if(options->axis == Draw::Y_AXIS )
-        ui->axisComB->setCurrentIndex(1);
-    else if(options->axis == Draw::Z_AXIS )
-        ui->axisComB->setCurrentIndex(2);
-    ui->delaySpinB->setValue(static_cast<int>(options->delay));
-    if( options->direction == Draw::BACKWARD )
-        ui->directionComB->setCurrentIndex(0);
-    else if(options->direction == Draw::FORWARD )
-        ui->directionComB->setCurrentIndex(1);
-    if(options->invert == true && options->state == Draw::ON){
-        ui->invertSpinB->setValue(1);
-    }else{
-        ui->invertSpinB->setValue(0);
-    }
-    ui->iterationsSpinB->setValue( static_cast<int>(options->iteration));
-    ui->ledsSpinB->setValue( static_cast<int>(options->leds));
-    ui->speedSpinB->setValue( static_cast<int>(options->speed));
-    ui->textLineE->setText(options->text.isEmpty() == true ? "" : options->text);
+//    if(options->axis == Draw::X_AXIS )
+//        ui->axisComB->setCurrentIndex(0);
+//    else if(options->axis == Draw::Y_AXIS )
+//        ui->axisComB->setCurrentIndex(1);
+//    else if(options->axis == Draw::Z_AXIS )
+//        ui->axisComB->setCurrentIndex(2);
+//    ui->delaySpinB->setValue(static_cast<int>(options->delay));
+//    if( options->direction == Draw::BACKWARD )
+//        ui->directionComB->setCurrentIndex(0);
+//    else if(options->direction == Draw::FORWARD )
+//        ui->directionComB->setCurrentIndex(1);
+//    if(options->invert == true && options->state == Draw::ON){
+//        ui->invertSpinB->setValue(1);
+//    }else{
+//        ui->invertSpinB->setValue(0);
+//    }
+//    ui->iterationsSpinB->setValue( static_cast<int>(options->iteration));
+//    ui->ledsSpinB->setValue( static_cast<int>(options->leds));
+//    ui->speedSpinB->setValue( static_cast<int>(options->speed));
+//    ui->textLineE->setText(options->text.isEmpty() == true ? "" : options->text);
+    show();
 }
 
 void AnimationOptions::changeEvent(QEvent *e)
@@ -75,33 +79,33 @@ void AnimationOptions::changeEvent(QEvent *e)
 
 
 
-void AnimationOptions::on_applyPushB_clicked()
-{
-    if(ui->axisComB->currentIndex() == 0)
-        m_options.axis = Draw::X_AXIS;
-    else if(ui->axisComB->currentIndex() == 1)
-        m_options.axis = Draw::Y_AXIS;
-    else if(ui->axisComB->currentIndex() == 2)
-        m_options.axis = Draw::Z_AXIS;
+//void AnimationOptions::on_applyPushB_clicked()
+//{
+//    if(ui->axisComB->currentIndex() == 0)
+//        m_options.axis = Draw::X_AXIS;
+//    else if(ui->axisComB->currentIndex() == 1)
+//        m_options.axis = Draw::Y_AXIS;
+//    else if(ui->axisComB->currentIndex() == 2)
+//        m_options.axis = Draw::Z_AXIS;
 
-    if(ui->directionComB->currentIndex() == 0)
-        m_options.direction = Draw::BACKWARD;
-    else if(ui->directionComB->currentIndex() == 1)
-        m_options.direction = Draw::FORWARD;
+//    if(ui->directionComB->currentIndex() == 0)
+//        m_options.direction = Draw::BACKWARD;
+//    else if(ui->directionComB->currentIndex() == 1)
+//        m_options.direction = Draw::FORWARD;
 
-    if(ui->invertSpinB->value()){
-        m_options.invert = true;
-        m_options.state = Draw::ON;
-    }else{
-        m_options.invert = false;
-        m_options.state = Draw::OFF;
-    }
+//    if(ui->invertSpinB->value()){
+//        m_options.invert = true;
+//        m_options.state = Draw::ON;
+//    }else{
+//        m_options.invert = false;
+//        m_options.state = Draw::OFF;
+//    }
 
-    m_options.delay = static_cast<u_int16_t>(ui->delaySpinB->value());
-    m_options.iteration = static_cast<u_int16_t>(ui->iterationsSpinB->value());
-    m_options.leds = static_cast<u_int16_t>(ui->ledsSpinB->value());
-    m_options.speed = static_cast<u_int16_t>(ui->speedSpinB->value());
-    m_options.text = ui->textLineE->text();
+//    m_options.delay = static_cast<u_int16_t>(ui->delaySpinB->value());
+//    m_options.iteration = static_cast<u_int16_t>(ui->iterationsSpinB->value());
+//    m_options.leds = static_cast<u_int16_t>(ui->ledsSpinB->value());
+//    m_options.speed = static_cast<u_int16_t>(ui->speedSpinB->value());
+//    m_options.text = ui->textLineE->text();
 
-    Q_EMIT optionsReady(m_options);
-}
+//    Q_EMIT optionsReady(m_options);
+//}

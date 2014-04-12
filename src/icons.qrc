@@ -18,5 +18,6 @@
         <file>images/move_task_up.png</file>
         <file>images/view-remove.png</file>
         <file>images/tab-duplicate-3.png</file>
+        <file>images/configuration-editor.png</file>
     </qresource>
 </RCC>

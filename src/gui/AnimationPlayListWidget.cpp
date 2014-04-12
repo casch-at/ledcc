@@ -13,6 +13,7 @@
  */
 
 #include "AnimationPlayListWidget.hpp"
+#include "AnimationOptions.hpp"
 
 // Third Party
 #include "aqp.hpp"
@@ -34,7 +35,8 @@
 */
 AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     ListWidget(parent),
-    m_lastPlayedAnimation(0)
+    m_lastPlayedAnimation(0),
+    m_adjustOptionDialog(new AnimationOptions(parent))
 {
     // QListWidget settings
     setDropIndicatorShown(true);
@@ -52,6 +54,8 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     connect( m_removeAction, &QAction::triggered, this, &AnimationPlayListWidget::removeItems);
     connect( m_moveUpAction, &QAction::triggered, this, &AnimationPlayListWidget::moveItemsUpDown);
     connect( m_moveDownAction, &QAction::triggered, this, &AnimationPlayListWidget::moveItemsUpDown);
+    connect( m_editAction, &QAction::triggered, this, &AnimationPlayListWidget::editItem);
+
 }
 
 /*!
@@ -120,14 +124,14 @@ void AnimationPlayListWidget::duplicateItems()
 */
 void AnimationPlayListWidget::removeItems()
 {
-    QList<QListWidgetItem *> items = selectedItems();
-    foreach (QListWidgetItem *item, items) {
+    foreach (QListWidgetItem *item, selectedItems()) {
         delete item;
     }
     if (!count()){
         m_clearAction->setDisabled(true);
         Q_EMIT updateUi();
     }
+    setCurrentRow(currentRow());
 
 }
 
@@ -227,17 +231,20 @@ void AnimationPlayListWidget::createActions()
     m_moveDownAction->setToolTip(tr("Move one or more animation(s) one position down."));
     m_moveDownAction->setStatusTip(tr("Move one or more animation(s) one position down."));
     m_moveDownAction->setObjectName("DOWN");
+    m_moveDownAction->setShortcut(tr("Ctrl+M"));
 
     m_moveUpAction = createAction(tr("Move Up"));
     m_moveUpAction->setToolTip(tr("Move one or more animation(s) one position up."));
     m_moveUpAction->setStatusTip(tr("Move one or more animation(s) one position up."));
     m_moveUpAction->setIcon(QIcon("://images/arrow-up.png"));
     m_moveUpAction->setObjectName("UP");
+    m_moveUpAction->setShortcut(tr("Ctrl+U"));
 
     m_duplicateAction = createAction(tr("Duplicate"));
     m_duplicateAction->setIcon(QIcon("://images/tab-duplicate-3.png"));
     m_duplicateAction->setToolTip(tr("Duplicate one or more animation"));
     m_duplicateAction->setStatusTip(tr("Duplicate one or more animation"));
+    m_duplicateAction->setShortcut(tr("Ctrl+D"));
 
     m_removeAction = createAction(tr("Remove"));
     m_removeAction->setIcon(QIcon("://images/view-remove.png"));
@@ -254,15 +261,16 @@ void AnimationPlayListWidget::createActions()
     m_stopAction->setShortcut(tr("P"));
     m_stopAction->setToolTip(tr("Stop Animation(s) P"));
 
+    m_editAction = createAction(tr("Edit"));
+    m_editAction->setIcon(QIcon("://images/configuration-editor.png"));
+    m_editAction->setToolTip(tr("Edit the animation properties"));
+    m_editAction->setShortcut(tr("Ctrl+E"));
 
     m_clearAction = createAction(tr("Clear List"), tr("Clear the Animation playlist\n(This can not be undone)"));
     m_clearAction->setIcon( QIcon( "://images/clear.png" ) );
     m_clearAction->setShortcut( QKeySequence::Refresh );
 
-    actions().first()->setShortcut(tr("Ctrl+E"));
-    if (!count())
-        m_clearAction->setDisabled(true);
-    addActions(QList<QAction *>() << m_playAction << m_stopAction << m_moveUpAction << m_moveDownAction << m_duplicateAction << m_removeAction << m_clearAction);
+    addActions(QList<QAction *>() << m_playAction << m_stopAction << m_editAction << m_moveUpAction << m_moveDownAction << m_duplicateAction << m_removeAction << m_clearAction);
     AQP::accelerateActions(actions());
 }
 
@@ -326,13 +334,7 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *e)
 {
     switch (e->key()) {
     case Qt::Key_Delete:
-        foreach(QListWidgetItem *i,selectedItems())
-            delete i;
-
-        if(count())
-            setCurrentRow(currentRow());
-
-        emit updateUi();
+        removeItems();
         break;
     case Qt::Key_Up:
         ListWidget::keyPressEvent(e);
@@ -504,6 +506,18 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
         setItemSelected(i,true);
     }
     Q_EMIT updateUi();
+}
+
+void AnimationPlayListWidget::editItem()
+{
+    QList<QListWidgetItem *> items = selectedItems();
+    if (!items.isEmpty()) {
+        AnimationItem *item = dynamic_cast<AnimationItem*>(selectedItems().first())->clone();
+
+
+        Q_EMIT updateUi();
+    }
+
 }
 
 /*!

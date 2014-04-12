@@ -35,13 +35,10 @@ ListWidget::ListWidget(QWidget *parent):
     // Timer setup for animation properties preview
     m_showPropertiesPreview->setSingleShot(true);
     m_showPropertiesPreview->setInterval(200);
-    createActions();
 
     connect( m_showPropertiesPreview, &QTimer::timeout, this, &ListWidget::on_showPropertiesPreviewTimerTimeout);
     connect( this, &QListWidget::customContextMenuRequested, this, &ListWidget::on_customContextMenuRequest);
     connect( this, &QListWidget::itemSelectionChanged, this, &ListWidget::on_itemSelectionChanged);
-    connect( this, &QListWidget::itemDoubleClicked, this, &ListWidget::on_itemDoubleClicked);
-    connect( m_editAction, &QAction::triggered, this, &ListWidget::editItem);
 
 }
 
@@ -116,13 +113,7 @@ void ListWidget::on_customContextMenuRequest(const QPoint &pos)
     menu.exec(viewport()->mapToGlobal(pos));
 }
 
-void ListWidget::createActions()
-{
-    m_editAction = createAction(tr("Edit"));
 
-    addActions(QList<QAction*>() <<  m_editAction );
-
-}
 
 QAction *ListWidget::createAction(const QString &text, const QString &tooltip)
 {
@@ -133,27 +124,6 @@ QAction *ListWidget::createAction(const QString &text, const QString &tooltip)
     return action;
 }
 
-/*!
- \brief Function gets called when item is double clicked and di
-
- \param item
-*/
-void ListWidget::on_itemDoubleClicked(QListWidgetItem *item)
-{
-    Q_EMIT displayAnimationOptions(dynamic_cast<AnimationItem*>(item)->getOptions());
-}
-
-void ListWidget::editItem()
-{
-    QList<QListWidgetItem *> items = selectedItems();
-    if (!items.isEmpty()) {
-        AnimationItem *item = dynamic_cast<AnimationItem*>(selectedItems().first());
-        Q_EMIT displayAnimationOptions(item->getOptions());
-
-        Q_EMIT updateUi();
-    }
-
-}
 
 void ListWidget::keyPressEvent(QKeyEvent *e)
 {
