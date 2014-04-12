@@ -28,8 +28,7 @@ public:
 
     virtual ~AnimationItem();
     virtual AnimationItem *clone() const;
-//    AnimationItem(const AnimationItem &other);
-//    ~AnimationItem();
+
     inline const AnimationOptions::Options * getOptions(void) const{
         return &m_options;
     }
@@ -38,9 +37,18 @@ public:
         m_options = options;
     }
 
+    inline const int *getAvailableAnimationOptions() const {
+        return &m_availableAnimationOptions;
+    }
+
+    inline void setAvailableAnimationOptions(const int &options){
+        if(m_availableAnimationOptions != options)
+            m_availableAnimationOptions = options;
+    }
+
 private:
 //    void initOptions(void);
-
+    int m_availableAnimationOptions;
     AnimationOptions::Options m_options ;
 
 };

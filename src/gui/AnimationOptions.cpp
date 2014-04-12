@@ -18,12 +18,13 @@
 #include "ui_AnimationOptions.h"
 #include "alt_key.hpp"
 #include "aqp.hpp"
+
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
 
 AnimationOptions::AnimationOptions(QWidget *parent) :
-    QGroupBox(parent),
+    QDialog(parent),
     ui(new Ui::AnimationOptions)
 {
     ui->setupUi(this);
@@ -34,12 +35,6 @@ AnimationOptions::~AnimationOptions()
 {
     delete ui;
 }
-
-AnimationOptions::Options *AnimationOptions::getAnimationSettings()
-{
-    return &m_options;
-}
-
 
 void AnimationOptions::displayAnimationOptions(const Options *options)
 {
@@ -67,7 +62,7 @@ void AnimationOptions::displayAnimationOptions(const Options *options)
 
 void AnimationOptions::changeEvent(QEvent *e)
 {
-    QGroupBox::changeEvent(e);
+    QDialog::changeEvent(e);
     switch (e->type())
     {
     case QEvent::LanguageChange:

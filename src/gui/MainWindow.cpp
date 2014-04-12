@@ -80,14 +80,14 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     readSettings ();
     createActions ();
     createToolbar ();
-    m_animationPlaylist->m_playAction->setDisabled(true);
-    m_animationPlaylist->m_stopAction->setDisabled(true);
     setupAnimationItems();
     connectSignals();
     ui->splitter->setStretchFactor(1,2);
     ui->m_animationListLay->addWidget(m_animationList);
     ui->m_animationPlaylistLay->addWidget(m_animationPlaylist);
+    updateUi();
     m_animationList->setFocus();
+
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
 }
@@ -189,10 +189,13 @@ void MainWindow::updateUi(void)
             m_openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
         }
 
-        if(m_animationPlaylist->count() && !m_animationPlaylist->m_stopAction->isEnabled())
+        if(m_animationPlaylist->count() && !m_animationPlaylist->m_stopAction->isEnabled()){
             m_animationPlaylist->m_playAction->setEnabled(true);
-        else
+            m_animationPlaylist->m_stopAction->setDisabled(true);
+        }
+        else{
             m_animationPlaylist->m_playAction->setDisabled(true);
+        }
 
     }else
     {
@@ -203,6 +206,7 @@ void MainWindow::updateUi(void)
             m_openPortAction->setToolTip(tr("Connect to seriell device  O"));
         }
         m_animationPlaylist->m_playAction->setDisabled(true);
+        m_animationPlaylist->m_stopAction->setDisabled(true);
     }
 }
 
@@ -482,12 +486,10 @@ void MainWindow::setupAnimationItems(void)
             options.iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
         }
         item->setOptions(options);
+
         iter.value()->createAnimationTooltipAsRichText(item);
-
         iter.value()->moveToThread(createThread); // move animations to own thread
-
         connect(iter.value(),&Animation::sendData,m_sender,&Sender::sendAnimation); // connect animation thread with sender thread
-
         iter.value()->m_abort = false;
         iter++;
     }
@@ -540,7 +542,7 @@ void MainWindow::connectSignals(void)
     connect( m_animationPlaylist->m_stopAction, &QAction::triggered , this , &MainWindow::stopThreads);
 
     // Animation properties ready connection
-    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
+//    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
 
     // ListWidget shortcut sellect all connections
     connect( m_focusAnimationList, &QShortcut::activated, m_animationList, &ListWidget::focus);
@@ -552,7 +554,7 @@ void MainWindow::connectSignals(void)
     connect( m_animationList , &AnimationListWidget::addToPlaylist , m_animationPlaylist , &AnimationPlayListWidget::newItem);
     connect( m_animationList , &ListWidget::showPropertiePreview , this , &MainWindow::showPropertiesPreview);
     connect( m_animationPlaylist, &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
-    connect( m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
+//    connect( m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
     connect( m_animationPlaylist, &ListWidget::showPropertiePreview, this, &MainWindow::showPropertiesPreview);
 }
 
@@ -591,18 +593,13 @@ void MainWindow::createToolbar()
 {
     QSize size(32,32);
 
-
     mainToolBar = new QToolBar();
-
     mainToolBar->setObjectName ("Main Toolbar");
     mainToolBar->addAction(m_quitAction);
     mainToolBar->addSeparator();
-
     mainToolBar->addAction(m_openPortAction);
     mainToolBar->addSeparator();
-
     mainToolBar->addAction(m_settingAction);
-
     mainToolBar->setIconSize (size);
     mainToolBar->setWindowTitle("Main Toolbar");
     this->addToolBar (mainToolBar);
@@ -627,7 +624,6 @@ void MainWindow::createToolbar()
     helpToolBar->setIconSize (size);
     helpToolBar->setWindowTitle("Help Toolbar");
     this->addToolBar (Qt::TopToolBarArea,helpToolBar);
-    this->helpToolBar->setObjectName ("Hello");
 }
 
 /**

@@ -14,7 +14,7 @@
    <string>3D-LED Cube </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="1,0">
+   <layout class="QGridLayout" name="gridLayout" rowstretch="1">
     <item row="0" column="0">
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -56,19 +56,6 @@
       </widget>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="AnimationOptions" name="animationAdjustGB">
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="title">
-       <string>Animation configuration options</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -99,12 +86,6 @@
   </widget>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>AnimationOptions</class>
-   <extends>QGroupBox</extends>
-   <header>AnimationOptions.hpp</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>AnimationPropertiesPreview</class>
    <extends>QDockWidget</extends>

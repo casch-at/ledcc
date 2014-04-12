@@ -17,7 +17,7 @@
 #ifndef ANIMATIONOPTIONS_HPP
 #define ANIMATIONOPTIONS_HPP
 
-#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QDialog>
 #include "Global.hpp"
 #include "animations/Draw.hpp"
 //#include "AnimationItem.hpp"
@@ -26,7 +26,7 @@ namespace Ui {
     class AnimationOptions;
     }
 
-class AnimationOptions : public QGroupBox
+class AnimationOptions : public QDialog
 {
     Q_OBJECT
 
@@ -43,9 +43,24 @@ public:
         Draw::BixelState state;
     };
 
+   /*! All possibly animation arguments */
+   typedef enum class {
+       Speed = (1 << 0),
+       Direction = (1 << 1),
+       Axis = (1 << 2),
+       Leds = (1 << 3),
+       Delay = (1 << 4),
+       Iterations = (1 << 5),
+       Invert = (1 << 6),
+       CenterStart = (1 << 7),
+       Text = (1 << 8),
+       }Arguments;
+
     explicit AnimationOptions(QWidget *parent = 0);
     ~AnimationOptions();
-    Options *getAnimationSettings(void);
+
+    inline const Options *getAnimationSettings(void){ return &m_options;  }
+
 Q_SIGNALS:
     void optionsReady(const Options &animationOptions);
 public Q_SLOTS:

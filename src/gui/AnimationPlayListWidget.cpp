@@ -247,15 +247,15 @@ void AnimationPlayListWidget::createActions()
     m_playAction = createAction(tr("Play"));
     m_playAction->setIcon(QIcon("://images/media-playback-start-9.png"));
     m_playAction->setShortcut(tr("R"));
-    m_playAction->setToolTip(tr("Play Animation R"));
+    m_playAction->setToolTip(tr("Play Animation(s) R"));
 
     m_stopAction = createAction(tr("Stop"));
     m_stopAction->setIcon(QIcon("://images/media-playback-pause-7.png"));
     m_stopAction->setShortcut(tr("P"));
-    m_stopAction->setToolTip(tr("Pause Animations P"));
+    m_stopAction->setToolTip(tr("Stop Animation(s) P"));
 
 
-    m_clearAction = createAction(tr("Clear List"), tr("This can not be undone!"));
+    m_clearAction = createAction(tr("Clear List"), tr("Clear the Animation playlist\n(This can not be undone)"));
     m_clearAction->setIcon( QIcon( "://images/clear.png" ) );
     m_clearAction->setShortcut( QKeySequence::Refresh );
 
@@ -539,9 +539,4 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
             list->replace(i + 1, index);
         }
     }
-}
-
-void AnimationPlayListWidget::updateActions()
-{
-
 }
