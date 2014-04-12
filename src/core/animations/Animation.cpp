@@ -64,7 +64,7 @@ void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z)
  * @param position
  * @param axe
  */
-void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8_t> &position, Axis axis)
+void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8_t> &position, Draw::Axis axis)
 {
     for (u_int8_t px = 0; px < CUBE_ARRAY_SIZE; px++)
     {

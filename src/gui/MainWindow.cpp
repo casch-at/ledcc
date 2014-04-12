@@ -601,18 +601,24 @@ void MainWindow::createToolbar()
     mainToolBar->addAction(m_openPortAction);
     mainToolBar->addSeparator();
 
-    mainToolBar->addAction(m_animationPlaylist->m_playAction);
-    mainToolBar->addAction(m_animationPlaylist->m_stopAction);
-    mainToolBar->addSeparator();
-
-    mainToolBar->addAction(m_animationPlaylist->m_clearAction);
-    mainToolBar->addSeparator ();
-
     mainToolBar->addAction(m_settingAction);
 
     mainToolBar->setIconSize (size);
     mainToolBar->setWindowTitle("Main Toolbar");
     this->addToolBar (mainToolBar);
+
+    animationToolBar = new QToolBar("Animation Toolbar");
+    animationToolBar->addAction(m_animationPlaylist->m_playAction);
+    animationToolBar->addAction(m_animationPlaylist->m_stopAction);
+    animationToolBar->addSeparator();
+    animationToolBar->addAction(m_animationPlaylist->m_moveUpAction);
+    animationToolBar->addAction(m_animationPlaylist->m_moveDownAction);
+    animationToolBar->addAction(m_animationPlaylist->m_duplicateAction);
+    animationToolBar->addSeparator();
+    animationToolBar->addAction(m_animationPlaylist->m_removeAction);
+    animationToolBar->addAction(m_animationPlaylist->m_clearAction);
+    animationToolBar->setIconSize(size);
+    this->addToolBar(animationToolBar);
 
     helpToolBar = new QToolBar( );
     helpToolBar->setObjectName ("Help Toolbar");

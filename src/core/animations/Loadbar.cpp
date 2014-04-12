@@ -16,7 +16,7 @@
  */
 #include "Loadbar.hpp"
 
-Loadbar::Loadbar(const u_int16_t &speed, const Axis &axis, const QString &name, const Direction &direction, QObject *parent):
+Loadbar::Loadbar(const u_int16_t &speed, const Draw::Axis &axis, const QString &name, const Draw::Direction &direction, QObject *parent):
     Animation(speed,name,parent),
     m_axis(axis),
     m_direction(direction)

@@ -89,6 +89,7 @@ private:
     SettingsDialog::SerialSettings m_port;
     QToolBar *helpToolBar;
     QToolBar *mainToolBar;
+    QToolBar *animationToolBar;
     QAction *m_quitAction;
     QAction *m_aboutAction;
     QAction *m_settingAction;

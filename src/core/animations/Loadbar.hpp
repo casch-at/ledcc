@@ -22,17 +22,17 @@
 class Loadbar : public Animation
 {
     Q_OBJECT
-    Q_PROPERTY(Axis axis READ getAxis WRITE setAxis)
-    Q_PROPERTY(Direction direction READ getDirection WRITE setDirection)
+    Q_PROPERTY(Draw::Axis axis READ getAxis WRITE setAxis)
+    Q_PROPERTY(Draw::Direction direction READ getDirection WRITE setDirection)
 public:
-    explicit Loadbar(const u_int16_t &speed = 50, const Axis &axis = X_AXIS,
-                     const QString &name = "Loadbar", const Direction &direction = FORWARD, QObject *parent = 0);
-    Axis getAxis() const
+    explicit Loadbar(const u_int16_t &speed = 50, const Draw::Axis &axis = X_AXIS,
+                     const QString &name = "Loadbar", const Draw::Direction &direction = FORWARD, QObject *parent = 0);
+    Draw::Axis getAxis() const
     {
         return m_axis;
     }
 
-    Direction getDirection() const
+    Draw::Direction getDirection() const
     {
         return m_direction;
     }
@@ -41,13 +41,13 @@ public Q_SLOTS:
     virtual void createAnimation();
     virtual void createAnimationTooltipAsRichText(AnimationItem *item);
     virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-    void setAxis(const Axis axis)
+    void setAxis(const Draw::Axis axis)
     {
         if(m_axis != axis)
             m_axis = axis;
     }
 
-    void setDirection(const Direction direction)
+    void setDirection(const Draw::Direction direction)
     {
         if(m_direction != direction)
             m_direction = direction;
@@ -55,8 +55,8 @@ public Q_SLOTS:
 
 private:
 
-    Axis m_axis;
-    Direction m_direction;
+    Draw::Axis m_axis;
+    Draw::Direction m_direction;
 };
 
 #endif // LOADBAR_HPP

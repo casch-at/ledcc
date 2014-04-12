@@ -20,7 +20,7 @@
 #include "ListWidget.hpp"
 #include "AnimationItem.hpp"
 /**
- * @brief Class AnimationListWidget handles all available animation
+ * @brief Handles all available animations
  *
  *
  */

@@ -30,7 +30,19 @@ class Animation : public Draw
 public:
     explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR);
 
-   QString getName(void) const{
+    typedef enum class{
+        Speed = 0,
+        Direction,
+        Axis,
+        Leds,
+        Delay,
+        Iterations,
+        Invert,
+        CenterStart,
+        Text,
+        }Options;
+
+    QString getName(void) const{
         return m_name;
     }
     void setSpeed(const u_int16_t &speed)
@@ -46,9 +58,11 @@ public:
 
     void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z);
     void effectZUpDownMove(QVector<u_int8_t> &destination,
-            QVector<u_int8_t> &position, Axis axis);
+                           QVector<u_int8_t> &position, Draw::Axis axis);
 
     void waitMs(const u_int16_t &time);
+
+
     bool m_abort;
     void setItemToolTipNameSpeed(QString *itemToolTip, AnimationItem *item);
 Q_SIGNALS:

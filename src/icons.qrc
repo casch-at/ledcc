@@ -12,5 +12,11 @@
         <file>images/media-playback-start-9.png</file>
         <file>images/media-playback-pause-7.png</file>
         <file>images/dialog-error.png</file>
+        <file>images/arrow-down.png</file>
+        <file>images/arrow-up.png</file>
+        <file>images/move_task_down.png</file>
+        <file>images/move_task_up.png</file>
+        <file>images/view-remove.png</file>
+        <file>images/tab-duplicate-3.png</file>
     </qresource>
 </RCC>

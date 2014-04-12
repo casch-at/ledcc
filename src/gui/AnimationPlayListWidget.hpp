@@ -19,8 +19,10 @@
 
 #include <ListWidget.hpp>
 
+/*!
+ \brief Holds the animation to play
 
-
+*/
 class AnimationPlayListWidget : public ListWidget
 {
     Q_OBJECT
@@ -30,6 +32,10 @@ public:
     QAction *m_playAction;
     QAction *m_stopAction;
     QAction *m_clearAction;
+    QAction *m_moveDownAction;
+    QAction *m_moveUpAction;
+    QAction *m_removeAction;
+    QAction *m_duplicateAction;
 public Q_SLOTS:
     void clearList(void);
     void newItem(QList<QListWidgetItem *> item);
@@ -47,20 +53,13 @@ protected:
     virtual void dragEnterEvent(QDragEnterEvent *e);
 private:
     bool moveItem(const QObject *object, QModelIndexList *list, bool *up);
-//    void sortIndexes(const bool up, QModelIndexList *list);
     void createActions();
-    int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */
-    int m_mousePressRow;
     bool dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex);
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
-
     void sortIndexes(const bool ascending, QModelIndexList *list);
-
-//    template<typename
-    QAction *m_moveDownAction;
-    QAction *m_moveUpAction;
-    QAction *m_removeAction;
-    QAction *m_duplicateAction;
+    void updateActions();
+    int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */
+    int m_mousePressRow;
 };
 
 #endif // ANIMATIONPLAYLISTWIDGET_HPP

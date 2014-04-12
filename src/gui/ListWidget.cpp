@@ -111,8 +111,6 @@ void ListWidget::on_showPropertiesPreviewTimerTimeout()
 
 void ListWidget::on_customContextMenuRequest(const QPoint &pos)
 {
-    QModelIndex index = indexAt(pos);
-
     QMenu menu(this);
     menu.addActions(actions());
     menu.exec(viewport()->mapToGlobal(pos));

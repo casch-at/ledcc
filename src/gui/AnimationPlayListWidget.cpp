@@ -83,7 +83,7 @@ void AnimationPlayListWidget::clearList()
 
 
 /*!
- \brief Insert new items
+ \brief Insert new item(s)
 
  Function insert one or more new QListWidgetItems into the QListWidget
 
@@ -150,13 +150,16 @@ void AnimationPlayListWidget::moveItemsUpDown()
     sortIndexes(up,&selectedIndx);
 
     QModelIndex index = selectedIndx.first();
+    QListWidgetItem *animation;
     /*
      * If items should be moved up and the top most is selected too insert
      * the item from row zero at the bottom and return, all other get moved anyway.
      */
     if (up){
         if ( index.row() == 0 ){
-            insertItem(inListWidget - 1,takeItem(index.row()));
+            animation = takeItem(index.row());
+            insertItem(inListWidget - 1, animation);
+            setItemSelected(animation, true);
             return;
         }
         addToRow = -1;
@@ -166,14 +169,18 @@ void AnimationPlayListWidget::moveItemsUpDown()
      * the item from the last row at the top and return, all other get moved anyway.
      */
         if ( index.row() == inListWidget - 1 ){
-            insertItem(0,takeItem(index.row()));
+            animation = takeItem(index.row());
+            insertItem(0, animation);
+            setItemSelected(animation, true);
             return;
         }
         addToRow = 1;
     }
 
     foreach (index, selectedIndx) {
-        insertItem(index.row() + addToRow, takeItem(index.row()));
+        animation = takeItem(index.row());
+        insertItem(index.row() + addToRow, animation);
+        setItemSelected(animation, true);
     }
 
 }
@@ -208,6 +215,7 @@ bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *l
     return true;
 }
 
+//TODO::Add icons to the rest and assigne a shortcut
 /*!
  \brief
 
@@ -215,14 +223,24 @@ bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *l
 void AnimationPlayListWidget::createActions()
 {
     m_moveDownAction = createAction(tr("Move Down"));
+    m_moveDownAction->setIcon(QIcon("://images/arrow-down.png"));
+    m_moveDownAction->setToolTip(tr("Move one or more animation(s) one position down."));
+    m_moveDownAction->setStatusTip(tr("Move one or more animation(s) one position down."));
     m_moveDownAction->setObjectName("DOWN");
 
     m_moveUpAction = createAction(tr("Move Up"));
+    m_moveUpAction->setToolTip(tr("Move one or more animation(s) one position up."));
+    m_moveUpAction->setStatusTip(tr("Move one or more animation(s) one position up."));
+    m_moveUpAction->setIcon(QIcon("://images/arrow-up.png"));
     m_moveUpAction->setObjectName("UP");
 
     m_duplicateAction = createAction(tr("Duplicate"));
+    m_duplicateAction->setIcon(QIcon("://images/tab-duplicate-3.png"));
+    m_duplicateAction->setToolTip(tr("Duplicate one or more animation"));
+    m_duplicateAction->setStatusTip(tr("Duplicate one or more animation"));
 
     m_removeAction = createAction(tr("Remove"));
+    m_removeAction->setIcon(QIcon("://images/view-remove.png"));
     m_removeAction->setToolTip(tr("Remove one or more selected Animation(s)"));
     m_removeAction->setStatusTip(tr("Remove one or more selected Animation(s)"));
 
@@ -521,4 +539,9 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
             list->replace(i + 1, index);
         }
     }
+}
+
+void AnimationPlayListWidget::updateActions()
+{
+
 }
