@@ -19,5 +19,7 @@
         <file>images/view-remove.png</file>
         <file>images/tab-duplicate-3.png</file>
         <file>images/configuration-editor.png</file>
+        <file>images/arrow-left.png</file>
+        <file>images/arrow-right.png</file>
     </qresource>
 </RCC>

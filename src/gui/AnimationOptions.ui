@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>423</width>
-    <height>427</height>
+    <height>454</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,12 +27,20 @@
        <property name="text">
         <string>Back</string>
        </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/images/arrow-left.png</normaloff>:/images/arrow-left.png</iconset>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="m_nextPB">
        <property name="text">
         <string>Next</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../icons.qrc">
+         <normaloff>:/images/arrow-right.png</normaloff>:/images/arrow-right.png</iconset>
        </property>
       </widget>
      </item>
@@ -94,12 +102,18 @@
           <property name="text">
            <string>Speed</string>
           </property>
+          <property name="buddy">
+           <cstring>m_speedSpinB</cstring>
+          </property>
          </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="m_directionLabel">
           <property name="text">
            <string>Direction</string>
+          </property>
+          <property name="buddy">
+           <cstring>m_directionComB</cstring>
           </property>
          </widget>
         </item>
@@ -161,12 +175,18 @@
           <property name="text">
            <string>LEDs</string>
           </property>
+          <property name="buddy">
+           <cstring>m_ledsSpinB</cstring>
+          </property>
          </widget>
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="m_axisLabel">
           <property name="text">
            <string>Axis</string>
+          </property>
+          <property name="buddy">
+           <cstring>m_axisComB</cstring>
           </property>
          </widget>
         </item>
@@ -220,6 +240,9 @@
           <property name="text">
            <string>Delay</string>
           </property>
+          <property name="buddy">
+           <cstring>m_delaySpinB</cstring>
+          </property>
          </widget>
         </item>
         <item row="2" column="0">
@@ -227,12 +250,18 @@
           <property name="text">
            <string>Text</string>
           </property>
+          <property name="buddy">
+           <cstring>m_textLineE</cstring>
+          </property>
          </widget>
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="m_iterationsLabel">
           <property name="text">
            <string>Iterations</string>
+          </property>
+          <property name="buddy">
+           <cstring>m_iterationsSpinB</cstring>
           </property>
          </widget>
         </item>
@@ -253,6 +282,9 @@
          <widget class="QLabel" name="m_particlesLabel">
           <property name="text">
            <string>Particles</string>
+          </property>
+          <property name="buddy">
+           <cstring>m_particlesSpinB</cstring>
           </property>
          </widget>
         </item>
@@ -378,6 +410,25 @@
    <layout class="QVBoxLayout" name="verticalLayout"/>
   </widget>
  </widget>
- <resources/>
+ <tabstops>
+  <tabstop>m_speedSpinB</tabstop>
+  <tabstop>m_delaySpinB</tabstop>
+  <tabstop>m_textLineE</tabstop>
+  <tabstop>m_directionComB</tabstop>
+  <tabstop>m_iterationsSpinB</tabstop>
+  <tabstop>m_axisComB</tabstop>
+  <tabstop>m_ledsSpinB</tabstop>
+  <tabstop>m_particlesSpinB</tabstop>
+  <tabstop>invertCheckB_2</tabstop>
+  <tabstop>invertCheckB</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>m_nextPB</tabstop>
+  <tabstop>m_backPB</tabstop>
+  <tabstop>m_okPB</tabstop>
+  <tabstop>m_cancelPB</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

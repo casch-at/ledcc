@@ -511,13 +511,19 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
 void AnimationPlayListWidget::editItem()
 {
     QList<QListWidgetItem *> items = selectedItems();
+    QList<AnimationItem*> itemList;
     if (!items.isEmpty()) {
-        AnimationItem *item = dynamic_cast<AnimationItem*>(selectedItems().first())->clone();
-
-
-        Q_EMIT updateUi();
+        foreach (QListWidgetItem *i, items) {
+            itemList.append(dynamic_cast<AnimationItem*>(i)->clone());
+        }
+    } else {
+        QList<AnimationItem*> itemList;
+        for (int i = 0; i < count(); ++i) {
+            itemList.append(dynamic_cast<AnimationItem*>(item(i))->clone());
+        }
     }
-
+    m_adjustOptionDialog->adjustAnimationOptions(itemList);
+//    Q_EMIT updateUi();
 }
 
 /*!
