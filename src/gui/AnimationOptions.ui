@@ -18,6 +18,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_7">
    <item>
+    <widget class="QWidget" name="widget" native="true"/>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="m_backPB">
@@ -93,43 +96,10 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="m_speedSpinB">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>10000</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="m_delayLabel">
+        <item row="3" column="0">
+         <widget class="QLabel" name="m_directionLabel">
           <property name="text">
-           <string>Delay</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QSpinBox" name="m_delaySpinB">
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>10000</number>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="m_textLabel">
-          <property name="text">
-           <string>Text</string>
+           <string>Direction</string>
           </property>
          </widget>
         </item>
@@ -143,17 +113,10 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="m_directionLabel">
-          <property name="text">
-           <string>Direction</string>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="1">
          <widget class="QComboBox" name="m_directionComB">
           <property name="currentIndex">
-           <number>-1</number>
+           <number>0</number>
           </property>
           <item>
            <property name="text">
@@ -167,15 +130,8 @@
           </item>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="m_iterationsLabel">
-          <property name="text">
-           <string>Iterations</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QSpinBox" name="m_iterationsSpinB">
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="m_speedSpinB">
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -187,10 +143,43 @@
           </property>
          </widget>
         </item>
+        <item row="6" column="1">
+         <widget class="QSpinBox" name="m_ledsSpinB">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>512</number>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="m_ledsLabel">
+          <property name="text">
+           <string>LEDs</string>
+          </property>
+         </widget>
+        </item>
         <item row="5" column="0">
          <widget class="QLabel" name="m_axisLabel">
           <property name="text">
            <string>Axis</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="m_delaySpinB">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>10000</number>
           </property>
          </widget>
         </item>
@@ -213,15 +202,45 @@
           </item>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="m_ledsLabel">
-          <property name="text">
-           <string>LEDs</string>
+        <item row="4" column="1">
+         <widget class="QSpinBox" name="m_iterationsSpinB">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>10000</number>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
-         <widget class="QSpinBox" name="m_ledsSpinB">
+        <item row="1" column="0">
+         <widget class="QLabel" name="m_delayLabel">
+          <property name="text">
+           <string>Delay</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="m_textLabel">
+          <property name="text">
+           <string>Text</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="m_iterationsLabel">
+          <property name="text">
+           <string>Iterations</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QSpinBox" name="m_particlesSpinB">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
           <property name="minimum">
            <number>1</number>
           </property>
@@ -230,7 +249,21 @@
           </property>
          </widget>
         </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="m_particlesLabel">
+          <property name="text">
+           <string>Particles</string>
+          </property>
+         </widget>
+        </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="invertCheckB_2">
+        <property name="text">
+         <string>Start with LEDs turned on</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QCheckBox" name="invertCheckB">

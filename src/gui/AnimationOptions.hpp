@@ -44,16 +44,18 @@ public:
     };
 
    /*! All possibly animation arguments */
-   typedef enum class {
-       Speed = (1 << 0),
-       Direction = (1 << 1),
-       Axis = (1 << 2),
-       Leds = (1 << 3),
-       Delay = (1 << 4),
-       Iterations = (1 << 5),
-       Invert = (1 << 6),
-       CenterStart = (1 << 7),
-       Text = (1 << 8),
+   typedef enum {
+       Speed       = (1 << 0),
+       Direction   = (1 << 1),
+       Axis        = (1 << 2),
+       Leds        = (1 << 3),
+       Particls    = (1 << 4),
+       Delay       = (1 << 5),
+       Iterations  = (1 << 6),
+       Invert      = (1 << 7),
+       CenterStart = (1 << 8),
+       Text        = (1 << 9),
+       LedState    = (1 << 10)
        }Arguments;
 
     explicit AnimationOptions(QWidget *parent = 0);

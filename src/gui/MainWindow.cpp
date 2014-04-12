@@ -41,6 +41,7 @@
 #include "PortMessageBox.hpp"
 #include "AnimationListWidget.hpp"
 #include "AnimationPlayListWidget.hpp"
+#include "AnimationOptions.hpp"
 
 // Qt includes
 #include <QMessageBox>
@@ -454,36 +455,49 @@ void MainWindow::setupAnimationItems(void)
         if(iter.key().compare(ANIMATIONS::AxisNailWall) == 0){
             options.axis =  dynamic_cast<AxisNailWall*>(iter.value())->getAxis();
             options.invert = dynamic_cast<AxisNailWall*>(iter.value())->getInvert();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Invert );
         }else if(iter.key().compare(ANIMATIONS::Firework) == 0){
             options.iteration = dynamic_cast<Firework*>(iter.value())->getIterations();
             options.leds = dynamic_cast<Firework*>(iter.value())->getParticles();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Particls );
         }else if(iter.key().compare(ANIMATIONS::Lift) == 0){
             options.iteration = dynamic_cast<Lift*>(iter.value())->getIterations();
             options.delay = dynamic_cast<Lift*>(iter.value())->getDelay();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Delay );
         }else if(iter.key().compare(ANIMATIONS::Loadbar) == 0){
             options.axis = dynamic_cast<Loadbar*>(iter.value())->getAxis();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis );
         }else if(iter.key().compare(ANIMATIONS::Rain) == 0){
             options.iteration = dynamic_cast<Rain*>(iter.value())->getIterations();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
         }else if(iter.key().compare(ANIMATIONS::RandomFiller) == 0){
             options.invert = dynamic_cast<RandomFiller*>(iter.value())->getState() == Draw::ON ? true : false;
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::LedState );
         }else if(iter.key().compare(ANIMATIONS::RandomSpark) == 0){
             options.iteration = dynamic_cast<RandomSpark*>(iter.value())->getIterations();
             options.leds = dynamic_cast<RandomSpark*>(iter.value())->getSparks();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Leds );
         }else if(iter.key().compare(ANIMATIONS::RandomSparkFlash) == 0){
             options.iteration = dynamic_cast<RandomSparkFlash*>(iter.value())->getIterations();
             options.leds = dynamic_cast<RandomSparkFlash*>(iter.value())->getLeds();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Leds );
         }else if(iter.key().compare(ANIMATIONS::RandomZLift) == 0){
             options.iteration = dynamic_cast<RandomZLift*>(iter.value())->getIterations();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
         }else if(iter.key().compare(ANIMATIONS::StringFly) == 0){
             options.text = dynamic_cast<StringFly*>(iter.value())->getSToDisplay();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Text );
         }else if(iter.key().compare(ANIMATIONS::Wall) == 0){
             options.axis = dynamic_cast<Wall*>(iter.value())->getAxis();
             options.direction = dynamic_cast<Wall*>(iter.value())->getDirection();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Direction );
         }else if(iter.key().compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
             options.iteration = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getIterations();
             options.invert = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::CenterStart );
         }else if(iter.key().compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
             options.iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
         }
         item->setOptions(options);
 

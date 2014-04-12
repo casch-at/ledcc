@@ -24,7 +24,7 @@
 # Minimum required cmake tool
 cmake_minimum_required(VERSION 2.8.10 FATAL_ERROR)
 # Executable name
-project(ledControl C CXX)
+project(ledcc C CXX)
 # Variable for program name!
 set(PROGNAME  ${PROJECT_NAME})
 
