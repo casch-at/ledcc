@@ -173,7 +173,7 @@ void AnimationOptions::optionsNextAnimation()
 
     animation = m_itemList.at(m_animationAt);
 
-    ui->groupBox->setTitle("Properties of " + animation->text());
+    ui->m_propertiesGB->setTitle("Properties of " + animation->text());
     hideShowWidgetsDisplayOptions(animation->getAvailableAnimationOptions(), animation->getOptions());
 }
 
@@ -191,7 +191,7 @@ void AnimationOptions::optionsPrevAnimation()
         m_animationAt--;
     animation = m_itemList.at(m_animationAt);
 
-    ui->groupBox->setTitle("Properties of " + animation->text());
+    ui->m_propertiesGB->setTitle("Properties of " + animation->text());
     hideShowWidgetsDisplayOptions(animation->getAvailableAnimationOptions(), animation->getOptions());
 }
 
@@ -272,7 +272,6 @@ void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const
             ui->m_ledStateCheckB->setChecked(options->state == Draw::ON ? true : false);
             break;
         default:
-            qDebug("Default Default 1");
             switch ((1<<i))
             {
             case Speed:
@@ -329,12 +328,12 @@ void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const
     }
 
     resize(350,0);
-    ui->groupBox->resize(0,0);
+    ui->m_propertiesGB->resize(0,0);
 
     updateGeometry();
     update();
-    ui->groupBox->repaint();
-    ui->groupBox->updateGeometry();
+    ui->m_propertiesGB->repaint();
+    ui->m_propertiesGB->updateGeometry();
     Q_EMIT updateUi();
 }
 
