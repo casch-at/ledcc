@@ -168,7 +168,7 @@ void AnimationPlayListWidget::moveItemsUpDown()
         }
         addToRow = -1;
     } else {
-     /*
+        /*
      * If items should be moved down and the bottom most is selected too insert the
      * the item from the last row at the top and return, all other get moved anyway.
      */
@@ -191,7 +191,7 @@ void AnimationPlayListWidget::moveItemsUpDown()
 /*!
  \brief Check if the items should be moved.
  Check if a object exists when yes check if it was either the moveUp or moveDown
- action. Also return
+ action.
 
  \param[in] object Caller object
  \param[out] list Pointer to the QModelIndexList where indexes should be stored.
@@ -219,9 +219,8 @@ bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *l
     return true;
 }
 
-//TODO::Add icons to the rest and assigne a shortcut
 /*!
- \brief
+ \brief Create the available actions for the animationPlayListWidget
 
 */
 void AnimationPlayListWidget::createActions()
@@ -512,18 +511,16 @@ void AnimationPlayListWidget::editItem()
 {
     QList<QListWidgetItem *> items = selectedItems();
     QList<AnimationItem*> itemList;
-    if (!items.isEmpty()) {
-        foreach (QListWidgetItem *i, items) {
+
+    if (!items.isEmpty())
+        foreach (QListWidgetItem *i, items)
             itemList.append(dynamic_cast<AnimationItem*>(i)->clone());
-        }
-    } else {
-        QList<AnimationItem*> itemList;
-        for (int i = 0; i < count(); ++i) {
+    else
+        for (int i = 0; i < count(); ++i)
             itemList.append(dynamic_cast<AnimationItem*>(item(i))->clone());
-        }
-    }
+
     m_adjustOptionDialog->adjustAnimationOptions(itemList);
-//    Q_EMIT updateUi();
+    //    Q_EMIT updateUi();
 }
 
 /*!

@@ -27,11 +27,22 @@
 
 AnimationOptions::AnimationOptions(QWidget *parent) :
     QDialog(parent),
+    ui(new Ui::AnimationOptions),
     m_animationOptionsModefied(false),
-    ui(new Ui::AnimationOptions)
+    m_animationAt(0)
 {
+    // Setup the user interface
     ui->setupUi(this);
+
+    // Create connections ( Signal & Slot )
+    connect(ui->m_nextPB, &QAction::triggered, this, &AnimationOptions::optionsNextAnimation);
+    connect(ui->m_prevPB, &QAction::triggered, this, &AnimationOptions::optionsPrevAnimation);
+    connect(ui->m_applyPB, &QAction::triggered, this, &AnimationOptions::applyAnimationOptions);
+    connect(ui->m_cancelPB, &QAction::triggered, this, &AnimationOptions::cancel);
+    connect(ui->m_okPB, &QAction::triggered, this, &AnimationOptions::ok);
     AQP::accelerateWidget(this);
+
+
 }
 
 AnimationOptions::~AnimationOptions()
@@ -39,8 +50,57 @@ AnimationOptions::~AnimationOptions()
     delete ui;
 }
 
+/*!
+ \brief Slot gets called when the user has pressed the edit button from \a AnimationPlayListWidget.
+ The first animation options are displayed, and the window will be shown, all other animation options
+ will be inserted either in \a optionsNextAnimation or \a optionsPrevAnimation slot function.
+
+ \param itemsList
+*/
 void AnimationOptions::adjustAnimationOptions(QList<AnimationItem*> &itemsList)
 {
+    if(itemsList.isEmpty())
+       return;
+    m_itemList = itemsList;
+    optionsNextAnimation();
+
+    show();
+}
+
+
+/*!
+ \brief Gets called if the ui changes (e.g. the language)
+
+ \param e
+*/
+void AnimationOptions::changeEvent(QEvent *e)
+{
+    QDialog::changeEvent(e);
+    switch (e->type())
+    {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}
+
+void AnimationOptions::onApplyPressed()
+{
+    if(m_animationOptionsModefied)
+        Q_EMIT applyNewAnimationArguments();
+}
+
+void AnimationOptions::cancel()
+{
+
+}
+
+void AnimationOptions::ok()
+{
+
+}
 //    if(options->axis == Draw::X_AXIS )
 //        ui->axisComB->setCurrentIndex(0);
 //    else if(options->axis == Draw::Y_AXIS )
@@ -61,23 +121,74 @@ void AnimationOptions::adjustAnimationOptions(QList<AnimationItem*> &itemsList)
 //    ui->ledsSpinB->setValue( static_cast<int>(options->leds));
 //    ui->speedSpinB->setValue( static_cast<int>(options->speed));
 //    ui->textLineE->setText(options->text.isEmpty() == true ? "" : options->text);
-    show();
+
+void AnimationOptions::optionsNextAnimation()
+{
+    AnimationItem *animation;
+    if (m_itemList.count() == m_animationAt )
+        ui->m_nextPB->setDisabled(true);
+
+    animation = m_itemList.at(m_animationAt);
+
+    hideShowWidgetsDisplayOptions(animation->getAvailableAnimationOptions(), animation->getOptions());
+
+
+    m_animationAt++;
 }
 
-void AnimationOptions::changeEvent(QEvent *e)
+void AnimationOptions::optionsPrevAnimation()
 {
-    QDialog::changeEvent(e);
-    switch (e->type())
-    {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
+    m_animationAt--;
+}
+
+void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const Options *options)
+{
+    if ( hasOption & Speed) {
+        ui->m_speedLabel->setVisible(!ui->m_speedLabel->isVisible());
+        ui->m_speedSpinB->setVisible(!ui->m_speedSpinB->isVisible());
+        ui->m_speedSpinB->setValue(options->speed);
+    }
+
+    if ( hasOption & Direction){
+
+    }
+
+    if ( hasOption & Axis) {
+
+    }
+
+    if ( hasOption & Leds) {
+
+    }
+
+    if ( hasOption & Particls) {
+
+    }
+
+    if ( hasOption & Delay) {
+
+    }
+
+    if ( hasOption & Iterations) {
+
+    }
+
+    if ( hasOption & Invert) {
+
+    }
+
+    if ( hasOption & CenterStart) {
+
+    }
+
+    if ( hasOption & Text) {
+
+    }
+
+    if ( hasOption & LedState) {
+
     }
 }
-
-
 
 //void AnimationOptions::on_applyPushB_clicked()
 //{

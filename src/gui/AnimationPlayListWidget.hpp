@@ -63,7 +63,7 @@ private:
     int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
     AnimationOptions *m_adjustOptionDialog;
-
+    Q_DISABLE_COPY(AnimationPlayListWidget);
 };
 
 #endif // ANIMATIONPLAYLISTWIDGET_HPP

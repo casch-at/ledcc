@@ -46,8 +46,10 @@ public:
         bool invert;
         Draw::BixelState state;
     };
-
-   /*! All possibly animation arguments */
+   /*!
+    *  All possibly animation arguments.
+    *  The static variable TOTAL_ARGUMENTS holds the sum of available options, must be updated when an enum is added
+    */
    typedef enum {
        Speed       = (1 << 0),
        Direction   = (1 << 1),
@@ -69,15 +71,28 @@ public:
 
 Q_SIGNALS:
     void optionsReady(const Options &animationOptions);
+    void applyAnimationOptions(const AnimationItem *item);
 public Q_SLOTS:
     void adjustAnimationOptions(QList<AnimationItem*> &items);
+    void optionsNextAnimation();
+    void optionsPrevAnimation();
+    void onApplyPressed();
+    void cancel();
+    void ok();
 protected:
     void changeEvent(QEvent *e);
-
+private Q_SLOTS:
 private:
-    bool m_animationOptionsModefied;
     Ui::AnimationOptions *ui;
+    void hideShowWidgetsDisplayOptions(const int &hasOption, const Options *options);
+
     Options m_options;
+
+    int m_animationAt;
+    bool m_animationOptionsModefied;
+    QList<AnimationItem*> m_itemList;
+
+    static const int TOTAL_ARGUMENTS = 11;
     Q_DISABLE_COPY(AnimationOptions)
 };
 
