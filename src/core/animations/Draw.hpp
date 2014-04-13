@@ -92,7 +92,7 @@ protected:
     void checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoint,
                             u_int8_t *newEndPoint);
 
-    void drawPositionAxis(Axis axis, QVector<u_int8_t> &position, bool invert);
+    void drawPositionAxis(Axis axis, QVector<u_int8_t> &position, Direction direction);
 
     void setPlaneX(u_int8_t x);
     void setPlaneY(u_int8_t y);

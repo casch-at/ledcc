@@ -17,12 +17,10 @@
 #include "AxisNailWall.hpp"
 
 
-//TODO:: Change bool invert with Draw::Direction
-
-AxisNailWall::AxisNailWall(const u_int16_t &speed, const Draw::Axis &axis, const bool invert, const QString &name, QObject *parent):
+AxisNailWall::AxisNailWall(const u_int16_t &speed, const Draw::Axis &axis, const Draw::Direction &direction, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_axis(axis),
-    m_invert(invert)
+    m_direction(direction)
 {
 }
 
@@ -35,10 +33,11 @@ void AxisNailWall::createAnimation()
 
     fillCubeArray(0x00);
 
-    if (m_invert)
-        setPlane(m_axis, 7);
-    else
+    if (Draw::Forward )
         setPlane(m_axis, 0);
+    else
+        setPlane(m_axis, 7);
+
     if(m_abort)
         return;
     waitMs(getSpeed() * 3);
@@ -53,7 +52,7 @@ void AxisNailWall::createAnimation()
             if (position[px] < destination[px])
                 position[px]++;
         }
-        drawPositionAxis(m_axis, position, m_invert);
+        drawPositionAxis(m_axis, position, m_direction);
         if(m_abort)
             return;
         waitMs(getSpeed());
@@ -76,7 +75,7 @@ void AxisNailWall::createAnimation()
             else if (position[px] > destination[px])
                 position[px]--;
         }
-        drawPositionAxis(m_axis, position, m_invert);
+        drawPositionAxis(m_axis, position, m_direction);
         if(m_abort)
             return;
         waitMs(getSpeed());
@@ -97,7 +96,7 @@ void AxisNailWall::createAnimationTooltipAsRichText(AnimationItem *item)
         itemToolTip.append("Axis: Y-Axis<br>");
     else
         itemToolTip.append("Axis: Z-Axis<br>");
-    itemToolTip.append(item->getOptions()->invert == true ? "Invert: Yes" : "Invert: No");
+    itemToolTip.append( QString("Direction: %1").arg(item->getOptions()->direction == Draw::Forward ? "Forward" : "Backward"));
 
     item->setToolTip ( itemToolTip );
 }
@@ -116,7 +115,7 @@ QStringList& AxisNailWall::getAnimationPropertiesAsPlainText(const AnimationItem
         list.append( QString("Axis:Y_AXIS") );
     else
         list.append( QString("Axis:Z_AXIS") );
-    list.append( QString("Invert:%1").arg( item->getOptions()->invert == true ? "Yes" : "No"));
+    list.append( QString("Direction:%1").arg( item->getOptions()->direction == Draw::Forward ? "Forward" : "Backward"));
 
     return list;
 }

@@ -340,7 +340,7 @@ void MainWindow::updateAnimation(const AnimationItem *item)
     }else if(text.compare(Animations::AxisNailWall) == 0){
         dynamic_cast<AxisNailWall*>(a)->setSpeed(options->speed);
         dynamic_cast<AxisNailWall*>(a)->setAxis(options->axis);
-        dynamic_cast<AxisNailWall*>(a)->setInvert(options->invert == 0 ? false : true);
+        dynamic_cast<AxisNailWall*>(a)->setDirection(options->direction == Draw::Forward ? Draw::Forward : Draw::Backward);
     }else if(text.compare(Animations::Loadbar) == 0){
         dynamic_cast<Loadbar*>(a)->setSpeed(options->speed);
         dynamic_cast<Loadbar*>(a)->setAxis(options->axis);
@@ -470,8 +470,8 @@ void MainWindow::setupAnimationItems(void)
 
         if(iter.key().compare(Animations::AxisNailWall) == 0){
             options.axis =  dynamic_cast<AxisNailWall*>(iter.value())->getAxis();
-            options.invert = dynamic_cast<AxisNailWall*>(iter.value())->getInvert();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Invert );
+            options.direction = dynamic_cast<AxisNailWall*>(iter.value())->getDirection();
+            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Direction );
         }else if(iter.key().compare(Animations::Firework) == 0){
             options.iteration = dynamic_cast<Firework*>(iter.value())->getIterations();
             options.leds = dynamic_cast<Firework*>(iter.value())->getParticles();

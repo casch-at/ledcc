@@ -66,8 +66,6 @@ public Q_SLOTS:
     void adjustAnimationOptions(QList<AnimationItem*> &items);
 protected:
     void changeEvent(QEvent *e);
-    void closeEvent(QCloseEvent *);
-    void resizeEvent(QResizeEvent *);
 private Q_SLOTS:
     void optionsNextAnimation();
     void optionsPrevAnimation();

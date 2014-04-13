@@ -74,7 +74,7 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
             position[px]--;
 
     }
-    drawPositionAxis(axis, position, true);
+    drawPositionAxis(axis, position, Draw::Backward);
 }
 
 

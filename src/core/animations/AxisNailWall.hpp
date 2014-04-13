@@ -22,19 +22,19 @@
 class AxisNailWall : public Animation
 {
     Q_OBJECT
-    Q_PROPERTY(bool invert READ getInvert WRITE setInvert)
+    Q_PROPERTY(Draw::Direction direction READ getDirection WRITE setDirection)
     Q_PROPERTY(Draw::Axis axis READ getAxis WRITE setAxis)
 
 public:
     explicit AxisNailWall(const u_int16_t &speed = 70,
                           const Draw::Axis &axis = X_AXIS,
-                          const bool invert = false,
+                          const Draw::Direction &direction = Forward,
                           const QString &name = "Axis Nail Wall",
                           QObject *parent = 0);
 
-    bool getInvert() const
+    Draw::Direction getDirection() const
     {
-        return m_invert;
+        return m_direction;
     }
 
     Draw::Axis getAxis() const
@@ -45,10 +45,10 @@ public Q_SLOTS:
     virtual void createAnimation();
     virtual void createAnimationTooltipAsRichText(AnimationItem *item);
     virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-    void setInvert(const bool invert)
+    void setDirection(const Draw::Direction direction)
     {
-        if(m_invert != invert)
-            m_invert = invert;
+        if(m_direction != direction)
+            m_direction = direction;
     }
 
     void setAxis(const Draw::Axis axis)
@@ -59,7 +59,7 @@ public Q_SLOTS:
 private:
 
     Draw::Axis m_axis;
-    bool m_invert;
+    Draw::Direction m_direction;
 
 };
 

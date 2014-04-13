@@ -39,6 +39,8 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
     connect(ui->m_applyPB, &QPushButton::pressed, this, &AnimationOptions::applyAnimationOptions);
     connect(ui->m_cancelPB, &QPushButton::pressed, this, &AnimationOptions::cancel);
     connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
+    connect(this, &QDialog::rejected, this, &AnimationOptions::cancel);
+//    connect(this, &QDialog::done, this, &AnimationOptions::cancel);
     AQP::accelerateWidget(this);
 
 
@@ -48,16 +50,6 @@ AnimationOptions::~AnimationOptions()
 {
     qDebug("Inside delete Animation Options");
     delete ui;
-}
-
-void AnimationOptions::closeEvent(QCloseEvent *)
-{
-    cancel();
-}
-
-void AnimationOptions::resizeEvent(QResizeEvent *)
-{
-
 }
 
 /*!
@@ -111,7 +103,12 @@ void AnimationOptions::applyAnimationOptions()
 */
 void AnimationOptions::cancel()
 {
-
+    hide();
+    foreach (AnimationItem *item, m_itemList) {
+        delete item;
+    }
+    m_animationAt = -1;
+    qDebug("Inside close");
 }
 
 /*!
@@ -127,13 +124,13 @@ void AnimationOptions::updateUi()
 {
     if (m_animationAt){
         ui->m_prevPB->setEnabled(true);
-        if(m_animationAt >= m_itemList.count() - 1 )
-            ui->m_nextPB->setDisabled(true);
-        else
-            ui->m_nextPB->setEnabled(true);
     } else {
         ui->m_prevPB->setDisabled(true);
     }
+    if(m_animationAt >= m_itemList.count() - 1 )
+        ui->m_nextPB->setDisabled(true);
+    else
+        ui->m_nextPB->setEnabled(true);
 
 }
 //    if(options->axis == Draw::X_AXIS )
@@ -172,8 +169,6 @@ void AnimationOptions::optionsNextAnimation()
 
     ui->groupBox->setTitle("Properties of " + animation->text());
     hideShowWidgetsDisplayOptions(animation->getAvailableAnimationOptions(), animation->getOptions());
-
-    Q_EMIT updateUi();
 }
 
 
@@ -191,8 +186,6 @@ void AnimationOptions::optionsPrevAnimation()
 
     ui->groupBox->setTitle("Properties of " + animation->text());
     hideShowWidgetsDisplayOptions(animation->getAvailableAnimationOptions(), animation->getOptions());
-
-    Q_EMIT updateUi();
 }
 
 
@@ -237,31 +230,39 @@ void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const
         case Leds:
             ui->m_ledsLabel->setVisible(true);
             ui->m_ledsSpinB->setVisible(true);
+            ui->m_ledsSpinB->setValue(options->leds);
             break;
         case Particls:
             ui->m_particlesLabel->setVisible(true);
             ui->m_particlesSpinB->setVisible(true);
+            ui->m_particlesSpinB->setValue(options->leds);
             break;
         case Delay:
             ui->m_delayLabel->setVisible(true);
             ui->m_delaySpinB->setVisible(true);
+            ui->m_delaySpinB->setValue(options->delay);
             break;
         case Iterations:
             ui->m_iterationsLabel->setVisible(true);
             ui->m_iterationsSpinB->setVisible(true);
+            ui->m_iterationsSpinB->setValue(options->iteration);
             break;
         case Invert:
             ui->m_invertCheckB->setVisible(true);
+            ui->m_invertCheckB->setChecked(options->invert);
             break;
         case CenterStart:
             ui->m_invertCheckB->setVisible(true);
+            ui->m_invertCheckB->setChecked(options->invert);
             break;
         case Text:
             ui->m_textLabel->setVisible(true);
             ui->m_textLineE->setVisible(true);
+            ui->m_textLineE->setText(options->text);
             break;
         case LedState:
             ui->m_ledStateCheckB->setVisible(true);
+            ui->m_ledStateCheckB->setChecked(options->state == Draw::ON ? true : false);
             break;
         default:
             switch ((1<<i))
@@ -308,12 +309,14 @@ void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const
                 ui->m_ledStateCheckB->setVisible(false);
                 break;
             default:
+                qDebug("Default Default");
                 break;
             }
             break;
         }
     }
     resize(350,0);
+    Q_EMIT updateUi();
 }
 
 //void AnimationOptions::on_applyPushB_clicked()
