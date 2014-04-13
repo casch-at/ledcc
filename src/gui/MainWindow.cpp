@@ -570,7 +570,7 @@ void MainWindow::connectSignals(void)
     connect( m_settingAction, &QAction::triggered,m_sdialog,&QWidget::show);
     connect( m_animationPlaylist->m_playAction, &QAction::triggered , this , &MainWindow::playAnimations);
     connect( m_animationPlaylist->m_stopAction, &QAction::triggered , this , &MainWindow::stopThreads);
-
+    connect( m_aboutQt, &QAction::triggered, this, &QApplication::aboutQt);
     // Animation properties ready connection
     //    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
 
@@ -613,6 +613,9 @@ void MainWindow::createActions(void)
     m_openPortAction->setIcon( QIcon( "://images/connect.png"));
     m_openPortAction->setShortcut(tr("O"));
     m_openPortAction->setToolTip(tr("Connect to seriell device  O"));
+
+    m_aboutQt = new QAction(tr("About Qt"), this);
+    m_aboutQt->setIcon(QIcon("://images/qt.png"));
 }
 
 /**
@@ -645,10 +648,11 @@ void MainWindow::createToolbar()
     }
 
     m_helpToolBar = new QToolBar( );
-    m_helpToolBar->setObjectName ("Help Toolbar");
+    m_helpToolBar->setObjectName("Help Toolbar");
     m_helpToolBar->setLayoutDirection (Qt::RightToLeft);
-    m_helpToolBar->addAction (m_aboutAction);
-    m_helpToolBar->setIconSize (size);
+    m_helpToolBar->addAction( m_aboutAction );
+    m_helpToolBar->addAction( m_aboutQt );
+    m_helpToolBar->setIconSize(size);
     m_helpToolBar->setWindowTitle("Help Toolbar");
     this->addToolBar (Qt::TopToolBarArea,m_helpToolBar);
 }

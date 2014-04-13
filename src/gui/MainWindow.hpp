@@ -90,6 +90,7 @@ private:
     QAction *m_aboutAction;
     QAction *m_settingAction;
     QAction *m_openPortAction;
+    QAction *m_aboutQt;
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;

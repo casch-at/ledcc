@@ -23,7 +23,8 @@
 #include <QScrollBar>
 #include <QKeyEvent>
 #include <QAction>
-
+#include <QSpacerItem>
+#include <QGridLayout>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -80,9 +81,21 @@ AnimationPlayListWidget::~AnimationPlayListWidget()
 */
 void AnimationPlayListWidget::clearList()
 {
-    clear();
-    m_clearAction->setDisabled(true);
-    Q_EMIT updateUi();
+    QMessageBox msgb;
+    msgb.setTextFormat(Qt::RichText);
+    msgb.setWindowTitle("Clear Animation Playlist");
+    msgb.setText(tr("<h3><b>Do you really want clear the animation playlist?</b></h3>"));
+    msgb.setInformativeText(tr("This can not be undone!"));
+    msgb.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgb.setDefaultButton(QMessageBox::No);
+    msgb.setIcon(QMessageBox::Warning);
+    int ret = msgb.exec();
+
+    if(ret & QMessageBox::Yes){
+        clear();
+        m_clearAction->setDisabled(true);
+        Q_EMIT updateUi();
+    }
 }
 
 

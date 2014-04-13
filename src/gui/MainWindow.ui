@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>3D-LED Cube </string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../icons.qrc">
+    <normaloff>:/images/ledgreen.png</normaloff>:/images/ledgreen.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout" rowstretch="1">
     <item row="0" column="0">
@@ -93,6 +97,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

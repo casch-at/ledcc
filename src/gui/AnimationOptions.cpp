@@ -20,6 +20,7 @@
 #include "aqp.hpp"
 #include "AnimationItem.hpp"
 
+#include <QTimer>
 // Qt Includes
 #ifdef _DEBUG_
 #include <QDebug>
@@ -40,6 +41,8 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
     connect(ui->m_cancelPB, &QPushButton::pressed, this, &AnimationOptions::cancel);
     connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
     connect(this, &QDialog::rejected, this, &AnimationOptions::cancel);
+//    connect(ui->m_axisComB, &QComboBox::currentIndexChanged, this, &AnimationOptions::setWindowModified);
+    setWindowModified(true);
 //    connect(this, &QDialog::done, this, &AnimationOptions::cancel);
     AQP::accelerateWidget(this);
 
@@ -48,7 +51,6 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
 
 AnimationOptions::~AnimationOptions()
 {
-    qDebug("Inside delete Animation Options");
     delete ui;
 }
 
@@ -108,7 +110,6 @@ void AnimationOptions::cancel()
         delete item;
     }
     m_animationAt = -1;
-    qDebug("Inside close");
 }
 
 /*!
@@ -117,7 +118,8 @@ void AnimationOptions::cancel()
 */
 void AnimationOptions::ok()
 {
-
+    // If current animation has ben modefied ask user if he wants to apply the settings
+    // If nothing has changed hide application
 }
 
 void AnimationOptions::updateUi()
@@ -162,9 +164,13 @@ void AnimationOptions::updateUi()
 void AnimationOptions::optionsNextAnimation()
 {
     AnimationItem *animation;
-
+    // TODO:: If current animation has been changed ask if the settings should be applyed befor continue.
+    if(isWindowModified())
+        qDebug("WindowModefied");
     if( m_animationAt < m_itemList.count() -1)
         m_animationAt++;
+
+
     animation = m_itemList.at(m_animationAt);
 
     ui->groupBox->setTitle("Properties of " + animation->text());
@@ -180,6 +186,7 @@ void AnimationOptions::optionsPrevAnimation()
 {
     AnimationItem *animation;
 
+    // TODO:: If current animation has been changed ask if the settings should be applyed befor continue.
     if(m_animationAt)
         m_animationAt--;
     animation = m_itemList.at(m_animationAt);
@@ -265,6 +272,7 @@ void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const
             ui->m_ledStateCheckB->setChecked(options->state == Draw::ON ? true : false);
             break;
         default:
+            qDebug("Default Default 1");
             switch ((1<<i))
             {
             case Speed:
@@ -309,13 +317,24 @@ void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const
                 ui->m_ledStateCheckB->setVisible(false);
                 break;
             default:
-                qDebug("Default Default");
+                qDebug("Default Default 2");
                 break;
             }
             break;
         }
     }
+
+    for (int var = 0; var < 10000; var++) {
+
+    }
+
     resize(350,0);
+    ui->groupBox->resize(0,0);
+
+    updateGeometry();
+    update();
+    ui->groupBox->repaint();
+    ui->groupBox->updateGeometry();
     Q_EMIT updateUi();
 }
 
