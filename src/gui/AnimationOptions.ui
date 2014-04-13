@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>AnimationOptions</class>
  <widget class="QDialog" name="AnimationOptions">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,57 +14,31 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
     <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
+    <verstretch>1</verstretch>
    </sizepolicy>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::WheelFocus</enum>
   </property>
   <property name="windowTitle">
    <string>Adjust Animation Properties</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../icons.qrc">
+    <normaloff>:/images/configuration-editor.png</normaloff>:/images/configuration-editor.png</iconset>
+  </property>
+  <property name="toolTipDuration">
+   <number>-1</number>
+  </property>
   <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <property name="modal">
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_7">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QPushButton" name="m_prevPB">
-       <property name="text">
-        <string>Back</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../icons.qrc">
-         <normaloff>:/images/arrow-left.png</normaloff>:/images/arrow-left.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="m_nextPB">
-       <property name="text">
-        <string>Next</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../icons.qrc">
-         <normaloff>:/images/arrow-right.png</normaloff>:/images/arrow-right.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="sizePolicy">
@@ -69,6 +46,9 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
      </property>
      <property name="title">
       <string>Properties</string>
@@ -99,11 +79,26 @@
        <number>2</number>
       </property>
       <item>
-       <layout class="QGridLayout" name="m_optionsGridL">
+       <layout class="QGridLayout" name="m_optionsGridL" columnstretch="0,1" columnminimumwidth="0,0">
         <item row="0" column="0">
          <widget class="QLabel" name="m_speedLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTipDuration">
+           <number>10000</number>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
           <property name="text">
-           <string>Speed</string>
+           <string>Speed:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>m_speedSpinB</cstring>
@@ -112,8 +107,23 @@
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="m_directionLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTipDuration">
+           <number>10000</number>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
           <property name="text">
-           <string>Direction</string>
+           <string>Direction:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>m_directionComB</cstring>
@@ -122,6 +132,18 @@
         </item>
         <item row="2" column="1">
          <widget class="QLineEdit" name="m_textLineE">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="maxLength">
            <number>50</number>
           </property>
@@ -132,6 +154,18 @@
         </item>
         <item row="3" column="1">
          <widget class="QComboBox" name="m_directionComB">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="currentIndex">
            <number>0</number>
           </property>
@@ -149,6 +183,18 @@
         </item>
         <item row="0" column="1">
          <widget class="QSpinBox" name="m_speedSpinB">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -162,6 +208,18 @@
         </item>
         <item row="6" column="1">
          <widget class="QSpinBox" name="m_ledsSpinB">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -175,8 +233,23 @@
         </item>
         <item row="6" column="0">
          <widget class="QLabel" name="m_ledsLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTipDuration">
+           <number>10000</number>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
           <property name="text">
-           <string>LEDs</string>
+           <string>LEDs:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>m_ledsSpinB</cstring>
@@ -185,8 +258,23 @@
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="m_axisLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTipDuration">
+           <number>10000</number>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
           <property name="text">
-           <string>Axis</string>
+           <string>Axis:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>m_axisComB</cstring>
@@ -195,6 +283,18 @@
         </item>
         <item row="1" column="1">
          <widget class="QSpinBox" name="m_delaySpinB">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -208,6 +308,18 @@
         </item>
         <item row="5" column="1">
          <widget class="QComboBox" name="m_axisComB">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <item>
            <property name="text">
             <string>X-Axis</string>
@@ -227,6 +339,18 @@
         </item>
         <item row="4" column="1">
          <widget class="QSpinBox" name="m_iterationsSpinB">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -240,8 +364,23 @@
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="m_delayLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTipDuration">
+           <number>10000</number>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
           <property name="text">
-           <string>Delay</string>
+           <string>Delay:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>m_delaySpinB</cstring>
@@ -250,8 +389,23 @@
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="m_textLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTipDuration">
+           <number>10000</number>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
           <property name="text">
-           <string>Text</string>
+           <string>Text:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>m_textLineE</cstring>
@@ -260,8 +414,23 @@
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="m_iterationsLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTipDuration">
+           <number>10000</number>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
           <property name="text">
-           <string>Iterations</string>
+           <string>Iterations:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>m_iterationsSpinB</cstring>
@@ -270,6 +439,18 @@
         </item>
         <item row="7" column="1">
          <widget class="QSpinBox" name="m_particlesSpinB">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -283,8 +464,23 @@
         </item>
         <item row="7" column="0">
          <widget class="QLabel" name="m_particlesLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTipDuration">
+           <number>10000</number>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
           <property name="text">
-           <string>Particles</string>
+           <string>Particles:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
            <cstring>m_particlesSpinB</cstring>
@@ -309,6 +505,17 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="QPushButton" name="m_prevPB">
+          <property name="text">
+           <string>Back</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../icons.qrc">
+            <normaloff>:/images/arrow-left.png</normaloff>:/images/arrow-left.png</iconset>
+          </property>
+         </widget>
+        </item>
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
@@ -342,6 +549,17 @@
           </property>
          </spacer>
         </item>
+        <item>
+         <widget class="QPushButton" name="m_nextPB">
+          <property name="text">
+           <string>Next</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../icons.qrc">
+            <normaloff>:/images/arrow-right.png</normaloff>:/images/arrow-right.png</iconset>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -350,7 +568,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
-      <spacer name="horizontalSpacer_6">
+      <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -364,6 +582,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="m_okPB">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Ok</string>
        </property>
@@ -371,10 +595,29 @@
      </item>
      <item>
       <widget class="QPushButton" name="m_cancelPB">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Cancel</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -425,8 +668,6 @@
   <tabstop>m_ledStateCheckB</tabstop>
   <tabstop>m_invertCheckB</tabstop>
   <tabstop>m_applyPB</tabstop>
-  <tabstop>m_nextPB</tabstop>
-  <tabstop>m_prevPB</tabstop>
   <tabstop>m_okPB</tabstop>
   <tabstop>m_cancelPB</tabstop>
  </tabstops>

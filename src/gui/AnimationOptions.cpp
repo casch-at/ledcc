@@ -29,11 +29,10 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AnimationOptions),
     m_animationOptionsModefied(false),
-    m_animationAt(0)
+    m_animationAt(-1)
 {
     // Setup the user interface
     ui->setupUi(this);
-    setWindowModality(Qt::WindowModal);
     // Create connections ( Signal & Slot )
     connect(ui->m_nextPB, &QPushButton::pressed, this, &AnimationOptions::optionsNextAnimation);
     connect(ui->m_prevPB, &QPushButton::pressed, this, &AnimationOptions::optionsPrevAnimation);
@@ -74,7 +73,7 @@ void AnimationOptions::adjustAnimationOptions(QList<AnimationItem*> &itemsList)
        return;
     m_itemList = itemsList;
     optionsNextAnimation();
-    exec();
+    show();
 }
 
 
@@ -112,7 +111,7 @@ void AnimationOptions::applyAnimationOptions()
 */
 void AnimationOptions::cancel()
 {
-    Q_EMIT ;
+
 }
 
 /*!
@@ -121,6 +120,20 @@ void AnimationOptions::cancel()
 */
 void AnimationOptions::ok()
 {
+
+}
+
+void AnimationOptions::updateUi()
+{
+    if (m_animationAt){
+        ui->m_prevPB->setEnabled(true);
+        if(m_animationAt >= m_itemList.count() - 1 )
+            ui->m_nextPB->setDisabled(true);
+        else
+            ui->m_nextPB->setEnabled(true);
+    } else {
+        ui->m_prevPB->setDisabled(true);
+    }
 
 }
 //    if(options->axis == Draw::X_AXIS )
@@ -152,15 +165,15 @@ void AnimationOptions::ok()
 void AnimationOptions::optionsNextAnimation()
 {
     AnimationItem *animation;
-    if (m_itemList.count() == m_animationAt )
-        ui->m_nextPB->setDisabled(true);
 
+    if( m_animationAt < m_itemList.count() -1)
+        m_animationAt++;
     animation = m_itemList.at(m_animationAt);
 
+    ui->groupBox->setTitle("Properties of " + animation->text());
     hideShowWidgetsDisplayOptions(animation->getAvailableAnimationOptions(), animation->getOptions());
 
-
-    m_animationAt++;
+    Q_EMIT updateUi();
 }
 
 
@@ -170,8 +183,18 @@ void AnimationOptions::optionsNextAnimation()
 */
 void AnimationOptions::optionsPrevAnimation()
 {
-    m_animationAt--;
+    AnimationItem *animation;
+
+    if(m_animationAt)
+        m_animationAt--;
+    animation = m_itemList.at(m_animationAt);
+
+    ui->groupBox->setTitle("Properties of " + animation->text());
+    hideShowWidgetsDisplayOptions(animation->getAvailableAnimationOptions(), animation->getOptions());
+
+    Q_EMIT updateUi();
 }
+
 
 
 /*!
@@ -290,7 +313,7 @@ void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const
             break;
         }
     }
-    repaint();
+    resize(350,0);
 }
 
 //void AnimationOptions::on_applyPushB_clicked()

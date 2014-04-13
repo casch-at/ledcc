@@ -74,6 +74,7 @@ private Q_SLOTS:
     void applyAnimationOptions();
     void cancel();
     void ok();
+    void updateUi();
 private:
     Ui::AnimationOptions *ui;
     void hideShowWidgetsDisplayOptions(const int &hasOption, const Options *options);
