@@ -10,6 +10,12 @@
     <height>455</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Adjust Animation Properties</string>
   </property>
@@ -288,7 +294,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QCheckBox" name="m_ledOnCheckB">
+       <widget class="QCheckBox" name="m_ledStateCheckB">
         <property name="text">
          <string>Start with LEDs turned on</string>
         </property>
@@ -416,7 +422,7 @@
   <tabstop>m_axisComB</tabstop>
   <tabstop>m_ledsSpinB</tabstop>
   <tabstop>m_particlesSpinB</tabstop>
-  <tabstop>m_ledOnCheckB</tabstop>
+  <tabstop>m_ledStateCheckB</tabstop>
   <tabstop>m_invertCheckB</tabstop>
   <tabstop>m_applyPB</tabstop>
   <tabstop>m_nextPB</tabstop>

@@ -33,7 +33,7 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
 {
     // Setup the user interface
     ui->setupUi(this);
-
+    setWindowModality(Qt::WindowModal);
     // Create connections ( Signal & Slot )
     connect(ui->m_nextPB, &QPushButton::pressed, this, &AnimationOptions::optionsNextAnimation);
     connect(ui->m_prevPB, &QPushButton::pressed, this, &AnimationOptions::optionsPrevAnimation);
@@ -47,7 +47,18 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
 
 AnimationOptions::~AnimationOptions()
 {
+    qDebug("Inside delete Animation Options");
     delete ui;
+}
+
+void AnimationOptions::closeEvent(QCloseEvent *)
+{
+    cancel();
+}
+
+void AnimationOptions::resizeEvent(QResizeEvent *)
+{
+
 }
 
 /*!
@@ -63,8 +74,7 @@ void AnimationOptions::adjustAnimationOptions(QList<AnimationItem*> &itemsList)
        return;
     m_itemList = itemsList;
     optionsNextAnimation();
-
-    show();
+    exec();
 }
 
 
@@ -102,7 +112,7 @@ void AnimationOptions::applyAnimationOptions()
 */
 void AnimationOptions::cancel()
 {
-
+    Q_EMIT ;
 }
 
 /*!
@@ -172,25 +182,22 @@ void AnimationOptions::optionsPrevAnimation()
 */
 void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const Options *options)
 {
-    foreach (QObject *obj, ui->m_optionsGridL->children()) {
-        dynamic_cast<QWidget*>(obj)->setVisible(false);
-    }
     for (int i = 0; i < TOTAL_ARGUMENTS; i++) {
         switch ( (1<<i) & hasOption )
         {
         case Speed:
-            ui->m_speedLabel->setVisible(!ui->m_speedLabel->isVisible());
-            ui->m_speedSpinB->setVisible(!ui->m_speedSpinB->isVisible());
+            ui->m_speedLabel->setVisible(true);
+            ui->m_speedSpinB->setVisible(true);
             ui->m_speedSpinB->setValue(options->speed);
             break;
         case Direction:
-            ui->m_directionLabel->setVisible(!ui->m_directionLabel->isVisible());
-            ui->m_directionComB->setVisible(!ui->m_directionComB->isVisible());
+            ui->m_directionLabel->setVisible(true);
+            ui->m_directionComB->setVisible(true);
             ui->m_directionComB->setCurrentIndex(options->direction == Draw::Backward ? 0 : 1);
             break;
         case Axis:
-            ui->m_axisLabel->setVisible(!ui->m_axisLabel->isVisible());
-            ui->m_axisComB->setVisible(!ui->m_axisComB->isVisible());
+            ui->m_axisLabel->setVisible(true);
+            ui->m_axisComB->setVisible(true);
             switch (options->axis)
             {
             case Draw::Y_AXIS:
@@ -205,26 +212,85 @@ void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const
             }
             break;
         case Leds:
+            ui->m_ledsLabel->setVisible(true);
+            ui->m_ledsSpinB->setVisible(true);
             break;
         case Particls:
+            ui->m_particlesLabel->setVisible(true);
+            ui->m_particlesSpinB->setVisible(true);
             break;
         case Delay:
+            ui->m_delayLabel->setVisible(true);
+            ui->m_delaySpinB->setVisible(true);
             break;
         case Iterations:
+            ui->m_iterationsLabel->setVisible(true);
+            ui->m_iterationsSpinB->setVisible(true);
             break;
         case Invert:
+            ui->m_invertCheckB->setVisible(true);
             break;
         case CenterStart:
+            ui->m_invertCheckB->setVisible(true);
             break;
         case Text:
+            ui->m_textLabel->setVisible(true);
+            ui->m_textLineE->setVisible(true);
             break;
         case LedState:
+            ui->m_ledStateCheckB->setVisible(true);
             break;
         default:
-            qDebug("Hello default");
+            switch ((1<<i))
+            {
+            case Speed:
+                ui->m_speedLabel->setVisible(false);
+                ui->m_speedSpinB->setVisible(false);
+                break;
+            case Direction:
+                ui->m_directionLabel->setVisible(false);
+                ui->m_directionComB->setVisible(false);
+                break;
+            case Axis:
+                ui->m_axisLabel->setVisible(false);
+                ui->m_axisComB->setVisible(false);
+                break;
+            case Leds:
+                ui->m_ledsLabel->setVisible(false);
+                ui->m_ledsSpinB->setVisible(false);
+                break;
+            case Particls:
+                ui->m_particlesLabel->setVisible(false);
+                ui->m_particlesSpinB->setVisible(false);
+                break;
+            case Delay:
+                ui->m_delayLabel->setVisible(false);
+                ui->m_delaySpinB->setVisible(false);
+                break;
+            case Iterations:
+                ui->m_iterationsLabel->setVisible(false);
+                ui->m_iterationsSpinB->setVisible(false);
+                break;
+            case Invert:
+                ui->m_invertCheckB->setVisible(false);
+                break;
+            case CenterStart:
+                ui->m_invertCheckB->setVisible(false);
+                break;
+            case Text:
+                ui->m_textLabel->setVisible(false);
+                ui->m_textLineE->setVisible(false);
+                break;
+            case LedState:
+                ui->m_ledStateCheckB->setVisible(false);
+                break;
+            default:
+                break;
+            }
             break;
         }
     }
+    repaint();
 }
 
 //void AnimationOptions::on_applyPushB_clicked()
