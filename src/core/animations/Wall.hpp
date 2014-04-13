@@ -26,7 +26,7 @@ class Wall : public Animation
 public:
     explicit Wall(const u_int16_t &speed = 50,
                   const Draw::Axis &axis = X_AXIS,
-                  const Draw::Direction &direction = FORWARD,
+                  const Draw::Direction &direction = Forward,
                   const QString &name = "Wall",
                   QObject *parent = Q_NULLPTR);
 

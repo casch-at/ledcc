@@ -51,7 +51,7 @@ void StringFly::createAnimation()
             if(m_abort)
                 return;
             waitMs(getSpeed());
-            shift(Y_AXIS, BACKWARD);
+            shift(Y_AXIS, Backward);
         }
     }
     // Shift the last character out of the cube.
@@ -60,7 +60,7 @@ void StringFly::createAnimation()
         if(m_abort)
             return;
         waitMs(getSpeed());
-        shift(Y_AXIS, BACKWARD);
+        shift(Y_AXIS, Backward);
     }
     Q_EMIT done();
 }

@@ -16,7 +16,7 @@
  */
 #include "AnimationListWidget.hpp"
 
-// Third Party
+// Third Party Includes
 #include "aqp.hpp"
 #include "alt_key.hpp"
 
@@ -29,8 +29,6 @@
 //#include "animations/Lift.hpp"
 //#include <QtWidgets/QAction>
 
-// FIXME:: Edit signal not working in AnimationListWidget because connection between AnimationListWidge object and AnimationOptions object are missing
-//         However there is no need anymore because the AnimationOptions class gets modified anyway and a object of the new class will be in the base class
 AnimationListWidget::AnimationListWidget(QWidget *parent):
     ListWidget(parent)
 {

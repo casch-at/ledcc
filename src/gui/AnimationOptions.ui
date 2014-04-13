@@ -93,7 +93,7 @@
        <number>2</number>
       </property>
       <item>
-       <layout class="QGridLayout" name="gridLayout_2">
+       <layout class="QGridLayout" name="m_optionsGridL">
         <item row="0" column="0">
          <widget class="QLabel" name="m_speedLabel">
           <property name="text">
@@ -288,14 +288,14 @@
        </layout>
       </item>
       <item>
-       <widget class="QCheckBox" name="invertCheckB_2">
+       <widget class="QCheckBox" name="m_ledOnCheckB">
         <property name="text">
          <string>Start with LEDs turned on</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="invertCheckB">
+       <widget class="QCheckBox" name="m_invertCheckB">
         <property name="text">
          <string>Invert operation (e.g. Start from center of the cube)</string>
         </property>
@@ -416,8 +416,8 @@
   <tabstop>m_axisComB</tabstop>
   <tabstop>m_ledsSpinB</tabstop>
   <tabstop>m_particlesSpinB</tabstop>
-  <tabstop>invertCheckB_2</tabstop>
-  <tabstop>invertCheckB</tabstop>
+  <tabstop>m_ledOnCheckB</tabstop>
+  <tabstop>m_invertCheckB</tabstop>
   <tabstop>m_applyPB</tabstop>
   <tabstop>m_nextPB</tabstop>
   <tabstop>m_prevPB</tabstop>

@@ -58,7 +58,7 @@ void Loadbar::createAnimationTooltipAsRichText(AnimationItem *item)
     else
         itemToolTip.append("Axis: Z-Axis<br>");
 
-    itemToolTip.append( item->getOptions()->direction == FORWARD ? "Direction: Forward" : "Direction: Backward");
+    itemToolTip.append( item->getOptions()->direction == Forward ? "Direction: Forward" : "Direction: Backward");
     item->setToolTip(itemToolTip);
 }
 
@@ -74,7 +74,7 @@ QStringList& Loadbar::getAnimationPropertiesAsPlainText( const AnimationItem *it
         list.append( QString("Axis:Y_AXIS") );
     else
         list.append( QString("Axis:Z_AXIS") );
-    list.append( QString("Direction:%1").arg( item->getOptions()->direction == FORWARD ? "Forward" : "Backward"));
+    list.append( QString("Direction:%1").arg( item->getOptions()->direction == Forward ? "Forward" : "Backward"));
 
     return list;
 }

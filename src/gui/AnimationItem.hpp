@@ -18,7 +18,7 @@
 #define ANIMATIONITEM_HPP
 
 #include <QListWidgetItem>
-#include "AnimationOptions.hpp"
+#include <AnimationOptionsStruct.hpp>
 
 class AnimationItem : public QListWidgetItem
 {
@@ -29,16 +29,16 @@ public:
     virtual ~AnimationItem();
     virtual AnimationItem *clone() const;
 
-    inline const AnimationOptions::Options * getOptions(void) const{
+    inline const Options * getOptions(void) const{
         return &m_options;
     }
 
-    inline void setOptions(const AnimationOptions::Options &options){
+    inline void setOptions(const Options &options){
         m_options = options;
     }
 
-    inline const int *getAvailableAnimationOptions() const {
-        return &m_availableAnimationOptions;
+    inline int getAvailableAnimationOptions() const {
+        return m_availableAnimationOptions;
     }
 
     inline void setAvailableAnimationOptions(const int &options){
@@ -49,7 +49,7 @@ public:
 private:
 //    void initOptions(void);
     int m_availableAnimationOptions;
-    AnimationOptions::Options m_options ;
+    Options m_options ;
 
 };
 #endif // ANIMATIONITEM_HPP

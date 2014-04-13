@@ -68,11 +68,11 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    sdialog(new SettingsDialog),
+    m_sdialog(new SettingsDialog),
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
     m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
-    createThread(new QThread),
+    m_createThread(new QThread),
     m_animationList(new AnimationListWidget(this)),
     m_animationPlaylist(new AnimationPlayListWidget(this))
 {
@@ -98,11 +98,11 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
  */
 MainWindow::~MainWindow(void) //Deinit MainWindow
 {
-    foreach (Animation *a, animation)
+    foreach (Animation *a, m_animationHash)
         delete a;
-    delete createThread;
+    delete m_createThread;
     delete m_senderThread;
-    delete sdialog;
+    delete m_sdialog;
     delete m_sender;
     delete m_animationList;
     delete m_animationPlaylist;
@@ -116,10 +116,10 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
 void MainWindow::closeEvent( QCloseEvent *event ) {
     if ( okToContinue() ) {
         Q_EMIT okClosePort();
-        if(createThread->isRunning() || m_senderThread->isRunning())
+        if(m_createThread->isRunning() || m_senderThread->isRunning())
             stopThreads();
         saveSettings ();
-        sdialog->close();
+        m_sdialog->close();
         event->accept();
     }
     else
@@ -162,7 +162,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
  */
 void MainWindow::saveSettings(void){  //Save geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
-    settings.setValue (SETTINGS::GeometrySettings,saveGeometry ());
+    settings.setValue (Settings::MainWindowGeometrySettings,saveGeometry ());
 }
 
 /**
@@ -170,7 +170,7 @@ void MainWindow::saveSettings(void){  //Save geometry of application
  */
 void MainWindow::readSettings (void){ //Load geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
-    restoreGeometry (settings.value (SETTINGS::GeometrySettings).toByteArray ());
+    restoreGeometry (settings.value (Settings::MainWindowGeometrySettings).toByteArray ());
 }
 
 /**
@@ -240,20 +240,20 @@ void MainWindow::playNextAnimation(const AnimationItem *item)
         return;
     }
 
-    currentAnimation = animation.value(item->text());
-    connect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
-    connect(currentAnimation, &Animation::done, createThread, &QThread::quit);
+    m_currentAnimation = m_animationHash.value(item->text());
+    connect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
+    connect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
     //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
     //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
-    connect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+    connect(m_currentAnimation,&Animation::done,this,&MainWindow::animationDone);
 
     updateAnimation(item);
-    createThread->start();
+    m_createThread->start();
 }
 
 void MainWindow::playAnimations()
 {
-    stopPlay = true;
+    m_stopPlay = true;
 
     if(!m_senderThread->isRunning())
         m_senderThread->start();
@@ -266,31 +266,31 @@ void MainWindow::playAnimations()
 
 void MainWindow::animationDone()
 {
-    disconnect(createThread,&QThread::started,currentAnimation,&Animation::createAnimation);
-    disconnect(currentAnimation, &Animation::done, createThread, &QThread::quit);
-    disconnect(currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+    disconnect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
+    disconnect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
+    disconnect(m_currentAnimation,&Animation::done,this,&MainWindow::animationDone);
 
-    createThread->wait();
+    m_createThread->wait();
 
-    if(stopPlay)
+    if(m_stopPlay)
         playNextAnimation(m_animationPlaylist->getNextAnimation());
     else
         updateUi();
 
 }
 
-void MainWindow::updateItemToolTip(const AnimationOptions::Options &aOptions)
+void MainWindow::updateItemToolTip(const Options &aOptions)
 {
     QList<QListWidgetItem*> items = m_animationPlaylist->selectedItems();
     if(!items.isEmpty())
     {
         AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
-        item->setOptions(const_cast<AnimationOptions::Options&>(aOptions));
+        item->setOptions(const_cast<Options&>(aOptions));
 
-        animation.value(item->text())->createAnimationTooltipAsRichText(item);
+        m_animationHash.value(item->text())->createAnimationTooltipAsRichText(item);
         ui->animationPropertiesPreview->createPropertiePreview(
-                    animation.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
-        if(currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
+                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
+        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
         {
             updateAnimation(item);
         }
@@ -305,53 +305,53 @@ void MainWindow::updateItemToolTip(const AnimationOptions::Options &aOptions)
 void MainWindow::updateAnimation(const AnimationItem *item)
 {
     QString text = item->text();
-    Animation *a = animation.value(text);
-    const AnimationOptions::Options *options = item->getOptions();
+    Animation *a = m_animationHash.value(text);
+    const Options *options = item->getOptions();
 
-    if(text.compare(ANIMATIONS::Lift) == 0){
+    if(text.compare(Animations::Lift) == 0){
         dynamic_cast<Lift*>(a)->setDelay(options->delay);
         dynamic_cast<Lift*>(a)->setIterations(options->iteration);
         dynamic_cast<Lift*>(a)->setSpeed(options->speed);
-    }else if(text.compare(ANIMATIONS::Rain) == 0){
+    }else if(text.compare(Animations::Rain) == 0){
         dynamic_cast<Rain*>(a)->setSpeed(options->speed);
         dynamic_cast<Rain*>(a)->setIterations(options->iteration);
-    }else if(text.compare(ANIMATIONS::StringFly) == 0){
+    }else if(text.compare(Animations::StringFly) == 0){
         dynamic_cast<StringFly*>(a)->setSToDisplay(options->text);
         dynamic_cast<StringFly*>(a)->setSpeed(options->speed);
-    }else if(text.compare(ANIMATIONS::Wall) == 0){
+    }else if(text.compare(Animations::Wall) == 0){
         dynamic_cast<Wall*>(a)->setSpeed(options->speed);
         dynamic_cast<Wall*>(a)->setAxis(options->axis);
         dynamic_cast<Wall*>(a)->setDirection(options->direction);
-    }else if(text.compare(ANIMATIONS::Firework) == 0){
+    }else if(text.compare(Animations::Firework) == 0){
         dynamic_cast<Firework*>(a)->setSpeed(options->speed);
         dynamic_cast<Firework*>(a)->setParticles(options->leds);
         dynamic_cast<Firework*>(a)->setIterations(options->iteration);
-    }else if(text.compare(ANIMATIONS::RandomSparkFlash) == 0){
+    }else if(text.compare(Animations::RandomSparkFlash) == 0){
         dynamic_cast<RandomSparkFlash*>(a)->setSpeed(options->speed);
         dynamic_cast<RandomSparkFlash*>(a)->setIterations(options->iteration);
         dynamic_cast<RandomSparkFlash*>(a)->setLeds(options->leds);
-    }else if(text.compare(ANIMATIONS::RandomSpark) == 0){
+    }else if(text.compare(Animations::RandomSpark) == 0){
         dynamic_cast<RandomSpark*>(a)->setSpeed(options->speed);
         dynamic_cast<RandomSpark*>(a)->setSparks(options->leds);
         dynamic_cast<RandomSpark*>(a)->setIterations(options->iteration);
-    }else if(text.compare(ANIMATIONS::RandomFiller) == 0){
+    }else if(text.compare(Animations::RandomFiller) == 0){
         dynamic_cast<RandomFiller*>(a)->setSpeed(options->speed);
         dynamic_cast<RandomFiller*>(a)->setState(options->state);
-    }else if(text.compare(ANIMATIONS::AxisNailWall) == 0){
+    }else if(text.compare(Animations::AxisNailWall) == 0){
         dynamic_cast<AxisNailWall*>(a)->setSpeed(options->speed);
         dynamic_cast<AxisNailWall*>(a)->setAxis(options->axis);
         dynamic_cast<AxisNailWall*>(a)->setInvert(options->invert == 0 ? false : true);
-    }else if(text.compare(ANIMATIONS::Loadbar) == 0){
+    }else if(text.compare(Animations::Loadbar) == 0){
         dynamic_cast<Loadbar*>(a)->setSpeed(options->speed);
         dynamic_cast<Loadbar*>(a)->setAxis(options->axis);
-    }else if(text.compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
+    }else if(text.compare(Animations::WireBoxCenterShrinkGrow) == 0){
         dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(options->speed);
         dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(options->invert == 0 ? false : true);
         dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(options->iteration);
-    }else if(text.compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
+    }else if(text.compare(Animations::WireBoxCornerShrinkGrow) == 0){
         dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(options->speed);
         dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(options->iteration);
-    }else if(text.compare(ANIMATIONS::RandomZLift) == 0){
+    }else if(text.compare(Animations::RandomZLift) == 0){
         dynamic_cast<RandomZLift*>(a)->setSpeed(options->speed);
     }
 }
@@ -409,16 +409,16 @@ void MainWindow::portClosed(const QString &message)
  */
 void MainWindow::stopThreads()
 {
-    currentAnimation->m_abort = true;
+    m_currentAnimation->m_abort = true;
     m_sender->m_abort = true;
     m_animationPlaylist->m_stopAction->setDisabled(true);
-    stopPlay = false;
-    createThread->quit(); // first quit threads befor wait
+    m_stopPlay = false;
+    m_createThread->quit(); // first quit threads befor wait
     m_senderThread->quit();
 
     m_senderThread->wait();
-    createThread->wait();
-    currentAnimation->m_abort = false;
+    m_createThread->wait();
+    m_currentAnimation->m_abort = false;
     m_sender->m_abort = false;
     animationDone();
 }
@@ -435,7 +435,7 @@ void MainWindow::stopThreads()
 void MainWindow::showPropertiesPreview(QListWidgetItem *item)
 {
     ui->animationPropertiesPreview->createPropertiePreview(
-                animation.value( item->text() )->getAnimationPropertiesAsPlainText(
+                m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText(
                     dynamic_cast<AnimationItem*>(item) ) );
 }
 
@@ -445,80 +445,80 @@ void MainWindow::showPropertiesPreview(QListWidgetItem *item)
  */
 void MainWindow::setupAnimationItems(void)
 {
-    animation.insert(ANIMATIONS::Lift,new Lift);
-    animation.insert(ANIMATIONS::StringFly,new StringFly);
-    animation.insert(ANIMATIONS::RandomSparkFlash,new RandomSparkFlash);
-    animation.insert(ANIMATIONS::RandomSpark,new RandomSpark);
-    animation.insert(ANIMATIONS::RandomFiller,new RandomFiller);
-    animation.insert(ANIMATIONS::Loadbar,new Loadbar);
-    animation.insert(ANIMATIONS::AxisNailWall,new AxisNailWall);
-    animation.insert(ANIMATIONS::WireBoxCenterShrinkGrow,new WireBoxCenterShrinkGrow);
-    animation.insert(ANIMATIONS::WireBoxCornerShrinkGrow,new WireBoxCornerShrinkGrow);
-    animation.insert(ANIMATIONS::RandomZLift,new RandomZLift);
-    animation.insert(ANIMATIONS::Rain,new Rain);
-    animation.insert(ANIMATIONS::Wall,new Wall);
-    animation.insert(ANIMATIONS::Firework,new Firework);
+    m_animationHash.insert(Animations::Lift,new Lift);
+    m_animationHash.insert(Animations::StringFly,new StringFly);
+    m_animationHash.insert(Animations::RandomSparkFlash,new RandomSparkFlash);
+    m_animationHash.insert(Animations::RandomSpark,new RandomSpark);
+    m_animationHash.insert(Animations::RandomFiller,new RandomFiller);
+    m_animationHash.insert(Animations::Loadbar,new Loadbar);
+    m_animationHash.insert(Animations::AxisNailWall,new AxisNailWall);
+    m_animationHash.insert(Animations::WireBoxCenterShrinkGrow,new WireBoxCenterShrinkGrow);
+    m_animationHash.insert(Animations::WireBoxCornerShrinkGrow,new WireBoxCornerShrinkGrow);
+    m_animationHash.insert(Animations::RandomZLift,new RandomZLift);
+    m_animationHash.insert(Animations::Rain,new Rain);
+    m_animationHash.insert(Animations::Wall,new Wall);
+    m_animationHash.insert(Animations::Firework,new Firework);
 
-    currentAnimation = animation.value(ANIMATIONS::StringFly);
+    m_currentAnimation = m_animationHash.value(Animations::StringFly);
 
-    AnimationOptions::Options options;
+    Options options;
 
-    QHash<QString,Animation*>::const_iterator iter = animation.constBegin();
-    while(iter != animation.constEnd()){
+    QHash<QString,Animation*>::const_iterator iter = m_animationHash.constBegin();
+    while(iter != m_animationHash.constEnd()){
         AnimationItem *item = new AnimationItem(iter.key(),m_animationList);
         options.speed = iter.value()->getSpeed();
 
-        if(iter.key().compare(ANIMATIONS::AxisNailWall) == 0){
+        if(iter.key().compare(Animations::AxisNailWall) == 0){
             options.axis =  dynamic_cast<AxisNailWall*>(iter.value())->getAxis();
             options.invert = dynamic_cast<AxisNailWall*>(iter.value())->getInvert();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Invert );
-        }else if(iter.key().compare(ANIMATIONS::Firework) == 0){
+        }else if(iter.key().compare(Animations::Firework) == 0){
             options.iteration = dynamic_cast<Firework*>(iter.value())->getIterations();
             options.leds = dynamic_cast<Firework*>(iter.value())->getParticles();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Particls );
-        }else if(iter.key().compare(ANIMATIONS::Lift) == 0){
+        }else if(iter.key().compare(Animations::Lift) == 0){
             options.iteration = dynamic_cast<Lift*>(iter.value())->getIterations();
             options.delay = dynamic_cast<Lift*>(iter.value())->getDelay();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Delay );
-        }else if(iter.key().compare(ANIMATIONS::Loadbar) == 0){
+        }else if(iter.key().compare(Animations::Loadbar) == 0){
             options.axis = dynamic_cast<Loadbar*>(iter.value())->getAxis();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis );
-        }else if(iter.key().compare(ANIMATIONS::Rain) == 0){
+        }else if(iter.key().compare(Animations::Rain) == 0){
             options.iteration = dynamic_cast<Rain*>(iter.value())->getIterations();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
-        }else if(iter.key().compare(ANIMATIONS::RandomFiller) == 0){
+        }else if(iter.key().compare(Animations::RandomFiller) == 0){
             options.invert = dynamic_cast<RandomFiller*>(iter.value())->getState() == Draw::ON ? true : false;
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::LedState );
-        }else if(iter.key().compare(ANIMATIONS::RandomSpark) == 0){
+        }else if(iter.key().compare(Animations::RandomSpark) == 0){
             options.iteration = dynamic_cast<RandomSpark*>(iter.value())->getIterations();
             options.leds = dynamic_cast<RandomSpark*>(iter.value())->getSparks();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Leds );
-        }else if(iter.key().compare(ANIMATIONS::RandomSparkFlash) == 0){
+        }else if(iter.key().compare(Animations::RandomSparkFlash) == 0){
             options.iteration = dynamic_cast<RandomSparkFlash*>(iter.value())->getIterations();
             options.leds = dynamic_cast<RandomSparkFlash*>(iter.value())->getLeds();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Leds );
-        }else if(iter.key().compare(ANIMATIONS::RandomZLift) == 0){
+        }else if(iter.key().compare(Animations::RandomZLift) == 0){
             options.iteration = dynamic_cast<RandomZLift*>(iter.value())->getIterations();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
-        }else if(iter.key().compare(ANIMATIONS::StringFly) == 0){
+        }else if(iter.key().compare(Animations::StringFly) == 0){
             options.text = dynamic_cast<StringFly*>(iter.value())->getSToDisplay();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Text );
-        }else if(iter.key().compare(ANIMATIONS::Wall) == 0){
+        }else if(iter.key().compare(Animations::Wall) == 0){
             options.axis = dynamic_cast<Wall*>(iter.value())->getAxis();
             options.direction = dynamic_cast<Wall*>(iter.value())->getDirection();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Direction );
-        }else if(iter.key().compare(ANIMATIONS::WireBoxCenterShrinkGrow) == 0){
+        }else if(iter.key().compare(Animations::WireBoxCenterShrinkGrow) == 0){
             options.iteration = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getIterations();
             options.invert = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::CenterStart );
-        }else if(iter.key().compare(ANIMATIONS::WireBoxCornerShrinkGrow) == 0){
+        }else if(iter.key().compare(Animations::WireBoxCornerShrinkGrow) == 0){
             options.iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
         }
         item->setOptions(options);
 
         iter.value()->createAnimationTooltipAsRichText(item);
-        iter.value()->moveToThread(createThread); // move animations to own thread
+        iter.value()->moveToThread(m_createThread); // move animations to own thread
         connect(iter.value(),&Animation::sendData,m_sender,&Sender::sendAnimation); // connect animation thread with sender thread
         iter.value()->m_abort = false;
         iter++;
@@ -533,7 +533,7 @@ void MainWindow::openCloseSerialPort(void)
 {
     if(!m_senderThread->isRunning())
         m_senderThread->start();
-    Q_EMIT openSerialInterface(sdialog->settings()); // call send thread
+    Q_EMIT openSerialInterface(m_sdialog->settings()); // call send thread
 }
 
 /**
@@ -567,7 +567,7 @@ void MainWindow::connectSignals(void)
     connect( m_openPortAction, &QAction::triggered, this,&MainWindow::openCloseSerialPort);
     connect( m_quitAction, &QAction::triggered, this,&MainWindow::close);
     connect( m_aboutAction, &QAction::triggered,this,&MainWindow::about);
-    connect( m_settingAction, &QAction::triggered,sdialog,&QWidget::show);
+    connect( m_settingAction, &QAction::triggered,m_sdialog,&QWidget::show);
     connect( m_animationPlaylist->m_playAction, &QAction::triggered , this , &MainWindow::playAnimations);
     connect( m_animationPlaylist->m_stopAction, &QAction::triggered , this , &MainWindow::stopThreads);
 
@@ -623,34 +623,34 @@ void MainWindow::createToolbar()
 {
     QSize size(32,32);
 
-    mainToolBar = new QToolBar();
-    mainToolBar->setObjectName ("Main Toolbar");
-    mainToolBar->addAction(m_quitAction);
-    mainToolBar->addSeparator();
-    mainToolBar->addAction(m_openPortAction);
-    mainToolBar->addSeparator();
-    mainToolBar->addAction(m_settingAction);
-    mainToolBar->setIconSize (size);
-    mainToolBar->setWindowTitle("Main Toolbar");
-    this->addToolBar (mainToolBar);
+    m_mainToolBar = new QToolBar();
+    m_mainToolBar->setObjectName ("Main Toolbar");
+    m_mainToolBar->addAction(m_quitAction);
+    m_mainToolBar->addSeparator();
+    m_mainToolBar->addAction(m_openPortAction);
+    m_mainToolBar->addSeparator();
+    m_mainToolBar->addAction(m_settingAction);
+    m_mainToolBar->setIconSize (size);
+    m_mainToolBar->setWindowTitle("Main Toolbar");
+    this->addToolBar (m_mainToolBar);
 
     QList<QAction*> actionList = m_animationPlaylist->actions();
     if(!actionList.isEmpty()){
-        animationToolBar = new QToolBar("Animation Toolbar");
+        m_animationToolBar = new QToolBar("Animation Toolbar");
         foreach (QAction *action, actionList) {
-            animationToolBar->addAction(action);
+            m_animationToolBar->addAction(action);
         }
-        animationToolBar->setIconSize(size);
-        this->addToolBar(animationToolBar);
+        m_animationToolBar->setIconSize(size);
+        this->addToolBar(m_animationToolBar);
     }
 
-    helpToolBar = new QToolBar( );
-    helpToolBar->setObjectName ("Help Toolbar");
-    helpToolBar->setLayoutDirection (Qt::RightToLeft);
-    helpToolBar->addAction (m_aboutAction);
-    helpToolBar->setIconSize (size);
-    helpToolBar->setWindowTitle("Help Toolbar");
-    this->addToolBar (Qt::TopToolBarArea,helpToolBar);
+    m_helpToolBar = new QToolBar( );
+    m_helpToolBar->setObjectName ("Help Toolbar");
+    m_helpToolBar->setLayoutDirection (Qt::RightToLeft);
+    m_helpToolBar->addAction (m_aboutAction);
+    m_helpToolBar->setIconSize (size);
+    m_helpToolBar->setWindowTitle("Help Toolbar");
+    this->addToolBar (Qt::TopToolBarArea,m_helpToolBar);
 }
 
 /**

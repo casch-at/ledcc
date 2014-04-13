@@ -36,6 +36,6 @@ set( SOURCES    Draw.cpp
                 StringFly.cpp
     )
 
-add_library( animations STATIC ${SOURCES} )
+add_library( animations STATIC ${SOURCES} LookUpTables.hpp)
 
 target_link_libraries( animations ${Qt5Widgets_LIBRARIES} ${Qt5Core_LIBRARIES} )

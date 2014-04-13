@@ -30,7 +30,8 @@ configure_file (
     "Global.hpp"
     @ONLY
     )
-add_library(ledcubecore Sender.cpp )
+set(HEADERS AnimationOptionsStruct.hpp Global.hpp)
+add_library(ledcubecore Sender.cpp ${HEADERS})
 target_link_libraries(ledcubecore animations  ${Qt5SerialPort_LIBRARIES} )
 add_dependencies(ledcubecore animations)
 add_subdirectory(animations)

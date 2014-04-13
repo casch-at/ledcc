@@ -20,13 +20,11 @@
 #include <SettingsDialog.hpp>
 #include <QThread>
 #include <Global.hpp>
-
-#include "AnimationOptions.hpp"
 #include <QTimer>
-//#define DEBUGWINDOW
+
+#include "AnimationOptionsStruct.hpp"
 
 /*Forward deceleration*/
-QT_BEGIN_NAMESPACE
 class QTimer;
 class QShortcut;
 class Lift;
@@ -37,11 +35,9 @@ class AnimationItem;
 class AnimationListWidget;
 class AnimationPlayListWidget;
 
-QT_END_NAMESPACE
 namespace Ui {
     class MainWindow;
 }
-
 
 class MainWindow : public QMainWindow
 {
@@ -65,7 +61,7 @@ private Q_SLOTS:
     void playAnimations(void);
     void animationDone(void);
     void updateAnimation(const AnimationItem *item);
-    void updateItemToolTip(const AnimationOptions::Options &aOptions);
+    void updateItemToolTip(const Options &aOptions);
     void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
     void closePort(const QString &message);
@@ -85,11 +81,11 @@ private:
     void setupSenderThread(void);
 private:
     Ui::MainWindow *ui;
-    SettingsDialog *sdialog;
+    SettingsDialog *m_sdialog;
     SettingsDialog::SerialSettings m_port;
-    QToolBar *helpToolBar;
-    QToolBar *mainToolBar;
-    QToolBar *animationToolBar;
+    QToolBar *m_helpToolBar;
+    QToolBar *m_mainToolBar;
+    QToolBar *m_animationToolBar;
     QAction *m_quitAction;
     QAction *m_aboutAction;
     QAction *m_settingAction;
@@ -98,23 +94,23 @@ private:
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;
 //    QShortcut *scShowHideAnimationProperties;
-    QThread *createThread;
+    QThread *m_createThread;
     QThread *m_senderThread;
-    Animation *currentAnimation;
+    Animation *m_currentAnimation;
     Sender *m_sender;
-    QHash<QString,Animation*> animation;
+    QHash<QString,Animation*> m_animationHash;
     bool m_portOpened;
-    bool stopPlay;
+    bool m_stopPlay;
     AnimationListWidget *m_animationList;
     AnimationPlayListWidget *m_animationPlaylist;
-
+    Q_DISABLE_COPY(MainWindow)
 };
 
-namespace SETTINGS{
-    const QString GeometrySettings("geometry");
+namespace Settings{
+    const QString MainWindowGeometrySettings("geometry");
     }
 
-namespace ANIMATIONS{
+namespace Animations{
     const QString WireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
     const QString WireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
     const QString Lift("Lift");

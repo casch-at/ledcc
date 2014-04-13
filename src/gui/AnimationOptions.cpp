@@ -35,11 +35,11 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
     ui->setupUi(this);
 
     // Create connections ( Signal & Slot )
-    connect(ui->m_nextPB, &QAction::triggered, this, &AnimationOptions::optionsNextAnimation);
-    connect(ui->m_prevPB, &QAction::triggered, this, &AnimationOptions::optionsPrevAnimation);
-    connect(ui->m_applyPB, &QAction::triggered, this, &AnimationOptions::applyAnimationOptions);
-    connect(ui->m_cancelPB, &QAction::triggered, this, &AnimationOptions::cancel);
-    connect(ui->m_okPB, &QAction::triggered, this, &AnimationOptions::ok);
+    connect(ui->m_nextPB, &QPushButton::pressed, this, &AnimationOptions::optionsNextAnimation);
+    connect(ui->m_prevPB, &QPushButton::pressed, this, &AnimationOptions::optionsPrevAnimation);
+    connect(ui->m_applyPB, &QPushButton::pressed, this, &AnimationOptions::applyAnimationOptions);
+    connect(ui->m_cancelPB, &QPushButton::pressed, this, &AnimationOptions::cancel);
+    connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
     AQP::accelerateWidget(this);
 
 
@@ -86,17 +86,29 @@ void AnimationOptions::changeEvent(QEvent *e)
     }
 }
 
-void AnimationOptions::onApplyPressed()
+/*!
+ \brief
+
+*/
+void AnimationOptions::applyAnimationOptions()
 {
     if(m_animationOptionsModefied)
-        Q_EMIT applyNewAnimationArguments();
+        Q_EMIT applyNewAnimationArguments(m_animationToUpdate);
 }
 
+/*!
+ \brief
+
+*/
 void AnimationOptions::cancel()
 {
 
 }
 
+/*!
+ \brief
+
+*/
 void AnimationOptions::ok()
 {
 
@@ -122,6 +134,11 @@ void AnimationOptions::ok()
 //    ui->speedSpinB->setValue( static_cast<int>(options->speed));
 //    ui->textLineE->setText(options->text.isEmpty() == true ? "" : options->text);
 
+
+/*!
+ \brief
+
+*/
 void AnimationOptions::optionsNextAnimation()
 {
     AnimationItem *animation;
@@ -136,57 +153,77 @@ void AnimationOptions::optionsNextAnimation()
     m_animationAt++;
 }
 
+
+/*!
+ \brief
+
+*/
 void AnimationOptions::optionsPrevAnimation()
 {
     m_animationAt--;
 }
 
+
+/*!
+ \brief
+
+ \param hasOption
+ \param options
+*/
 void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const Options *options)
 {
-    if ( hasOption & Speed) {
-        ui->m_speedLabel->setVisible(!ui->m_speedLabel->isVisible());
-        ui->m_speedSpinB->setVisible(!ui->m_speedSpinB->isVisible());
-        ui->m_speedSpinB->setValue(options->speed);
+    foreach (QObject *obj, ui->m_optionsGridL->children()) {
+        dynamic_cast<QWidget*>(obj)->setVisible(false);
     }
-
-    if ( hasOption & Direction){
-
-    }
-
-    if ( hasOption & Axis) {
-
-    }
-
-    if ( hasOption & Leds) {
-
-    }
-
-    if ( hasOption & Particls) {
-
-    }
-
-    if ( hasOption & Delay) {
-
-    }
-
-    if ( hasOption & Iterations) {
-
-    }
-
-    if ( hasOption & Invert) {
-
-    }
-
-    if ( hasOption & CenterStart) {
-
-    }
-
-    if ( hasOption & Text) {
-
-    }
-
-    if ( hasOption & LedState) {
-
+    for (int i = 0; i < TOTAL_ARGUMENTS; i++) {
+        switch ( (1<<i) & hasOption )
+        {
+        case Speed:
+            ui->m_speedLabel->setVisible(!ui->m_speedLabel->isVisible());
+            ui->m_speedSpinB->setVisible(!ui->m_speedSpinB->isVisible());
+            ui->m_speedSpinB->setValue(options->speed);
+            break;
+        case Direction:
+            ui->m_directionLabel->setVisible(!ui->m_directionLabel->isVisible());
+            ui->m_directionComB->setVisible(!ui->m_directionComB->isVisible());
+            ui->m_directionComB->setCurrentIndex(options->direction == Draw::Backward ? 0 : 1);
+            break;
+        case Axis:
+            ui->m_axisLabel->setVisible(!ui->m_axisLabel->isVisible());
+            ui->m_axisComB->setVisible(!ui->m_axisComB->isVisible());
+            switch (options->axis)
+            {
+            case Draw::Y_AXIS:
+                ui->m_axisComB->setCurrentIndex(1);
+                break;
+            case Draw::Z_AXIS:
+                ui->m_axisComB->setCurrentIndex(2);
+                break;
+            default: // Default Draw::X_AXIS
+                    ui->m_axisComB->setCurrentIndex(0);
+                break;
+            }
+            break;
+        case Leds:
+            break;
+        case Particls:
+            break;
+        case Delay:
+            break;
+        case Iterations:
+            break;
+        case Invert:
+            break;
+        case CenterStart:
+            break;
+        case Text:
+            break;
+        case LedState:
+            break;
+        default:
+            qDebug("Hello default");
+            break;
+        }
     }
 }
 
