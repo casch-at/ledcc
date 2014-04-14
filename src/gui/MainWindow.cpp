@@ -27,7 +27,7 @@
 #include "AnimationListWidget.hpp"
 #include "AnimationPlayListWidget.hpp"
 #include "AnimationOptions.hpp"
-
+#include "AnimationHandler.hpp"
 // Qt includes
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -45,7 +45,6 @@
 
 // Namespaces
 using namespace std;
-using namespace animations;
 /**
  * @brief MainWindow::MainWindow
  * @param parent
@@ -57,21 +56,21 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
     m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
-    m_createThread(new QThread),
-    m_animationList(new AnimationListWidget(this)),
-    m_animationPlaylist(new AnimationPlayListWidget(this))
+    m_createThread(new QThread)
+//    m_animationList(new AnimationListWidget(this)),
+//    m_animationPlaylist(new AnimationPlayListWidget(this))
 {
+    m_animationHandler = new animations::AnimationHandler();
     ui->setupUi(this);
     setupSenderThread();
     readSettings ();
     createActions ();
     createToolbar ();
-    setupAnimationItems();
     connectSignals();
     ui->splitter->setStretchFactor(1,2);
-    ui->m_animationListLay->addWidget(m_animationList);
-    ui->m_animationPlaylistLay->addWidget(m_animationPlaylist);
-    m_animationList->setFocus();
+//    ui->m_animationListLay->addWidget(m_animationList);
+//    ui->m_animationPlaylistLay->addWidget(m_animationPlaylist);
+    ui->m_animationList->setFocus();
 
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
@@ -88,8 +87,6 @@ MainWindow::~MainWindow(void) //Deinit MainWindow
     delete m_senderThread;
     delete m_sdialog;
     delete m_sender;
-    delete m_animationList;
-    delete m_animationPlaylist;
     delete ui;
 }
 
@@ -165,7 +162,7 @@ void MainWindow::readSettings (void){ //Load geometry of application
  */
 void MainWindow::updateUi(void)
 {
-    int inPlayList = m_animationPlaylist->count();
+    int inPlayList = ui->m_animationPlaylist->count();
 
     if(m_portOpened)
     {
@@ -175,12 +172,12 @@ void MainWindow::updateUi(void)
             m_openPortAction->setIcon( QIcon( "://images/disconnect.png"));
             m_openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
         }
-        if( inPlayList && !m_animationPlaylist->m_stopAction->isEnabled()){
-            m_animationPlaylist->m_playAction->setEnabled(true);
-            m_animationPlaylist->m_stopAction->setDisabled(true);
+        if( inPlayList && !ui->m_animationPlaylist->m_stopAction->isEnabled()){
+            ui->m_animationPlaylist->m_playAction->setEnabled(true);
+            ui->m_animationPlaylist->m_stopAction->setDisabled(true);
         }
         else{
-            m_animationPlaylist->m_playAction->setDisabled(true);
+            ui->m_animationPlaylist->m_playAction->setDisabled(true);
         }
     }else
     {
@@ -190,102 +187,31 @@ void MainWindow::updateUi(void)
             m_openPortAction->setIcon( QIcon( "://images/connect.png"));
             m_openPortAction->setToolTip(tr("Connect to seriell device  O"));
         }
-        m_animationPlaylist->m_playAction->setDisabled(true);
-        m_animationPlaylist->m_stopAction->setDisabled(true);
+        ui->m_animationPlaylist->m_playAction->setDisabled(true);
+        ui->m_animationPlaylist->m_stopAction->setDisabled(true);
     }
 
     if(inPlayList){
-        m_animationPlaylist->m_editAction->setEnabled(true);
-        m_animationPlaylist->m_clearAction->setEnabled(true);
-        m_animationPlaylist->m_removeAction->setEnabled(true);
-        m_animationPlaylist->m_moveDownAction->setEnabled(true);
-        m_animationPlaylist->m_moveUpAction->setEnabled(true);
-        m_animationPlaylist->m_duplicateAction->setEnabled(true);
+        ui->m_animationPlaylist->m_editAction->setEnabled(true);
+        ui->m_animationPlaylist->m_clearAction->setEnabled(true);
+        ui->m_animationPlaylist->m_removeAction->setEnabled(true);
+        ui->m_animationPlaylist->m_moveDownAction->setEnabled(true);
+        ui->m_animationPlaylist->m_moveUpAction->setEnabled(true);
+        ui->m_animationPlaylist->m_duplicateAction->setEnabled(true);
     } else {
-        m_animationPlaylist->m_editAction->setDisabled(true);
-        m_animationPlaylist->m_clearAction->setDisabled(true);
-        m_animationPlaylist->m_removeAction->setDisabled(true);
-        m_animationPlaylist->m_moveDownAction->setDisabled(true);
-        m_animationPlaylist->m_moveUpAction->setDisabled(true);
-        m_animationPlaylist->m_duplicateAction->setDisabled(true);
+        ui->m_animationPlaylist->m_editAction->setDisabled(true);
+        ui->m_animationPlaylist->m_clearAction->setDisabled(true);
+        ui->m_animationPlaylist->m_removeAction->setDisabled(true);
+        ui->m_animationPlaylist->m_moveDownAction->setDisabled(true);
+        ui->m_animationPlaylist->m_moveUpAction->setDisabled(true);
+        ui->m_animationPlaylist->m_duplicateAction->setDisabled(true);
     }
 }
-
-/**
- * @author Christian Schwarzgruber
- * @brief MainWindow::playNextAnimation
- *
- * @param QString &a
- */
-void MainWindow::playNextAnimation(const AnimationItem *item)
-{
-    if(item == Q_NULLPTR){
-        stopThreads();
-        return;
-    }
-
-    m_currentAnimation = m_animationHash.value(item->text());
-    connect(m_createThread,&QThread::started,m_currentAnimation,&animations::Animation::createAnimation);
-    connect(m_currentAnimation, &animations::Animation::done, m_createThread, &QThread::quit);
-    //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-    //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
-    connect(m_currentAnimation,&animations::Animation::done,this,&MainWindow::animationDone);
-
-    updateAnimation(item);
-    m_createThread->start();
-}
-
-void MainWindow::playAnimations()
-{
-    m_stopPlay = true;
-
-    if(!m_senderThread->isRunning())
-        m_senderThread->start();
-
-    m_animationPlaylist->m_playAction->setDisabled(true);
-    m_animationPlaylist->m_stopAction->setEnabled(true);
-    playNextAnimation(m_animationPlaylist->getNextAnimation());
-}
-
-
-void MainWindow::animationDone()
-{
-    disconnect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
-    disconnect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
-    disconnect(m_currentAnimation,&Animation::done,this,&MainWindow::animationDone);
-
-    m_createThread->wait();
-
-    if(m_stopPlay)
-        playNextAnimation(m_animationPlaylist->getNextAnimation());
-    else
-        updateUi();
-
-}
-
-void MainWindow::updateItemToolTip(const Options &aOptions)
-{
-    QList<QListWidgetItem*> items = m_animationPlaylist->selectedItems();
-    if(!items.isEmpty())
-    {
-        AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
-        item->setOptions(const_cast<Options&>(aOptions));
-
-        m_animationHash.value(item->text())->createAnimationTooltipAsRichText(item);
-        ui->animationPropertiesPreview->createPropertiePreview(
-                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
-        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
-        {
-            updateAnimation(item);
-        }
-    }
-}
-
 
 void MainWindow::portOpen(const QString &message)
 {
     m_portOpened = true;
-    ui->statusbar->showMessage(message,3000);
+    ui->m_statusbar->showMessage(message,3000);
     updateUi();
 }
 
@@ -324,7 +250,7 @@ void MainWindow::closePort(const QString &message)
 void MainWindow::portClosed(const QString &message)
 {
     m_portOpened = false;
-    ui->statusbar->showMessage(message,3000);
+    ui->m_statusbar->showMessage(message,3000);
     stopThreads();
     updateUi();
 }
@@ -335,34 +261,18 @@ void MainWindow::portClosed(const QString &message)
  */
 void MainWindow::stopThreads()
 {
-    m_currentAnimation->m_abort = true;
+//    m_currentAnimation->m_abort = true; //FIXME:: Is now in AnimationHandler
     m_sender->m_abort = true;
-    m_animationPlaylist->m_stopAction->setDisabled(true);
+    ui->m_animationPlaylist->m_stopAction->setDisabled(true);
     m_stopPlay = false;
     m_createThread->quit(); // first quit threads befor wait
     m_senderThread->quit();
 
     m_senderThread->wait();
     m_createThread->wait();
-    m_currentAnimation->m_abort = false;
+//    m_currentAnimation->m_abort = false; //FIXME:: Is now in AnimationHandler
     m_sender->m_abort = false;
-    animationDone();
-}
-
-
-/**
- * @brief     QStringList list;
-    list.append("Hello 123");
-    list.append("You 12.3");
-    ui->dockWidget->createPropertiePreview(dynamic_cast<AxisNailWall*>(animation.value(ANIMATIONS::AxisNailWall))->getAnimationProperties());
- *
- * @param item
- */
-void MainWindow::showPropertiesPreview(QListWidgetItem *item)
-{
-    ui->animationPropertiesPreview->createPropertiePreview(
-                m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText(
-                    dynamic_cast<AnimationItem*>(item) ) );
+//    animationDone(); //FIXME:: Is now in AnimationHandler
 }
 
 /**
@@ -408,24 +318,24 @@ void MainWindow::connectSignals(void)
     connect( m_quitAction, &QAction::triggered, this,&MainWindow::close);
     connect( m_aboutAction, &QAction::triggered,this,&MainWindow::about);
     connect( m_settingAction, &QAction::triggered,m_sdialog,&QWidget::show);
-    connect( m_animationPlaylist->m_playAction, &QAction::triggered , this , &MainWindow::playAnimations);
-    connect( m_animationPlaylist->m_stopAction, &QAction::triggered , this , &MainWindow::stopThreads);
+//    connect( ui->m_animationPlaylist->m_playAction, &QAction::triggered , this , &animations::AnimationHandler::playAnimations);
+    connect( ui->m_animationPlaylist->m_stopAction, &QAction::triggered , this , &MainWindow::stopThreads);
     connect( m_aboutQt, &QAction::triggered, this, &QApplication::aboutQt);
     // Animation properties ready connection
     //    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
 
     // ListWidget shortcut sellect all connections
-    connect( m_focusAnimationList, &QShortcut::activated, m_animationList, &ListWidget::focus);
-    connect( m_focusAnimationPlaylist, &QShortcut::activated, m_animationPlaylist, &ListWidget::focus);
-    connect( m_scSellectAll, &QShortcut::activated, m_animationList, &ListWidget::selectAllItems);
-    connect( m_scSellectAll, &QShortcut::activated, m_animationPlaylist, &ListWidget::selectAllItems);
+    connect( m_focusAnimationList, &QShortcut::activated, ui->m_animationList, &ListWidget::focus);
+    connect( m_focusAnimationPlaylist, &QShortcut::activated, ui->m_animationPlaylist, &ListWidget::focus);
+    connect( m_scSellectAll, &QShortcut::activated, ui->m_animationList, &ListWidget::selectAllItems);
+    connect( m_scSellectAll, &QShortcut::activated, ui->m_animationPlaylist, &ListWidget::selectAllItems);
 
     // ListWidget interconnections
-    connect( m_animationList , &AnimationListWidget::addToPlaylist , m_animationPlaylist , &AnimationPlayListWidget::newItem);
-    connect( m_animationList , &ListWidget::showPropertiePreview , this , &MainWindow::showPropertiesPreview);
-    connect( m_animationPlaylist, &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
-    //    connect( m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
-    connect( m_animationPlaylist, &ListWidget::showPropertiePreview, this, &MainWindow::showPropertiesPreview);
+    connect( ui->m_animationList , &AnimationListWidget::addToPlaylist , ui->m_animationPlaylist , &AnimationPlayListWidget::newItem);
+    connect( ui->m_animationList , &AnimationListWidget::showPropertiePreview , ui->animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
+    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
+    //    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
+    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, ui->animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
 }
 
 /**
@@ -477,7 +387,7 @@ void MainWindow::createToolbar()
     m_mainToolBar->setWindowTitle("Main Toolbar");
     this->addToolBar (m_mainToolBar);
 
-    QList<QAction*> actionList = m_animationPlaylist->actions();
+    QList<QAction*> actionList = ui->m_animationPlaylist->actions();
     if(!actionList.isEmpty()){
         m_animationToolBar = new QToolBar("Animation Toolbar");
         foreach (QAction *action, actionList) {

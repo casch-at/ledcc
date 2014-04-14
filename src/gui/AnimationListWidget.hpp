@@ -33,7 +33,6 @@ public:
     virtual ~AnimationListWidget();
 Q_SIGNALS:
     void addToPlaylist(QList<QListWidgetItem *> selected);
-    void showPropertiePreview(QListWidgetItem *item);
 
 protected:
     virtual void keyPressEvent(QKeyEvent * e);

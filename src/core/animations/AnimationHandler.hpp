@@ -4,7 +4,8 @@
 
 #include <QObject>
 #include <QHash>
-
+//#include "AnimationListWidget.hpp"
+//#include "AnimationListWidget.hpp"
 namespace animations {
     class Lift;
     class AxisNailWall;
@@ -37,7 +38,9 @@ namespace animations {
 
     Q_SIGNALS:
         void currentAnimationChanged(Animation* arg);
-
+        void startAnimation();
+        void stopPlay();
+        void updateUi();
     public Q_SLOTS:
         void updateAnimation(const AnimationItem *item);
         void updateItemToolTip(const Options &aOptions);
@@ -60,6 +63,7 @@ namespace animations {
         Animation *m_currentAnimation;
         QHash<QString,Animation*> m_animationHash;
         Q_DISABLE_COPY(AnimationHandler)
+//        friend  AnimationListWidget;
     };
 
     }

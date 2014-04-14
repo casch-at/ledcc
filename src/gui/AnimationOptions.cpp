@@ -187,17 +187,17 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
         case Speed:
             ui->m_speedLabel->setEnabled(true);
             ui->m_speedSpinB->setEnabled(true);
-            ui->m_speedSpinB->setValue(options->speed);
+            ui->m_speedSpinB->setValue(options->m_speed);
             break;
         case Direction:
             ui->m_directionLabel->setEnabled(true);
             ui->m_directionComB->setEnabled(true);
-            ui->m_directionComB->setCurrentIndex(options->direction == Draw::Backward ? 0 : 1);
+            ui->m_directionComB->setCurrentIndex(options->m_direction == Draw::Backward ? 0 : 1);
             break;
         case Axis:
             ui->m_axisLabel->setEnabled(true);
             ui->m_axisComB->setEnabled(true);
-            switch (options->axis)
+            switch (options->m_axis)
             {
             case Draw::Y_AXIS:
                 ui->m_axisComB->setCurrentIndex(1);
@@ -213,39 +213,39 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
         case Leds:
             ui->m_ledsLabel->setEnabled(true);
             ui->m_ledsSpinB->setEnabled(true);
-            ui->m_ledsSpinB->setValue(options->leds);
+            ui->m_ledsSpinB->setValue(options->m_leds);
             break;
         case Particls:
             ui->m_particlesLabel->setEnabled(true);
             ui->m_particlesSpinB->setEnabled(true);
-            ui->m_particlesSpinB->setValue(options->leds);
+            ui->m_particlesSpinB->setValue(options->m_leds);
             break;
         case Delay:
             ui->m_delayLabel->setEnabled(true);
             ui->m_delaySpinB->setEnabled(true);
-            ui->m_delaySpinB->setValue(options->delay);
+            ui->m_delaySpinB->setValue(options->m_delay);
             break;
         case Iterations:
             ui->m_iterationsLabel->setEnabled(true);
             ui->m_iterationsSpinB->setEnabled(true);
-            ui->m_iterationsSpinB->setValue(options->iteration);
+            ui->m_iterationsSpinB->setValue(options->m_iteration);
             break;
         case Invert:
             ui->m_invertCheckB->setEnabled(true);
-            ui->m_invertCheckB->setChecked(options->invert);
+            ui->m_invertCheckB->setChecked(options->m_invert);
             break;
         case CenterStart:
             ui->m_invertCheckB->setEnabled(true);
-            ui->m_invertCheckB->setChecked(options->invert);
+            ui->m_invertCheckB->setChecked(options->m_invert);
             break;
         case Text:
             ui->m_textLabel->setEnabled(true);
             ui->m_textLineE->setEnabled(true);
-            ui->m_textLineE->setText(options->text);
+            ui->m_textLineE->setText(options->m_text);
             break;
         case LedState:
             ui->m_ledStateCheckB->setEnabled(true);
-            ui->m_ledStateCheckB->setChecked(options->state == Draw::ON ? true : false);
+            ui->m_ledStateCheckB->setChecked(options->m_state == Draw::ON ? true : false);
             break;
         default:
             switch ((1<<i))

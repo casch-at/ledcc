@@ -15,7 +15,7 @@ public:
     virtual ~ListWidget();
 
 Q_SIGNALS:
-    void showPropertiePreview(QListWidgetItem *item);
+    void showPropertiePreview(QStringList &itemProperties);
     void updateUi(void);
 public Q_SLOTS:
     void selectAllItems();

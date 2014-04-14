@@ -20,15 +20,14 @@
 #include "Options.hpp"
 #include <QtWidgets/QDialog>
 
-
-
-
 class QTimer;
 
+namespace Ui {
+    class AnimationOptions;
+    }
+
 namespace animations {
-    namespace Ui {
-        class AnimationOptions;
-        }
+
     class AnimationItem;
 
     /*!

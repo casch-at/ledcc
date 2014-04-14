@@ -18,6 +18,7 @@
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
+using namespace animations;
 
 AnimationItem::AnimationItem(QListWidget *view, int type):
     QListWidgetItem(view,type)

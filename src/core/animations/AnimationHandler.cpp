@@ -63,7 +63,20 @@ AnimationHandler::~AnimationHandler()
 */
 void AnimationHandler::updateItemToolTip(const Options &aOptions)
 {
+    QList<QListWidgetItem*> items/* = m_animationPlaylist->selectedItems()*/;
+    if(!items.isEmpty())
+    {
+        AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
+//        item->setOptions(const_cast<Options&>(aOptions));
 
+        m_animationHash.value(item->text())->createAnimationTooltipAsRichText(item);
+//        ui->animationPropertiesPreview->createPropertiePreview(
+//                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
+        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
+        {
+            updateAnimation(item);
+        }
+    }
 }
 
 /*!
@@ -72,7 +85,16 @@ void AnimationHandler::updateItemToolTip(const Options &aOptions)
 */
 void AnimationHandler::animationDone()
 {
+//    disconnect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
+//    disconnect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
+//    disconnect(m_currentAnimation,&Animation::done,this,&MainWindow::animationDone);
 
+//    m_createThread->wait();
+
+//    if(m_stopPlay)
+//        playNextAnimation(m_animationPlaylist->getNextAnimation());
+//    else
+//        updateUi();
 }
 
 /*!
@@ -81,9 +103,39 @@ void AnimationHandler::animationDone()
 */
 void AnimationHandler::playAnimations()
 {
+//    m_stopPlay = true;
 
+//    if(!m_senderThread->isRunning())
+//        m_senderThread->start();
+
+//    m_animationPlaylist->m_playAction->setDisabled(true);
+//    m_animationPlaylist->m_stopAction->setEnabled(true);
+//    playNextAnimation(m_animationPlaylist->getNextAnimation());
 }
 
+/**
+ * @author Christian Schwarzgruber
+ * @brief MainWindow::playNextAnimation
+ *
+ * @param QString &a
+ */
+void AnimationHandler::playNextAnimation(const AnimationItem *item)
+{
+    if(item == Q_NULLPTR){
+        Q_EMIT stopPlay();
+        return;
+    }
+
+    m_currentAnimation = m_animationHash.value(item->text());
+//    connect(m_createThread,&QThread::started,m_currentAnimation,&animations::Animation::createAnimation);
+//    connect(m_currentAnimation, &animations::Animation::done, m_createThread, &QThread::quit);
+    //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
+//    connect(m_currentAnimation,&animations::Animation::done,this,&MainWindow::animationDone);
+
+    updateAnimation(item);
+//    m_createThread->start();
+}
 /*!
  \brief
 

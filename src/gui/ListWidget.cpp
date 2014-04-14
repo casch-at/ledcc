@@ -1,5 +1,5 @@
 #include "ListWidget.hpp"
-
+#include "AnimationItem.hpp"
 
 #include <QTimer>
 #include <QKeyEvent>
@@ -96,14 +96,14 @@ void ListWidget::selectAllItems()
 void ListWidget::on_itemSelectionChanged()
 {
     QList<QListWidgetItem*> items = selectedItems();
-    if( !items.isEmpty() && count() )
-        Q_EMIT showPropertiePreview(  items.first() );
+//    if( !items.isEmpty() && count() ) //FIXME:: Properties are created in the animation itself
+//        Q_EMIT showPropertiePreview(  dynamic_cast<animations::AnimationItem*>(items.first())->toolTip() );
 }
 
 void ListWidget::on_showPropertiesPreviewTimerTimeout()
 {
-    if( m_itemToShowProperties )
-        Q_EMIT showPropertiePreview( m_itemToShowProperties );
+//    if( m_itemToShowProperties )//FIXME:: Properties are created in the animation itself
+//        Q_EMIT showPropertiePreview( m_itemToShowProperties );
 }
 
 void ListWidget::on_customContextMenuRequest(const QPoint &pos)

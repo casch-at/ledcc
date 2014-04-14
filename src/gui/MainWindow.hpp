@@ -26,14 +26,10 @@
 /*Forward deceleration*/
 class QTimer;
 class QShortcut;
-class Lift;
-namespace animations {
-    class Animation;
-    }
-
 class Sender;
-class AnimationListWidget;
-class AnimationPlayListWidget;
+namespace animations {
+    class AnimationHandler;
+    }
 
 namespace Ui {
     class MainWindow;
@@ -49,7 +45,6 @@ public:
     explicit MainWindow(QWidget *parent = Q_NULLPTR);
     virtual ~MainWindow();
 Q_SIGNALS:
-    void startAnimation();
     void openSerialInterface(const SettingsDialog::SerialSettings &port);
     void okClosePort();
 private Q_SLOTS:
@@ -58,13 +53,12 @@ private Q_SLOTS:
     void about(void);
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
-
     void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
     void closePort(const QString &message);
     void portClosed(const QString &message);
     void stopThreads(void);
-    void showPropertiesPreview(QListWidgetItem *item);
+//    void showPropertiesPreview(QListWidgetItem *item);
 
 private:
     bool okToContinue(void);
@@ -94,8 +88,7 @@ private:
     Sender *m_sender;
     bool m_portOpened;
     bool m_stopPlay;
-    AnimationListWidget *m_animationList;
-    AnimationPlayListWidget *m_animationPlaylist;
+    animations::AnimationHandler *m_animationHandler;
     Q_DISABLE_COPY(MainWindow)
 };
 

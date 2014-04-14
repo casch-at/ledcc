@@ -18,16 +18,16 @@
     <normaloff>:/images/ledgreen.png</normaloff>:/images/ledgreen.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="1">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="m_animationListLay">
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <layout class="QVBoxLayout" name="m_animationListVL">
         <item>
-         <widget class="QLabel" name="availableAnimationsL">
+         <widget class="QLabel" name="m_availableAnimationsL">
           <property name="font">
            <font>
             <weight>75</weight>
@@ -39,12 +39,15 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="AnimationListWidget" name="m_animationList"/>
+        </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="m_animationPlaylistLay">
+      <widget class="QWidget" name="verticalLayoutWidget_2">
+       <layout class="QVBoxLayout" name="m_animationPlaylistVL">
         <item>
-         <widget class="QLabel" name="animationPlaylistL">
+         <widget class="QLabel" name="m_animationPlaylistL">
           <property name="font">
            <font>
             <weight>75</weight>
@@ -56,23 +59,16 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="AnimationPlayListWidget" name="m_animationPlaylist"/>
+        </item>
        </layout>
       </widget>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>876</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="m_statusbar"/>
   <widget class="AnimationPropertiesPreview" name="animationPropertiesPreview">
    <property name="font">
     <font>
@@ -88,6 +84,43 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents"/>
   </widget>
+  <widget class="QToolBar" name="m_mainTB">
+   <property name="windowTitle">
+    <string>Main Toolbar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="separator"/>
+  </widget>
+  <widget class="QToolBar" name="m_helpTB">
+   <property name="windowTitle">
+    <string>Help Toolbar</string>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::RightToolBarArea|Qt::TopToolBarArea</set>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QToolBar" name="m_animationTB">
+   <property name="windowTitle">
+    <string>Animation Toolbar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -95,6 +128,16 @@
    <extends>QDockWidget</extends>
    <header>AnimationPropertiesPreview.hpp</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AnimationPlayListWidget</class>
+   <extends>QListWidget</extends>
+   <header>AnimationPlayListWidget.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>AnimationListWidget</class>
+   <extends>QListWidget</extends>
+   <header>AnimationListWidget.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -29,6 +29,7 @@
 #include <QDebug>
 #endif
 
+using namespace animations;
 /*!
  \brief AnimationPlayListWidget Constructor
 
