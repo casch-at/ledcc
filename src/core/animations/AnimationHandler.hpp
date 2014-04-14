@@ -1,6 +1,9 @@
 #ifndef ANIMATIONHANDLER_HPP
 #define ANIMATIONHANDLER_HPP
+#include "Options.hpp"
+
 #include <QObject>
+#include <QHash>
 
 namespace animations {
     class Lift;
@@ -19,12 +22,16 @@ namespace animations {
     class Animation;
     class AnimationItem;
 
+    /*!
+     \brief Class \a AnimationHandler interface between all animations
+
+    */
     class AnimationHandler : public QObject
     {
         Q_OBJECT
         Q_PROPERTY(Animation* currentAnimation READ currentAnimation WRITE setCurrentAnimation NOTIFY currentAnimationChanged)
     public:
-        AnimationHandler();
+        AnimationHandler(QObject *object = Q_NULLPTR);
         ~AnimationHandler();
         inline Animation* currentAnimation() const  { return m_currentAnimation; }
 
@@ -48,8 +55,11 @@ namespace animations {
 
 
     private:
+        void setupAnimationItems(void);
         void playNextAnimation(const AnimationItem *item);
         Animation *m_currentAnimation;
+        QHash<QString,Animation*> m_animationHash;
+        Q_DISABLE_COPY(AnimationHandler)
     };
 
     }

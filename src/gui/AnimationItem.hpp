@@ -32,10 +32,10 @@ namespace animations {
         virtual AnimationItem *clone() const;
 
         inline const Options * getOptions(void) const{
-            return &m_options;
+            return m_options;
         }
 
-        inline void setOptions(const Options &options){
+        inline void setOptions(Options *options){
             m_options = options;
         }
 
@@ -51,7 +51,7 @@ namespace animations {
     private:
         //    void initOptions(void);
         int m_availableAnimationOptions;
-        Options m_options ;
+        Options *m_options;
 
     };
 

@@ -48,6 +48,7 @@ private:
 private:
     bool openSerialPort();
     bool checkPortSettings();
+    Q_DISABLE_COPY(Sender)
 };
 
 #endif // SENDER_HPP

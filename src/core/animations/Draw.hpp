@@ -126,6 +126,7 @@ namespace animations {
          void tmpCubeToCube(void);
 
          void fontGetChar(u_int8_t chr, u_int8_t dst[5]);
+         Q_DISABLE_COPY(Draw)
      };
      } // End namespace animations
  //Q_DECLARE_METATYPE(Draw::AnimationOptions)

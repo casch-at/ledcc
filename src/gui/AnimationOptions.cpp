@@ -25,6 +25,7 @@
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
+using namespace animations;
 
 AnimationOptions::AnimationOptions(QWidget *parent) :
     QDialog(parent),

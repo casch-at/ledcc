@@ -66,6 +66,7 @@ namespace animations {
     private:
         u_int16_t m_speed;
         QString m_name;
+        Q_DISABLE_COPY(Animation)
     };
 
     } // End namespace animations

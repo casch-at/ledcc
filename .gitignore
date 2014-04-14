@@ -1,5 +1,5 @@
 .kdev4
 3D-Led-Cube.kdev4
 *.user
-doxygen
+/doxygen
 index.html

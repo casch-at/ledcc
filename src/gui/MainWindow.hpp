@@ -30,9 +30,8 @@ class Lift;
 namespace animations {
     class Animation;
     }
-class QListWidgetItem;
+
 class Sender;
-class AnimationItem;
 class AnimationListWidget;
 class AnimationPlayListWidget;
 
@@ -74,7 +73,6 @@ private:
     void connectSignals(void);
     void createActions(void);
     void createToolbar(void);
-    void setupAnimationItems(void);
     void setupSenderThread(void);
 private:
     Ui::MainWindow *ui;
@@ -94,7 +92,6 @@ private:
     QThread *m_createThread;
     QThread *m_senderThread;
     Sender *m_sender;
-    QHash<QString,animations::Animation*> m_animationHash;
     bool m_portOpened;
     bool m_stopPlay;
     AnimationListWidget *m_animationList;
