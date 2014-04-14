@@ -16,6 +16,7 @@
  */
 #include "StringFly.hpp"
 
+using namespace animations;
 StringFly::StringFly(const u_int16_t &speed, const QString &string, const QString &name, QObject *parent) :
     Animation(speed,name,parent),
     m_sToDisplay(string)
@@ -72,7 +73,7 @@ void StringFly::createAnimationTooltipAsRichText(AnimationItem *item)
     setItemToolTipNameSpeed( &itemToolTip, item);
 
     itemToolTip.append( QString("Current Text: "
-                               + item->getOptions()->text.toLatin1()));
+                               + item->getOptions()->m_text.toLatin1()));
 
     item->setToolTip( itemToolTip );
 }
@@ -82,8 +83,8 @@ QStringList& StringFly::getAnimationPropertiesAsPlainText(const AnimationItem *i
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
-    list.append( QString( "Text:%1" ).arg( item->getOptions()->text ) );
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->m_speed ) );
+    list.append( QString( "Text:%1" ).arg( item->getOptions()->m_text ) );
 
     return list;
 }

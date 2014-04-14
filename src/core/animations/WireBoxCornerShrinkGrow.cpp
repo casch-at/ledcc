@@ -16,6 +16,8 @@
  */
 #include "WireBoxCornerShrinkGrow.hpp"
 
+using namespace animations;
+
 WireBoxCornerShrinkGrow::WireBoxCornerShrinkGrow(const u_int16_t &iterations, const u_int16_t &speed, const u_int8_t &rotate, const u_int8_t &flip, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_iterations(iterations),
@@ -38,7 +40,7 @@ void WireBoxCornerShrinkGrow::createAnimationTooltipAsRichText(AnimationItem *it
     setItemToolTipNameSpeed( &itemToolTip, item );
 
     itemToolTip.append(QString("Iterations: %1")
-                       .arg(item->getOptions()->iteration));
+                       .arg(item->getOptions()->m_iteration));
 
     item->setToolTip(itemToolTip);
 }
@@ -74,8 +76,8 @@ QStringList& WireBoxCornerShrinkGrow::getAnimationPropertiesAsPlainText(const An
     list.clear();
 
     list.append(getName());
-    list.append(QString("Speed:%1").arg(item->getOptions()->speed));
-    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->iteration ) );
+    list.append(QString("Speed:%1").arg(item->getOptions()->m_speed));
+    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->m_iteration ) );
 
     return list;
 }

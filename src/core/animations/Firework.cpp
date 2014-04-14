@@ -16,6 +16,8 @@
  */
 #include "Firework.hpp"
 
+using namespace animations;
+
 Firework::Firework(const u_int16_t &iterations, const u_int16_t &speed, const u_int8_t &particles, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_iterations(iterations),
@@ -110,8 +112,8 @@ void Firework::createAnimationTooltipAsRichText(AnimationItem *item)
     setItemToolTipNameSpeed( &itemToolTip, item );
     itemToolTip.append(QString("Iterations: %1<br>"
                                "Particles: %2")
-                       .arg( item->getOptions()->iteration )
-                       .arg( item->getOptions()->leds ));
+                       .arg( item->getOptions()->m_iteration )
+                       .arg( item->getOptions()->m_leds ));
     item->setToolTip( itemToolTip );
 }
 
@@ -120,9 +122,9 @@ QStringList& Firework::getAnimationPropertiesAsPlainText(const AnimationItem *it
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
-    list.append( QString( "Particles:%1" ).arg( item->getOptions()->leds ) );
-    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->iteration ) );
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->m_speed ) );
+    list.append( QString( "Particles:%1" ).arg( item->getOptions()->m_leds ) );
+    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->m_iteration ) );
 
     return list;
 }

@@ -19,6 +19,9 @@
 #include <QTime>
 #include <QtGlobal>
 
+#include "LookUpTables.hpp"
+
+using namespace animations;
 Draw::Draw(QObject *parent):
     QObject(parent)
 {

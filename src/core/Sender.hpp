@@ -37,7 +37,7 @@ Q_SIGNALS:
     void portError(const QString &param);
     void closePort(const QString &param);
 public Q_SLOTS:
-    void sendAnimation(const Draw::CubeArray &d);
+    void sendAnimation(const animations::Draw::CubeArray &d);
     void openCloseSerialPort(const SettingsDialog::SerialSettings &s);
     void closeSerialPort();
 

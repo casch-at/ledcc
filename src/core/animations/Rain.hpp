@@ -18,30 +18,32 @@
 #define RAIN_HPP
 #include "Animation.hpp"
 
-class Rain : public Animation
-{
-    Q_OBJECT
-    Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
-public:
-    explicit Rain(const u_int16_t &iterations = 20, const u_int16_t &speed = 80,
-                  const QString &name = "Rain",QObject *parent = Q_NULLPTR);
-
-    u_int16_t getIterations() const
+namespace animations {
+    class Rain : public Animation
     {
-        return m_iterations;
-    }
+        Q_OBJECT
+        Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
+    public:
+        explicit Rain(const u_int16_t &iterations = 20, const u_int16_t &speed = 80,
+                      const QString &name = "Rain",QObject *parent = Q_NULLPTR);
 
-public Q_SLOTS:
-    virtual void createAnimation();
-    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-    void setIterations(const u_int16_t &arg)
-    {
-        if(m_iterations != arg)
-            m_iterations = arg;
-    }
-private:
-    u_int16_t m_iterations;
-};
+        u_int16_t getIterations() const
+        {
+            return m_iterations;
+        }
+
+    public Q_SLOTS:
+        virtual void createAnimation();
+        virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+        virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
+        void setIterations(const u_int16_t &arg)
+        {
+            if(m_iterations != arg)
+                m_iterations = arg;
+        }
+    private:
+        u_int16_t m_iterations;
+    };
+    } // End namespace animations
 
 #endif // RAIN_HPP

@@ -16,6 +16,8 @@
  */
 #include "Loadbar.hpp"
 
+using namespace animations;
+
 Loadbar::Loadbar(const u_int16_t &speed, const Draw::Axis &axis, const QString &name, const Draw::Direction &direction, QObject *parent):
     Animation(speed,name,parent),
     m_axis(axis),
@@ -51,14 +53,14 @@ void Loadbar::createAnimationTooltipAsRichText(AnimationItem *item)
 
     setItemToolTipNameSpeed( &itemToolTip, item );
 
-    if( item->getOptions()->axis == X_AXIS )
+    if( item->getOptions()->m_axis == X_AXIS )
         itemToolTip.append("Axis: X-Axis<br>");
-    else if( item->getOptions()->axis == Y_AXIS )
+    else if( item->getOptions()->m_axis == Y_AXIS )
         itemToolTip.append("Axis: Y-Axis<br>");
     else
         itemToolTip.append("Axis: Z-Axis<br>");
 
-    itemToolTip.append( item->getOptions()->direction == Forward ? "Direction: Forward" : "Direction: Backward");
+    itemToolTip.append( item->getOptions()->m_direction == Forward ? "Direction: Forward" : "Direction: Backward");
     item->setToolTip(itemToolTip);
 }
 
@@ -67,14 +69,14 @@ QStringList& Loadbar::getAnimationPropertiesAsPlainText( const AnimationItem *it
     list.clear();
 
     list.append(getName());
-    list.append(QString("Speed:%1").arg( item->getOptions()->speed));
-    if( item->getOptions()->axis == X_AXIS )
+    list.append(QString("Speed:%1").arg( item->getOptions()->m_speed));
+    if( item->getOptions()->m_axis == X_AXIS )
         list.append( QString("Axis:X_AXIS") );
-    else if( item->getOptions()->axis == Y_AXIS )
+    else if( item->getOptions()->m_axis == Y_AXIS )
         list.append( QString("Axis:Y_AXIS") );
     else
         list.append( QString("Axis:Z_AXIS") );
-    list.append( QString("Direction:%1").arg( item->getOptions()->direction == Forward ? "Forward" : "Backward"));
+    list.append( QString("Direction:%1").arg( item->getOptions()->m_direction == Forward ? "Forward" : "Backward"));
 
     return list;
 }

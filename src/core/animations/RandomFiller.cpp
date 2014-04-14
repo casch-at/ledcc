@@ -16,6 +16,8 @@
  */
 #include "RandomFiller.hpp"
 
+using namespace animations;
+
 RandomFiller::RandomFiller(const u_int16_t &speed, const BixelState &state, const QString &name, QObject *parent) :
     Animation(speed,name,parent),
     m_state(state)
@@ -58,7 +60,7 @@ void RandomFiller::createAnimationTooltipAsRichText(AnimationItem *item)
 
     setItemToolTipNameSpeed( &itemToolTip, item );
 
-    itemToolTip.append( item->getOptions()->state == ON ? "Start State: ON" : "Start State: OFF");
+    itemToolTip.append( item->getOptions()->m_state == ON ? "Initial LED State: ON" : "Initial LED State: OFF");
 
     item->setToolTip( itemToolTip );
 }
@@ -68,8 +70,8 @@ QStringList& RandomFiller::getAnimationPropertiesAsPlainText(const AnimationItem
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
-    list.append( QString( "Initial State:%1" ).arg( item->getOptions()->invert == ON ? "On" : "Off" ) );
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->m_speed ) );
+    list.append( QString( "Initial LED State:%1" ).arg( item->getOptions()->m_invert == ON ? "ON" : "OFF" ) );
 
     return list;
 }

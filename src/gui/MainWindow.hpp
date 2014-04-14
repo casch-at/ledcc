@@ -28,7 +28,9 @@
 class QTimer;
 class QShortcut;
 class Lift;
-class Animation;
+namespace animations {
+    class Animation;
+    }
 class QListWidgetItem;
 class Sender;
 class AnimationItem;
@@ -97,9 +99,9 @@ private:
 //    QShortcut *scShowHideAnimationProperties;
     QThread *m_createThread;
     QThread *m_senderThread;
-    Animation *m_currentAnimation;
+    animations::Animation *m_currentAnimation;
     Sender *m_sender;
-    QHash<QString,Animation*> m_animationHash;
+    QHash<QString,animations::Animation*> m_animationHash;
     bool m_portOpened;
     bool m_stopPlay;
     AnimationListWidget *m_animationList;
@@ -108,23 +110,23 @@ private:
 };
 
 namespace Settings{
-    const QString MainWindowGeometrySettings("geometry");
+    const QString SMainWindowGeometrySettings("geometry");
     }
 
-namespace Animations{
-    const QString WireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
-    const QString WireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
-    const QString Lift("Lift");
-    const QString Wall("Wall");
-    const QString Firework("Firework");
-    const QString Rain("Rain");
-    const QString RandomSpark("Random Spark");
-    const QString RandomSparkFlash("Random Spark Flash");
-    const QString RandomFiller("Random Filler");
-    const QString RandomZLift("Random Z-Axis Lift");
-    const QString StringFly("String Fly");
-    const QString Loadbar("Loadbar");
-    const QString AxisNailWall("Axis Nail Wall");
+namespace animations{
+    const QString SWireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
+    const QString SWireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
+    const QString SLift("Lift");
+    const QString SWall("Wall");
+    const QString SFirework("Firework");
+    const QString SRain("Rain");
+    const QString SRandomSpark("Random Spark");
+    const QString SRandomSparkFlash("Random Spark Flash");
+    const QString SRandomFiller("Random Filler");
+    const QString SRandomZLift("Random Z-Axis Lift");
+    const QString SStringFly("String Fly");
+    const QString SLoadbar("Loadbar");
+    const QString SAxisNailWall("Axis Nail Wall");
     }
 
 #endif // MAINWINDOW_H

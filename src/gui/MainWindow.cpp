@@ -60,7 +60,7 @@
 
 // Namespaces
 using namespace std;
-
+using namespace animations;
 /**
  * @brief MainWindow::MainWindow
  * @param parent
@@ -162,7 +162,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
  */
 void MainWindow::saveSettings(void){  //Save geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
-    settings.setValue (Settings::MainWindowGeometrySettings,saveGeometry ());
+    settings.setValue (Settings::SMainWindowGeometrySettings,saveGeometry ());
 }
 
 /**
@@ -170,7 +170,7 @@ void MainWindow::saveSettings(void){  //Save geometry of application
  */
 void MainWindow::readSettings (void){ //Load geometry of application
     QSettings settings("Schwarz Software Inc.","3D-LED Cube");
-    restoreGeometry (settings.value (Settings::MainWindowGeometrySettings).toByteArray ());
+    restoreGeometry (settings.value (Settings::SMainWindowGeometrySettings).toByteArray ());
 }
 
 /**
@@ -241,11 +241,11 @@ void MainWindow::playNextAnimation(const AnimationItem *item)
     }
 
     m_currentAnimation = m_animationHash.value(item->text());
-    connect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
-    connect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
+    connect(m_createThread,&QThread::started,m_currentAnimation,&animations::Animation::createAnimation);
+    connect(m_currentAnimation, &animations::Animation::done, m_createThread, &QThread::quit);
     //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
     //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
-    connect(m_currentAnimation,&Animation::done,this,&MainWindow::animationDone);
+    connect(m_currentAnimation,&animations::Animation::done,this,&MainWindow::animationDone);
 
     updateAnimation(item);
     m_createThread->start();
@@ -308,50 +308,51 @@ void MainWindow::updateAnimation(const AnimationItem *item)
     Animation *a = m_animationHash.value(text);
     const Options *options = item->getOptions();
 
-    if(text.compare(Animations::Lift) == 0){
-        dynamic_cast<Lift*>(a)->setDelay(options->delay);
-        dynamic_cast<Lift*>(a)->setIterations(options->iteration);
-        dynamic_cast<Lift*>(a)->setSpeed(options->speed);
-    }else if(text.compare(Animations::Rain) == 0){
+    if(text.compare(SLift) == 0){
+        int i;
+//        dynamic_cast<Lift*>(a)->setDelay(options->delay);
+//        dynamic_cast<Lift*>(a)->setIterations(options->iteration);
+//        dynamic_cast<Lift*>(a)->setSpeed(options->speed);
+    }else if(text.compare(SRain) == 0){
         dynamic_cast<Rain*>(a)->setSpeed(options->speed);
         dynamic_cast<Rain*>(a)->setIterations(options->iteration);
-    }else if(text.compare(Animations::StringFly) == 0){
+    }else if(text.compare(SStringFly) == 0){
         dynamic_cast<StringFly*>(a)->setSToDisplay(options->text);
         dynamic_cast<StringFly*>(a)->setSpeed(options->speed);
-    }else if(text.compare(Animations::Wall) == 0){
+    }else if(text.compare(SWall) == 0){
         dynamic_cast<Wall*>(a)->setSpeed(options->speed);
         dynamic_cast<Wall*>(a)->setAxis(options->axis);
         dynamic_cast<Wall*>(a)->setDirection(options->direction);
-    }else if(text.compare(Animations::Firework) == 0){
+    }else if(text.compare(SFirework) == 0){
         dynamic_cast<Firework*>(a)->setSpeed(options->speed);
         dynamic_cast<Firework*>(a)->setParticles(options->leds);
         dynamic_cast<Firework*>(a)->setIterations(options->iteration);
-    }else if(text.compare(Animations::RandomSparkFlash) == 0){
+    }else if(text.compare(SRandomSparkFlash) == 0){
         dynamic_cast<RandomSparkFlash*>(a)->setSpeed(options->speed);
         dynamic_cast<RandomSparkFlash*>(a)->setIterations(options->iteration);
         dynamic_cast<RandomSparkFlash*>(a)->setLeds(options->leds);
-    }else if(text.compare(Animations::RandomSpark) == 0){
+    }else if(text.compare(SRandomSpark) == 0){
         dynamic_cast<RandomSpark*>(a)->setSpeed(options->speed);
         dynamic_cast<RandomSpark*>(a)->setSparks(options->leds);
         dynamic_cast<RandomSpark*>(a)->setIterations(options->iteration);
-    }else if(text.compare(Animations::RandomFiller) == 0){
+    }else if(text.compare(SRandomFiller) == 0){
         dynamic_cast<RandomFiller*>(a)->setSpeed(options->speed);
         dynamic_cast<RandomFiller*>(a)->setState(options->state);
-    }else if(text.compare(Animations::AxisNailWall) == 0){
+    }else if(text.compare(SAxisNailWall) == 0){
         dynamic_cast<AxisNailWall*>(a)->setSpeed(options->speed);
         dynamic_cast<AxisNailWall*>(a)->setAxis(options->axis);
         dynamic_cast<AxisNailWall*>(a)->setDirection(options->direction == Draw::Forward ? Draw::Forward : Draw::Backward);
-    }else if(text.compare(Animations::Loadbar) == 0){
+    }else if(text.compare(SLoadbar) == 0){
         dynamic_cast<Loadbar*>(a)->setSpeed(options->speed);
         dynamic_cast<Loadbar*>(a)->setAxis(options->axis);
-    }else if(text.compare(Animations::WireBoxCenterShrinkGrow) == 0){
+    }else if(text.compare(SWireBoxCenterShrinkGrow) == 0){
         dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(options->speed);
         dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(options->invert == 0 ? false : true);
         dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(options->iteration);
-    }else if(text.compare(Animations::WireBoxCornerShrinkGrow) == 0){
+    }else if(text.compare(SWireBoxCornerShrinkGrow) == 0){
         dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(options->speed);
         dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(options->iteration);
-    }else if(text.compare(Animations::RandomZLift) == 0){
+    }else if(text.compare(SRandomZLift) == 0){
         dynamic_cast<RandomZLift*>(a)->setSpeed(options->speed);
     }
 }
@@ -445,21 +446,21 @@ void MainWindow::showPropertiesPreview(QListWidgetItem *item)
  */
 void MainWindow::setupAnimationItems(void)
 {
-    m_animationHash.insert(Animations::Lift,new Lift);
-    m_animationHash.insert(Animations::StringFly,new StringFly);
-    m_animationHash.insert(Animations::RandomSparkFlash,new RandomSparkFlash);
-    m_animationHash.insert(Animations::RandomSpark,new RandomSpark);
-    m_animationHash.insert(Animations::RandomFiller,new RandomFiller);
-    m_animationHash.insert(Animations::Loadbar,new Loadbar);
-    m_animationHash.insert(Animations::AxisNailWall,new AxisNailWall);
-    m_animationHash.insert(Animations::WireBoxCenterShrinkGrow,new WireBoxCenterShrinkGrow);
-    m_animationHash.insert(Animations::WireBoxCornerShrinkGrow,new WireBoxCornerShrinkGrow);
-    m_animationHash.insert(Animations::RandomZLift,new RandomZLift);
-    m_animationHash.insert(Animations::Rain,new Rain);
-    m_animationHash.insert(Animations::Wall,new Wall);
-    m_animationHash.insert(Animations::Firework,new Firework);
+//    m_animationHash.insert(SLift,new Lift);
+    m_animationHash.insert(SStringFly,new StringFly);
+    m_animationHash.insert(SRandomSparkFlash,new RandomSparkFlash);
+    m_animationHash.insert(SRandomSpark,new RandomSpark);
+    m_animationHash.insert(SRandomFiller,new RandomFiller);
+    m_animationHash.insert(SLoadbar,new Loadbar);
+    m_animationHash.insert(SAxisNailWall,new AxisNailWall);
+    m_animationHash.insert(SWireBoxCenterShrinkGrow,new WireBoxCenterShrinkGrow);
+    m_animationHash.insert(SWireBoxCornerShrinkGrow,new WireBoxCornerShrinkGrow);
+    m_animationHash.insert(SRandomZLift,new RandomZLift);
+    m_animationHash.insert(SRain,new Rain);
+    m_animationHash.insert(SWall,new Wall);
+    m_animationHash.insert(SFirework,new Firework);
 
-    m_currentAnimation = m_animationHash.value(Animations::StringFly);
+    m_currentAnimation = m_animationHash.value(SStringFly);
 
     Options options;
 
@@ -468,50 +469,50 @@ void MainWindow::setupAnimationItems(void)
         AnimationItem *item = new AnimationItem(iter.key(),m_animationList);
         options.speed = iter.value()->getSpeed();
 
-        if(iter.key().compare(Animations::AxisNailWall) == 0){
+        if(iter.key().compare(SAxisNailWall) == 0){
             options.axis =  dynamic_cast<AxisNailWall*>(iter.value())->getAxis();
             options.direction = dynamic_cast<AxisNailWall*>(iter.value())->getDirection();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Direction );
-        }else if(iter.key().compare(Animations::Firework) == 0){
+        }else if(iter.key().compare(SFirework) == 0){
             options.iteration = dynamic_cast<Firework*>(iter.value())->getIterations();
             options.leds = dynamic_cast<Firework*>(iter.value())->getParticles();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Particls );
-        }else if(iter.key().compare(Animations::Lift) == 0){
-            options.iteration = dynamic_cast<Lift*>(iter.value())->getIterations();
-            options.delay = dynamic_cast<Lift*>(iter.value())->getDelay();
+        }else if(iter.key().compare(SLift) == 0){
+//            options.iteration = dynamic_cast<Lift*>(iter.value())->getIterations();
+//            options.delay = dynamic_cast<Lift*>(iter.value())->getDelay();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Delay );
-        }else if(iter.key().compare(Animations::Loadbar) == 0){
+        }else if(iter.key().compare(SLoadbar) == 0){
             options.axis = dynamic_cast<Loadbar*>(iter.value())->getAxis();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis );
-        }else if(iter.key().compare(Animations::Rain) == 0){
+        }else if(iter.key().compare(SRain) == 0){
             options.iteration = dynamic_cast<Rain*>(iter.value())->getIterations();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
-        }else if(iter.key().compare(Animations::RandomFiller) == 0){
+        }else if(iter.key().compare(SRandomFiller) == 0){
             options.invert = dynamic_cast<RandomFiller*>(iter.value())->getState() == Draw::ON ? true : false;
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::LedState );
-        }else if(iter.key().compare(Animations::RandomSpark) == 0){
+        }else if(iter.key().compare(SRandomSpark) == 0){
             options.iteration = dynamic_cast<RandomSpark*>(iter.value())->getIterations();
             options.leds = dynamic_cast<RandomSpark*>(iter.value())->getSparks();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Leds );
-        }else if(iter.key().compare(Animations::RandomSparkFlash) == 0){
+        }else if(iter.key().compare(SRandomSparkFlash) == 0){
             options.iteration = dynamic_cast<RandomSparkFlash*>(iter.value())->getIterations();
             options.leds = dynamic_cast<RandomSparkFlash*>(iter.value())->getLeds();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Leds );
-        }else if(iter.key().compare(Animations::RandomZLift) == 0){
+        }else if(iter.key().compare(SRandomZLift) == 0){
             options.iteration = dynamic_cast<RandomZLift*>(iter.value())->getIterations();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
-        }else if(iter.key().compare(Animations::StringFly) == 0){
+        }else if(iter.key().compare(SStringFly) == 0){
             options.text = dynamic_cast<StringFly*>(iter.value())->getSToDisplay();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Text );
-        }else if(iter.key().compare(Animations::Wall) == 0){
+        }else if(iter.key().compare(SWall) == 0){
             options.axis = dynamic_cast<Wall*>(iter.value())->getAxis();
             options.direction = dynamic_cast<Wall*>(iter.value())->getDirection();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Direction );
-        }else if(iter.key().compare(Animations::WireBoxCenterShrinkGrow) == 0){
+        }else if(iter.key().compare(SWireBoxCenterShrinkGrow) == 0){
             options.iteration = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getIterations();
             options.invert = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::CenterStart );
-        }else if(iter.key().compare(Animations::WireBoxCornerShrinkGrow) == 0){
+        }else if(iter.key().compare(SWireBoxCornerShrinkGrow) == 0){
             options.iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
         }

@@ -13,10 +13,10 @@ struct  Options{
      u_int16_t delay;
      u_int16_t leds;
      u_int16_t iteration;
-     Draw::Direction direction;
-     Draw::Axis axis;
+     animations::Draw::Direction direction;
+     animations::Draw::Axis axis;
      bool invert;
-     Draw::BixelState state;
+     animations::Draw::BixelState state;
  };
 
 #endif // ANIMATIONOPTIONSSTRUCT_HPP

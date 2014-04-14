@@ -34,6 +34,9 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
 {
     // Setup the user interface
     ui->setupUi(this);
+//    m_updateUi = new QTimer(this); /* If widgets are set to visable false we need a timer to call all slot where the Parent gets resized/
+//    m_updateUi->setSingleShot(true);
+//    m_updateUi->setInterval(1);
     // Create connections ( Signal & Slot )
     connect(ui->m_nextPB, &QPushButton::pressed, this, &AnimationOptions::optionsNextAnimation);
     connect(ui->m_prevPB, &QPushButton::pressed, this, &AnimationOptions::optionsPrevAnimation);
@@ -41,9 +44,8 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
     connect(ui->m_cancelPB, &QPushButton::pressed, this, &AnimationOptions::cancel);
     connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
     connect(this, &QDialog::rejected, this, &AnimationOptions::cancel);
-//    connect(ui->m_axisComB, &QComboBox::currentIndexChanged, this, &AnimationOptions::setWindowModified);
+//    connect(m_updateUi, &QTimer::timeout, this, &AnimationOptions::resizeUi);
     setWindowModified(true);
-//    connect(this, &QDialog::done, this, &AnimationOptions::cancel);
     AQP::accelerateWidget(this);
 
 
@@ -95,7 +97,7 @@ void AnimationOptions::changeEvent(QEvent *e)
 */
 void AnimationOptions::applyAnimationOptions()
 {
-    if(m_animationOptionsModefied)
+    if(compareOldNewAnimationOptions())
         Q_EMIT applyNewAnimationArguments(m_animationToUpdate);
 }
 
@@ -135,27 +137,11 @@ void AnimationOptions::updateUi()
         ui->m_nextPB->setEnabled(true);
 
 }
-//    if(options->axis == Draw::X_AXIS )
-//        ui->axisComB->setCurrentIndex(0);
-//    else if(options->axis == Draw::Y_AXIS )
-//        ui->axisComB->setCurrentIndex(1);
-//    else if(options->axis == Draw::Z_AXIS )
-//        ui->axisComB->setCurrentIndex(2);
-//    ui->delaySpinB->setValue(static_cast<int>(options->delay));
-//    if( options->direction == Draw::BACKWARD )
-//        ui->directionComB->setCurrentIndex(0);
-//    else if(options->direction == Draw::FORWARD )
-//        ui->directionComB->setCurrentIndex(1);
-//    if(options->invert == true && options->state == Draw::ON){
-//        ui->invertSpinB->setValue(1);
-//    }else{
-//        ui->invertSpinB->setValue(0);
-//    }
-//    ui->iterationsSpinB->setValue( static_cast<int>(options->iteration));
-//    ui->ledsSpinB->setValue( static_cast<int>(options->leds));
-//    ui->speedSpinB->setValue( static_cast<int>(options->speed));
-//    ui->textLineE->setText(options->text.isEmpty() == true ? "" : options->text);
 
+//void AnimationOptions::resizeUi()
+//{
+//    resize(350,0);
+//}
 
 /*!
  \brief
@@ -163,20 +149,12 @@ void AnimationOptions::updateUi()
 */
 void AnimationOptions::optionsNextAnimation()
 {
-    AnimationItem *animation;
-    // TODO:: If current animation has been changed ask if the settings should be applyed befor continue.
-    if(isWindowModified())
-        qDebug("WindowModefied");
     if( m_animationAt < m_itemList.count() -1)
         m_animationAt++;
-
-
-    animation = m_itemList.at(m_animationAt);
-
-    ui->m_propertiesGB->setTitle("Properties of " + animation->text());
-    hideShowWidgetsDisplayOptions(animation->getAvailableAnimationOptions(), animation->getOptions());
+    m_animationToUpdate = m_itemList.at(m_animationAt);
+    ui->m_propertiesGB->setTitle("Properties of " + m_animationToUpdate->text());
+    hideShowWidgetsDisplayOptions();
 }
-
 
 /*!
  \brief
@@ -184,18 +162,12 @@ void AnimationOptions::optionsNextAnimation()
 */
 void AnimationOptions::optionsPrevAnimation()
 {
-    AnimationItem *animation;
-
-    // TODO:: If current animation has been changed ask if the settings should be applyed befor continue.
     if(m_animationAt)
         m_animationAt--;
-    animation = m_itemList.at(m_animationAt);
-
-    ui->m_propertiesGB->setTitle("Properties of " + animation->text());
-    hideShowWidgetsDisplayOptions(animation->getAvailableAnimationOptions(), animation->getOptions());
+    m_animationToUpdate = m_itemList.at(m_animationAt);
+    ui->m_propertiesGB->setTitle("Properties of " + m_animationToUpdate->text());
+    hideShowWidgetsDisplayOptions();
 }
-
-
 
 /*!
  \brief
@@ -203,24 +175,27 @@ void AnimationOptions::optionsPrevAnimation()
  \param hasOption
  \param options
 */
-void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const Options *options)
+void AnimationOptions::hideShowWidgetsDisplayOptions()
 {
+    const Options *options = m_animationToUpdate->getOptions();
+    const int hasOption = m_animationToUpdate->getAvailableAnimationOptions();
+    using namespace animations;
     for (int i = 0; i < TOTAL_ARGUMENTS; i++) {
         switch ( (1<<i) & hasOption )
         {
         case Speed:
-            ui->m_speedLabel->setVisible(true);
-            ui->m_speedSpinB->setVisible(true);
+            ui->m_speedLabel->setEnabled(true);
+            ui->m_speedSpinB->setEnabled(true);
             ui->m_speedSpinB->setValue(options->speed);
             break;
         case Direction:
-            ui->m_directionLabel->setVisible(true);
-            ui->m_directionComB->setVisible(true);
+            ui->m_directionLabel->setEnabled(true);
+            ui->m_directionComB->setEnabled(true);
             ui->m_directionComB->setCurrentIndex(options->direction == Draw::Backward ? 0 : 1);
             break;
         case Axis:
-            ui->m_axisLabel->setVisible(true);
-            ui->m_axisComB->setVisible(true);
+            ui->m_axisLabel->setEnabled(true);
+            ui->m_axisComB->setEnabled(true);
             switch (options->axis)
             {
             case Draw::Y_AXIS:
@@ -235,135 +210,105 @@ void AnimationOptions::hideShowWidgetsDisplayOptions(const int &hasOption, const
             }
             break;
         case Leds:
-            ui->m_ledsLabel->setVisible(true);
-            ui->m_ledsSpinB->setVisible(true);
+            ui->m_ledsLabel->setEnabled(true);
+            ui->m_ledsSpinB->setEnabled(true);
             ui->m_ledsSpinB->setValue(options->leds);
             break;
         case Particls:
-            ui->m_particlesLabel->setVisible(true);
-            ui->m_particlesSpinB->setVisible(true);
+            ui->m_particlesLabel->setEnabled(true);
+            ui->m_particlesSpinB->setEnabled(true);
             ui->m_particlesSpinB->setValue(options->leds);
             break;
         case Delay:
-            ui->m_delayLabel->setVisible(true);
-            ui->m_delaySpinB->setVisible(true);
+            ui->m_delayLabel->setEnabled(true);
+            ui->m_delaySpinB->setEnabled(true);
             ui->m_delaySpinB->setValue(options->delay);
             break;
         case Iterations:
-            ui->m_iterationsLabel->setVisible(true);
-            ui->m_iterationsSpinB->setVisible(true);
+            ui->m_iterationsLabel->setEnabled(true);
+            ui->m_iterationsSpinB->setEnabled(true);
             ui->m_iterationsSpinB->setValue(options->iteration);
             break;
         case Invert:
-            ui->m_invertCheckB->setVisible(true);
+            ui->m_invertCheckB->setEnabled(true);
             ui->m_invertCheckB->setChecked(options->invert);
             break;
         case CenterStart:
-            ui->m_invertCheckB->setVisible(true);
+            ui->m_invertCheckB->setEnabled(true);
             ui->m_invertCheckB->setChecked(options->invert);
             break;
         case Text:
-            ui->m_textLabel->setVisible(true);
-            ui->m_textLineE->setVisible(true);
+            ui->m_textLabel->setEnabled(true);
+            ui->m_textLineE->setEnabled(true);
             ui->m_textLineE->setText(options->text);
             break;
         case LedState:
-            ui->m_ledStateCheckB->setVisible(true);
+            ui->m_ledStateCheckB->setEnabled(true);
             ui->m_ledStateCheckB->setChecked(options->state == Draw::ON ? true : false);
             break;
         default:
             switch ((1<<i))
             {
             case Speed:
-                ui->m_speedLabel->setVisible(false);
-                ui->m_speedSpinB->setVisible(false);
+                ui->m_speedLabel->setEnabled(false);
+                ui->m_speedSpinB->setEnabled(false);
                 break;
             case Direction:
-                ui->m_directionLabel->setVisible(false);
-                ui->m_directionComB->setVisible(false);
+                ui->m_directionLabel->setEnabled(false);
+                ui->m_directionComB->setEnabled(false);
                 break;
             case Axis:
-                ui->m_axisLabel->setVisible(false);
-                ui->m_axisComB->setVisible(false);
+                ui->m_axisLabel->setEnabled(false);
+                ui->m_axisComB->setEnabled(false);
                 break;
             case Leds:
-                ui->m_ledsLabel->setVisible(false);
-                ui->m_ledsSpinB->setVisible(false);
+                ui->m_ledsLabel->setEnabled(false);
+                ui->m_ledsSpinB->setEnabled(false);
                 break;
             case Particls:
-                ui->m_particlesLabel->setVisible(false);
-                ui->m_particlesSpinB->setVisible(false);
+                ui->m_particlesLabel->setEnabled(false);
+                ui->m_particlesSpinB->setEnabled(false);
                 break;
             case Delay:
-                ui->m_delayLabel->setVisible(false);
-                ui->m_delaySpinB->setVisible(false);
+                ui->m_delayLabel->setEnabled(false);
+                ui->m_delaySpinB->setEnabled(false);
                 break;
             case Iterations:
-                ui->m_iterationsLabel->setVisible(false);
-                ui->m_iterationsSpinB->setVisible(false);
+                ui->m_iterationsLabel->setEnabled(false);
+                ui->m_iterationsSpinB->setEnabled(false);
                 break;
             case Invert:
-                ui->m_invertCheckB->setVisible(false);
+                ui->m_invertCheckB->setEnabled(false);
                 break;
             case CenterStart:
-                ui->m_invertCheckB->setVisible(false);
+                ui->m_invertCheckB->setEnabled(false);
                 break;
             case Text:
-                ui->m_textLabel->setVisible(false);
-                ui->m_textLineE->setVisible(false);
+                ui->m_textLabel->setEnabled(false);
+                ui->m_textLineE->setEnabled(false);
                 break;
             case LedState:
-                ui->m_ledStateCheckB->setVisible(false);
+                ui->m_ledStateCheckB->setEnabled(false);
                 break;
-            default:
-                qDebug("Default Default 2");
+            default: /* Should never come here */
                 break;
             }
             break;
         }
     }
+//    m_updateUi->start();
 
-    for (int var = 0; var < 10000; var++) {
-
-    }
-
-    resize(350,0);
-    ui->m_propertiesGB->resize(0,0);
-
-    updateGeometry();
-    update();
-    ui->m_propertiesGB->repaint();
-    ui->m_propertiesGB->updateGeometry();
     Q_EMIT updateUi();
 }
 
-//void AnimationOptions::on_applyPushB_clicked()
-//{
-//    if(ui->axisComB->currentIndex() == 0)
-//        m_options.axis = Draw::X_AXIS;
-//    else if(ui->axisComB->currentIndex() == 1)
-//        m_options.axis = Draw::Y_AXIS;
-//    else if(ui->axisComB->currentIndex() == 2)
-//        m_options.axis = Draw::Z_AXIS;
 
-//    if(ui->directionComB->currentIndex() == 0)
-//        m_options.direction = Draw::BACKWARD;
-//    else if(ui->directionComB->currentIndex() == 1)
-//        m_options.direction = Draw::FORWARD;
+// TODO:: Create class for the Options better for intial values and comparies,
+// in these case the value of the options are undefined and therfor the behavior will be undefined
+u_int8_t AnimationOptions::compareOldNewAnimationOptions()
+{
+    const Options *options = m_animationToUpdate->getOptions();
+//    if(options->axis != ui->m_axisComB)
+//        return 1;
+//    else if(options->delay != ui->)
+}
 
-//    if(ui->invertSpinB->value()){
-//        m_options.invert = true;
-//        m_options.state = Draw::ON;
-//    }else{
-//        m_options.invert = false;
-//        m_options.state = Draw::OFF;
-//    }
-
-//    m_options.delay = static_cast<u_int16_t>(ui->delaySpinB->value());
-//    m_options.iteration = static_cast<u_int16_t>(ui->iterationsSpinB->value());
-//    m_options.leds = static_cast<u_int16_t>(ui->ledsSpinB->value());
-//    m_options.speed = static_cast<u_int16_t>(ui->speedSpinB->value());
-//    m_options.text = ui->textLineE->text();
-
-//    Q_EMIT optionsReady(m_options);
-//}

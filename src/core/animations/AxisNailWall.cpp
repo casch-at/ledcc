@@ -16,6 +16,7 @@
  */
 #include "AxisNailWall.hpp"
 
+using namespace animations;
 
 AxisNailWall::AxisNailWall(const u_int16_t &speed, const Draw::Axis &axis, const Draw::Direction &direction, const QString &name, QObject *parent):
     Animation(speed,name,parent),
@@ -90,13 +91,13 @@ void AxisNailWall::createAnimationTooltipAsRichText(AnimationItem *item)
     QString itemToolTip;
     setItemToolTipNameSpeed(&itemToolTip, item);
 
-    if(item->getOptions()->axis == X_AXIS)
+    if(item->getOptions()->m_axis == X_AXIS)
         itemToolTip.append("Axis: X-Axis<br>");
-    else if(item->getOptions()->axis == Y_AXIS)
+    else if(item->getOptions()->m_axis == Y_AXIS)
         itemToolTip.append("Axis: Y-Axis<br>");
     else
         itemToolTip.append("Axis: Z-Axis<br>");
-    itemToolTip.append( QString("Direction: %1").arg(item->getOptions()->direction == Draw::Forward ? "Forward" : "Backward"));
+    itemToolTip.append( QString("Direction: %1").arg(item->getOptions()->m_direction == Draw::Forward ? "Forward" : "Backward"));
 
     item->setToolTip ( itemToolTip );
 }
@@ -108,14 +109,14 @@ QStringList& AxisNailWall::getAnimationPropertiesAsPlainText(const AnimationItem
     list.clear();
 
     list.append(getName());
-    list.append(QString("Speed:%1").arg( item->getOptions()->speed));
-    if( item->getOptions()->axis == X_AXIS )
+    list.append(QString("Speed:%1").arg( item->getOptions()->m_speed));
+    if( item->getOptions()->m_axis == X_AXIS )
         list.append( QString("Axis:X_AXIS") );
-    else if( item->getOptions()->axis == Y_AXIS )
+    else if( item->getOptions()->m_axis == Y_AXIS )
         list.append( QString("Axis:Y_AXIS") );
     else
         list.append( QString("Axis:Z_AXIS") );
-    list.append( QString("Direction:%1").arg( item->getOptions()->direction == Draw::Forward ? "Forward" : "Backward"));
+    list.append( QString("Direction:%1").arg( item->getOptions()->m_direction == Draw::Forward ? "Forward" : "Backward"));
 
     return list;
 }

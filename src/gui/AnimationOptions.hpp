@@ -27,6 +27,7 @@ namespace Ui {
     }
 
 class AnimationItem;
+class QTimer;
 /*!
  \brief Dialog to adjust the animation properties
 */
@@ -73,12 +74,15 @@ private Q_SLOTS:
     void cancel();
     void ok();
     void updateUi();
+//    void resizeUi();
+private:
+    void hideShowWidgetsDisplayOptions();
+    u_int8_t compareOldNewAnimationOptions();
 private:
     Ui::AnimationOptions *ui;
-    void hideShowWidgetsDisplayOptions(const int &hasOption, const Options *options);
 
     Options m_options;
-
+//    QTimer *m_updateUi;
     bool m_animationOptionsModefied;
     int m_animationAt;
     QList<AnimationItem*> m_itemList;

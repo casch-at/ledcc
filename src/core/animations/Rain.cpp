@@ -16,6 +16,7 @@
  */
 #include "Rain.hpp"
 
+using namespace animations;
 
 Rain::Rain(const u_int16_t &iterations, const u_int16_t &speed, const QString &name, QObject *parent):
     Animation(speed,name,parent),
@@ -48,7 +49,7 @@ void Rain::createAnimationTooltipAsRichText(AnimationItem *item)
     setItemToolTipNameSpeed(&itemToolTip, item);
 
     itemToolTip.append(QString("Iterations: %1")
-                       .arg( item->getOptions()->iteration) );
+                       .arg( item->getOptions()->m_iteration) );
     item->setToolTip(itemToolTip);
 }
 
@@ -57,8 +58,8 @@ QStringList& Rain::getAnimationPropertiesAsPlainText(const AnimationItem *item)
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
-    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->iteration ) );
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->m_speed ) );
+    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->m_iteration ) );
 
     return list;
 }

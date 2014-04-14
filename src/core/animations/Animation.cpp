@@ -17,7 +17,7 @@
 #include "Animation.hpp"
 #include <QTimer>
 
-
+using namespace animations;
 Animation::Animation(const u_int16_t &speed, const QString &name, QObject *parent):
     Draw(parent),
     m_speed(speed),
@@ -96,5 +96,5 @@ void Animation::setItemToolTipNameSpeed(QString *itemToolTip, AnimationItem *ite
     itemToolTip->append(QString(tr("<p style='white-space:pre'><font color=#00FFFF><b>%1 Animation</b></font><br>"
                                    "Speed: %2<br>"))
                         .arg(item->text())
-                        .arg(item->getOptions()->speed));
+                        .arg(item->getOptions()->m_speed));
 }

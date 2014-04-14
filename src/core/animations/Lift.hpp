@@ -18,44 +18,46 @@
 #define LIFT_HPP
 #include "Animation.hpp"
 
+namespace animations {
 
-class Lift : public Animation
-{
-    Q_OBJECT
-    Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
-    Q_PROPERTY(u_int16_t delay READ getDelay WRITE setDelay)
-public:
-   explicit Lift(const u_int16_t &delay = 50, const u_int16_t  &iterations = 10,
-         const QString &name = "Lift", const u_int16_t &speed = 80, QObject *parent = Q_NULLPTR);
-    u_int16_t getIterations() const
+    class Lift : public Animation
     {
-        return m_iterations;
-    }
+        Q_OBJECT
+        Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
+        Q_PROPERTY(u_int16_t delay READ getDelay WRITE setDelay)
+    public:
+        explicit Lift(const u_int16_t &delay = 50, const u_int16_t  &iterations = 10,
+                      const QString &name = "Lift", const u_int16_t &speed = 80, QObject *parent = Q_NULLPTR);
+        u_int16_t getIterations() const
+        {
+            return m_iterations;
+        }
 
-    u_int16_t getDelay() const
-    {
-        return m_delay;
-    }
+        u_int16_t getDelay() const
+        {
+            return m_delay;
+        }
 
-public Q_SLOTS:
-    virtual void createAnimation();
-    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-    void setIterations(const u_int16_t &arg)
-    {
-        if(m_iterations != arg)
-            m_iterations = arg;
-    }
+    public Q_SLOTS:
+        virtual void createAnimation();
+        virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+        virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
+        void setIterations(const u_int16_t &arg)
+        {
+            if(m_iterations != arg)
+                m_iterations = arg;
+        }
 
-    void setDelay(const u_int16_t &arg)
-    {
-        if(m_delay != arg)
-            m_delay = arg;
-    }
+        void setDelay(const u_int16_t &arg)
+        {
+            if(m_delay != arg)
+                m_delay = arg;
+        }
 
-private:
-    u_int16_t m_delay;
-    u_int16_t m_iterations;
-};
+    private:
+        u_int16_t m_delay;
+        u_int16_t m_iterations;
+    };
 
+    } // End namespace animations
 #endif // LIFT_HPP

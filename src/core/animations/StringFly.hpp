@@ -19,33 +19,35 @@
 
 #include "Animation.hpp"
 
-class StringFly : public Animation
-{
-    Q_OBJECT
-    Q_PROPERTY(QString sToDisplay READ getSToDisplay WRITE setSToDisplay)
-public:
-    explicit StringFly(const u_int16_t &speed = 80,
-                       const QString &string = "3D LED CUBE",
-                       const QString &name = "String Fly",
-                       QObject *parent = 0);
-
-    QString getSToDisplay() const
+namespace animations {
+    class StringFly : public Animation
     {
-        return m_sToDisplay;
-    }
+        Q_OBJECT
+        Q_PROPERTY(QString sToDisplay READ getSToDisplay WRITE setSToDisplay)
+    public:
+        explicit StringFly(const u_int16_t &speed = 80,
+                           const QString &string = "3D LED CUBE",
+                           const QString &name = "String Fly",
+                           QObject *parent = 0);
 
-public Q_SLOTS:
-    virtual void createAnimation();
-    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item  );
-    void setSToDisplay(const QString &string)
-    {
-        if(m_sToDisplay.compare(string) != 0)
-            m_sToDisplay = string;
-    }
+        QString getSToDisplay() const
+        {
+            return m_sToDisplay;
+        }
 
-private:
-    QString m_sToDisplay;
-};
+    public Q_SLOTS:
+        virtual void createAnimation();
+        virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+        virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item  );
+        void setSToDisplay(const QString &string)
+        {
+            if(m_sToDisplay.compare(string) != 0)
+                m_sToDisplay = string;
+        }
+
+    private:
+        QString m_sToDisplay;
+    };
+    }// End namespace animations
 
 #endif // STRINGFLY_HPP

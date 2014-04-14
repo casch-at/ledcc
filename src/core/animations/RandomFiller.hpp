@@ -19,31 +19,33 @@
 
 #include "Animation.hpp"
 
-class RandomFiller : public Animation
-{
-    Q_OBJECT
-    Q_PROPERTY(BixelState state READ getState WRITE setState)
-public:
-    explicit RandomFiller(const u_int16_t &speed = 10,
-                          const BixelState &state = ON,
-                          const QString &name = "Random Filler",
-                          QObject *parent = 0);
-    BixelState getState() const
+namespace animations {
+    class RandomFiller : public Animation
     {
-        return m_state;
-    }
+        Q_OBJECT
+        Q_PROPERTY(BixelState state READ getState WRITE setState)
+    public:
+        explicit RandomFiller(const u_int16_t &speed = 10,
+                              const BixelState &state = ON,
+                              const QString &name = "Random Filler",
+                              QObject *parent = 0);
+        BixelState getState() const
+        {
+            return m_state;
+        }
 
-public Q_SLOTS:
-    virtual void createAnimation();
-    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-    void setState(const BixelState state)
-    {
-        if(m_state != state)
-            m_state = state;
-    }
-private:
-    BixelState m_state;
-};
+    public Q_SLOTS:
+        virtual void createAnimation();
+        virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+        virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
+        void setState(const BixelState state)
+        {
+            if(m_state != state)
+                m_state = state;
+        }
+    private:
+        BixelState m_state;
+    };
+    }// End namespace animations
 
 #endif // RANDOMFILLER_HPP

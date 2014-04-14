@@ -16,6 +16,8 @@
  */
 #include "RandomSparkFlash.hpp"
 
+using namespace animations;
+
 RandomSparkFlash::RandomSparkFlash(const u_int16_t &speed, const u_int16_t &iterations, const u_int16_t &leds, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_iterations(iterations),
@@ -48,8 +50,8 @@ void RandomSparkFlash::createAnimationTooltipAsRichText(AnimationItem *item)
 
     itemToolTip.append(QString("LEDs: %1<br>"
                                "Iterations: %2")
-                       .arg( item->getOptions()->leds )
-                       .arg( item->getOptions()->iteration ) );
+                       .arg( item->getOptions()->m_leds )
+                       .arg( item->getOptions()->m_iteration ) );
 
     item->setToolTip(itemToolTip);
 }
@@ -59,9 +61,9 @@ QStringList& RandomSparkFlash::getAnimationPropertiesAsPlainText( const Animatio
     list.clear();
 
     list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( item->getOptions()->speed ) );
-    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->iteration ) );
-    list.append( QString( "Leds:%1" ).arg( item->getOptions()->leds ) );
+    list.append( QString( "Speed:%1" ).arg( item->getOptions()->m_speed ) );
+    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->m_iteration ) );
+    list.append( QString( "Leds:%1" ).arg( item->getOptions()->m_leds ) );
 
     return list;
 }

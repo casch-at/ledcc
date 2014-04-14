@@ -23,48 +23,50 @@
 #include <QDebug>
 #endif
 
+namespace animations {
 
-class Animation : public Draw
-{
-    Q_OBJECT
-public:
-    explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR);
-
-    QString getName(void) const{
-        return m_name;
-    }
-    void setSpeed(const u_int16_t &speed)
+    class Animation : public Draw
     {
-        if(m_speed != speed){
-            m_speed = speed;
+        Q_OBJECT
+    public:
+        explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR);
+
+        QString getName(void) const{
+            return m_name;
         }
-    }
-    u_int16_t getSpeed(void) const
-    {
-        return m_speed;
-    }
+        void setSpeed(const u_int16_t &speed)
+        {
+            if(m_speed != speed){
+                m_speed = speed;
+            }
+        }
+        u_int16_t getSpeed(void) const
+        {
+            return m_speed;
+        }
 
-    void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z);
-    void effectZUpDownMove(QVector<u_int8_t> &destination,
-                           QVector<u_int8_t> &position, Draw::Axis axis);
+        void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z);
+        void effectZUpDownMove(QVector<u_int8_t> &destination,
+                               QVector<u_int8_t> &position, Draw::Axis axis);
 
-    void waitMs(const u_int16_t &time);
+        void waitMs(const u_int16_t &time);
 
 
-    bool m_abort;
-    void setItemToolTipNameSpeed(QString *itemToolTip, AnimationItem *item);
-Q_SIGNALS:
-    void done();
-    void sendData(const CubeArray &cubeFrame);
-public Q_SLOTS:
-    virtual void createAnimationTooltipAsRichText(AnimationItem *item) = 0;
-    virtual void createAnimation(void) = 0;
-    virtual QStringList& getAnimationPropertiesAsPlainText(const AnimationItem *item ) = 0;
-protected:
-    QStringList list;
-private:
-    u_int16_t m_speed;
-    QString m_name;
-};
+        bool m_abort;
+        void setItemToolTipNameSpeed(QString *itemToolTip, AnimationItem *item);
+    Q_SIGNALS:
+        void done();
+        void sendData(const CubeArray &cubeFrame);
+    public Q_SLOTS:
+        virtual void createAnimationTooltipAsRichText(AnimationItem *item) = 0;
+        virtual void createAnimation(void) = 0;
+        virtual QStringList& getAnimationPropertiesAsPlainText(const AnimationItem *item ) = 0;
+    protected:
+        QStringList list;
+    private:
+        u_int16_t m_speed;
+        QString m_name;
+    };
 
+    } // End namespace animations
 #endif // ANIMATION_HPP

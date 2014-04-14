@@ -18,38 +18,42 @@
 #define ANIMATIONITEM_HPP
 
 #include <QListWidgetItem>
-#include <AnimationOptionsStruct.hpp>
+#include "Options.hpp"
 
-class AnimationItem : public QListWidgetItem
-{
-public:
-    explicit AnimationItem(QListWidget *view = 0, int type = UserType);
-    explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = UserType);
+namespace animations {
 
-    virtual ~AnimationItem();
-    virtual AnimationItem *clone() const;
+    class AnimationItem : public QListWidgetItem
+    {
+    public:
+        explicit AnimationItem(QListWidget *view = 0, int type = UserType);
+        explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = UserType);
 
-    inline const Options * getOptions(void) const{
-        return &m_options;
-    }
+        virtual ~AnimationItem();
+        virtual AnimationItem *clone() const;
 
-    inline void setOptions(const Options &options){
-        m_options = options;
-    }
+        inline const Options * getOptions(void) const{
+            return &m_options;
+        }
 
-    inline int getAvailableAnimationOptions() const {
-        return m_availableAnimationOptions;
-    }
+        inline void setOptions(const Options &options){
+            m_options = options;
+        }
 
-    inline void setAvailableAnimationOptions(const int &options){
-        if(m_availableAnimationOptions != options)
-            m_availableAnimationOptions = options;
-    }
+        inline int getAvailableAnimationOptions() const {
+            return m_availableAnimationOptions;
+        }
 
-private:
-//    void initOptions(void);
-    int m_availableAnimationOptions;
-    Options m_options ;
+        inline void setAvailableAnimationOptions(const int &options){
+            if(m_availableAnimationOptions != options)
+                m_availableAnimationOptions = options;
+        }
 
-};
+    private:
+        //    void initOptions(void);
+        int m_availableAnimationOptions;
+        Options m_options ;
+
+    };
+
+    } // End namespace animations
 #endif // ANIMATIONITEM_HPP
