@@ -34,7 +34,7 @@ static const u_int CUBE_LED_COUNT = CUBE_SIZE * CUBE_SIZE * CUBE_SIZE;
  *     ANIMATION STRUCT REPRESENTING THE AVAILABLE PARAMETERS
  ************************************************************************/
 
-#define LED_CUBE_VERSION_MAJOR 0.1
-#define LED_CUBE_VERSION_MINOR 0.11
+#define LED_CUBE_VERSION_MAJOR 0
+#define LED_CUBE_VERSION_MINOR .02
 
 #endif // GLOBAL_H

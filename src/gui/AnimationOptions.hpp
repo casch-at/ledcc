@@ -17,78 +17,82 @@
 #ifndef ANIMATIONOPTIONS_HPP
 #define ANIMATIONOPTIONS_HPP
 #include "Global.hpp"
-#include "AnimationOptionsStruct.hpp"
-
+#include "Options.hpp"
 #include <QtWidgets/QDialog>
 
 
-namespace Ui {
-    class AnimationOptions;
-    }
 
-class AnimationItem;
+
 class QTimer;
-/*!
+
+namespace animations {
+    namespace Ui {
+        class AnimationOptions;
+        }
+    class AnimationItem;
+
+    /*!
  \brief Dialog to adjust the animation properties
 */
-class AnimationOptions : public QDialog
-{
-    Q_OBJECT
+    class AnimationOptions : public QDialog
+    {
+        Q_OBJECT
 
-public:
+    public:
 
-   /*!
+        /*!
     *  All possibly animation arguments.
     *  The static variable \a TOTAL_ARGUMENTS holds the sum of available options, must be updated when an enum is added
     */
-   typedef enum {
-       Speed       = (1 << 0),
-       Direction   = (1 << 1),
-       Axis        = (1 << 2),
-       Leds        = (1 << 3),
-       Particls    = (1 << 4),
-       Delay       = (1 << 5),
-       Iterations  = (1 << 6),
-       Invert      = (1 << 7),
-       CenterStart = (1 << 8),
-       Text        = (1 << 9),
-       LedState    = (1 << 10)
-       }Arguments;
+        typedef enum {
+            Speed       = (1 << 0),
+            Direction   = (1 << 1),
+            Axis        = (1 << 2),
+            Leds        = (1 << 3),
+            Particls    = (1 << 4),
+            Delay       = (1 << 5),
+            Iterations  = (1 << 6),
+            Invert      = (1 << 7),
+            CenterStart = (1 << 8),
+            Text        = (1 << 9),
+            LedState    = (1 << 10)
+            }Arguments;
 
-    explicit AnimationOptions(QWidget *parent = 0);
-    ~AnimationOptions();
+        explicit AnimationOptions(QWidget *parent = 0);
+        ~AnimationOptions();
 
-    inline const Options *getAnimationSettings(void){ return &m_options;  }
+        inline const Options *getAnimationSettings(void){ return &m_options;  }
 
-Q_SIGNALS:
-    void optionsReady(const Options &animationOptions);
-    void applyNewAnimationArguments(const AnimationItem *item);
-public Q_SLOTS:
-    void adjustAnimationOptions(QList<AnimationItem*> &items);
-protected:
-    void changeEvent(QEvent *e);
-private Q_SLOTS:
-    void optionsNextAnimation();
-    void optionsPrevAnimation();
-    void applyAnimationOptions();
-    void cancel();
-    void ok();
-    void updateUi();
-//    void resizeUi();
-private:
-    void hideShowWidgetsDisplayOptions();
-    u_int8_t compareOldNewAnimationOptions();
-private:
-    Ui::AnimationOptions *ui;
+    Q_SIGNALS:
+        void optionsReady(const Options &animationOptions);
+        void applyNewAnimationArguments(const AnimationItem *item);
+    public Q_SLOTS:
+        void adjustAnimationOptions(QList<AnimationItem*> &items);
+    protected:
+        void changeEvent(QEvent *e);
+    private Q_SLOTS:
+        void optionsNextAnimation();
+        void optionsPrevAnimation();
+        void applyAnimationOptions();
+        void cancel();
+        void ok();
+        void updateUi();
+        //    void resizeUi();
+    private:
+        void hideShowWidgetsDisplayOptions();
+        u_int8_t compareOldNewAnimationOptions();
+    private:
+        Ui::AnimationOptions *ui;
 
-    Options m_options;
-//    QTimer *m_updateUi;
-    bool m_animationOptionsModefied;
-    int m_animationAt;
-    QList<AnimationItem*> m_itemList;
-    AnimationItem *m_animationToUpdate;
-    static const int TOTAL_ARGUMENTS = 11;
-    Q_DISABLE_COPY(AnimationOptions)
-};
+        Options m_options;
+        //    QTimer *m_updateUi;
+        bool m_animationOptionsModefied;
+        int m_animationAt;
+        QList<AnimationItem*> m_itemList;
+        AnimationItem *m_animationToUpdate;
+        static const int TOTAL_ARGUMENTS = 11;
+        Q_DISABLE_COPY(AnimationOptions)
+    };
+    }
 
 #endif // ANIMATIONOPTIONSGROUPBOX_HPP

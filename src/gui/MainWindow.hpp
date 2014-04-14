@@ -22,7 +22,6 @@
 #include <Global.hpp>
 #include <QTimer>
 
-#include "AnimationOptionsStruct.hpp"
 
 /*Forward deceleration*/
 class QTimer;
@@ -60,10 +59,7 @@ private Q_SLOTS:
     void about(void);
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
-    void playAnimations(void);
-    void animationDone(void);
-    void updateAnimation(const AnimationItem *item);
-    void updateItemToolTip(const Options &aOptions);
+
     void portOpen(const QString &message);
     void displayPortErrorMessage(const QString &message);
     void closePort(const QString &message);
@@ -78,7 +74,6 @@ private:
     void connectSignals(void);
     void createActions(void);
     void createToolbar(void);
-    void playNextAnimation(const AnimationItem *item);
     void setupAnimationItems(void);
     void setupSenderThread(void);
 private:
@@ -96,10 +91,8 @@ private:
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;
-//    QShortcut *scShowHideAnimationProperties;
     QThread *m_createThread;
     QThread *m_senderThread;
-    animations::Animation *m_currentAnimation;
     Sender *m_sender;
     QHash<QString,animations::Animation*> m_animationHash;
     bool m_portOpened;
@@ -113,20 +106,6 @@ namespace Settings{
     const QString SMainWindowGeometrySettings("geometry");
     }
 
-namespace animations{
-    const QString SWireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
-    const QString SWireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
-    const QString SLift("Lift");
-    const QString SWall("Wall");
-    const QString SFirework("Firework");
-    const QString SRain("Rain");
-    const QString SRandomSpark("Random Spark");
-    const QString SRandomSparkFlash("Random Spark Flash");
-    const QString SRandomFiller("Random Filler");
-    const QString SRandomZLift("Random Z-Axis Lift");
-    const QString SStringFly("String Fly");
-    const QString SLoadbar("Loadbar");
-    const QString SAxisNailWall("Axis Nail Wall");
-    }
+
 
 #endif // MAINWINDOW_H
