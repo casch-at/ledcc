@@ -217,9 +217,9 @@ bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *l
         return false;
 
     /* Check if caller was the moveUp(Down) action */
-    if (object->objectName().compare("UP") == 0)
+    if (object->objectName().compare("m_moveUpAction") == 0)
         *up = true;
-    else if (object->objectName().compare("DOWN") == 0)
+    else if (object->objectName().compare("m_moveDownAction") == 0)
         *up = false;
     else
         return false;
@@ -560,13 +560,13 @@ void AnimationPlayListWidget::updateAnimation(const AnimationItem *item)
     }else if(text.compare(SAxisNailWall) == 0){
         dynamic_cast<AxisNailWall*>(a)->setSpeed(options->m_speed);
         dynamic_cast<AxisNailWall*>(a)->setAxis(options->m_axis);
-        dynamic_cast<AxisNailWall*>(a)->setDirection(options->m_direction == Draw::Forward ? Draw::Forward : Draw::Backward);
+        dynamic_cast<AxisNailWall*>(a)->setDirection(options->m_direction);
     }else if(text.compare(SLoadbar) == 0){
         dynamic_cast<Loadbar*>(a)->setSpeed(options->m_speed);
         dynamic_cast<Loadbar*>(a)->setAxis(options->m_axis);
     }else if(text.compare(SWireBoxCenterShrinkGrow) == 0){
         dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(options->m_invert == 0 ? false : true);
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(options->m_invert);
         dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(options->m_iteration);
     }else if(text.compare(SWireBoxCornerShrinkGrow) == 0){
         dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(options->m_speed);

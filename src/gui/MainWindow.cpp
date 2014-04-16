@@ -341,8 +341,6 @@ void MainWindow::connectSignals(void)
                                         << ui->m_playAction << ui->m_stopAction << ui->m_editAction
                                         << ui->m_moveUpAction << ui->m_moveDownAction << ui->m_duplicateAction
                                         << ui->m_removeAction << ui->m_clearAction);
-    //    ui->m_animationPlaylist->
-
 }
 
 /**
