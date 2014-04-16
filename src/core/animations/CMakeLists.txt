@@ -35,6 +35,7 @@ set( SOURCES    Draw.cpp
                 RandomFiller.cpp
                 StringFly.cpp
                 AnimationHandler.cpp
+                Animations.cpp
     )
 
 add_library( animations STATIC ${SOURCES} LookUpTables.hpp)

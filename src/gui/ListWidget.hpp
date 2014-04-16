@@ -2,7 +2,8 @@
 #define LISTWIDGET_HPP
 
 #include <QListWidget>
-#include "AnimationItem.hpp"
+
+
 
 class QTimer;
 class QShortcut;

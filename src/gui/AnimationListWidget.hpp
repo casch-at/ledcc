@@ -24,22 +24,23 @@
  *
  *
  */
-
 class AnimationListWidget : public ListWidget
 {
     Q_OBJECT
+
 public:
     explicit AnimationListWidget(QWidget* parent = Q_NULLPTR);
     virtual ~AnimationListWidget();
+
 Q_SIGNALS:
     void addToPlaylist(QList<QListWidgetItem *> selected);
 
 protected:
     virtual void keyPressEvent(QKeyEvent * e);
 public Q_SLOTS:
-    void insertAnimation(const QString &animation);
-
+    void insertAnimationItems(const QList<animations::AnimationItem *> *animation);
     void addSelectedItemsToPlaylist();
+
 private:
     void createActions();
     QAction *m_addToPlaylistAction;

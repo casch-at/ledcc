@@ -121,6 +121,7 @@ void AnimationOptions::cancel()
 */
 void AnimationOptions::ok()
 {
+    compareOldNewAnimationOptions();
     // If current animation has ben modefied ask user if he wants to apply the settings
     // If nothing has changed hide application
 }
@@ -192,23 +193,12 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
         case Direction:
             ui->m_directionLabel->setEnabled(true);
             ui->m_directionComB->setEnabled(true);
-            ui->m_directionComB->setCurrentIndex(options->m_direction == Draw::Backward ? 0 : 1);
+            ui->m_directionComB->setCurrentIndex(options->m_direction);
             break;
         case Axis:
             ui->m_axisLabel->setEnabled(true);
             ui->m_axisComB->setEnabled(true);
-            switch (options->m_axis)
-            {
-            case Draw::Y_AXIS:
-                ui->m_axisComB->setCurrentIndex(1);
-                break;
-            case Draw::Z_AXIS:
-                ui->m_axisComB->setCurrentIndex(2);
-                break;
-            default: // Default Draw::X_AXIS
-                    ui->m_axisComB->setCurrentIndex(0);
-                break;
-            }
+            ui->m_axisComB->setCurrentIndex(options->m_axis);
             break;
         case Leds:
             ui->m_ledsLabel->setEnabled(true);
@@ -245,7 +235,7 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
             break;
         case LedState:
             ui->m_ledStateCheckB->setEnabled(true);
-            ui->m_ledStateCheckB->setChecked(options->m_state == Draw::ON ? true : false);
+            ui->m_ledStateCheckB->setChecked(options->m_state);
             break;
         default:
             switch ((1<<i))
@@ -308,8 +298,8 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
 u_int8_t AnimationOptions::compareOldNewAnimationOptions()
 {
     const Options *options = m_animationToUpdate->getOptions();
-//    if(options->axis != ui->m_axisComB)
-//        return 1;
+    if(options->m_axis != ui->m_axisComB->currentIndex())
+        return 1;
 //    else if(options->delay != ui->)
 }
 

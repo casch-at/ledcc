@@ -26,8 +26,8 @@
 #include "PortMessageBox.hpp"
 #include "AnimationListWidget.hpp"
 #include "AnimationPlayListWidget.hpp"
-#include "AnimationOptions.hpp"
 #include "AnimationHandler.hpp"
+#include "Animations.hpp"
 // Qt includes
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -57,21 +57,16 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
     m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
     m_createThread(new QThread)
-//    m_animationList(new AnimationListWidget(this)),
-//    m_animationPlaylist(new AnimationPlayListWidget(this))
 {
-    m_animationHandler = new animations::AnimationHandler();
-    ui->setupUi(this);
+    ui->setupUi(this); // Ui must be first created befor accessing the elements
+    Animations *animations = new animations::Animations;
+    ui->m_animationList->insertAnimationItems(animations->animationItemDefaultList());
+    m_animationHandler = new animations::AnimationHandler(animations);
     setupSenderThread();
     readSettings ();
-    createActions ();
-    createToolbar ();
     connectSignals();
     ui->splitter->setStretchFactor(1,2);
-//    ui->m_animationListLay->addWidget(m_animationList);
-//    ui->m_animationPlaylistLay->addWidget(m_animationPlaylist);
     ui->m_animationList->setFocus();
-
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
     Q_EMIT updateUi();
@@ -83,8 +78,6 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
 MainWindow::~MainWindow(void) //Deinit MainWindow
 {
 
-    delete m_createThread;
-    delete m_senderThread;
     delete m_sdialog;
     delete m_sender;
     delete ui;
@@ -166,45 +159,48 @@ void MainWindow::updateUi(void)
 
     if(m_portOpened)
     {
-        if(m_openPortAction->text() == "Open port")
+        if(ui->m_openClosePortAction->text() == "Open port")
         {
-            m_openPortAction->setText(tr("Close port"));
-            m_openPortAction->setIcon( QIcon( "://images/disconnect.png"));
-            m_openPortAction->setToolTip(tr("Disconnect from seriell device  O"));
+            ui->m_openClosePortAction->setText(tr("Close port"));
+            ui->m_openClosePortAction->setIcon( QIcon( "://images/disconnect.png"));
+            ui->m_openClosePortAction->setToolTip(tr("Disconnect from seriell device  O"));
         }
-        if( inPlayList && !ui->m_animationPlaylist->m_stopAction->isEnabled()){
-            ui->m_animationPlaylist->m_playAction->setEnabled(true);
-            ui->m_animationPlaylist->m_stopAction->setDisabled(true);
+        if( inPlayList && !ui->m_stopAction->isEnabled()){
+            ui->m_playAction->setEnabled(true);
+            ui->m_stopAction->setDisabled(true);
         }
         else{
-            ui->m_animationPlaylist->m_playAction->setDisabled(true);
+            ui->m_playAction->setDisabled(true);
         }
     }else
     {
-        if(m_openPortAction->text() == "Close port")
+        if(ui->m_openClosePortAction->text() == "Close port")
         {
-            m_openPortAction->setText(tr("Open port"));
-            m_openPortAction->setIcon( QIcon( "://images/connect.png"));
-            m_openPortAction->setToolTip(tr("Connect to seriell device  O"));
+            ui->m_openClosePortAction->setText(tr("Open port"));
+            ui->m_openClosePortAction->setIcon( QIcon( "://images/connect.png"));
+            ui->m_openClosePortAction->setToolTip(tr("Connect to seriell device  O"));
         }
-        ui->m_animationPlaylist->m_playAction->setDisabled(true);
-        ui->m_animationPlaylist->m_stopAction->setDisabled(true);
+        ui->m_playAction->setDisabled(true);
+        ui->m_stopAction->setDisabled(true);
     }
 
     if(inPlayList){
-        ui->m_animationPlaylist->m_editAction->setEnabled(true);
-        ui->m_animationPlaylist->m_clearAction->setEnabled(true);
-        ui->m_animationPlaylist->m_removeAction->setEnabled(true);
-        ui->m_animationPlaylist->m_moveDownAction->setEnabled(true);
-        ui->m_animationPlaylist->m_moveUpAction->setEnabled(true);
-        ui->m_animationPlaylist->m_duplicateAction->setEnabled(true);
+        ui->m_editAction->setEnabled(true);
+        ui->m_clearAction->setEnabled(true);
+        ui->m_removeAction->setEnabled(true);
+        ui->m_moveDownAction->setEnabled(true);
+        ui->m_moveUpAction->setEnabled(true);
+        ui->m_duplicateAction->setEnabled(true);
+        ui->m_clearAction->setEnabled(true);
     } else {
-        ui->m_animationPlaylist->m_editAction->setDisabled(true);
-        ui->m_animationPlaylist->m_clearAction->setDisabled(true);
-        ui->m_animationPlaylist->m_removeAction->setDisabled(true);
-        ui->m_animationPlaylist->m_moveDownAction->setDisabled(true);
-        ui->m_animationPlaylist->m_moveUpAction->setDisabled(true);
-        ui->m_animationPlaylist->m_duplicateAction->setDisabled(true);
+        ui->m_editAction->setDisabled(true);
+        ui->m_clearAction->setDisabled(true);
+        ui->m_removeAction->setDisabled(true);
+        ui->m_moveDownAction->setDisabled(true);
+        ui->m_moveUpAction->setDisabled(true);
+        ui->m_duplicateAction->setDisabled(true);
+        ui->m_clearAction->setDisabled(true);
+        ui->m_clearAction->setDisabled(true);
     }
 }
 
@@ -263,7 +259,7 @@ void MainWindow::stopThreads()
 {
 //    m_currentAnimation->m_abort = true; //FIXME:: Is now in AnimationHandler
     m_sender->m_abort = true;
-    ui->m_animationPlaylist->m_stopAction->setDisabled(true);
+    ui->m_stopAction->setDisabled(true);
     m_stopPlay = false;
     m_createThread->quit(); // first quit threads befor wait
     m_senderThread->quit();
@@ -313,18 +309,15 @@ void MainWindow::setupSenderThread(void)
  */
 void MainWindow::connectSignals(void)
 {
-    // Action connections
-    connect( m_openPortAction, &QAction::triggered, this,&MainWindow::openCloseSerialPort);
-    connect( m_quitAction, &QAction::triggered, this,&MainWindow::close);
-    connect( m_aboutAction, &QAction::triggered,this,&MainWindow::about);
-    connect( m_settingAction, &QAction::triggered,m_sdialog,&QWidget::show);
-//    connect( ui->m_animationPlaylist->m_playAction, &QAction::triggered , this , &animations::AnimationHandler::playAnimations);
-    connect( ui->m_animationPlaylist->m_stopAction, &QAction::triggered , this , &MainWindow::stopThreads);
-    connect( m_aboutQt, &QAction::triggered, this, &QApplication::aboutQt);
-    // Animation properties ready connection
-    //    connect( ui->animationAdjustGB , &AnimationOptions::optionsReady , this, &MainWindow::updateItemToolTip);
+    // Overall connections
+    connect( ui->m_openClosePortAction, &QAction::triggered, this,&MainWindow::openCloseSerialPort);
+    connect( ui->m_quitAction, &QAction::triggered, this,&MainWindow::close);
+    connect( ui->m_aboutAction, &QAction::triggered,this,&MainWindow::about);
+    connect( ui->m_settingsAction, &QAction::triggered,m_sdialog,&QWidget::show);
+    connect( ui->m_stopAction, &QAction::triggered , this , &MainWindow::stopThreads);
+    connect( ui->m_aboutQt, &QAction::triggered, this, &QApplication::aboutQt);
 
-    // ListWidget shortcut sellect all connections
+    // ListWidgets shortcuts
     connect( m_focusAnimationList, &QShortcut::activated, ui->m_animationList, &ListWidget::focus);
     connect( m_focusAnimationPlaylist, &QShortcut::activated, ui->m_animationPlaylist, &ListWidget::focus);
     connect( m_scSellectAll, &QShortcut::activated, ui->m_animationList, &ListWidget::selectAllItems);
@@ -336,75 +329,20 @@ void MainWindow::connectSignals(void)
     connect( ui->m_animationPlaylist, &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
     //    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
     connect( ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, ui->animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
-}
 
-/**
- * @brief Create Actions for the MainWindow
- *
- */
-void MainWindow::createActions(void)
-{
-    m_quitAction = new QAction( tr( "Quit Ctrl+Q" ), this );
-    m_quitAction->setIcon( QIcon( "://images/application-exit.png" ) );
-    m_quitAction->setShortcut( QKeySequence::Quit );
-    m_quitAction->setStatusTip( tr( "Exit application" ) );
+    // Animation Playlist action
+    connect( ui->m_clearAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::clearList);
+    connect( ui->m_duplicateAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::duplicateItems);
+    connect( ui->m_removeAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::removeItems);
+    connect( ui->m_moveUpAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
+    connect( ui->m_moveDownAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
+    connect( ui->m_editAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::editItem);
+    ui->m_animationPlaylist->addActions(QList<QAction*>()
+                                        << ui->m_playAction << ui->m_stopAction << ui->m_editAction
+                                        << ui->m_moveUpAction << ui->m_moveDownAction << ui->m_duplicateAction
+                                        << ui->m_removeAction << ui->m_clearAction);
+    //    ui->m_animationPlaylist->
 
-    m_aboutAction = new QAction( tr( "About" ), this );
-    m_aboutAction->setIcon( QIcon( "://images/help-about.png" ) );
-    //    aboutAction->setShortcut(tr( "Ctrl+A" ));
-    m_aboutAction->setStatusTip( tr( "About Kitchen Scale" ) );
-
-    m_settingAction = new QAction( tr( "Settings I" ), this );
-    m_settingAction->setIcon( QIcon( "://images/package_settings.png" ) );
-    m_settingAction->setShortcut( Qt::Key_I );
-    m_settingAction->setStatusTip( tr( "Configure Kitchen Scale" ) );
-
-    m_openPortAction = new QAction( tr("Open port"), this);
-    m_openPortAction->setIcon( QIcon( "://images/connect.png"));
-    m_openPortAction->setShortcut(Qt::Key_O);
-    m_openPortAction->setToolTip(tr("Connect to seriell device  O"));
-
-    m_aboutQt = new QAction(tr("About Qt"), this);
-    m_aboutQt->setIcon(QIcon("://images/qt.png"));
-}
-
-/**
- * @brief Create MainWindow Toolbar and add Actions
- *
- */
-void MainWindow::createToolbar()
-{
-    QSize size(32,32);
-
-    m_mainToolBar = new QToolBar();
-    m_mainToolBar->setObjectName ("Main Toolbar");
-    m_mainToolBar->addAction(m_quitAction);
-    m_mainToolBar->addSeparator();
-    m_mainToolBar->addAction(m_openPortAction);
-    m_mainToolBar->addSeparator();
-    m_mainToolBar->addAction(m_settingAction);
-    m_mainToolBar->setIconSize (size);
-    m_mainToolBar->setWindowTitle("Main Toolbar");
-    this->addToolBar (m_mainToolBar);
-
-    QList<QAction*> actionList = ui->m_animationPlaylist->actions();
-    if(!actionList.isEmpty()){
-        m_animationToolBar = new QToolBar("Animation Toolbar");
-        foreach (QAction *action, actionList) {
-            m_animationToolBar->addAction(action);
-        }
-        m_animationToolBar->setIconSize(size);
-        this->addToolBar(m_animationToolBar);
-    }
-
-    m_helpToolBar = new QToolBar( );
-    m_helpToolBar->setObjectName("Help Toolbar");
-    m_helpToolBar->setLayoutDirection (Qt::RightToLeft);
-    m_helpToolBar->addAction( m_aboutAction );
-    m_helpToolBar->addAction( m_aboutQt );
-    m_helpToolBar->setIconSize(size);
-    m_helpToolBar->setWindowTitle("Help Toolbar");
-    this->addToolBar (Qt::TopToolBarArea,m_helpToolBar);
 }
 
 /**

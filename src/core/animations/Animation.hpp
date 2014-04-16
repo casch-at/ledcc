@@ -22,8 +22,8 @@
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-
 namespace animations {
+
 
     class Animation : public Draw
     {
@@ -68,6 +68,18 @@ namespace animations {
         QString m_name;
         Q_DISABLE_COPY(Animation)
     };
-
+    const QString SWireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
+    const QString SWireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
+    const QString SLift("Lift");
+    const QString SWall("Wall");
+    const QString SFirework("Firework");
+    const QString SRain("Rain");
+    const QString SRandomSpark("Random Spark");
+    const QString SRandomSparkFlash("Random Spark Flash");
+    const QString SRandomFiller("Random Filler");
+    const QString SRandomZLift("Random Z-Axis Lift");
+    const QString SStringFly("String Fly");
+    const QString SLoadbar("Loadbar");
+    const QString SAxisNailWall("Axis Nail Wall");
     } // End namespace animations
 #endif // ANIMATION_HPP

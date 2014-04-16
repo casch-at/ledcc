@@ -91,8 +91,7 @@ namespace animations {
 
          void shift(Axis axis, Direction direction);
 
-         void checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoint,
-                                 u_int8_t *newEndPoint);
+         void checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoint, u_int8_t *newEndPoint);
 
          void drawPositionAxis(Axis axis, QVector<u_int8_t> &position, Direction direction);
 
@@ -106,12 +105,9 @@ namespace animations {
          void clearPlaneZ(u_int8_t z);
          void clearPlane(Axis axis, u_int8_t i);
 
-         void boxWireframe(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2,
-                           u_int8_t y2, u_int8_t z2);
-         void boxFilled(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2,
-                        u_int8_t z2);
-         void boxWalls(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2,
-                       u_int8_t z2);
+         void boxWireframe(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2);
+         void boxFilled(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2);
+         void boxWalls(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2);
 
          void mirrorX(void);
          void mirrorY(void);

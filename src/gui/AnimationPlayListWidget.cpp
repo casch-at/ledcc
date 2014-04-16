@@ -13,8 +13,24 @@
  */
 
 #include "AnimationPlayListWidget.hpp"
+#include "ui_MainWindow.h"
+#include "Animation.hpp"
+#include "AnimationItem.hpp"
+#include "Draw.hpp"
+#include "Lift.hpp"
+#include "Firework.hpp"
+#include "AxisNailWall.hpp"
+#include "WireBoxCenterShrinkGrow.hpp"
+#include "WireBoxCornerShrinkGrow.hpp"
+#include "Loadbar.hpp"
+#include "RandomFiller.hpp"
+#include "RandomSpark.hpp"
+#include "RandomSparkFlash.hpp"
+#include "RandomZLift.hpp"
+#include "Wall.hpp"
+#include "Rain.hpp"
+#include "StringFly.hpp"
 #include "AnimationOptions.hpp"
-
 // Third Party
 #include "aqp.hpp"
 #include "alt_key.hpp"
@@ -29,7 +45,7 @@
 #include <QDebug>
 #endif
 
-using namespace animations;
+
 /*!
  \brief AnimationPlayListWidget Constructor
 
@@ -46,18 +62,6 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     setDragDropMode(DragDrop);
     setDefaultDropAction(Qt::MoveAction);
     setAcceptDrops(true);
-
-    // Internal
-    createActions();
-
-    // Create connection
-    connect( m_clearAction, &QAction::triggered, this, &AnimationPlayListWidget::clearList);
-    connect( m_duplicateAction, &QAction::triggered, this, &AnimationPlayListWidget::duplicateItems);
-    connect( m_removeAction, &QAction::triggered, this, &AnimationPlayListWidget::removeItems);
-    connect( m_moveUpAction, &QAction::triggered, this, &AnimationPlayListWidget::moveItemsUpDown);
-    connect( m_moveDownAction, &QAction::triggered, this, &AnimationPlayListWidget::moveItemsUpDown);
-    connect( m_editAction, &QAction::triggered, this, &AnimationPlayListWidget::editItem);
-
 }
 
 /*!
@@ -94,7 +98,6 @@ void AnimationPlayListWidget::clearList()
 
     if(ret & QMessageBox::Yes){
         clear();
-        m_clearAction->setDisabled(true);
         Q_EMIT updateUi();
     }
 }
@@ -111,10 +114,6 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
 {
     foreach (QListWidgetItem *i, item) {
         addItem(i->clone());
-    }
-
-    if (count()) {
-        m_clearAction->setEnabled(true);
     }
     Q_EMIT updateUi();
 
@@ -142,7 +141,6 @@ void AnimationPlayListWidget::removeItems()
         delete item;
     }
     if (!count()){
-        m_clearAction->setDisabled(true);
         Q_EMIT updateUi();
     }
     setCurrentRow(currentRow());
@@ -231,60 +229,6 @@ bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *l
         return false;
 
     return true;
-}
-
-/*!
- \brief Create the available actions for the animationPlayListWidget
-
-*/
-void AnimationPlayListWidget::createActions()
-{
-    m_moveDownAction = createAction(tr("Move Down"));
-    m_moveDownAction->setIcon(QIcon("://images/arrow-down.png"));
-    m_moveDownAction->setToolTip(tr("Move one or more animation(s) one position down."));
-    m_moveDownAction->setStatusTip(tr("Move one or more animation(s) one position down."));
-    m_moveDownAction->setObjectName("DOWN");
-    m_moveDownAction->setShortcut(tr("Ctrl+M"));
-
-    m_moveUpAction = createAction(tr("Move Up"));
-    m_moveUpAction->setToolTip(tr("Move one or more animation(s) one position up."));
-    m_moveUpAction->setStatusTip(tr("Move one or more animation(s) one position up."));
-    m_moveUpAction->setIcon(QIcon("://images/arrow-up.png"));
-    m_moveUpAction->setObjectName("UP");
-    m_moveUpAction->setShortcut(tr("Ctrl+U"));
-
-    m_duplicateAction = createAction(tr("Duplicate"));
-    m_duplicateAction->setIcon(QIcon("://images/tab-duplicate-3.png"));
-    m_duplicateAction->setToolTip(tr("Duplicate one or more animation"));
-    m_duplicateAction->setStatusTip(tr("Duplicate one or more animation"));
-    m_duplicateAction->setShortcut(tr("Ctrl+D"));
-
-    m_removeAction = createAction(tr("Remove"));
-    m_removeAction->setIcon(QIcon("://images/view-remove.png"));
-    m_removeAction->setToolTip(tr("Remove one or more selected Animation(s)"));
-    m_removeAction->setStatusTip(tr("Remove one or more selected Animation(s)"));
-
-    m_playAction = createAction(tr("Play"));
-    m_playAction->setIcon(QIcon("://images/media-playback-start-9.png"));
-    m_playAction->setShortcut(tr("R"));
-    m_playAction->setToolTip(tr("Play Animation(s) R"));
-
-    m_stopAction = createAction(tr("Stop"));
-    m_stopAction->setIcon(QIcon("://images/media-playback-pause-7.png"));
-    m_stopAction->setShortcut(tr("P"));
-    m_stopAction->setToolTip(tr("Stop Animation(s) P"));
-
-    m_editAction = createAction(tr("Edit"));
-    m_editAction->setIcon(QIcon("://images/configuration-editor.png"));
-    m_editAction->setToolTip(tr("Edit the animation properties"));
-    m_editAction->setShortcut(tr("Ctrl+E"));
-
-    m_clearAction = createAction(tr("Clear List"), tr("Clear the Animation playlist\n(This can not be undone)"));
-    m_clearAction->setIcon( QIcon( "://images/clear.png" ) );
-    m_clearAction->setShortcut( QKeySequence::Refresh );
-
-    addActions(QList<QAction *>() << m_playAction << m_stopAction << m_editAction << m_moveUpAction << m_moveDownAction << m_duplicateAction << m_removeAction << m_clearAction);
-    AQP::accelerateActions(actions());
 }
 
 /*!
@@ -568,6 +512,89 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
                 i -= 1;
             }
             list->replace(i + 1, index);
+        }
+    }
+}
+
+
+/*!
+ \brief
+
+ \param item
+*/
+void AnimationPlayListWidget::updateAnimation(const AnimationItem *item)
+{
+    QString text = item->text();
+    Animation *a/* = m_animationHash.value(text);*/;
+    const Options *options = item->getOptions();
+
+    if(text.compare(SLift) == 0){
+        dynamic_cast<Lift*>(a)->setDelay(options->m_delay);
+        dynamic_cast<Lift*>(a)->setIterations(options->m_iteration);
+        dynamic_cast<Lift*>(a)->setSpeed(options->m_speed);
+    }else if(text.compare(SRain) == 0){
+        dynamic_cast<Rain*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<Rain*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SStringFly) == 0){
+        dynamic_cast<StringFly*>(a)->setSToDisplay(options->m_text);
+        dynamic_cast<StringFly*>(a)->setSpeed(options->m_speed);
+    }else if(text.compare(SWall) == 0){
+        dynamic_cast<Wall*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<Wall*>(a)->setAxis(options->m_axis);
+        dynamic_cast<Wall*>(a)->setDirection(options->m_direction);
+    }else if(text.compare(SFirework) == 0){
+        dynamic_cast<Firework*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<Firework*>(a)->setParticles(options->m_leds);
+        dynamic_cast<Firework*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SRandomSparkFlash) == 0){
+        dynamic_cast<RandomSparkFlash*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<RandomSparkFlash*>(a)->setIterations(options->m_iteration);
+        dynamic_cast<RandomSparkFlash*>(a)->setLeds(options->m_leds);
+    }else if(text.compare(SRandomSpark) == 0){
+        dynamic_cast<RandomSpark*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<RandomSpark*>(a)->setSparks(options->m_leds);
+        dynamic_cast<RandomSpark*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SRandomFiller) == 0){
+        dynamic_cast<RandomFiller*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<RandomFiller*>(a)->setState(options->m_state);
+    }else if(text.compare(SAxisNailWall) == 0){
+        dynamic_cast<AxisNailWall*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<AxisNailWall*>(a)->setAxis(options->m_axis);
+        dynamic_cast<AxisNailWall*>(a)->setDirection(options->m_direction == Draw::Forward ? Draw::Forward : Draw::Backward);
+    }else if(text.compare(SLoadbar) == 0){
+        dynamic_cast<Loadbar*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<Loadbar*>(a)->setAxis(options->m_axis);
+    }else if(text.compare(SWireBoxCenterShrinkGrow) == 0){
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(options->m_invert == 0 ? false : true);
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SWireBoxCornerShrinkGrow) == 0){
+        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SRandomZLift) == 0){
+        dynamic_cast<RandomZLift*>(a)->setSpeed(options->m_speed);
+    }
+}
+
+/*!
+ \brief
+
+ \param aOptions
+*/
+void AnimationPlayListWidget::updateItemToolTip(const Options &aOptions)
+{
+    QList<QListWidgetItem*> items/* = m_animationPlaylist->selectedItems()*/;
+    if(!items.isEmpty())
+    {
+        AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
+//        item->setOptions(const_cast<Options&>(aOptions));
+
+//        m_animationHash.value(item->text())->createAnimationTooltipAsRichText(item);
+//        ui->animationPropertiesPreview->createPropertiePreview(
+//                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
+        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
+        {
+            updateAnimation(item);
         }
     }
 }

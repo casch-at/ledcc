@@ -65,21 +65,11 @@ private:
     void readSettings(void);
     void saveSettings(void);
     void connectSignals(void);
-    void createActions(void);
-    void createToolbar(void);
     void setupSenderThread(void);
 private:
     Ui::MainWindow *ui;
     SettingsDialog *m_sdialog;
     SettingsDialog::SerialSettings m_port;
-    QToolBar *m_helpToolBar;
-    QToolBar *m_mainToolBar;
-    QToolBar *m_animationToolBar;
-    QAction *m_quitAction;
-    QAction *m_aboutAction;
-    QAction *m_settingAction;
-    QAction *m_openPortAction;
-    QAction *m_aboutQt;
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;

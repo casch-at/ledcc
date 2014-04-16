@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "AnimationListWidget.hpp"
+#include "Animation.hpp"
 
 // Third Party Includes
 #include "aqp.hpp"
@@ -23,11 +24,14 @@
 // Qt includes
 #include <QKeyEvent>
 #include <QAction>
+
+// Debug Includes
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-//#include "animations/Lift.hpp"
-//#include <QtWidgets/QAction>
+
+
+
 
 AnimationListWidget::AnimationListWidget(QWidget *parent):
     ListWidget(parent)
@@ -81,10 +85,10 @@ void AnimationListWidget::keyPressEvent(QKeyEvent *e)
 }
 
 
-
-void AnimationListWidget::insertAnimation(const QString &animation)
+void AnimationListWidget::insertAnimationItems(const QList<animations::AnimationItem *> *animation)
 {
-    addItem(animation);
+    foreach (animations::AnimationItem *i, *animation)
+        addItem(i);
 }
 
 void AnimationListWidget::createActions()
@@ -99,3 +103,8 @@ void AnimationListWidget::addSelectedItemsToPlaylist()
 {
     Q_EMIT addToPlaylist(selectedItems());
 }
+
+
+
+
+

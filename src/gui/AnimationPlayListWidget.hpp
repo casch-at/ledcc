@@ -18,10 +18,28 @@
 #define ANIMATIONPLAYLISTWIDGET_HPP
 
 #include <ListWidget.hpp>
-
 namespace animations {
+    class Animation;
     class AnimationOptions;
+    class AnimationItem;
+    class Options;
+//    class Draw;
+//    class Lift;
+//    class Firework;
+//    class AxisNailWall;
+//    class WireBoxCenterShrinkGrow;
+//    class WireBoxCornerShrinkGrow;
+//    class Loadbar;
+//    class RandomFiller;
+//    class RandomSpark;
+//    class RandomSparkFlash;
+//    class RandomZLift;
+//    class Wall;
+//    class Rain;
+//    class StringFly;
+//    class AnimationOptions;
     }
+using namespace animations;
 /*!
  \brief Holds the animation to play
 
@@ -29,17 +47,16 @@ namespace animations {
 class AnimationPlayListWidget : public ListWidget
 {
     Q_OBJECT
+    Q_PROPERTY(Animation* currentAnimation READ currentAnimation WRITE setCurrentAnimation NOTIFY currentAnimationChanged)
+
 public:
     explicit AnimationPlayListWidget(QWidget *parent = Q_NULLPTR);
     virtual ~AnimationPlayListWidget();
-    QAction *m_playAction;
-    QAction *m_stopAction;
-    QAction *m_clearAction;
-    QAction *m_moveDownAction;
-    QAction *m_moveUpAction;
-    QAction *m_removeAction;
-    QAction *m_duplicateAction;
-    QAction *m_editAction;
+    inline animations::Animation* currentAnimation() const  { return m_currentAnimation; }
+
+Q_SIGNALS:
+    void currentAnimationChanged(animations::Animation* arg);
+
 public Q_SLOTS:
     void clearList(void);
     void newItem(QList<QListWidgetItem *> item);
@@ -47,7 +64,15 @@ public Q_SLOTS:
     void removeItems();
     void moveItemsUpDown();
     void editItem();
-    animations::AnimationItem *getNextAnimation(void);
+    void updateAnimation(const AnimationItem *item);
+    void updateItemToolTip(const Options &aOptions);
+    AnimationItem *getNextAnimation(void);
+    inline void setCurrentAnimation(animations::Animation* arg) {
+        if (m_currentAnimation != arg) {
+            m_currentAnimation = arg;
+            emit currentAnimationChanged(arg);
+        }
+    }
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
     virtual void dragMoveEvent(QDragMoveEvent *e);
@@ -58,13 +83,13 @@ protected:
     virtual void dragEnterEvent(QDragEnterEvent *e);
 private:
     bool moveItem(const QObject *object, QModelIndexList *list, bool *up);
-    void createActions();
     bool dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex);
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
     void sortIndexes(const bool ascending, QModelIndexList *list);
     int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
-    animations::AnimationOptions *m_adjustOptionDialog;
+    Animation *m_currentAnimation;
+    AnimationOptions *m_adjustOptionDialog;
     Q_DISABLE_COPY(AnimationPlayListWidget)
 };
 
