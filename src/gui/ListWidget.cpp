@@ -7,7 +7,7 @@
 #include <QShortcut>
 #include <QMenu>
 #include <QAction>
-
+#include <Animations.hpp>
 
 #ifdef _DEBUG_
 #include <QDebug>
@@ -96,8 +96,13 @@ void ListWidget::selectAllItems()
 void ListWidget::on_itemSelectionChanged()
 {
     QList<QListWidgetItem*> items = selectedItems();
-//    if( !items.isEmpty() && count() ) //FIXME:: Properties are created in the animation itself
-//        Q_EMIT showPropertiePreview(  dynamic_cast<animations::AnimationItem*>(items.first())->toolTip() );
+    Q_EMIT showPropertiePreview(QStringList() << "Hello" << "Animation");
+    if( !items.isEmpty() && count() ){
+        AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
+        QString text = item->text();
+        Animation *animation = animations()->get(text);
+        Q_EMIT showPropertiePreview( animation->getAnimationPropertiesAsPlainText(item) );
+    }
 }
 
 void ListWidget::on_showPropertiesPreviewTimerTimeout()

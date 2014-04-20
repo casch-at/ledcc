@@ -19,13 +19,28 @@
 #include "alt_key.hpp"
 #include "aqp.hpp"
 #include "AnimationItem.hpp"
+#include "Animation.hpp"
+#include "Draw.hpp"
+#include "Lift.hpp"
+#include "Firework.hpp"
+#include "AxisNailWall.hpp"
+#include "WireBoxCenterShrinkGrow.hpp"
+#include "WireBoxCornerShrinkGrow.hpp"
+#include "Loadbar.hpp"
+#include "RandomFiller.hpp"
+#include "RandomSpark.hpp"
+#include "RandomSparkFlash.hpp"
+#include "RandomZLift.hpp"
+#include "Wall.hpp"
+#include "Rain.hpp"
+#include "StringFly.hpp"
 
 #include <QTimer>
 // Qt Includes
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-using namespace animations;
+
 
 AnimationOptions::AnimationOptions(QWidget *parent) :
     QDialog(parent),
@@ -35,9 +50,6 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
 {
     // Setup the user interface
     ui->setupUi(this);
-//    m_updateUi = new QTimer(this); /* If widgets are set to visable false we need a timer to call all slot where the Parent gets resized/
-//    m_updateUi->setSingleShot(true);
-//    m_updateUi->setInterval(1);
     // Create connections ( Signal & Slot )
     connect(ui->m_nextPB, &QPushButton::pressed, this, &AnimationOptions::optionsNextAnimation);
     connect(ui->m_prevPB, &QPushButton::pressed, this, &AnimationOptions::optionsPrevAnimation);
@@ -45,7 +57,6 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
     connect(ui->m_cancelPB, &QPushButton::pressed, this, &AnimationOptions::cancel);
     connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
     connect(this, &QDialog::rejected, this, &AnimationOptions::cancel);
-//    connect(m_updateUi, &QTimer::timeout, this, &AnimationOptions::resizeUi);
     setWindowModified(true);
     AQP::accelerateWidget(this);
 
@@ -98,8 +109,10 @@ void AnimationOptions::changeEvent(QEvent *e)
 */
 void AnimationOptions::applyAnimationOptions()
 {
-    if(compareOldNewAnimationOptions())
+    if(compareOldNewAnimationOptions()){
+        Q_EMIT updateAnimation(m_animationToUpdate);
         Q_EMIT applyNewAnimationArguments(m_animationToUpdate);
+    }
 }
 
 /*!
@@ -109,9 +122,6 @@ void AnimationOptions::applyAnimationOptions()
 void AnimationOptions::cancel()
 {
     hide();
-    foreach (AnimationItem *item, m_itemList) {
-        delete item;
-    }
     m_animationAt = -1;
 }
 
@@ -121,7 +131,21 @@ void AnimationOptions::cancel()
 */
 void AnimationOptions::ok()
 {
-    compareOldNewAnimationOptions();
+    if (compareOldNewAnimationOptions()) {
+        QMessageBox msgb;
+        msgb.setText("Options have been modified!");
+        msgb.setInformativeText("Do you want apply the new options?");
+        msgb.setWindowTitle("Options Modified");
+        msgb.setIcon(QMessageBox::Information);
+        msgb.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgb.setDefaultButton(QMessageBox::Ok);
+        int ret = msgb.exec();
+
+        if (ret == QMessageBox::Ok)
+           Q_EMIT updateAnimation(m_animationToUpdate);
+
+    }
+    hide();
     // If current animation has ben modefied ask user if he wants to apply the settings
     // If nothing has changed hide application
 }
@@ -139,11 +163,6 @@ void AnimationOptions::updateUi()
         ui->m_nextPB->setEnabled(true);
 
 }
-
-//void AnimationOptions::resizeUi()
-//{
-//    resize(350,0);
-//}
 
 /*!
  \brief
@@ -181,7 +200,7 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
 {
     const Options *options = m_animationToUpdate->getOptions();
     const int hasOption = m_animationToUpdate->getAvailableAnimationOptions();
-    using namespace animations;
+
     for (int i = 0; i < TOTAL_ARGUMENTS; i++) {
         switch ( (1<<i) & hasOption )
         {
@@ -298,8 +317,11 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
 u_int8_t AnimationOptions::compareOldNewAnimationOptions()
 {
     const Options *options = m_animationToUpdate->getOptions();
-    if(options->m_axis != ui->m_axisComB->currentIndex())
+    if (options->m_speed != ui->m_speedSpinB->value())
         return 1;
+    else if(options->m_axis != ui->m_axisComB->currentIndex())
+        return 1;
+
 //    else if(options->delay != ui->)
 }
 

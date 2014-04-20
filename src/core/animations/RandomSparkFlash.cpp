@@ -16,7 +16,7 @@
  */
 #include "RandomSparkFlash.hpp"
 
-using namespace animations;
+
 
 RandomSparkFlash::RandomSparkFlash(const u_int16_t &speed, const u_int16_t &iterations, const u_int16_t &leds, const QString &name, QObject *parent):
     Animation(speed,name,parent),

@@ -16,7 +16,7 @@
  */
 #include "StringFly.hpp"
 
-using namespace animations;
+
 StringFly::StringFly(const u_int16_t &speed, const QString &string, const QString &name, QObject *parent) :
     Animation(speed,name,parent),
     m_sToDisplay(string)

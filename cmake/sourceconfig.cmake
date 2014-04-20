@@ -19,22 +19,14 @@
 ###############################################################################
 
 # Include current directory header files
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+include_directories( ${CMAKE_CURRENT_BINARY_DIR})
 
 # Configure a header file to pass some of the CMake settings to the source code
 #                         -----------------------
 #                          Configure "Global.hpp"
 #                         -----------------------
-configure_file (
-    "Global.hpp.in"
-    "Global.hpp"
-    @ONLY
-    )
+set(LED_CUBE_VERSION_MAJOR "0.1" )
+set(LED_CUBE_VERSION_MINOR "0.11")
+configure_file("Global.hpp.in" "Global.hpp" @ONLY)
 
-set(HEADERS Options.hpp Global.hpp)
-set(SOURCES Sender.cpp Options.cpp)
-add_library(ledcubecore ${SOURCES} ${HEADERS})
-target_link_libraries(ledcubecore animations  ${Qt5SerialPort_LIBRARIES} )
-add_dependencies(ledcubecore animations)
-add_subdirectory(animations)
 

@@ -2,24 +2,11 @@
 #include "Animation.hpp"
 #include "AnimationItem.hpp"
 #include "AnimationOptions.hpp"
+#include "QCoreApplication"
 
-// All available build in animations
-#include "Draw.hpp"
-#include "Lift.hpp"
-#include "Firework.hpp"
-#include "AxisNailWall.hpp"
-#include "WireBoxCenterShrinkGrow.hpp"
-#include "WireBoxCornerShrinkGrow.hpp"
-#include "Loadbar.hpp"
-#include "RandomFiller.hpp"
-#include "RandomSpark.hpp"
-#include "RandomSparkFlash.hpp"
-#include "RandomZLift.hpp"
-#include "Wall.hpp"
-#include "Rain.hpp"
-#include "StringFly.hpp"
+using namespace BIAS;
 
-using namespace animations;
+Animations* Animations::m_instance(Q_NULLPTR);
 
 Animations::Animations(QObject *parent) :
     QObject(parent)
@@ -31,6 +18,14 @@ Animations::~Animations()
 {
     foreach (Animation *a, m_animationHash)
         delete a;
+}
+
+Animations *Animations::instance()
+{
+    if (!m_instance) {
+        m_instance = new Animations(qApp);
+    }
+    return m_instance;
 }
 
 
@@ -107,5 +102,64 @@ void Animations::setupAnimationItems()
         iter.value()->m_abort = false;
         m_animationItemDefaultList.append(item);
         iter++;
+    }
+}
+
+/*!
+ \brief
+
+ \param item
+*/
+void Animations::updateAnimation(const AnimationItem *item)
+{
+    QString text = item->text();
+    Animation *a = m_animationHash.value(text);
+    const Options *options = item->getOptions();
+
+    if(text.compare(SLift) == 0){
+        dynamic_cast<Lift*>(a)->setDelay(options->m_delay);
+        dynamic_cast<Lift*>(a)->setIterations(options->m_iteration);
+        dynamic_cast<Lift*>(a)->setSpeed(options->m_speed);
+    }else if(text.compare(SRain) == 0){
+        dynamic_cast<Rain*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<Rain*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SStringFly) == 0){
+        dynamic_cast<StringFly*>(a)->setSToDisplay(options->m_text);
+        dynamic_cast<StringFly*>(a)->setSpeed(options->m_speed);
+    }else if(text.compare(SWall) == 0){
+        dynamic_cast<Wall*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<Wall*>(a)->setAxis(options->m_axis);
+        dynamic_cast<Wall*>(a)->setDirection(options->m_direction);
+    }else if(text.compare(SFirework) == 0){
+        dynamic_cast<Firework*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<Firework*>(a)->setParticles(options->m_leds);
+        dynamic_cast<Firework*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SRandomSparkFlash) == 0){
+        dynamic_cast<RandomSparkFlash*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<RandomSparkFlash*>(a)->setIterations(options->m_iteration);
+        dynamic_cast<RandomSparkFlash*>(a)->setLeds(options->m_leds);
+    }else if(text.compare(SRandomSpark) == 0){
+        dynamic_cast<RandomSpark*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<RandomSpark*>(a)->setSparks(options->m_leds);
+        dynamic_cast<RandomSpark*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SRandomFiller) == 0){
+        dynamic_cast<RandomFiller*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<RandomFiller*>(a)->setState(options->m_state);
+    }else if(text.compare(SAxisNailWall) == 0){
+        dynamic_cast<AxisNailWall*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<AxisNailWall*>(a)->setAxis(options->m_axis);
+        dynamic_cast<AxisNailWall*>(a)->setDirection(options->m_direction);
+    }else if(text.compare(SLoadbar) == 0){
+        dynamic_cast<Loadbar*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<Loadbar*>(a)->setAxis(options->m_axis);
+    }else if(text.compare(SWireBoxCenterShrinkGrow) == 0){
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(options->m_invert);
+        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SWireBoxCornerShrinkGrow) == 0){
+        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(options->m_iteration);
+    }else if(text.compare(SRandomZLift) == 0){
+        dynamic_cast<RandomZLift*>(a)->setSpeed(options->m_speed);
     }
 }

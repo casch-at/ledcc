@@ -49,7 +49,7 @@ Sender::~Sender()
  *
  * @param d
  */
-void Sender::sendAnimation(const animations::Draw::CubeArray &d)
+void Sender::sendAnimation(const Draw::CubeArray &d)
 {
     m_serial->putChar(0xFF);
     m_serial->waitForBytesWritten(1000);

@@ -18,28 +18,13 @@
 #define ANIMATIONPLAYLISTWIDGET_HPP
 
 #include <ListWidget.hpp>
-namespace animations {
-    class Animation;
-    class AnimationOptions;
-    class AnimationItem;
-    class Options;
-//    class Draw;
-//    class Lift;
-//    class Firework;
-//    class AxisNailWall;
-//    class WireBoxCenterShrinkGrow;
-//    class WireBoxCornerShrinkGrow;
-//    class Loadbar;
-//    class RandomFiller;
-//    class RandomSpark;
-//    class RandomSparkFlash;
-//    class RandomZLift;
-//    class Wall;
-//    class Rain;
-//    class StringFly;
-//    class AnimationOptions;
-    }
-using namespace animations;
+
+class Animation;
+class AnimationOptions;
+class AnimationItem;
+class Options;
+
+
 /*!
  \brief Holds the animation to play
 
@@ -52,10 +37,10 @@ class AnimationPlayListWidget : public ListWidget
 public:
     explicit AnimationPlayListWidget(QWidget *parent = Q_NULLPTR);
     virtual ~AnimationPlayListWidget();
-    inline animations::Animation* currentAnimation() const  { return m_currentAnimation; }
-
+    inline Animation* currentAnimation() const  { return m_currentAnimation; }
+    AnimationOptions *m_adjustOptionDialog;
 Q_SIGNALS:
-    void currentAnimationChanged(animations::Animation* arg);
+    void currentAnimationChanged(Animation* arg);
 
 public Q_SLOTS:
     void clearList(void);
@@ -64,15 +49,16 @@ public Q_SLOTS:
     void removeItems();
     void moveItemsUpDown();
     void editItem();
-    void updateAnimation(const AnimationItem *item);
     void updateItemToolTip(const Options &aOptions);
     AnimationItem *getNextAnimation(void);
-    inline void setCurrentAnimation(animations::Animation* arg) {
+    inline void setCurrentAnimation(Animation* arg) {
         if (m_currentAnimation != arg) {
             m_currentAnimation = arg;
             emit currentAnimationChanged(arg);
         }
     }
+private Q_SLOTS:
+    void setNewItemOptions(const AnimationItem *item);
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
     virtual void dragMoveEvent(QDragMoveEvent *e);
@@ -89,7 +75,7 @@ private:
     int m_lastPlayedAnimation; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
     Animation *m_currentAnimation;
-    AnimationOptions *m_adjustOptionDialog;
+
     Q_DISABLE_COPY(AnimationPlayListWidget)
 };
 

@@ -19,52 +19,49 @@
 
 #include "Animation.hpp"
 
-namespace animations {
+class AxisNailWall : public Animation
+{
+    Q_OBJECT
+    Q_PROPERTY(Draw::Direction direction READ getDirection WRITE setDirection)
+    Q_PROPERTY(Draw::Axis axis READ getAxis WRITE setAxis)
 
-    class AxisNailWall : public Animation
+public:
+    explicit AxisNailWall(const u_int16_t &speed = 70,
+                          const Draw::Axis &axis = X_AXIS,
+                          const Draw::Direction &direction = Forward,
+                          const QString &name = "Axis Nail Wall",
+                          QObject *parent = 0);
+
+    Draw::Direction getDirection() const
     {
-        Q_OBJECT
-        Q_PROPERTY(Draw::Direction direction READ getDirection WRITE setDirection)
-        Q_PROPERTY(Draw::Axis axis READ getAxis WRITE setAxis)
+        return m_direction;
+    }
 
-    public:
-        explicit AxisNailWall(const u_int16_t &speed = 70,
-                              const Draw::Axis &axis = X_AXIS,
-                              const Draw::Direction &direction = Forward,
-                              const QString &name = "Axis Nail Wall",
-                              QObject *parent = 0);
+    Draw::Axis getAxis() const
+    {
+        return m_axis;
+    }
+public Q_SLOTS:
+    virtual void createAnimation();
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
+    void setDirection(const Draw::Direction direction)
+    {
+        if(m_direction != direction)
+            m_direction = direction;
+    }
 
-        Draw::Direction getDirection() const
-        {
-            return m_direction;
-        }
+    void setAxis(const Draw::Axis axis)
+    {
+        if(m_axis != axis)
+            m_axis = axis;
+    }
+private:
 
-        Draw::Axis getAxis() const
-        {
-            return m_axis;
-        }
-    public Q_SLOTS:
-        virtual void createAnimation();
-        virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-        virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-        void setDirection(const Draw::Direction direction)
-        {
-            if(m_direction != direction)
-                m_direction = direction;
-        }
+    Draw::Axis m_axis;
+    Draw::Direction m_direction;
 
-        void setAxis(const Draw::Axis axis)
-        {
-            if(m_axis != axis)
-                m_axis = axis;
-        }
-    private:
+};
 
-        Draw::Axis m_axis;
-        Draw::Direction m_direction;
-
-    };
-
-    } // End namespace animations
 
 #endif // AXISNAILWALL_HPP

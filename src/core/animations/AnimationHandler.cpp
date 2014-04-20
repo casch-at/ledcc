@@ -5,15 +5,14 @@
 #include "AnimationItem.hpp"
 #include "AnimationPlayListWidget.hpp"
 
-using namespace animations;
+using namespace BIAS;
 
 /*!
  \brief
 
 */
-AnimationHandler::AnimationHandler(const Animations *animations, QObject *object):
-    QObject(object),
-    m_buildInAnimations(animations)
+AnimationHandler::AnimationHandler(QObject *object):
+    QObject(object)
 {
 
 }
@@ -24,7 +23,6 @@ AnimationHandler::AnimationHandler(const Animations *animations, QObject *object
 */
 AnimationHandler::~AnimationHandler()
 {
-    delete m_buildInAnimations;
 }
 
 
@@ -78,11 +76,11 @@ void AnimationHandler::playNextAnimation(const AnimationItem *item)
     }
 //    m_playlist->m_currentAnimation
 //    m_currentAnimation = m_animationHash.value(item->text());
-//    connect(m_createThread,&QThread::started,m_currentAnimation,&animations::Animation::createAnimation);
-//    connect(m_currentAnimation, &animations::Animation::done, m_createThread, &QThread::quit);
+//    connect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
+//    connect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
     //    connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
     //    connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
-//    connect(m_currentAnimation,&animations::Animation::done,this,&MainWindow::animationDone);
+//    connect(m_currentAnimation,&Animation::done,this,&MainWindow::animationDone);
 
 //    updateAnimation(item);
 //    m_createThread->start();
@@ -91,3 +89,6 @@ void AnimationHandler::playNextAnimation(const AnimationItem *item)
  \brief
 
 */
+
+
+

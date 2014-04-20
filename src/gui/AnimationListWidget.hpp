@@ -38,7 +38,7 @@ Q_SIGNALS:
 protected:
     virtual void keyPressEvent(QKeyEvent * e);
 public Q_SLOTS:
-    void insertAnimationItems(const QList<animations::AnimationItem *> *animation);
+    void insertAnimationItems(const QList<AnimationItem *> *animation);
     void addSelectedItemsToPlaylist();
 
 private:

@@ -16,7 +16,7 @@
  */
 #include "AxisNailWall.hpp"
 
-using namespace animations;
+
 
 AxisNailWall::AxisNailWall(const u_int16_t &speed, const Draw::Axis &axis, const Draw::Direction &direction, const QString &name, QObject *parent):
     Animation(speed,name,parent),

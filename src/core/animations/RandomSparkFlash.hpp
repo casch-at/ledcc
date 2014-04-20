@@ -19,47 +19,46 @@
 
 #include "Animation.hpp"
 
-namespace animations {
-    class RandomSparkFlash : public Animation
+
+class RandomSparkFlash : public Animation
+{
+    Q_OBJECT
+    Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
+    Q_PROPERTY(u_int16_t leds READ getLeds WRITE setLeds)
+public:
+    explicit RandomSparkFlash(const u_int16_t &speed = 80,
+                              const u_int16_t &iterations = 20,
+                              const u_int16_t &leds = 40,
+                              const QString &name = "Random Spark Flash",
+                              QObject *parent = 0);
+
+    u_int16_t getIterations() const
     {
-        Q_OBJECT
-        Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
-        Q_PROPERTY(u_int16_t leds READ getLeds WRITE setLeds)
-    public:
-        explicit RandomSparkFlash(const u_int16_t &speed = 80,
-                                  const u_int16_t &iterations = 20,
-                                  const u_int16_t &leds = 40,
-                                  const QString &name = "Random Spark Flash",
-                                  QObject *parent = 0);
+        return m_iterations;
+    }
 
-        u_int16_t getIterations() const
-        {
-            return m_iterations;
-        }
+    u_int16_t getLeds() const
+    {
+        return m_leds;
+    }
 
-        u_int16_t getLeds() const
-        {
-            return m_leds;
-        }
-
-    public Q_SLOTS:
-        virtual void createAnimation();
-        virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-        virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-        void setIterations(const u_int16_t iterations)
-        {
-            if(m_iterations != iterations)
-                m_iterations = iterations;
-        }
-        void setLeds(const u_int16_t leds)
-        {
-            if(m_leds != leds)
-                m_leds = leds;
-        }
-    private:
-        u_int16_t m_iterations;
-        u_int16_t m_leds;
-    };
-    } // End namespace animations
+public Q_SLOTS:
+    virtual void createAnimation();
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
+    void setIterations(const u_int16_t iterations)
+    {
+        if(m_iterations != iterations)
+            m_iterations = iterations;
+    }
+    void setLeds(const u_int16_t leds)
+    {
+        if(m_leds != leds)
+            m_leds = leds;
+    }
+private:
+    u_int16_t m_iterations;
+    u_int16_t m_leds;
+};
 
 #endif // RANDOMSPARKFLASH_HPP

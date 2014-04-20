@@ -16,7 +16,7 @@
  */
 #include "Rain.hpp"
 
-using namespace animations;
+
 
 Rain::Rain(const u_int16_t &iterations, const u_int16_t &speed, const QString &name, QObject *parent):
     Animation(speed,name,parent),

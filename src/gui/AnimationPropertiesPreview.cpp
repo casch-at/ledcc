@@ -78,23 +78,27 @@ void AnimationPropertiesPreview::createPropertiePreview(QStringList &properties 
     mlayout->setObjectName("animationPropertiesPreviewLay");
     mlayout->setAlignment( this, Qt::AlignCenter );
 
-    QLabel *label = new QLabel( properties.first() );
+    QLabel *label = new QLabel( properties.first() ); // Display the name of the animation
     properties.removeAt(0);
     label->setWordWrap(true);
     label->setFont(font);
     label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    QFrame *f = new QFrame;
+    mlayout->addWidget(label);
+
+    QFrame *f = new QFrame;  // Create a frame the animation properties
     f->setFrameStyle(QFrame::HLine | QFrame::Raised);
     f->setMidLineWidth(1);
     f->setLineWidth(0);
 
-    mlayout->addWidget(label);
     mlayout->addWidget(f);
 
     font.setBold(false);
     font.setPixelSize(PIXEL_SIZE_PROPERTIES);
-
+    /*
+     * Create two columns for the animation properties one
+     * for the property name and one for to value of the property
+     */
     foreach ( QString propertie, properties )
     {
         if(propertie.isEmpty())

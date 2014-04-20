@@ -17,7 +17,7 @@
 #include "Wall.hpp"
 #include <QDebug>
 
-using namespace animations;
+
 Wall::Wall(const u_int16_t &speed, const Draw::Axis &axis, const Draw::Direction &direction, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_direction(direction),

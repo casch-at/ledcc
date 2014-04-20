@@ -28,25 +28,19 @@ project(ledcc C CXX)
 # Variable for program name!
 set(PROGNAME  ${PROJECT_NAME})
 
-# Set version numbers for global.h configuration. See CMakeLists.txt in /src/core directory
-set(LED_CUBE_VERSION_MAJOR "0.1" )
-set(LED_CUBE_VERSION_MINOR "0.11")
+set(CoreDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/core")
+set(ThirdPartyDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty")
+set(GuiDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/gui")
+
 
 set(CMAKE_INCLUDE_PATH)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Widgets finds its eon dependencies (QtGui and QtCore)
-message(STATUS "Searching for dependencies")
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5SerialPort REQUIRED)
 
-if(Qt5Widgets_FOUND AND Qt5SerialPort_FOUND AND Qt5Core_FOUND AND Qt5Gui_FOUND)
-    message(STATUS "Qt5Widgets:    yes")
-    message(STATUS "Qt5SerialPort: yes")
-    message(STATUS "Qt5Core:       yes")
-    message(STATUS "Qt5Gui:        yes")
-endif()
 
 include(CompileFlags)
 #get_target_property(QtCore_location Qt5::Core LOCATION)
@@ -95,23 +89,5 @@ if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
   set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS QT_NO_DEBUG)
 endif()
 
-set(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
-
-# Include subdirectories
-include_directories(src/gui src/core/ src/core/animations src/aqp)
-
-# Create resource file *.cpp
-
-qt5_add_resources(${PROGNAME}_RESOURCES_RCC src/icons.qrc OPTIONS -no-compress )
-
-add_executable(${PROGNAME} main.cpp ${${PROGNAME}_RESOURCES_RCC})
-add_dependencies(${PROGNAME} ledcubegui)
-
-# link against ledcube and animations
-target_link_libraries(${PROGNAME} ledcubegui)
-
-#qt5_use_modules(${PROGNAME} Widgets
-#                            SerialPort
-#)
 
 add_subdirectory( src )

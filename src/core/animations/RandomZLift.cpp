@@ -16,7 +16,7 @@
  */
 #include "RandomZLift.hpp"
 
-using namespace animations;
+
 RandomZLift::RandomZLift(const u_int16_t &iterations, const u_int16_t &speed, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_iterations(iterations)

@@ -19,48 +19,44 @@
 
 #include "Animation.hpp"
 
-namespace animations {
+class Firework : public Animation
+{
+    Q_OBJECT
+    Q_PROPERTY(u_int8_t iterations READ getIterations WRITE setIterations)
+    Q_PROPERTY(u_int16_t particles READ getParticles WRITE setParticles)
+public:
+    explicit Firework(const u_int16_t &iterations = 15, const u_int16_t &speed = 50,
+                      const u_int8_t &particles = 20, const QString &name = "Firework",
+                      QObject *parent = Q_NULLPTR);
 
-    class Firework : public Animation
+    u_int8_t getIterations() const
     {
-        Q_OBJECT
-        Q_PROPERTY(u_int8_t iterations READ getIterations WRITE setIterations)
-        Q_PROPERTY(u_int16_t particles READ getParticles WRITE setParticles)
-    public:
-        explicit Firework(const u_int16_t &iterations = 15, const u_int16_t &speed = 50,
-                          const u_int8_t &particles = 20, const QString &name = "Firework",
-                          QObject *parent = Q_NULLPTR);
-
-        u_int8_t getIterations() const
-        {
-            return m_iterations;
-        }
-
-        u_int16_t getParticles() const
-        {
-            return m_particles;
-        }
-
-    public Q_SLOTS:
-        virtual void createAnimation();
-        virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-        virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-        void setIterations(const u_int8_t &iterations)
-        {
-            if(m_iterations != iterations)
-                m_iterations = iterations;
-        }
-
-        void setParticles(const u_int16_t &particles)
-        {
-            if(m_particles != particles)
-                m_particles = particles;
-        }
-    private:
-        u_int16_t m_iterations;
-        u_int8_t m_particles;
-        u_int8_t m_tempParticles;
-    };
+        return m_iterations;
     }
 
+    u_int16_t getParticles() const
+    {
+        return m_particles;
+    }
+
+public Q_SLOTS:
+    virtual void createAnimation();
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
+    void setIterations(const u_int8_t &iterations)
+    {
+        if(m_iterations != iterations)
+            m_iterations = iterations;
+    }
+
+    void setParticles(const u_int16_t &particles)
+    {
+        if(m_particles != particles)
+            m_particles = particles;
+    }
+private:
+    u_int16_t m_iterations;
+    u_int8_t m_particles;
+    u_int8_t m_tempParticles;
+};
 #endif // FIREWORK_HPP

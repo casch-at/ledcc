@@ -16,7 +16,7 @@
  */
 #include "RandomFiller.hpp"
 
-using namespace animations;
+
 
 RandomFiller::RandomFiller(const u_int16_t &speed, const BixelState &state, const QString &name, QObject *parent) :
     Animation(speed,name,parent),

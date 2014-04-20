@@ -19,45 +19,43 @@
 
 #include "Animation.hpp"
 
-namespace animations{
-    class Loadbar : public Animation
+class Loadbar : public Animation
+{
+    Q_OBJECT
+    Q_PROPERTY(Draw::Axis axis READ getAxis WRITE setAxis)
+    Q_PROPERTY(Draw::Direction direction READ getDirection WRITE setDirection)
+public:
+    explicit Loadbar(const u_int16_t &speed = 50, const Draw::Axis &axis = X_AXIS,
+                     const QString &name = "Loadbar", const Draw::Direction &direction = Forward, QObject *parent = 0);
+    Draw::Axis getAxis() const
     {
-        Q_OBJECT
-        Q_PROPERTY(Draw::Axis axis READ getAxis WRITE setAxis)
-        Q_PROPERTY(Draw::Direction direction READ getDirection WRITE setDirection)
-    public:
-        explicit Loadbar(const u_int16_t &speed = 50, const Draw::Axis &axis = X_AXIS,
-                         const QString &name = "Loadbar", const Draw::Direction &direction = Forward, QObject *parent = 0);
-        Draw::Axis getAxis() const
-        {
-            return m_axis;
-        }
+        return m_axis;
+    }
 
-        Draw::Direction getDirection() const
-        {
-            return m_direction;
-        }
+    Draw::Direction getDirection() const
+    {
+        return m_direction;
+    }
 
-    public Q_SLOTS:
-        virtual void createAnimation();
-        virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-        virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-        void setAxis(const Draw::Axis axis)
-        {
-            if(m_axis != axis)
-                m_axis = axis;
-        }
+public Q_SLOTS:
+    virtual void createAnimation();
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
+    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
+    void setAxis(const Draw::Axis axis)
+    {
+        if(m_axis != axis)
+            m_axis = axis;
+    }
 
-        void setDirection(const Draw::Direction direction)
-        {
-            if(m_direction != direction)
-                m_direction = direction;
-        }
+    void setDirection(const Draw::Direction direction)
+    {
+        if(m_direction != direction)
+            m_direction = direction;
+    }
 
-    private:
+private:
 
-        Draw::Axis m_axis;
-        Draw::Direction m_direction;
-    };
-    } // End namespace animations
+    Draw::Axis m_axis;
+    Draw::Direction m_direction;
+};
 #endif // LOADBAR_HPP

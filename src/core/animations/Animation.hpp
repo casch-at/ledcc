@@ -22,64 +22,51 @@
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-namespace animations {
 
 
-    class Animation : public Draw
+
+class Animation : public Draw
+{
+    Q_OBJECT
+public:
+    explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR);
+
+    QString getName(void) const{
+        return m_name;
+    }
+    void setSpeed(const u_int16_t &speed)
     {
-        Q_OBJECT
-    public:
-        explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR);
-
-        QString getName(void) const{
-            return m_name;
+        if(m_speed != speed){
+            m_speed = speed;
         }
-        void setSpeed(const u_int16_t &speed)
-        {
-            if(m_speed != speed){
-                m_speed = speed;
-            }
-        }
-        u_int16_t getSpeed(void) const
-        {
-            return m_speed;
-        }
+    }
+    u_int16_t getSpeed(void) const
+    {
+        return m_speed;
+    }
 
-        void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z);
-        void effectZUpDownMove(QVector<u_int8_t> &destination,
-                               QVector<u_int8_t> &position, Draw::Axis axis);
+    void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z);
+    void effectZUpDownMove(QVector<u_int8_t> &destination,
+                           QVector<u_int8_t> &position, Draw::Axis axis);
 
-        void waitMs(const u_int16_t &time);
+    void waitMs(const u_int16_t &time);
 
 
-        bool m_abort;
-        void setItemToolTipNameSpeed(QString *itemToolTip, AnimationItem *item);
-    Q_SIGNALS:
-        void done();
-        void sendData(const CubeArray &cubeFrame);
-    public Q_SLOTS:
-        virtual void createAnimationTooltipAsRichText(AnimationItem *item) = 0;
-        virtual void createAnimation(void) = 0;
-        virtual QStringList& getAnimationPropertiesAsPlainText(const AnimationItem *item ) = 0;
-    protected:
-        QStringList list;
-    private:
-        u_int16_t m_speed;
-        QString m_name;
-        Q_DISABLE_COPY(Animation)
-    };
-    const QString SWireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
-    const QString SWireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
-    const QString SLift("Lift");
-    const QString SWall("Wall");
-    const QString SFirework("Firework");
-    const QString SRain("Rain");
-    const QString SRandomSpark("Random Spark");
-    const QString SRandomSparkFlash("Random Spark Flash");
-    const QString SRandomFiller("Random Filler");
-    const QString SRandomZLift("Random Z-Axis Lift");
-    const QString SStringFly("String Fly");
-    const QString SLoadbar("Loadbar");
-    const QString SAxisNailWall("Axis Nail Wall");
-    } // End namespace animations
+    bool m_abort;
+    void setItemToolTipNameSpeed(QString *itemToolTip, AnimationItem *item);
+Q_SIGNALS:
+    void done();
+    void sendData(const CubeArray &cubeFrame);
+public Q_SLOTS:
+    virtual void createAnimationTooltipAsRichText(AnimationItem *item) = 0;
+    virtual void createAnimation(void) = 0;
+    virtual QStringList& getAnimationPropertiesAsPlainText(const AnimationItem *item ) = 0;
+protected:
+    QStringList list;
+private:
+    u_int16_t m_speed;
+    QString m_name;
+    Q_DISABLE_COPY(Animation)
+};
+
 #endif // ANIMATION_HPP

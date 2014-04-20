@@ -16,7 +16,7 @@
  */
 #include "Lift.hpp"
 
-using namespace animations;
+
 
 Lift::Lift(const u_int16_t &delay, const u_int16_t &iterations, const QString &name, const u_int16_t &speed, QObject *parent):
     Animation(speed,name,parent),

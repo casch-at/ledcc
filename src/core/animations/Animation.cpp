@@ -17,7 +17,7 @@
 #include "Animation.hpp"
 #include <QTimer>
 
-using namespace animations;
+
 Animation::Animation(const u_int16_t &speed, const QString &name, QObject *parent):
     Draw(parent),
     m_speed(speed),

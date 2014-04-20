@@ -16,7 +16,7 @@
  */
 #include "MainWindow.hpp"
 #include "ui_MainWindow.h"
-// Third Party
+// ThirdParty
 #include "alt_key.hpp"
 #include "aqp.hpp"
 
@@ -24,10 +24,8 @@
 #include "SettingsDialog.hpp"
 #include "Sender.hpp"
 #include "PortMessageBox.hpp"
-#include "AnimationListWidget.hpp"
-#include "AnimationPlayListWidget.hpp"
 #include "AnimationHandler.hpp"
-#include "Animations.hpp"
+#include "AnimationOptions.hpp"
 // Qt includes
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -49,7 +47,7 @@ using namespace std;
  * @brief MainWindow::MainWindow
  * @param parent
  */
-MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
+MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_sdialog(new SettingsDialog),
@@ -59,9 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     m_createThread(new QThread)
 {
     ui->setupUi(this); // Ui must be first created befor accessing the elements
-    Animations *animations = new animations::Animations;
-    ui->m_animationList->insertAnimationItems(animations->animationItemDefaultList());
-    m_animationHandler = new animations::AnimationHandler(animations);
+    m_animationHandler = new AnimationHandler();
     setupSenderThread();
     readSettings ();
     connectSignals();
@@ -69,13 +65,13 @@ MainWindow::MainWindow(QWidget *parent) :  //Init MainWindow
     ui->m_animationList->setFocus();
     AQP::accelerateWidget (this);  //Give each button a accelerater
 
-    Q_EMIT updateUi();
+    updateUi();
 }
 
 /**
  * @brief MainWindow::~MainWindow
  */
-MainWindow::~MainWindow(void) //Deinit MainWindow
+MainWindow::~MainWindow(void)
 {
 
     delete m_sdialog;
@@ -327,7 +323,7 @@ void MainWindow::connectSignals(void)
     connect( ui->m_animationList , &AnimationListWidget::addToPlaylist , ui->m_animationPlaylist , &AnimationPlayListWidget::newItem);
     connect( ui->m_animationList , &AnimationListWidget::showPropertiePreview , ui->animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
     connect( ui->m_animationPlaylist, &AnimationPlayListWidget::updateUi , this, &MainWindow::updateUi);
-    //    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
+//    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
     connect( ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, ui->animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
 
     // Animation Playlist action
@@ -341,6 +337,7 @@ void MainWindow::connectSignals(void)
                                         << ui->m_playAction << ui->m_stopAction << ui->m_editAction
                                         << ui->m_moveUpAction << ui->m_moveDownAction << ui->m_duplicateAction
                                         << ui->m_removeAction << ui->m_clearAction);
+
 }
 
 /**

@@ -27,9 +27,8 @@
 class QTimer;
 class QShortcut;
 class Sender;
-namespace animations {
+
     class AnimationHandler;
-    }
 
 namespace Ui {
     class MainWindow;
@@ -78,7 +77,7 @@ private:
     Sender *m_sender;
     bool m_portOpened;
     bool m_stopPlay;
-    animations::AnimationHandler *m_animationHandler;
+    AnimationHandler *m_animationHandler;
     Q_DISABLE_COPY(MainWindow)
 };
 

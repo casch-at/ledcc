@@ -16,7 +16,7 @@
  */
 #include "WireBoxCenterShrinkGrow.hpp"
 
-using namespace animations;
+
 
 WireBoxCenterShrinkGrow::WireBoxCenterShrinkGrow(const u_int16_t &speed, const bool centerStart, const u_int16_t &iterations, const QString &name, QObject *parent) :
     Animation(speed,name,parent),

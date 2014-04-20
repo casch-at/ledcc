@@ -16,7 +16,7 @@
  */
 #include "AnimationListWidget.hpp"
 #include "Animation.hpp"
-
+#include "Animations.hpp"
 // Third Party Includes
 #include "aqp.hpp"
 #include "alt_key.hpp"
@@ -45,6 +45,7 @@ AnimationListWidget::AnimationListWidget(QWidget *parent):
     setAcceptDrops(false);
     setSortingEnabled(true);
     createActions();
+    insertAnimationItems(animations()->animationItemDefaultList());
 
     connect( m_addToPlaylistAction, &QAction::triggered, this, &AnimationListWidget::addSelectedItemsToPlaylist);
 }
@@ -85,9 +86,9 @@ void AnimationListWidget::keyPressEvent(QKeyEvent *e)
 }
 
 
-void AnimationListWidget::insertAnimationItems(const QList<animations::AnimationItem *> *animation)
+void AnimationListWidget::insertAnimationItems(const QList<AnimationItem *> *animation)
 {
-    foreach (animations::AnimationItem *i, *animation)
+    foreach (AnimationItem *i, *animation)
         addItem(i);
 }
 

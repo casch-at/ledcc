@@ -14,22 +14,6 @@
 
 #include "AnimationPlayListWidget.hpp"
 #include "ui_MainWindow.h"
-#include "Animation.hpp"
-#include "AnimationItem.hpp"
-#include "Draw.hpp"
-#include "Lift.hpp"
-#include "Firework.hpp"
-#include "AxisNailWall.hpp"
-#include "WireBoxCenterShrinkGrow.hpp"
-#include "WireBoxCornerShrinkGrow.hpp"
-#include "Loadbar.hpp"
-#include "RandomFiller.hpp"
-#include "RandomSpark.hpp"
-#include "RandomSparkFlash.hpp"
-#include "RandomZLift.hpp"
-#include "Wall.hpp"
-#include "Rain.hpp"
-#include "StringFly.hpp"
 #include "AnimationOptions.hpp"
 // Third Party
 #include "aqp.hpp"
@@ -53,8 +37,8 @@
 */
 AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     ListWidget(parent),
-    m_lastPlayedAnimation(0),
-    m_adjustOptionDialog(new AnimationOptions(parent))
+    m_adjustOptionDialog(new AnimationOptions(parent)),
+    m_lastPlayedAnimation(0)
 {
     // QListWidget settings
     setDropIndicatorShown(true);
@@ -62,6 +46,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     setDragDropMode(DragDrop);
     setDefaultDropAction(Qt::MoveAction);
     setAcceptDrops(true);
+    connect(m_adjustOptionDialog, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlayListWidget::setNewItemOptions);
 }
 
 /*!
@@ -449,6 +434,11 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
     }
 }
 
+void AnimationPlayListWidget::setNewItemOptions(const AnimationItem *item)
+{
+    qDebug( ) << indexFromItem(const_cast<AnimationItem*>(item)).row();
+}
+
 /*!
  \brief Insert items at a given row.
 
@@ -472,10 +462,10 @@ void AnimationPlayListWidget::editItem()
 
     if (!items.isEmpty())
         foreach (QListWidgetItem *i, items)
-            itemList.append(dynamic_cast<AnimationItem*>(i)->clone());
+            itemList.append(dynamic_cast<AnimationItem*>(i));
     else
         for (int i = 0; i < count(); ++i)
-            itemList.append(dynamic_cast<AnimationItem*>(item(i))->clone());
+            itemList.append(dynamic_cast<AnimationItem*>(item(i)));
 
     m_adjustOptionDialog->adjustAnimationOptions(itemList);
     //    Q_EMIT updateUi();
@@ -516,66 +506,6 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
     }
 }
 
-
-/*!
- \brief
-
- \param item
-*/
-void AnimationPlayListWidget::updateAnimation(const AnimationItem *item)
-{
-    QString text = item->text();
-    Animation *a/* = m_animationHash.value(text);*/;
-    const Options *options = item->getOptions();
-
-    if(text.compare(SLift) == 0){
-        dynamic_cast<Lift*>(a)->setDelay(options->m_delay);
-        dynamic_cast<Lift*>(a)->setIterations(options->m_iteration);
-        dynamic_cast<Lift*>(a)->setSpeed(options->m_speed);
-    }else if(text.compare(SRain) == 0){
-        dynamic_cast<Rain*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<Rain*>(a)->setIterations(options->m_iteration);
-    }else if(text.compare(SStringFly) == 0){
-        dynamic_cast<StringFly*>(a)->setSToDisplay(options->m_text);
-        dynamic_cast<StringFly*>(a)->setSpeed(options->m_speed);
-    }else if(text.compare(SWall) == 0){
-        dynamic_cast<Wall*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<Wall*>(a)->setAxis(options->m_axis);
-        dynamic_cast<Wall*>(a)->setDirection(options->m_direction);
-    }else if(text.compare(SFirework) == 0){
-        dynamic_cast<Firework*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<Firework*>(a)->setParticles(options->m_leds);
-        dynamic_cast<Firework*>(a)->setIterations(options->m_iteration);
-    }else if(text.compare(SRandomSparkFlash) == 0){
-        dynamic_cast<RandomSparkFlash*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<RandomSparkFlash*>(a)->setIterations(options->m_iteration);
-        dynamic_cast<RandomSparkFlash*>(a)->setLeds(options->m_leds);
-    }else if(text.compare(SRandomSpark) == 0){
-        dynamic_cast<RandomSpark*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<RandomSpark*>(a)->setSparks(options->m_leds);
-        dynamic_cast<RandomSpark*>(a)->setIterations(options->m_iteration);
-    }else if(text.compare(SRandomFiller) == 0){
-        dynamic_cast<RandomFiller*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<RandomFiller*>(a)->setState(options->m_state);
-    }else if(text.compare(SAxisNailWall) == 0){
-        dynamic_cast<AxisNailWall*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<AxisNailWall*>(a)->setAxis(options->m_axis);
-        dynamic_cast<AxisNailWall*>(a)->setDirection(options->m_direction);
-    }else if(text.compare(SLoadbar) == 0){
-        dynamic_cast<Loadbar*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<Loadbar*>(a)->setAxis(options->m_axis);
-    }else if(text.compare(SWireBoxCenterShrinkGrow) == 0){
-        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setCenterStart(options->m_invert);
-        dynamic_cast<WireBoxCenterShrinkGrow*>(a)->setIterations(options->m_iteration);
-    }else if(text.compare(SWireBoxCornerShrinkGrow) == 0){
-        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setSpeed(options->m_speed);
-        dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(options->m_iteration);
-    }else if(text.compare(SRandomZLift) == 0){
-        dynamic_cast<RandomZLift*>(a)->setSpeed(options->m_speed);
-    }
-}
-
 /*!
  \brief
 
@@ -587,14 +517,14 @@ void AnimationPlayListWidget::updateItemToolTip(const Options &aOptions)
     if(!items.isEmpty())
     {
         AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
-//        item->setOptions(const_cast<Options&>(aOptions));
+        //        item->setOptions(const_cast<Options&>(aOptions));
 
-//        m_animationHash.value(item->text())->createAnimationTooltipAsRichText(item);
-//        ui->animationPropertiesPreview->createPropertiePreview(
-//                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
-        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
-        {
-            updateAnimation(item);
-        }
+        //        m_animationHash.value(item->text())->createAnimationTooltipAsRichText(item);
+        //        ui->animationPropertiesPreview->createPropertiePreview(
+        //                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
+        //        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
+        //        {
+        //            updateAnimation(item);
+        //        }
     }
 }

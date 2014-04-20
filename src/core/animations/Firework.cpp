@@ -16,7 +16,7 @@
  */
 #include "Firework.hpp"
 
-using namespace animations;
+
 
 Firework::Firework(const u_int16_t &iterations, const u_int16_t &speed, const u_int8_t &particles, const QString &name, QObject *parent):
     Animation(speed,name,parent),

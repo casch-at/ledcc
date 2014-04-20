@@ -16,7 +16,7 @@
  */
 #include "WireBoxCornerShrinkGrow.hpp"
 
-using namespace animations;
+
 
 WireBoxCornerShrinkGrow::WireBoxCornerShrinkGrow(const u_int16_t &iterations, const u_int16_t &speed, const u_int8_t &rotate, const u_int8_t &flip, const QString &name, QObject *parent):
     Animation(speed,name,parent),
