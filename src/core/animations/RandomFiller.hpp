@@ -36,8 +36,6 @@ public:
 
 public Q_SLOTS:
     virtual void createAnimation();
-    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
     void setState(const BixelState state)
     {
         if(m_state != state)

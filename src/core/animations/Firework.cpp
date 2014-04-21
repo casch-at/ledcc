@@ -105,26 +105,3 @@ void Firework::createAnimation()
     Q_EMIT done();
 }
 
-
-void Firework::createAnimationTooltipAsRichText(AnimationItem *item)
-{
-    QString itemToolTip;
-    setItemToolTipNameSpeed( &itemToolTip, item );
-    itemToolTip.append(QString("Iterations: %1<br>"
-                               "Particles: %2")
-                       .arg( item->getOptions()->m_iteration )
-                       .arg( item->getOptions()->m_leds ));
-    item->setToolTip( itemToolTip );
-}
-
-QStringList& Firework::getAnimationPropertiesAsPlainText(const AnimationItem *item)
-{
-    list.clear();
-
-    list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( item->getOptions()->m_speed ) );
-    list.append( QString( "Particles:%1" ).arg( item->getOptions()->m_leds ) );
-    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->m_iteration ) );
-
-    return list;
-}

@@ -53,25 +53,3 @@ void RandomFiller::createAnimation()
     }
     Q_EMIT done();
 }
-
-void RandomFiller::createAnimationTooltipAsRichText(AnimationItem *item)
-{
-    QString itemToolTip;
-
-    setItemToolTipNameSpeed( &itemToolTip, item );
-
-    itemToolTip.append( item->getOptions()->m_state == ON ? "Initial LED State: ON" : "Initial LED State: OFF");
-
-    item->setToolTip( itemToolTip );
-}
-
-QStringList& RandomFiller::getAnimationPropertiesAsPlainText(const AnimationItem *item)
-{
-    list.clear();
-
-    list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( item->getOptions()->m_speed ) );
-    list.append( QString( "Initial LED State:%1" ).arg( item->getOptions()->m_invert == ON ? "ON" : "OFF" ) );
-
-    return list;
-}

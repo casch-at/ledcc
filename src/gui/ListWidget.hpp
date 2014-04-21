@@ -8,6 +8,7 @@
 
 class QTimer;
 class QShortcut;
+class AnimationItem;
 
 class ListWidget : public QListWidget
 {
@@ -17,7 +18,7 @@ public:
     virtual ~ListWidget();
 
 Q_SIGNALS:
-    void showPropertiePreview(QStringList &itemProperties);
+    void showPropertiePreview(QStringList itemProperties);
     void updateUi(void);
 public Q_SLOTS:
     void selectAllItems();
@@ -30,7 +31,7 @@ protected:
     virtual void dragLeaveEvent(QDragLeaveEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void leaveEvent(QEvent *e);
-    QListWidgetItem *m_itemToShowProperties;
+    AnimationItem *m_itemToShowProperties;
     QPoint m_dragStartPos;
     QPoint m_dragStopPos;
 
@@ -39,7 +40,6 @@ protected:
 private:
     u_int8_t m_scrollThrough;
     QTimer *m_showPropertiesPreview;
-    QListWidgetItem *itemToShowProperties;
 };
 
 #endif // LISTWIDGET_HPP

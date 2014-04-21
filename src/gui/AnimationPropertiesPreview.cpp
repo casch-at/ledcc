@@ -64,7 +64,7 @@ void AnimationPropertiesPreview::clearFrame( void )
 }
 
 
-void AnimationPropertiesPreview::createPropertiePreview(QStringList &properties )
+void AnimationPropertiesPreview::createPropertiePreview(QStringList properties )
 {
     if(!frame->children().isEmpty())
         clearFrame();
@@ -113,9 +113,9 @@ void AnimationPropertiesPreview::createPropertiePreview(QStringList &properties 
             label = new QLabel;
             label->setWordWrap(true);
             /**
- * Property name is first column and is Right aligned,
- * second column is property value default aligned
- */
+             * Property name is first column, right aligned,
+             * second column is property value, default aligned
+             */
             if(firstColumn){
                 propertieValue.append(":");
                 label->setAlignment(Qt::AlignRight);

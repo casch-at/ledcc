@@ -84,39 +84,3 @@ void AxisNailWall::createAnimation()
     Q_EMIT done();
 }
 
-
-
-void AxisNailWall::createAnimationTooltipAsRichText(AnimationItem *item)
-{
-    QString itemToolTip;
-    setItemToolTipNameSpeed(&itemToolTip, item);
-
-    if(item->getOptions()->m_axis == X_AXIS)
-        itemToolTip.append("Axis: X-Axis<br>");
-    else if(item->getOptions()->m_axis == Y_AXIS)
-        itemToolTip.append("Axis: Y-Axis<br>");
-    else
-        itemToolTip.append("Axis: Z-Axis<br>");
-    itemToolTip.append( QString("Direction: %1").arg(item->getOptions()->m_direction == Draw::Forward ? "Forward" : "Backward"));
-
-    item->setToolTip ( itemToolTip );
-}
-
-
-
-QStringList& AxisNailWall::getAnimationPropertiesAsPlainText(const AnimationItem *item)
-{
-    list.clear();
-
-    list.append(getName());
-    list.append(QString("Speed:%1").arg( item->getOptions()->m_speed));
-    if( item->getOptions()->m_axis == X_AXIS )
-        list.append( QString("Axis:X_AXIS") );
-    else if( item->getOptions()->m_axis == Y_AXIS )
-        list.append( QString("Axis:Y_AXIS") );
-    else
-        list.append( QString("Axis:Z_AXIS") );
-    list.append( QString("Direction:%1").arg( item->getOptions()->m_direction == Draw::Forward ? "Forward" : "Backward"));
-
-    return list;
-}

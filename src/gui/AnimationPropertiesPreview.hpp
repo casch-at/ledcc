@@ -39,7 +39,7 @@ public:
 Q_SIGNALS:
 
 public Q_SLOTS:
-    void createPropertiePreview(QStringList &properties );
+    void createPropertiePreview(QStringList properties );
 
 private Q_SLOTS:
     inline void hideShow() { setVisible( !isVisible() ); }

@@ -43,8 +43,6 @@ public:
 
 public Q_SLOTS:
     virtual void createAnimation();
-    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
     void setSparks(const u_int16_t &sparks)
     {
         if(m_sparks != sparks)

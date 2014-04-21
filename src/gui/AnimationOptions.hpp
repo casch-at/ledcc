@@ -62,6 +62,7 @@ public:
 
     inline const Options *getAnimationSettings(void){ return &m_options;  }
 
+    static const int TOTAL_ARGUMENTS = 11;
 Q_SIGNALS:
     void optionsReady(const Options &animationOptions);
     void applyNewAnimationArguments(const AnimationItem *item);
@@ -89,7 +90,6 @@ private:
     int m_animationAt;
     QList<AnimationItem*> m_itemList;
     AnimationItem *m_animationToUpdate;
-    static const int TOTAL_ARGUMENTS = 11;
     Q_DISABLE_COPY(AnimationOptions)
 };
 

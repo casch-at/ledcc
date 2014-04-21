@@ -58,26 +58,3 @@ void RandomSpark::createSparks(const u_int16_t &leds)
         fillCubeArray(0x00);
     }
 }
-
-void RandomSpark::createAnimationTooltipAsRichText(AnimationItem *item)
-{
-    QString itemToolTip;
-
-    setItemToolTipNameSpeed( &itemToolTip, item );
-
-    itemToolTip.append( QString("Sparks: %1")
-                       .arg( item->getOptions()->m_leds ) );
-
-    item->setToolTip(itemToolTip);
-}
-
-QStringList& RandomSpark::getAnimationPropertiesAsPlainText(const AnimationItem *item)
-{
-    list.clear();
-
-    list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( item->getOptions()->m_speed ) );
-    list.append( QString( "Sparks:%1" ).arg( item->getOptions()->m_leds ) );
-
-    return list;
-}

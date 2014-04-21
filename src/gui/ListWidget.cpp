@@ -63,7 +63,7 @@ void ListWidget::mouseMoveEvent(QMouseEvent *e)
         e->ignore();
         return;
     }
-    QListWidgetItem *item = itemAt(e->pos());
+    AnimationItem *item = dynamic_cast<AnimationItem*>(itemAt(e->pos()));
 
     if( item )
     {
@@ -96,19 +96,16 @@ void ListWidget::selectAllItems()
 void ListWidget::on_itemSelectionChanged()
 {
     QList<QListWidgetItem*> items = selectedItems();
-    Q_EMIT showPropertiePreview(QStringList() << "Hello" << "Animation");
     if( !items.isEmpty() && count() ){
         AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
-        QString text = item->text();
-//        Animation *animation = animations()->get(text);
-//        Q_EMIT showPropertiePreview( animation->getAnimationPropertiesAsPlainText(item) );
+        Q_EMIT showPropertiePreview( item->getAnimationPropertiesAsPlainText() );
     }
 }
 
 void ListWidget::on_showPropertiesPreviewTimerTimeout()
 {
-//    if( m_itemToShowProperties )//FIXME:: Properties are created in the animation itself
-//        Q_EMIT showPropertiePreview( m_itemToShowProperties );
+    if( m_itemToShowProperties )
+        Q_EMIT showPropertiePreview( m_itemToShowProperties->getAnimationPropertiesAsPlainText() );
 }
 
 void ListWidget::on_customContextMenuRequest(const QPoint &pos)

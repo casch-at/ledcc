@@ -19,11 +19,12 @@
 
 #include <QListWidgetItem>
 #include "Options.hpp"
-
+//#include <QObject>
 
 
 class AnimationItem : public QListWidgetItem
 {
+//    Q_OBJECT
 public:
     explicit AnimationItem(QListWidget *view = 0, int type = UserType);
     explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = UserType);
@@ -32,10 +33,10 @@ public:
     virtual AnimationItem *clone() const;
 
     inline const Options * getOptions(void) const{
-        return m_options;
+        return &m_options;
     }
 
-    inline void setOptions(Options *options){
+    inline void setOptions(Options &options){
         m_options = options;
     }
 
@@ -47,12 +48,13 @@ public:
         if(m_availableAnimationOptions != options)
             m_availableAnimationOptions = options;
     }
+    void createAnimationTooltipAsRichText();
+    QStringList getAnimationPropertiesAsPlainText();
 
 private:
     //    void initOptions(void);
     int m_availableAnimationOptions;
-    Options *m_options;
-
+    Options m_options;
 };
 
 #endif // ANIMATIONITEM_HPP

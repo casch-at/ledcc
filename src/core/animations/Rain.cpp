@@ -42,24 +42,3 @@ void Rain::createAnimation()
     }
     Q_EMIT done();
 }
-
-void Rain::createAnimationTooltipAsRichText(AnimationItem *item)
-{
-    QString itemToolTip;
-    setItemToolTipNameSpeed(&itemToolTip, item);
-
-    itemToolTip.append(QString("Iterations: %1")
-                       .arg( item->getOptions()->m_iteration) );
-    item->setToolTip(itemToolTip);
-}
-
-QStringList& Rain::getAnimationPropertiesAsPlainText(const AnimationItem *item)
-{
-    list.clear();
-
-    list.append( getName() );
-    list.append( QString( "Speed:%1" ).arg( item->getOptions()->m_speed ) );
-    list.append( QString( "Iterations:%1" ).arg( item->getOptions()->m_iteration ) );
-
-    return list;
-}

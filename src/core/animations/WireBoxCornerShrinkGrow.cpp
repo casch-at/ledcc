@@ -33,18 +33,6 @@ void WireBoxCornerShrinkGrow::createAnimation()
     Q_EMIT done();
 }
 
-void WireBoxCornerShrinkGrow::createAnimationTooltipAsRichText(AnimationItem *item)
-{
-    QString itemToolTip;
-
-    setItemToolTipNameSpeed( &itemToolTip, item );
-
-    itemToolTip.append(QString("Iterations: %1")
-                       .arg(item->getOptions()->m_iteration));
-
-    item->setToolTip(itemToolTip);
-}
-
 void WireBoxCornerShrinkGrow::createWireBoxCorner(const u_int8_t rotate, const u_int8_t flip)
 {
     u_int8_t xyz = 0;

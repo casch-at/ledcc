@@ -37,8 +37,6 @@ public:
 
 public Q_SLOTS:
     virtual void createAnimation();
-    virtual void createAnimationTooltipAsRichText(AnimationItem *item);
-    virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item  );
     void setSToDisplay(const QString &string)
     {
         if(m_sToDisplay.compare(string) != 0)

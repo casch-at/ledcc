@@ -422,16 +422,13 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
 {
     int rows = count();
 
-    if( rows )
-    {
-        if( m_lastPlayedAnimation >= rows )
+    AnimationItem *retItem = Q_NULLPTR;
+    if ( rows ) {
+        if ( m_lastPlayedAnimation >= rows )
             m_lastPlayedAnimation = 0;
-
-        return dynamic_cast<AnimationItem*>( item( m_lastPlayedAnimation++ ) );
-    }else
-    {
-        return Q_NULLPTR;
+        retItem = dynamic_cast<AnimationItem*>( item( m_lastPlayedAnimation++ ) );
     }
+    return retItem;
 }
 
 void AnimationPlayListWidget::setNewItemOptions(const AnimationItem *item)
@@ -466,7 +463,7 @@ void AnimationPlayListWidget::editItem()
         foreach (QListWidgetItem *i, items)
             itemList.append(dynamic_cast<AnimationItem*>(i));
     else
-        for (int i = 0; i < count(); ++i)
+        for (int i = 0; i < count(); i++)
             itemList.append(dynamic_cast<AnimationItem*>(item(i)));
 
     m_adjustOptionDialog->adjustAnimationOptions(itemList);
@@ -515,18 +512,18 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
 */
 void AnimationPlayListWidget::updateItemToolTip(const Options &aOptions)
 {
-    QList<QListWidgetItem*> items/* = m_animationPlaylist->selectedItems()*/;
+    QList<QListWidgetItem*> items = selectedItems();
     if(!items.isEmpty())
     {
         AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
-        //        item->setOptions(const_cast<Options&>(aOptions));
+        item->setOptions(const_cast<Options&>(aOptions));
 
-        //        m_animationHash.value(item->text())->createAnimationTooltipAsRichText(item);
-        //        ui->animationPropertiesPreview->createPropertiePreview(
-        //                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
-        //        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
-        //        {
-        //            updateAnimation(item);
-        //        }
+//        m_animationHash.value(item->text())->createAnimationTooltipAsRichText(item);
+//        ui->animationPropertiesPreview->createPropertiePreview(
+//                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
+//        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
+//        {
+//            updateAnimation(item);
+//        }
     }
 }
