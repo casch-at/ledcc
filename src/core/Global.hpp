@@ -19,8 +19,6 @@
 #include "stdint.h"
 #include <QVector>
 #include <QString>
-//#include <QObject>
-
 /************************************************************************
  *                      CONSTANTS
  ************************************************************************/
@@ -30,11 +28,9 @@ static const u_int8_t IT_CUBE_SIZE = CUBE_SIZE - 1;
 static const u_int8_t CUBE_ARRAY_SIZE = CUBE_SIZE * CUBE_SIZE;
 static const u_int CUBE_LED_COUNT = CUBE_SIZE * CUBE_SIZE * CUBE_SIZE;
 
-/************************************************************************
- *     ANIMATION STRUCT REPRESENTING THE AVAILABLE PARAMETERS
- ************************************************************************/
-
-#define LED_CUBE_VERSION_MAJOR 0
-#define LED_CUBE_VERSION_MINOR .02
+#define LEDCC_VERSION_MAJOR 0
+#define LEDCC_VERSION_MINOR 0
+#define LEDCC_VERSION_MICRO 1
+#define LEDCC_VERSION       LEDCC_VERSION_MAJOR.LEDCC_VERSION_MINOR.LEDCC_VERSION_MICRO
 
 #endif // GLOBAL_H

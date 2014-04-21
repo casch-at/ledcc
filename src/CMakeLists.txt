@@ -32,18 +32,16 @@ set(include_DIRECTORIES
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/aqp
 )
 include_directories(${include_DIRECTORIES})
-if(CMAKE_AUTOMOC)
-    message(STATUS "Automoc on...")
-endif()
-if(CMAKE_INCLUDE_CURRENT_DIR)
-    message(STATUS "Include current dir on...")
-endif()
-# ---------------------------------------------------------------------------------------------------
-# Add subdirectory core where the Global.h.in file gets configured
-# ---------------------------------------------------------------------------------------------------
-add_subdirectory(core)
 
-set(${PROJECT_NAME}_core_SOURCES
+# ---------------------------------------------------------------------------------------------------
+# Configure a hpp file to pass some data from cmake to the program
+# ---------------------------------------------------------------------------------------------------
+include(configure.h.in.cmake)
+
+# ---------------------------------------------------------------------------------------------------
+# Collect all source files
+# ---------------------------------------------------------------------------------------------------
+set(ledcc_core_SOURCES
     ${CoreDirectory}/Options.cpp
     ${CoreDirectory}/Sender.cpp
     ${CoreDirectory}/animations/Draw.cpp
@@ -66,13 +64,13 @@ set(${PROJECT_NAME}_core_SOURCES
     ${CoreDirectory}/Global.hpp
 )
 
-set(${PROJECT_NAME}_thirdparty_SOURCES
+set(ledcc_thirdparty_SOURCES
     ${ThirdPartyDirectory}/aqp/alt_key.cpp
     ${ThirdPartyDirectory}/aqp/aqp.cpp
     ${ThirdPartyDirectory}/aqp/kuhn_munkres.cpp
 )
 
-set(${PROJECT_NAME}_gui_SOURCES
+set(ledcc_gui_SOURCES
     ${GuiDirectory}/MainWindow.cpp
     ${GuiDirectory}/SettingsDialog.cpp
     ${GuiDirectory}/AnimationListWidget.cpp
@@ -83,15 +81,29 @@ set(${PROJECT_NAME}_gui_SOURCES
     ${GuiDirectory}/AnimationPropertiesPreview.cpp
     ${GuiDirectory}/ListWidget.cpp
 )
+# ---------------------------------------------------------------------------------------------------
+# Put all source files together
+# ---------------------------------------------------------------------------------------------------
+set(ledcc_SOURCES
+    ${ledcc_core_SOURCES}
+    ${ledcc_thirdparty_SOURCES}
+    ${ledcc_gui_SOURCES}
+)
 
-set(${PROJECT_NAME}_gui_FORMS
+# ---------------------------------------------------------------------------------------------------
+# All ui forms
+# ---------------------------------------------------------------------------------------------------
+set(ledcc_gui_FORMS
     ${GuiDirectory}/MainWindow.ui
     ${GuiDirectory}/SettingsDialog.ui
     ${GuiDirectory}/AnimationOptions.ui
     ${GuiDirectory}/AnimationPropertiesPreview.ui
 )
 
-set(${PROJECT_NAME}_MOC
+# ---------------------------------------------------------------------------------------------------
+# Headers files for what moc data has to be generated
+# ---------------------------------------------------------------------------------------------------
+set(ledcc_MOC
     ${GuiDirectory}/AddDialog.hpp
     ${GuiDirectory}/AnimationItem.hpp
     ${GuiDirectory}/AnimationListWidget.hpp
@@ -100,60 +112,59 @@ set(${PROJECT_NAME}_MOC
     ${GuiDirectory}/AnimationPropertiesPreview.hpp
     ${GuiDirectory}/ListWidget.hpp
     ${GuiDirectory}/MainWindow.hpp
-    ${GuiDirectory}/PorMessageBox.hpp
+    ${GuiDirectory}/PortMessageBox.hpp
     ${GuiDirectory}/SettingsDialog.hpp
 )
 
-set(${PROJECT_NAME}_SOURCES
-    ${${PROJECT_NAME}_core_SOURCES}
-    ${${PROJECT_NAME}_thirdparty_SOURCES}
-    ${${PROJECT_NAME}_gui_SOURCES}
-)
 
-set(${PROJECT_NAME}_SOURCES_MAINEXE main.cpp)
+# ---------------------------------------------------------------------------------------------------
+# The main file
+# ---------------------------------------------------------------------------------------------------
+set(ledcc_SOURCES_MAINEXE main.cpp)
 
 # ---------------------------------------------------------------------------------------------------
 # Create a source file out of the resource file
 # ---------------------------------------------------------------------------------------------------
-qt5_add_resources(${PROJECT_NAME}_RESOURCES_RCC
+qt5_add_resources(ledcc_RESOURCES_RCC
                   icons.qrc OPTIONS -no-compress
 )
 # ---------------------------------------------------------------------------------------------------
 # Create ui_xxxx.h files out of .ui files
 # ---------------------------------------------------------------------------------------------------
-qt5_wrap_ui(${PROJECT_NAME}_FORMS_HEADERS
-            ${${PROJECT_NAME}_gui_FORMS}
+qt5_wrap_ui(ledcc_FORMS_HEADERS
+            ${ledcc_gui_FORMS}
 )
 
 # ---------------------------------------------------------------------------------------------------
 # Create metaobject sourcecode files
 # ---------------------------------------------------------------------------------------------------
-qt5_wrap_cpp(${PROJECT_NAME}_MOC_SOURCES
-             ${${PROJECT_NAME}_MOC}
+qt5_wrap_cpp(ledcc_MOC_SOURCES
+             ${ledcc_MOC}
 )
 
 # ---------------------------------------------------------------------------------------------------
 # Create a static library of all sources
 # ---------------------------------------------------------------------------------------------------
-add_library(${PROJECT_NAME}_core
+add_library(ledcc_core
             STATIC
-            ${${PROJECT_NAME}_SOURCES}
-            ${${PROJECT_NAME}_FORMS_HEADERS}
-            ${${PROJECT_NAME}_MOC_SOURCES}
+            ${ledcc_SOURCES}
+            ${ledcc_FORMS_HEADERS}
+            ${ledcc_MOC_SOURCES}
+
 )
 
 # ---------------------------------------------------------------------------------------------------
 # Create a executable
 # ---------------------------------------------------------------------------------------------------
-add_executable(${PROJECT_NAME}
-               WIN32 ${${PROJECT_NAME}_SOURCES_MAINEXE}
+add_executable(${PROGNAME}
+               ${ledcc_SOURCES_MAINEXE}
 )
 
 # ---------------------------------------------------------------------------------------------------
 # Link libraries against the program
 # ---------------------------------------------------------------------------------------------------
-target_link_libraries(${PROJECT_NAME}
-                      ${${PROJECT_NAME}_core}
+target_link_libraries(${PROGNAME}
+                      ledcc_core
                       ${Qt5Core_LIBRARIES}
                       ${Qt5Gui_LIBRARIES}
                       ${Qt5SerialPort_LIBRARIES}
