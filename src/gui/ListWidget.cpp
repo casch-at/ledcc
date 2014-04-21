@@ -100,8 +100,8 @@ void ListWidget::on_itemSelectionChanged()
     if( !items.isEmpty() && count() ){
         AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
         QString text = item->text();
-        Animation *animation = animations()->get(text);
-        Q_EMIT showPropertiePreview( animation->getAnimationPropertiesAsPlainText(item) );
+//        Animation *animation = animations()->get(text);
+//        Q_EMIT showPropertiePreview( animation->getAnimationPropertiesAsPlainText(item) );
     }
 }
 

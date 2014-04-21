@@ -26,7 +26,7 @@ static const u_int8_t AVAILABLEANIMATIONS = 13;
 static const u_int8_t CUBE_SIZE = 8;
 static const u_int8_t IT_CUBE_SIZE = CUBE_SIZE - 1;
 static const u_int8_t CUBE_ARRAY_SIZE = CUBE_SIZE * CUBE_SIZE;
-static const u_int CUBE_LED_COUNT = CUBE_SIZE * CUBE_SIZE * CUBE_SIZE;
+static const u_int CUBE_LED_COUNT = CUBE_ARRAY_SIZE * CUBE_SIZE;
 
 #define LEDCC_VERSION_MAJOR 0
 #define LEDCC_VERSION_MINOR 0

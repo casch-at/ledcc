@@ -16,12 +16,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------------------------------------
 
-
-# ---------------------------------------------------------------------------------------------------
-# Include current source dir and binary dir
-# ---------------------------------------------------------------------------------------------------
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-
 # ---------------------------------------------------------------------------------------------------
 # Include directories containing headers files
 # ---------------------------------------------------------------------------------------------------
@@ -103,24 +97,26 @@ set(ledcc_gui_FORMS
 # ---------------------------------------------------------------------------------------------------
 # Headers files for what moc data has to be generated
 # ---------------------------------------------------------------------------------------------------
-set(ledcc_MOC
-    ${GuiDirectory}/AddDialog.hpp
-    ${GuiDirectory}/AnimationItem.hpp
-    ${GuiDirectory}/AnimationListWidget.hpp
-    ${GuiDirectory}/AnimationPlayListWidget.hpp
-    ${GuiDirectory}/AnimationOptions.hpp
-    ${GuiDirectory}/AnimationPropertiesPreview.hpp
-    ${GuiDirectory}/ListWidget.hpp
-    ${GuiDirectory}/MainWindow.hpp
-    ${GuiDirectory}/PortMessageBox.hpp
-    ${GuiDirectory}/SettingsDialog.hpp
-)
+#set(ledcc_MOC
+#    ${GuiDirectory}/AddDialog.hpp
+#    ${GuiDirectory}/AnimationItem.hpp
+#    ${GuiDirectory}/AnimationListWidget.hpp
+#    ${GuiDirectory}/AnimationPlayListWidget.hpp
+#    ${GuiDirectory}/AnimationOptions.hpp
+#    ${GuiDirectory}/AnimationPropertiesPreview.hpp
+#    ${GuiDirectory}/ListWidget.hpp
+#    ${GuiDirectory}/MainWindow.hpp
+#    ${GuiDirectory}/PortMessageBox.hpp
+#    ${GuiDirectory}/SettingsDialog.hpp
+#)
 
 
 # ---------------------------------------------------------------------------------------------------
 # The main file
 # ---------------------------------------------------------------------------------------------------
-set(ledcc_SOURCES_MAINEXE main.cpp)
+set(ledcc_SOURCES_MAINEXE
+    main.cpp
+)
 
 # ---------------------------------------------------------------------------------------------------
 # Create a source file out of the resource file
@@ -138,42 +134,41 @@ qt5_wrap_ui(ledcc_FORMS_HEADERS
 # ---------------------------------------------------------------------------------------------------
 # Create metaobject sourcecode files
 # ---------------------------------------------------------------------------------------------------
-qt5_wrap_cpp(ledcc_MOC_SOURCES
-             ${ledcc_MOC}
-)
+#qt5_wrap_cpp(ledcc_MOC_SOURCES
+#             ${ledcc_MOC}
+#)
 
 # ---------------------------------------------------------------------------------------------------
 # Create a static library of all sources
 # ---------------------------------------------------------------------------------------------------
-add_library(ledcc_core
+add_library(ledcc-core
             STATIC
             ${ledcc_SOURCES}
             ${ledcc_FORMS_HEADERS}
-            ${ledcc_MOC_SOURCES}
-
 )
-
+# ---------------------------------------------------------------------------------------------------
+# Link libraries against the created library HINT: Qt5Widgets_LIBRARIES includes Qt5Core_LIBRARIES and Qt5Gui_LIBRARIES
+# ---------------------------------------------------------------------------------------------------
+target_link_libraries(ledcc-core
+                      ${Qt5Widgets_LIBRARIES}
+                      ${Qt5SerialPort_LIBRARIES}
+)
 # ---------------------------------------------------------------------------------------------------
 # Create a executable
 # ---------------------------------------------------------------------------------------------------
 add_executable(${PROGNAME}
                ${ledcc_SOURCES_MAINEXE}
+               ${ledcc_RESOURCES_RCC}
 )
+# ---------------------------------------------------------------------------------------------------
+# The executable depends on the previously created static library ledcc_core.
+# To insure that this library is first created add a dependency.
+# ---------------------------------------------------------------------------------------------------
+add_dependencies(${PROGNAME} ledcc-core)
 
 # ---------------------------------------------------------------------------------------------------
-# Link libraries against the program
+# Link libraries against the program HINT: Qt5Widgets_LIBRARIES includes Qt5Core_LIBRARIES and Qt5Gui_LIBRARIES
 # ---------------------------------------------------------------------------------------------------
 target_link_libraries(${PROGNAME}
-                      ledcc_core
-                      ${Qt5Core_LIBRARIES}
-                      ${Qt5Gui_LIBRARIES}
-                      ${Qt5SerialPort_LIBRARIES}
+                      ledcc-core
 )
-
-#target_link_libraries(${PROJECT_NAME}
-#                      ${${PROJECT_NAME}_core}
-#                      Qt5::Core
-#                      Qt5::Widgets
-#                      Qt5::Gui
-#                      Qt5::SerialPort
-#)

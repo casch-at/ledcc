@@ -17,7 +17,7 @@
 # ---------------------------------------------------------------------------------------------------
 #   If you want additional program output or want debug the program set CMAKE_BUILD_TYPE to DEBUG
 #   Debug:      -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake -DCMAKE_BUILD_TYPE=DEBUG
-#   Release:    -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake
+#   Release:    -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake -DCMAKE_BUILD_TYPE=RELEASE
 # ---------------------------------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------------------------------
@@ -26,16 +26,19 @@
 cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
 
 # ---------------------------------------------------------------------------------------------------
-# Specifie the project name and the used programming language
+# Specify the project name and the used programming language
 # ---------------------------------------------------------------------------------------------------
 project(ledcc C CXX)
 
+# ---------------------------------------------------------------------------------------------------
+# Specify executable name
+# ---------------------------------------------------------------------------------------------------
 set(PROGNAME ${PROJECT_NAME})
 
 # ---------------------------------------------------------------------------------------------------
 # Find Qt5 Modules
 # ---------------------------------------------------------------------------------------------------
-set(QT_REQUIRED_MODULES Qt5Widgets Qt5Gui Qt5Core Qt5SerialPort)
+set(QT_REQUIRED_MODULES Qt5Widgets Qt5SerialPort)
 foreach(QT_MODULE ${QT_REQUIRED_MODULES})
     find_package(${QT_MODULE} REQUIRED)
 endforeach(QT_MODULE)
@@ -47,7 +50,6 @@ set(CoreDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/core")
 set(ThirdPartyDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty")
 set(GuiDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/gui")
 
-
 # ---------------------------------------------------------------------------------------------------
 # Set the cmake module path to tell cmake where it has to look for other cmake files when include is called
 # ---------------------------------------------------------------------------------------------------
@@ -56,10 +58,13 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # ---------------------------------------------------------------------------------------------------
 # Setup compile flags
 # ---------------------------------------------------------------------------------------------------
+
 include(CompileFlags)
 # ---------------------------------------------------------------------------------------------------
 # Configure install option and cmake tool options
 # ---------------------------------------------------------------------------------------------------
 include(Options)
-
+# ---------------------------------------------------------------------------------------------------
+# Add the source code subdirectory
+# ---------------------------------------------------------------------------------------------------
 add_subdirectory( src )

@@ -1,9 +1,14 @@
-#set(CMAKE_INCLUDE_CURRENT_DIR ON)
-## ---------------------------------------------------------------------------------------------------
-## Tell cmake to run moc when neccasery
-## ---------------------------------------------------------------------------------------------------
-#set(CMAKE_AUTOMOC ON)
+# ---------------------------------------------------------------------------------------------------
+# Automaticly include each directory.
+# Same as adding in each cmake file -> include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+# ---------------------------------------------------------------------------------------------------
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# ---------------------------------------------------------------------------------------------------
+# Tell cmake to run moc when neccasery
+# ---------------------------------------------------------------------------------------------------
+set(CMAKE_AUTOMOC ON)
 
+add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5SerialPort_DEFINITIONS})
 
 # ---------------------------------------------------------------------------------------------------
 # Setup build type ( possible modes are RELEASE, DEBUG )
