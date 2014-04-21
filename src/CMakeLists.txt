@@ -1,4 +1,4 @@
-#--------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------
 #  Sub CMakeFile
 #  Copyright (C) 2013 Christian Schwarzgruber <christiandev9@gmail.com>
 #
@@ -14,21 +14,36 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#--------------------------------------------------------------------------------
-#   Run Cmake with: -DCMAKE_PREFIX_PATH=/opts/Qt5.2/5.2.0/gcc_64/lib/cmake/ -DCMAKE_BUILD_TYPE=DEBUG
-#--------------------------------------------------------------------------------
-#   Directory -> src
-#--------------------------------------------------------------------------------
-
-# Set version numbers for global.h configuration. See CMakeLists.txt in /src/core directory
+# ---------------------------------------------------------------------------------------------------
 
 
-include(sourceconfig)
+# ---------------------------------------------------------------------------------------------------
+# Include current source dir and binary dir
+# ---------------------------------------------------------------------------------------------------
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-set(include_DIRECTORIES include_directories(gui core core/animations aqp
+# ---------------------------------------------------------------------------------------------------
+# Include directories containing headers files
+# ---------------------------------------------------------------------------------------------------
+set(include_DIRECTORIES
+    ${CMAKE_CURRENT_SOURCE_DIR}/gui
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/animations
+    ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/aqp
+)
+include_directories(${include_DIRECTORIES})
+if(CMAKE_AUTOMOC)
+    message(STATUS "Automoc on...")
+endif()
+if(CMAKE_INCLUDE_CURRENT_DIR)
+    message(STATUS "Include current dir on...")
+endif()
+# ---------------------------------------------------------------------------------------------------
+# Add subdirectory core where the Global.h.in file gets configured
+# ---------------------------------------------------------------------------------------------------
+add_subdirectory(core)
 
-
-set(led_cube_core_SOURCES
+set(${PROJECT_NAME}_core_SOURCES
     ${CoreDirectory}/Options.cpp
     ${CoreDirectory}/Sender.cpp
     ${CoreDirectory}/animations/Draw.cpp
@@ -48,15 +63,16 @@ set(led_cube_core_SOURCES
     ${CoreDirectory}/animations/StringFly.cpp
     ${CoreDirectory}/animations/AnimationHandler.cpp
     ${CoreDirectory}/animations/Animations.cpp
+    ${CoreDirectory}/Global.hpp
 )
 
-set(led_cube_thirdparty_SOURCES
-    ${ThirdPartyDirectory}/alt_key.cpp
-    ${ThirdPartyDirectory}/aqp.cpp
-    ${ThirdPartyDirectory}/kuhn_munkres.cpp
+set(${PROJECT_NAME}_thirdparty_SOURCES
+    ${ThirdPartyDirectory}/aqp/alt_key.cpp
+    ${ThirdPartyDirectory}/aqp/aqp.cpp
+    ${ThirdPartyDirectory}/aqp/kuhn_munkres.cpp
 )
 
-set(led_cube_gui_SOURCES
+set(${PROJECT_NAME}_gui_SOURCES
     ${GuiDirectory}/MainWindow.cpp
     ${GuiDirectory}/SettingsDialog.cpp
     ${GuiDirectory}/AnimationListWidget.cpp
@@ -68,28 +84,85 @@ set(led_cube_gui_SOURCES
     ${GuiDirectory}/ListWidget.cpp
 )
 
-set(led_cube_gui_FORMS
+set(${PROJECT_NAME}_gui_FORMS
     ${GuiDirectory}/MainWindow.ui
     ${GuiDirectory}/SettingsDialog.ui
     ${GuiDirectory}/AnimationOptions.ui
     ${GuiDirectory}/AnimationPropertiesPreview.ui
 )
 
-set(led_cube_main_SOURCE main.cpp)
+set(${PROJECT_NAME}_MOC
+    ${GuiDirectory}/AddDialog.hpp
+    ${GuiDirectory}/AnimationItem.hpp
+    ${GuiDirectory}/AnimationListWidget.hpp
+    ${GuiDirectory}/AnimationPlayListWidget.hpp
+    ${GuiDirectory}/AnimationOptions.hpp
+    ${GuiDirectory}/AnimationPropertiesPreview.hpp
+    ${GuiDirectory}/ListWidget.hpp
+    ${GuiDirectory}/MainWindow.hpp
+    ${GuiDirectory}/PorMessageBox.hpp
+    ${GuiDirectory}/SettingsDialog.hpp
+)
 
-qt5_wrap_ui(${PROGNAME}_FORMS_HEADER        ${FORMS})
-qt5_wrap_cpp(${PROGNAME}_HEADERS_MOC        ${HEADERS})
+set(${PROJECT_NAME}_SOURCES
+    ${${PROJECT_NAME}_core_SOURCES}
+    ${${PROJECT_NAME}_thirdparty_SOURCES}
+    ${${PROJECT_NAME}_gui_SOURCES}
+)
 
-set(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
+set(${PROJECT_NAME}_SOURCES_MAINEXE main.cpp)
 
+# ---------------------------------------------------------------------------------------------------
+# Create a source file out of the resource file
+# ---------------------------------------------------------------------------------------------------
+qt5_add_resources(${PROJECT_NAME}_RESOURCES_RCC
+                  icons.qrc OPTIONS -no-compress
+)
+# ---------------------------------------------------------------------------------------------------
+# Create ui_xxxx.h files out of .ui files
+# ---------------------------------------------------------------------------------------------------
+qt5_wrap_ui(${PROJECT_NAME}_FORMS_HEADERS
+            ${${PROJECT_NAME}_gui_FORMS}
+)
 
-# Create resource file *.cpp
-qt5_add_resources(${PROGNAME}_RESOURCES_RCC icons.qrc OPTIONS -no-compress )
+# ---------------------------------------------------------------------------------------------------
+# Create metaobject sourcecode files
+# ---------------------------------------------------------------------------------------------------
+qt5_wrap_cpp(${PROJECT_NAME}_MOC_SOURCES
+             ${${PROJECT_NAME}_MOC}
+)
 
-add_executable(${PROGNAME} main.cpp ${${PROGNAME}_RESOURCES_RCC})
-add_dependencies(${PROGNAME} )
+# ---------------------------------------------------------------------------------------------------
+# Create a static library of all sources
+# ---------------------------------------------------------------------------------------------------
+add_library(${PROJECT_NAME}_core
+            STATIC
+            ${${PROJECT_NAME}_SOURCES}
+            ${${PROJECT_NAME}_FORMS_HEADERS}
+            ${${PROJECT_NAME}_MOC_SOURCES}
+)
 
-# link against ledcube and animations
-target_link_libraries(${PROGNAME} ledcubegui)
+# ---------------------------------------------------------------------------------------------------
+# Create a executable
+# ---------------------------------------------------------------------------------------------------
+add_executable(${PROJECT_NAME}
+               WIN32 ${${PROJECT_NAME}_SOURCES_MAINEXE}
+)
 
+# ---------------------------------------------------------------------------------------------------
+# Link libraries against the program
+# ---------------------------------------------------------------------------------------------------
+target_link_libraries(${PROJECT_NAME}
+                      ${${PROJECT_NAME}_core}
+                      ${Qt5Core_LIBRARIES}
+                      ${Qt5Gui_LIBRARIES}
+                      ${Qt5SerialPort_LIBRARIES}
+)
 
+#target_link_libraries(${PROJECT_NAME}
+#                      ${${PROJECT_NAME}_core}
+#                      Qt5::Core
+#                      Qt5::Widgets
+#                      Qt5::Gui
+#                      Qt5::SerialPort
+#)

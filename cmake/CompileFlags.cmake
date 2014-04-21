@@ -1,11 +1,5 @@
  #--------  SET COMPILER FLAGS
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_RELEASE} -fprofile-arcs -ftest-coverage")
-
- # set up a mapping so that the Release configuration for the Qt imported target is
- # used in the COVERAGE CMake configuration.
-# set_target_properties(Qt5::Core PROPERTIES MAP_IMPORTED_CONFIG_COVERAGE "RELEASE")
-# set_target_properties(Qt5::Core PROPERTIES MAP_IMPORTED_CONFIG_COVERAGE "DEBUG")
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
@@ -104,7 +98,3 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 # -DQT_NO_KEYWORDS
 add_definitions(-DQT_NO_EXCEPTIONS -DQT_NO_STL -DQT_STRICT_ITERATORS -DQT_NO_CAST_TO_ASCII)
-
-
-#------------ END SET COMPILER FLAGS
-

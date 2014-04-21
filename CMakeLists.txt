@@ -1,4 +1,4 @@
-#------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------
 #  Main CMake file
 #  Copyright (C) 2013 Christian Schwarzgruber <christiandev9@gmail.com>
 #
@@ -14,80 +14,51 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------
 #   If you want additional program output or want debug the program set CMAKE_BUILD_TYPE to DEBUG
 #   Debug:      -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake -DCMAKE_BUILD_TYPE=DEBUG
 #   Release:    -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake
-#------------------------------------------------------------------------------
-#                   Root CMakeLists file
-#------------------------------------------------------------------------------
-# Minimum required cmake tool
-cmake_minimum_required(VERSION 2.8.10 FATAL_ERROR)
-# Executable name
-project(ledcc C CXX)
-# Variable for program name!
-set(PROGNAME  ${PROJECT_NAME})
+# ---------------------------------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------------------------------
+# Minimum required cmake tool
+# ---------------------------------------------------------------------------------------------------
+cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
+
+# ---------------------------------------------------------------------------------------------------
+# Specifie the project name and the used programming language
+# ---------------------------------------------------------------------------------------------------
+project(ledcc C CXX)
+
+
+# ---------------------------------------------------------------------------------------------------
+# Find Qt5 Modules
+# ---------------------------------------------------------------------------------------------------
+set(QT_REQUIRED_MODULES Qt5Widgets Qt5Gui Qt5Core Qt5SerialPort)
+foreach(QT_MODULE ${QT_REQUIRED_MODULES})
+    find_package(${QT_MODULE} REQUIRED)
+endforeach(QT_MODULE)
+
+# ---------------------------------------------------------------------------------------------------
+# Source code directories
+# ---------------------------------------------------------------------------------------------------
 set(CoreDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/core")
 set(ThirdPartyDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty")
 set(GuiDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/gui")
 
 
-set(CMAKE_INCLUDE_PATH)
-
+# ---------------------------------------------------------------------------------------------------
+# Set the cmake module path to tell cmake where it has to look for other cmake files when include is called
+# ---------------------------------------------------------------------------------------------------
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# Widgets finds its eon dependencies (QtGui and QtCore)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5SerialPort REQUIRED)
-
-
+# ---------------------------------------------------------------------------------------------------
+# Setup compile flags
+# ---------------------------------------------------------------------------------------------------
 include(CompileFlags)
-#get_target_property(QtCore_location Qt5::Core LOCATION)
-
-# Tell CMake to run moc when necessary!
-set(CMAKE_AUTOMOC ON)
-
-if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
-    message(STATUS "Debug mode")
-    add_definitions(-D_DEBUG_)
-else()
-    message(STATUS "Release mode")
-endif()
-
-if( "${CMAKE_PREFIX_PATH}" STREQUAL  "/usr/local/")
-  message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
-elseif("${CMAKE_PREFIX_PATH}" STREQUAL "")
-  set(CMAKE_PREFIX_PATH "/usr/local")
-  message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
-#   message(FATAL_ERROR "No CMAKE_PREFIX_PATH specified!")
-endif()
-
-# Configure install path
-if(MINGW)
-  set(BIN_INSTALL_DIR    ".")
-  set(PLUGIN_INSTALL_DIR ".")
-  set(DATA_INSTALL_DIR   "share")
-elseif(APPLE)
-  set(BIN_INSTALL_DIR    ".")
-  set(PLUGIN_INSTALL_DIR ".")
-  set(DATA_INSTALL_DIR   "${PROGNAME}.app/Contents/Resources")
-else()
-  include(GNUInstallDirs)
-  set(BIN_INSTALL_DIR    "${CMAKE_INSTALL_BINDIR}")
-  set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/${PROGNAME}")
-  set(DATA_INSTALL_DIR   "${CMAKE_INSTALL_DATAROOTDIR}/${PROGNAME}")
-endif()
-
-#----------- OUTPUT INSTALL DIRECTORIES
-message(STATUS "BIN_INSTALL_DIR: ${BIN_INSTALL_DIR}" )
-message(STATUS "PLUGIN_INSTALL_DIR: ${PLUGIN_INSTALL_DIR}" )
-message(STATUS "DATA_INSTALL_DIR: ${DATA_INSTALL_DIR}" )
-
-# If not debug mode set QT_NO_DEBUG
-if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
-  set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS QT_NO_DEBUG)
-endif()
-
+# ---------------------------------------------------------------------------------------------------
+# Configure install option and cmake tool options
+# ---------------------------------------------------------------------------------------------------
+include(Options)
 
 add_subdirectory( src )
