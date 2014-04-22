@@ -53,9 +53,9 @@ protected:
 public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
-
+//    static SettingsDialog::
     SerialSettings settings() const;
-
+    SerialSettings getSerialSettings();
 private Q_SLOTS:
     void showPortInfo(int idx);
     void apply();
@@ -71,9 +71,14 @@ private:
     void saveValues();
 
 private:
-    Ui::SettingsDialog *ui;
-    SerialSettings currentSettings;
-    QIntValidator *intValidator;
+    Ui::SettingsDialog *m_ui;
+    SerialSettings m_currentSettings;
+    QIntValidator *m_intValidator;
     Q_DISABLE_COPY(SettingsDialog)
 };
+
+inline SettingsDialog::SerialSettings getSerialSettings(){
+    return SettingsDialog::getSerialSettings();
+}
+
 #endif // SETTINGSDIALOG_H

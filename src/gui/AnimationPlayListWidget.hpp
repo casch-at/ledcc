@@ -58,7 +58,7 @@ public Q_SLOTS:
         }
     }
 private Q_SLOTS:
-    void setNewItemOptions(const AnimationItem *item);
+    void setNewItemOptions(const AnimationItem *itemForUpdate);
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
     virtual void dragMoveEvent(QDragMoveEvent *e);

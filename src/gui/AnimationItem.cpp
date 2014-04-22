@@ -70,7 +70,7 @@ void AnimationItem::createAnimationTooltipAsRichText()
             itemToolTip.append(QString("Speed: %1<br>").arg(m_options.m_speed));
             break;
         case AnimationOptions::Direction:
-            itemToolTip.append( m_options.m_direction == Draw::Forward ? "Direction: Forward" : "Direction: Backward");
+            itemToolTip.append( m_options.m_direction == Draw::Forward ? "Direction: Forward<br>" : "Direction: Backward<br>");
             break;
         case AnimationOptions::Axis:
             if(m_options.m_axis == Draw::X_AXIS)
@@ -90,7 +90,7 @@ void AnimationItem::createAnimationTooltipAsRichText()
             itemToolTip.append(QString("Delay: %1<br>").arg(m_options.m_delay));
             break;
         case AnimationOptions::Iterations:
-            itemToolTip.append( QString( "Iterations: %1" ).arg( m_options.m_iteration ) );
+            itemToolTip.append( QString( "Iterations: %1<br>" ).arg( m_options.m_iteration ) );
             break;
         case AnimationOptions::Invert:
             itemToolTip.append(m_options.m_invert == true ? "Invert: YES<br>" : "Invert: NO<br>");

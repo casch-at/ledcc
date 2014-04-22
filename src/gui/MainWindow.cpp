@@ -53,12 +53,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_sdialog(new SettingsDialog),
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
-    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
-    m_createThread(new QThread)
+    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
+
 {
     ui->setupUi(this); // Ui must be first created befor accessing the elements
     m_animationHandler = new AnimationHandler();
-    setupSenderThread();
     readSettings ();
     connectSignals();
     ui->splitter->setStretchFactor(1,2);
@@ -75,7 +74,6 @@ MainWindow::~MainWindow(void)
 {
 
     delete m_sdialog;
-    delete m_sender;
     delete ui;
 }
 
@@ -85,9 +83,7 @@ MainWindow::~MainWindow(void)
  */
 void MainWindow::closeEvent( QCloseEvent *event ) {
     if ( okToContinue() ) {
-        Q_EMIT okClosePort();
-        if(m_createThread->isRunning() || m_senderThread->isRunning())
-            stopThreads();
+
         saveSettings ();
         m_sdialog->close();
         event->accept();
@@ -153,7 +149,7 @@ void MainWindow::updateUi(void)
 {
     int inPlayList = ui->m_animationPlaylist->count();
 
-    if(m_portOpened)
+    if(1/*m_portOpened*/) //FIXME:: variable is now in AnimationHandler
     {
         if(ui->m_openClosePortAction->text() == "Open port")
         {
@@ -200,104 +196,10 @@ void MainWindow::updateUi(void)
     }
 }
 
-void MainWindow::portOpen(const QString &message)
-{
-    m_portOpened = true;
-    ui->m_statusbar->showMessage(message,3000);
-    updateUi();
-}
 
-void MainWindow::displayPortErrorMessage(const QString &message)
-{
-    PortMessageBox *msg = Q_NULLPTR;
-    if(message.contains("#")){
-        msg = new PortMessageBox(tr("Error"),message.split("#").first(),message.split("#").last(),this);
-    }else{
-        msg = new PortMessageBox(tr("Error"),message,this);
-    }
-    msg->exec();
-    delete msg;
-}
 
-/**
- * @brief Gets called when user presses the port close Button and the port is open
- *
- * @param message which gets shown
- */
-void MainWindow::closePort(const QString &message)
-{
-    PortMessageBox *msg = new PortMessageBox(tr("Close Port"),message,this);
 
-    if(msg->exec() == QMessageBox::Ok)
-        Q_EMIT okClosePort();
 
-    delete msg;
-}
-
-/**
- * @brief Gets called when the serial port gets closed
- *
- * @param message which gets shown
- */
-void MainWindow::portClosed(const QString &message)
-{
-    m_portOpened = false;
-    ui->m_statusbar->showMessage(message,3000);
-    stopThreads();
-    updateUi();
-}
-
-/**
- * @brief Stop sender and animation Thread
- *
- */
-void MainWindow::stopThreads()
-{
-//    m_currentAnimation->m_abort = true; //FIXME:: Is now in AnimationHandler
-    m_sender->m_abort = true;
-    ui->m_stopAction->setDisabled(true);
-    m_stopPlay = false;
-    m_createThread->quit(); // first quit threads befor wait
-    m_senderThread->quit();
-
-    m_senderThread->wait();
-    m_createThread->wait();
-//    m_currentAnimation->m_abort = false; //FIXME:: Is now in AnimationHandler
-    m_sender->m_abort = false;
-//    animationDone(); //FIXME:: Is now in AnimationHandler
-}
-
-/**
- * @brief Open or close serial port
- *
- */
-void MainWindow::openCloseSerialPort(void)
-{
-    if(!m_senderThread->isRunning())
-        m_senderThread->start();
-    Q_EMIT openSerialInterface(m_sdialog->settings()); // call send thread
-}
-
-/**
- * @brief Setup sender Thread and create related connections
- *
- */
-void MainWindow::setupSenderThread(void)
-{
-    m_portOpened = false;
-    m_senderThread = new QThread;
-    m_sender = new Sender;
-
-    m_sender->moveToThread(m_senderThread); // move data send class to own thread
-    m_senderThread->start(); // start sender thread, which is running for the entier live of the mainwindow
-
-    connect(this,&MainWindow::openSerialInterface,m_sender,&Sender::openCloseSerialPort);
-    connect(m_sender,&Sender::portOpened,this,&MainWindow::portOpen);
-    connect(m_sender,&Sender::portClosed,this,&MainWindow::portClosed);
-    connect(m_sender,&Sender::portError,this,&MainWindow::displayPortErrorMessage);
-    connect(m_sender,&Sender::closePort,this,&MainWindow::closePort);
-    connect(this,&MainWindow::okClosePort,m_sender,&Sender::closeSerialPort);
-}
 
 /**
  * @brief Create connections
@@ -310,7 +212,7 @@ void MainWindow::connectSignals(void)
     connect( ui->m_quitAction, &QAction::triggered, this,&MainWindow::close);
     connect( ui->m_aboutAction, &QAction::triggered,this,&MainWindow::about);
     connect( ui->m_settingsAction, &QAction::triggered,m_sdialog,&QWidget::show);
-    connect( ui->m_stopAction, &QAction::triggered , this , &MainWindow::stopThreads);
+    connect( ui->m_stopAction, &QAction::triggered , m_animationHandler , &AnimationHandler::stopThreads);
     connect( ui->m_aboutQt, &QAction::triggered, this, &QApplication::aboutQt);
 
     // ListWidgets shortcuts

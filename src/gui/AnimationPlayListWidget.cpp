@@ -431,10 +431,11 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
     return retItem;
 }
 
-void AnimationPlayListWidget::setNewItemOptions(const AnimationItem *item)
+void AnimationPlayListWidget::setNewItemOptions(const AnimationItem *itemForUpdate)
 {
+//    itemForUpdate->setOptions(
 #ifdef _DEBUG_
-    qDebug( ) << indexFromItem(const_cast<AnimationItem*>(item)).row();
+    qDebug( ) << indexFromItem(const_cast<AnimationItem*>(itemForUpdate)).row();
 #endif
 }
 

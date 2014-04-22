@@ -110,6 +110,24 @@ void AnimationOptions::changeEvent(QEvent *e)
 void AnimationOptions::applyAnimationOptions()
 {
     if(compareOldNewAnimationOptions()){
+        Options options;
+        options.m_speed = ui->m_speedSpinB->value();
+        if (ui->m_axisComB->currentIndex() == Draw::X_AXIS)
+            options.m_axis = Draw::X_AXIS;
+        else if (ui->m_axisComB->currentIndex() == Draw::Y_AXIS)
+            options.m_axis = Draw::Y_AXIS;
+        else
+            options.m_axis = Draw::Z_AXIS;
+
+        options.m_delay = ui->m_delaySpinB->value();
+        options.m_direction = ui->m_directionComB->currentIndex() == Draw::Forward ? Draw::Forward : Draw::Backward ;
+        options.m_invert = ui->m_invertCheckB->isChecked();
+        options.m_iteration = ui->m_iterationsSpinB->value();
+        options.m_leds = ui->m_ledsSpinB->value();
+        options.m_state = ui->m_ledStateCheckB->isChecked() == true ? Draw::ON : Draw::OFF;
+        options.m_text = ui->m_textLineE->text();
+        m_animationToUpdate->setOptions(options);
+        // FIXME::Options are already applyed we need to check now if the updated animationitem the same is as the current one played
         Q_EMIT updateAnimation(m_animationToUpdate);
         Q_EMIT applyNewAnimationArguments(m_animationToUpdate);
     }

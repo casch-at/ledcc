@@ -26,7 +26,7 @@
 /*Forward deceleration*/
 class QTimer;
 class QShortcut;
-class Sender;
+
 
     class AnimationHandler;
 
@@ -44,39 +44,24 @@ public:
     explicit MainWindow(QWidget *parent = Q_NULLPTR);
     virtual ~MainWindow();
 Q_SIGNALS:
-    void openSerialInterface(const SettingsDialog::SerialSettings &port);
-    void okClosePort();
 private Q_SLOTS:
     void resizeEvent(QResizeEvent *e);
-    void openCloseSerialPort(void);
     void about(void);
     void setDirty() { setWindowModified ( true ); }
     void updateUi(void);
-    void portOpen(const QString &message);
-    void displayPortErrorMessage(const QString &message);
-    void closePort(const QString &message);
-    void portClosed(const QString &message);
-    void stopThreads(void);
-//    void showPropertiesPreview(QListWidgetItem *item);
-
 private:
     bool okToContinue(void);
     void readSettings(void);
     void saveSettings(void);
     void connectSignals(void);
-    void setupSenderThread(void);
 private:
     Ui::MainWindow *ui;
     SettingsDialog *m_sdialog;
-    SettingsDialog::SerialSettings m_port;
+
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;
-    QThread *m_createThread;
-    QThread *m_senderThread;
-    Sender *m_sender;
-    bool m_portOpened;
-    bool m_stopPlay;
+
     AnimationHandler *m_animationHandler;
     Q_DISABLE_COPY(MainWindow)
 };
