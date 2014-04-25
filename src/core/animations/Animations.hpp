@@ -62,8 +62,10 @@ class Animations : public QObject
     Q_OBJECT
 public:
     ~Animations();
-    Animation* get(const QString& key);
+    Animation *get(const QString& key);
     Animation* get(const QString& key,const AnimationItem* defaultValue);
+    Animation *get(const AnimationItem* defaultValue);
+    const QHash<QString, Animation *> *getAll();
     static Animations* instance();
     QList<AnimationItem*> const * animationItemDefaultList() const { return &m_animationItemDefaultList; }
 //    QHash<QString, Animation*> const *animationHash() const { return &m_animationHash; }

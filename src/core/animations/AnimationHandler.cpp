@@ -22,8 +22,10 @@
 #include "AnimationPlayListWidget.hpp"
 #include "Sender.hpp"
 #include "PortMessageBox.hpp"
-
+#include "SettingsDialog.hpp"
+#include <QApplication>
 #include <QString>
+#include <QAction>
 
 using namespace BIAS;
 
@@ -31,11 +33,14 @@ using namespace BIAS;
  \brief
 
 */
-AnimationHandler::AnimationHandler(QObject *object):
+AnimationHandler::AnimationHandler(QObject *object, QWidget *parent):
     QObject(object),
+    m_settingsDialog(new SettingsDialog(this)),
     m_createThread(new QThread)
 {
-
+    m_currentAnimation = animations()->get("String Fly");
+    setupSenderThread();
+    connect(m_sender, &Sender::portOpenChanged,this,&AnimationHandler::setIsPortOpen);
 }
 
 /*!
@@ -44,12 +49,20 @@ AnimationHandler::AnimationHandler(QObject *object):
 */
 AnimationHandler::~AnimationHandler()
 {
+    delete m_settingsDialog;
     Q_EMIT okClosePort();
     if(m_createThread->isRunning() || m_senderThread->isRunning())
         stopThreads();
 }
 
-
+void AnimationHandler::setAction(QAction *action, int i)
+{
+    if (i) {
+        m_playAction = action;
+    } else {
+        m_stopAction = action;
+    }
+}
 
 
 /*!
@@ -81,8 +94,8 @@ void AnimationHandler::playAnimations()
     if(!m_senderThread->isRunning())
         m_senderThread->start();
 
-//    m_animationPlaylist->m_playAction->setDisabled(true);//FIXME::
-//    m_animationPlaylist->m_stopAction->setEnabled(true);//FIXME::
+    m_playAction->setDisabled(true);//FIXME::
+    m_stopAction->setEnabled(true);//FIXME::
     playNextAnimation(m_animationPlaylist->getNextAnimation());
 }
 
@@ -98,12 +111,11 @@ void AnimationHandler::playNextAnimation(const AnimationItem *item)
         Q_EMIT stopPlay();
         return;
     }
-//    m_playlist->m_currentAnimation
     m_currentAnimation = animations()->get(item->text());
     connect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
     connect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
-//        connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-//        connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
+    //        connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    //        connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
     connect(m_currentAnimation,&Animation::done,this,&AnimationHandler::animationDone);
 
     animations()->updateAnimation(item);
@@ -117,8 +129,8 @@ void AnimationHandler::playNextAnimation(const AnimationItem *item)
 
 void AnimationHandler::portOpen(const QString &message)
 {
-    m_portOpened = true;
-//    m_statusbar->showMessage(message,3000);//FIXME::
+
+    //    m_statusbar->showMessage(message,3000);//FIXME::
     updateUi();
 }
 
@@ -126,9 +138,9 @@ void AnimationHandler::displayPortErrorMessage(const QString &message)
 {
     PortMessageBox *msg = Q_NULLPTR;
     if(message.contains("#")){
-//        msg = new PortMessageBox(tr("Error"),message.split("#").first(),message.split("#").last(),this); //FIXME::
+        msg = new PortMessageBox(tr("Error"),message.split("#").first(),message.split("#").last()); //FIXME::
     }else{
-//        msg = new PortMessageBox(tr("Error"),message,this);//FIXME::
+        msg = new PortMessageBox(tr("Error"),message);//FIXME::
     }
     msg->exec();
     delete msg;
@@ -137,27 +149,26 @@ void AnimationHandler::displayPortErrorMessage(const QString &message)
 /**
  * @brief Gets called when user presses the port close Button and the port is open
  *
- * @param message which gets shown
+ * @param message to show
  */
 void AnimationHandler::closePort(const QString &message)
 {
-//    PortMessageBox *msg = new PortMessageBox(tr("Close Port"),message,this); //FIXME::
+    PortMessageBox *msg = new PortMessageBox(tr("Close Port"),message); //FIXME::
 
-//    if(msg->exec() == QMessageBox::Ok)
-//        Q_EMIT okClosePort();
+    if(msg->exec() == QMessageBox::Ok)
+        Q_EMIT okClosePort();
 
-//    delete msg;
+    delete msg;
 }
 
 /**
  * @brief Gets called when the serial port gets closed
  *
- * @param message which gets shown
+ * @param message to show
  */
 void AnimationHandler::portClosed(const QString &message)
 {
-    m_portOpened = false;
-//    ui->m_statusbar->showMessage(message,3000); //FIXME::
+    //    ui->m_statusbar->showMessage(message,3000); //FIXME::
     stopThreads();
     updateUi();
 }
@@ -168,16 +179,26 @@ void AnimationHandler::portClosed(const QString &message)
  */
 void AnimationHandler::stopThreads()
 {
-    m_currentAnimation->m_abort = true;
+    bool senderRunning = m_senderThread->isRunning();
+    bool createrRunning = m_createThread->isRunning();
+    if(!senderRunning && !createrRunning)
+        return;
+    m_stopAction->setDisabled(true); //FIXME::
+    if (m_currentAnimation)
+        m_currentAnimation->m_abort = true;
     m_sender->m_abort = true;
-//    ui->m_stopAction->setDisabled(true); //FIXME::
     m_stopPlay = false;
-    m_createThread->quit(); // first quit threads befor wait
-    m_senderThread->quit();
+    if (createrRunning)
+        m_createThread->quit(); // first quit threads befor wait
+    if (senderRunning)
+        m_senderThread->quit();
+    if(createrRunning)
+        m_senderThread->wait();
+    if (senderRunning)
+        m_createThread->wait();
+    if (m_currentAnimation)
+        m_currentAnimation->m_abort = false;
 
-    m_senderThread->wait();
-    m_createThread->wait();
-    m_currentAnimation->m_abort = false;
     m_sender->m_abort = false;
     animationDone();
 }
@@ -188,7 +209,6 @@ void AnimationHandler::stopThreads()
  */
 void AnimationHandler::setupSenderThread(void)
 {
-    m_portOpened = false;
     m_senderThread = new QThread;
     m_sender = new Sender;
 
@@ -201,6 +221,12 @@ void AnimationHandler::setupSenderThread(void)
     connect(m_sender,&Sender::portError,this,&AnimationHandler::displayPortErrorMessage);
     connect(m_sender,&Sender::closePort,this,&AnimationHandler::closePort);
     connect(this,&AnimationHandler::okClosePort,m_sender,&Sender::closeSerialPort);
+    QHashIterator<QString, Animation*> i(*animations()->getAll());
+    while (i.hasNext()) {
+        i.next();
+        connect(i.value(),&Animation::sendData, m_sender, &Sender::sendAnimation);
+    }
+
 }
 
 /**
@@ -211,5 +237,5 @@ void AnimationHandler::openCloseSerialPort(void)
 {
     if(!m_senderThread->isRunning())
         m_senderThread->start();
-    Q_EMIT openSerialInterface(m_sdialog->settings()); // call send thread
+    Q_EMIT openSerialInterface(); // call send thread
 }

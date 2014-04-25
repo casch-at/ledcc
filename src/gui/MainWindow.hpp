@@ -48,15 +48,15 @@ private Q_SLOTS:
     void resizeEvent(QResizeEvent *e);
     void about(void);
     void setDirty() { setWindowModified ( true ); }
-    void updateUi(void);
+    void updateUi(bool portOpen);
 private:
     bool okToContinue(void);
     void readSettings(void);
     void saveSettings(void);
     void connectSignals(void);
 private:
+//    friend class AnimationHandler;
     Ui::MainWindow *ui;
-    SettingsDialog *m_sdialog;
 
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;

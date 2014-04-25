@@ -29,39 +29,22 @@ namespace Ui {
 /*Forward deceleration*/
 class QIntValidator;
 class QSettings;
+class SerialSettings;
 
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    struct SerialSettings {
-        QString name;
-        qint32 baudRate;
-        QString stringBaudRate;
-        QSerialPort::DataBits dataBits;
-        QString stringDataBits;
-        QSerialPort::Parity parity;
-        QString stringParity;
-        QSerialPort::StopBits stopBits;
-        QString stringStopBits;
-        QSerialPort::FlowControl flowControl;
-        QString stringFlowControl;
-    };
-
-protected:
-    virtual void closeEvent(QCloseEvent *);
-public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
-//    static SettingsDialog::
-    SerialSettings settings() const;
     SerialSettings getSerialSettings();
+protected:
+    virtual void closeEvent(QCloseEvent *e);
 private Q_SLOTS:
     void showPortInfo(int idx);
     void apply();
-    //    void checkCustomBaudRatePolicy(int idx);
     void on_updateButton_clicked();
-//Q_SIGNALS:
+Q_SIGNALS:
 //    void hideDialog();
 private:
     void fillPortsParameters();
@@ -69,16 +52,36 @@ private:
     void updateSettings();
     void restoreValues();
     void saveValues();
-
-private:
     Ui::SettingsDialog *m_ui;
-    SerialSettings m_currentSettings;
     QIntValidator *m_intValidator;
     Q_DISABLE_COPY(SettingsDialog)
 };
 
-inline SettingsDialog::SerialSettings getSerialSettings(){
-    return SettingsDialog::getSerialSettings();
+class SerialSettings
+{
+
+public:
+    static SerialSettings *instance();
+    QString m_name;
+    qint32 m_baudRate;
+    QString m_stringBaudRate;
+    QSerialPort::DataBits m_dataBits;
+    QString m_stringDataBits;
+    QSerialPort::Parity m_parity;
+    QString m_stringParity;
+    QSerialPort::StopBits m_stopBits;
+    QString m_stringStopBits;
+    QSerialPort::FlowControl m_flowControl;
+    QString m_stringFlowControl;
+    ~SerialSettings(){}
+private:
+    SerialSettings(){}
+
+    static SerialSettings *m_instance;
+};
+
+inline SerialSettings* serialSettings(){
+    return SerialSettings::instance();
 }
 
 #endif // SETTINGSDIALOG_H

@@ -26,29 +26,46 @@ class QSerialPort;
 class Sender : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool portOpen READ portOpen WRITE setPortOpen NOTIFY portOpenChanged)
 public:
     explicit Sender(QObject *parent = Q_NULLPTR);
     ~Sender();
 
     bool m_abort;
+    bool portOpen() const
+    {
+        return m_portOpen;
+    }
+
 Q_SIGNALS:
     void portOpened(const QString &param);
     void portClosed(const QString &param);
     void portError(const QString &param);
     void closePort(const QString &param);
+    void portOpenChanged(bool arg);
+
 public Q_SLOTS:
     void sendAnimation(const Draw::CubeArray &d);
-    void openCloseSerialPort(const SettingsDialog::SerialSettings &s);
+    void openCloseSerialPort(/*const SerialSettings *s*/);
     void closeSerialPort();
+
+    void setPortOpen(bool arg)
+    {
+        if (m_portOpen != arg) {
+            m_portOpen = arg;
+            emit portOpenChanged(arg);
+        }
+    }
 
 private:
     QSerialPort *m_serial;
     QString m_param;
-    SettingsDialog::SerialSettings m_port;
+    SerialSettings *m_port;
 private:
     bool openSerialPort();
     bool checkPortSettings();
     Q_DISABLE_COPY(Sender)
+    bool m_portOpen;
 };
 
 #endif // SENDER_HPP

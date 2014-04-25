@@ -29,6 +29,7 @@ Sender::Sender(QObject *parent) :
     QObject(parent),
     m_abort(false)
 {
+    m_portOpen = false;
     m_serial = Q_NULLPTR;
 }
 
@@ -75,9 +76,8 @@ void Sender::sendAnimation(const Draw::CubeArray &d)
  *
  * @param s Serial port configurations
  */
-void Sender::openCloseSerialPort(const SettingsDialog::SerialSettings &s)
+void Sender::openCloseSerialPort()
 {
-    m_port = s;
     if(m_serial == Q_NULLPTR)
         m_serial = new QSerialPort;
     if(!m_serial->isOpen()){
@@ -86,20 +86,23 @@ void Sender::openCloseSerialPort(const SettingsDialog::SerialSettings &s)
         {
 
             Q_EMIT portOpened(QString("Connected to %1 : %2, %3, %4, %5, %6")
-                              .arg (m_port.name).arg (m_port.stringBaudRate)
-                              .arg (m_port.stringDataBits).arg (m_port.stringParity)
-                              .arg (m_port.stringStopBits).arg (m_port.stringFlowControl));
+                              .arg (serialSettings()->m_name).arg (serialSettings()->m_stringBaudRate)
+                              .arg (serialSettings()->m_stringDataBits).arg (serialSettings()->m_stringParity)
+                              .arg (serialSettings()->m_stringStopBits).arg (serialSettings()->m_stringFlowControl));
+            setPortOpen(true);
         }else
         {
             Q_EMIT portError(QString(tr("Can't open serial port: <b>%1</b> - error code: <b>%2</b>#Check if device is connected properly"))
-                             .arg(m_port.name)
+                             .arg(serialSettings()->m_name)
                              .arg(m_serial->error()));
             m_serial->close();
+            setPortOpen(false);
         }
     }
     else{
         Q_EMIT closePort(QString(tr("Do you really want close the serial port: <b>%1</b>")
-                                 .arg(m_port.name)));
+                                 .arg(serialSettings()->m_name)));
+        setPortOpen(false);
     }
 }
 
@@ -112,16 +115,16 @@ void Sender::openCloseSerialPort(const SettingsDialog::SerialSettings &s)
  */
 bool Sender::checkPortSettings(void)
 {
-    if( m_serial->setBaudRate (m_port.baudRate) && m_serial->setDataBits (m_port.dataBits)
-            && m_serial->setParity (m_port.parity) && m_serial->setStopBits (m_port.stopBits)
-            && m_serial->setFlowControl (m_port.flowControl))
+    if( m_serial->setBaudRate (serialSettings()->m_baudRate) && m_serial->setDataBits (serialSettings()->m_dataBits)
+            && m_serial->setParity (serialSettings()->m_parity) && m_serial->setStopBits (serialSettings()->m_stopBits)
+            && m_serial->setFlowControl (serialSettings()->m_flowControl))
     {
         return true;
     }else
     {
         Q_EMIT portError(QString(tr("Can't configure the serial port: <b>%1</b>,\n"
                                     "error code: <b>%2</b>"))
-                         .arg (m_port.name).arg (m_serial->error ()));
+                         .arg (serialSettings()->m_name).arg (m_serial->error ()));
         return false;
     }
 }
@@ -131,8 +134,9 @@ bool Sender::checkPortSettings(void)
 void Sender::closeSerialPort(void)
 {
     if(m_serial != Q_NULLPTR){
+        setPortOpen(false);
         m_serial->close();
-        Q_EMIT portClosed(QString("Port closed: %1").arg(m_port.name));
+        Q_EMIT portClosed(QString("Port closed: %1").arg(serialSettings()->m_name));
     }
 }
 /**
@@ -145,7 +149,7 @@ bool Sender::openSerialPort(void)
 {
     bool result;
 
-    m_serial->setPortName (m_port.name);
+    m_serial->setPortName (serialSettings()->m_name);
 
     if(m_serial->open(QIODevice::ReadWrite))
     {

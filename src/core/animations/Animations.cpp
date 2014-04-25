@@ -32,9 +32,11 @@ Animations::Animations(QObject *parent) :
 
 Animations::~Animations()
 {
-    foreach (Animation *a, m_animationHash)
-        delete a;
+//    foreach (Animation *a, m_animationHash) //FIXME::Crashes, why?
+//        delete a;
+//    delete m_instance;
 }
+
 
 Animation *Animations::get(const QString &key)
 {
@@ -43,7 +45,19 @@ Animation *Animations::get(const QString &key)
 
 Animation *Animations::get(const QString &key, const AnimationItem *defaultValue)
 {
+    updateAnimation(defaultValue);
     return m_animationHash.value(key);
+}
+
+ Animation *Animations::get(const AnimationItem *defaultValue)
+{
+    updateAnimation(defaultValue);
+    return m_animationHash.value(defaultValue->text());
+}
+
+const QHash<QString, Animation*> * Animations::getAll()
+{
+    return &m_animationHash;
 }
 
 Animations *Animations::instance()

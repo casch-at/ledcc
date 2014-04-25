@@ -19,7 +19,7 @@ public:
 
 Q_SIGNALS:
     void showPropertiePreview(QStringList itemProperties);
-    void updateUi(void);
+    void updateUi(bool arg);
 public Q_SLOTS:
     void selectAllItems();
     void on_itemSelectionChanged();

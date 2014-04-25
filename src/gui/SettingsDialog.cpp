@@ -18,7 +18,7 @@
 #include "ui_SettingsDialog.h"
 #include "alt_key.hpp"
 #include "aqp.hpp"
-
+#include <QCloseEvent>
 #include <QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QIntValidator>
@@ -27,7 +27,7 @@
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-
+SerialSettings* SerialSettings::m_instance = Q_NULLPTR;
 namespace{
     const QString BaudeRate("baude");
     const QString Parity("parity");
@@ -42,13 +42,9 @@ namespace{
  * @param parent
  */
 //void SettingsDialog::closeEvent()
-//{
-
-//}
-
-void SettingsDialog::closeEvent(QCloseEvent *)
+void SettingsDialog::closeEvent(QCloseEvent *e)
 {
-    hide();
+    e->accept();
 }
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
@@ -61,18 +57,14 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     m_ui->baudRateBox->setInsertPolicy(QComboBox::NoInsert);
     m_ui->updateButton->setShortcut(QKeySequence::Refresh);
-    connect(m_ui->applyButton, SIGNAL(clicked()),
-            this, SLOT(apply()));
-    connect(m_ui->portsBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(showPortInfo(int)));
+    connect(m_ui->applyButton, &QPushButton::clicked, this, &SettingsDialog::apply);
+//    connect(m_ui->portsBox, &QComboBox::currentIndexChanged, this, &SettingsDialog::showPortInfo);
     fillPortsParameters();
     fillPortsInfo();
     updateSettings();
     restoreValues();
-    qRegisterMetaType<SettingsDialog::SerialSettings>("SettingsDialog::SerialSettings");
+//    qRegisterMetaType<SettingsDialog::SerialSettings>("SettingsDialog::SerialSettings");
     AQP::accelerateWidget (this);  //Give each button a accelerater
-
-
 }
 
 /**
@@ -84,15 +76,6 @@ SettingsDialog::~SettingsDialog()
     delete m_ui;
 }
 
-/**
- * @brief
- *
- * @return SettingsDialog::SerialSettings
- */
-SettingsDialog::SerialSettings SettingsDialog::settings() const
-{
-    return m_currentSettings;
-}
 
 /**
  * @brief
@@ -214,32 +197,32 @@ void SettingsDialog::fillPortsInfo() // Fill the combobox with the available Por
  */
 void SettingsDialog::updateSettings()  // Store the current settings in struct
 {
-    m_currentSettings.name = m_ui->portsBox->currentText();
+    serialSettings()->m_name = m_ui->portsBox->currentText();
 
-    m_currentSettings.baudRate = static_cast<QSerialPort::BaudRate>(
+    serialSettings()->m_baudRate = static_cast<QSerialPort::BaudRate>(
                 m_ui->baudRateBox->itemData(m_ui->baudRateBox->currentIndex()).toInt());
     //            }
-    m_currentSettings.stringBaudRate = QString::number(m_currentSettings.baudRate);
+    serialSettings()->m_stringBaudRate = QString::number(serialSettings()->m_baudRate);
 
     // Data bits
-    m_currentSettings.dataBits = static_cast<QSerialPort::DataBits>(
+    serialSettings()->m_dataBits = static_cast<QSerialPort::DataBits>(
                 m_ui->dataBitsBox->itemData(m_ui->dataBitsBox->currentIndex()).toInt());
-    m_currentSettings.stringDataBits = m_ui->dataBitsBox->currentText();
+    serialSettings()->m_stringDataBits = m_ui->dataBitsBox->currentText();
 
     // Parity
-    m_currentSettings.parity = static_cast<QSerialPort::Parity>(
+    serialSettings()->m_parity = static_cast<QSerialPort::Parity>(
                 m_ui->parityBox->itemData(m_ui->parityBox->currentIndex()).toInt());
-    m_currentSettings.stringParity = m_ui->parityBox->currentText();
+    serialSettings()->m_stringParity = m_ui->parityBox->currentText();
 
     // Stop bits
-    m_currentSettings.stopBits = static_cast<QSerialPort::StopBits>(
+    serialSettings()->m_stopBits = static_cast<QSerialPort::StopBits>(
                 m_ui->stopBitsBox->itemData(m_ui->stopBitsBox->currentIndex()).toInt());
-    m_currentSettings.stringStopBits = m_ui->stopBitsBox->currentText();
+    serialSettings()->m_stringStopBits = m_ui->stopBitsBox->currentText();
 
     // Flow control
-    m_currentSettings.flowControl = static_cast<QSerialPort::FlowControl>(
+    serialSettings()->m_flowControl = static_cast<QSerialPort::FlowControl>(
                 m_ui->flowControlBox->itemData(m_ui->flowControlBox->currentIndex()).toInt());
-    m_currentSettings.stringFlowControl = m_ui->flowControlBox->currentText();
+    serialSettings()->m_stringFlowControl = m_ui->flowControlBox->currentText();
 }
 
 /**
@@ -251,20 +234,20 @@ void SettingsDialog::restoreValues() //Restore Settings of Serial Port
 
     QSettings settings("Settings","Kitchen Scale");
 
-    m_currentSettings.baudRate =static_cast<QSerialPort::BaudRate>(settings.value (BaudeRate).toInt ());
-    m_currentSettings.stringBaudRate = QString::number(settings.value (BaudeRate).toInt ());
+    serialSettings()->m_baudRate =static_cast<QSerialPort::BaudRate>(settings.value (BaudeRate).toInt ());
+    serialSettings()->m_stringBaudRate = QString::number(settings.value (BaudeRate).toInt ());
 
-    m_currentSettings.dataBits =  static_cast<QSerialPort::DataBits>(settings.value (DataBits).toInt ());
-    m_currentSettings.stringDataBits =settings.value (DataBits).toString ();
+    serialSettings()->m_dataBits =  static_cast<QSerialPort::DataBits>(settings.value (DataBits).toInt ());
+    serialSettings()->m_stringDataBits =settings.value (DataBits).toString ();
 
-    m_currentSettings.parity =  static_cast<QSerialPort::Parity>(settings.value (Parity).toInt ());
-    m_currentSettings.stringParity = settings.value (Parity).toString ();
+    serialSettings()->m_parity =  static_cast<QSerialPort::Parity>(settings.value (Parity).toInt ());
+    serialSettings()->m_stringParity = settings.value (Parity).toString ();
 
-    m_currentSettings.stopBits = static_cast<QSerialPort::StopBits>(settings.value (StopBits).toInt ());
-    m_currentSettings.stringStopBits = settings.value (StopBits).toString ();
+    serialSettings()->m_stopBits = static_cast<QSerialPort::StopBits>(settings.value (StopBits).toInt ());
+    serialSettings()->m_stringStopBits = settings.value (StopBits).toString ();
 
-    m_currentSettings.flowControl =  static_cast<QSerialPort::FlowControl>(settings.value (FlowControl).toInt ());
-    m_currentSettings.stringFlowControl =settings.value (FlowControl).toString ();
+    serialSettings()->m_flowControl =  static_cast<QSerialPort::FlowControl>(settings.value (FlowControl).toInt ());
+    serialSettings()->m_stringFlowControl =settings.value (FlowControl).toString ();
 
 }
 
@@ -276,11 +259,11 @@ void SettingsDialog::saveValues() //Save Settings of Serial Port
 {
     QSettings settings("Settings","Kitchen Scale");
 
-    settings.setValue (BaudeRate,m_currentSettings.baudRate);
-    settings.setValue (DataBits,m_currentSettings.dataBits);
-    settings.setValue (Parity,m_currentSettings.parity);
-    settings.setValue (StopBits,m_currentSettings.stopBits);
-    settings.setValue (FlowControl,m_currentSettings.flowControl);
+    settings.setValue (BaudeRate,serialSettings()->m_baudRate);
+    settings.setValue (DataBits,serialSettings()->m_dataBits);
+    settings.setValue (Parity,serialSettings()->m_parity);
+    settings.setValue (StopBits,serialSettings()->m_stopBits);
+    settings.setValue (FlowControl,serialSettings()->m_flowControl);
 }
 
 /**
@@ -290,4 +273,12 @@ void SettingsDialog::saveValues() //Save Settings of Serial Port
 void SettingsDialog::on_updateButton_clicked()
 {
     fillPortsInfo ();
+}
+
+
+SerialSettings *SerialSettings::instance()
+{
+    if(!m_instance)
+        m_instance = new SerialSettings;
+    return m_instance;
 }

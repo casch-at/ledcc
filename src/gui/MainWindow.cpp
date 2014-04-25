@@ -16,16 +16,16 @@
  */
 #include "MainWindow.hpp"
 #include "ui_MainWindow.h"
+
+// Application includes
+#include "AnimationHandler.hpp"
+#include "AnimationOptions.hpp"
+#include "Sender.hpp"
 // ThirdParty
 #include "alt_key.hpp"
 #include "aqp.hpp"
 
-// Application includes
-#include "SettingsDialog.hpp"
-#include "Sender.hpp"
-#include "PortMessageBox.hpp"
-#include "AnimationHandler.hpp"
-#include "AnimationOptions.hpp"
+
 // Qt includes
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -50,21 +50,23 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_sdialog(new SettingsDialog),
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
     m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 
 {
     ui->setupUi(this); // Ui must be first created befor accessing the elements
-    m_animationHandler = new AnimationHandler();
+
+    m_animationHandler = new AnimationHandler(this,this);
     readSettings ();
     connectSignals();
     ui->splitter->setStretchFactor(1,2);
     ui->m_animationList->setFocus();
-    AQP::accelerateWidget (this);  //Give each button a accelerater
+//    AQP::accelerateWidget (this);  //Give each button a accelerater
 
-    updateUi();
+    updateUi(false);
+    m_animationHandler->setAction(ui->m_playAction,1);
+    m_animationHandler->setAction(ui->m_stopAction,0);
 }
 
 /**
@@ -72,8 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
  */
 MainWindow::~MainWindow(void)
 {
-
-    delete m_sdialog;
+    qDebug("Hello MainWindow destructor");
+    delete m_animationHandler;
     delete ui;
 }
 
@@ -83,9 +85,12 @@ MainWindow::~MainWindow(void)
  */
 void MainWindow::closeEvent( QCloseEvent *event ) {
     if ( okToContinue() ) {
-
+        QList<QDialog *> allDialogs = findChildren<QDialog *>();
+        allDialogs = m_animationHandler->findChildren<QDialog *>();
+        for(int i = 0; i < allDialogs.size(); ++i) {
+            allDialogs.at(i)->close();
+        }
         saveSettings ();
-        m_sdialog->close();
         event->accept();
     }
     else
@@ -127,7 +132,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
  * @brief MainWindow::saveSettings
  */
 void MainWindow::saveSettings(void){  //Save geometry of application
-    QSettings settings("Schwarz Software Inc.","3D-LED Cube");
+    QSettings settings("ledcc","3D-LED Cube");
     settings.setValue (Settings::SMainWindowGeometrySettings,saveGeometry ());
 }
 
@@ -135,7 +140,7 @@ void MainWindow::saveSettings(void){  //Save geometry of application
  * @brief MainWindow::readSettings
  */
 void MainWindow::readSettings (void){ //Load geometry of application
-    QSettings settings("Schwarz Software Inc.","3D-LED Cube");
+    QSettings settings("ledcc","3D-LED Cube");
     restoreGeometry (settings.value (Settings::SMainWindowGeometrySettings).toByteArray ());
 }
 
@@ -145,11 +150,11 @@ void MainWindow::readSettings (void){ //Load geometry of application
  *          and when the animation playlist gets modified.
  *          Disables/Enables the playbutton and changes the Seriel connect button appropriated
  */
-void MainWindow::updateUi(void)
+void MainWindow::updateUi(bool portOpen)
 {
     int inPlayList = ui->m_animationPlaylist->count();
 
-    if(1/*m_portOpened*/) //FIXME:: variable is now in AnimationHandler
+    if(portOpen)
     {
         if(ui->m_openClosePortAction->text() == "Open port")
         {
@@ -208,10 +213,10 @@ void MainWindow::updateUi(void)
 void MainWindow::connectSignals(void)
 {
     // Overall connections
-    connect( ui->m_openClosePortAction, &QAction::triggered, this,&MainWindow::openCloseSerialPort);
+    connect( ui->m_openClosePortAction, &QAction::triggered, m_animationHandler ,&AnimationHandler::openCloseSerialPort);
     connect( ui->m_quitAction, &QAction::triggered, this,&MainWindow::close);
     connect( ui->m_aboutAction, &QAction::triggered,this,&MainWindow::about);
-    connect( ui->m_settingsAction, &QAction::triggered,m_sdialog,&QWidget::show);
+    connect( ui->m_settingsAction, &QAction::triggered,m_animationHandler->m_settingsDialog,&QWidget::show);
     connect( ui->m_stopAction, &QAction::triggered , m_animationHandler , &AnimationHandler::stopThreads);
     connect( ui->m_aboutQt, &QAction::triggered, this, &QApplication::aboutQt);
 
@@ -235,6 +240,7 @@ void MainWindow::connectSignals(void)
     connect( ui->m_moveUpAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
     connect( ui->m_moveDownAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
     connect( ui->m_editAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::editItem);
+    connect( m_animationHandler->getSender(), &Sender::portOpenChanged, this, &MainWindow::updateUi);
     ui->m_animationPlaylist->addActions(QList<QAction*>()
                                         << ui->m_playAction << ui->m_stopAction << ui->m_editAction
                                         << ui->m_moveUpAction << ui->m_moveDownAction << ui->m_duplicateAction

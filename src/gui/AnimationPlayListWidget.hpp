@@ -33,14 +33,16 @@ class AnimationPlayListWidget : public ListWidget
 {
     Q_OBJECT
     Q_PROPERTY(Animation* currentAnimation READ currentAnimation WRITE setCurrentAnimation NOTIFY currentAnimationChanged)
-
 public:
     explicit AnimationPlayListWidget(QWidget *parent = Q_NULLPTR);
     virtual ~AnimationPlayListWidget();
     inline Animation* currentAnimation() const  { return m_currentAnimation; }
     AnimationOptions *m_adjustOptionDialog;
+
 Q_SIGNALS:
     void currentAnimationChanged(Animation* arg);
+
+    void contantChanged(bool arg);
 
 public Q_SLOTS:
     void clearList(void);
@@ -51,12 +53,8 @@ public Q_SLOTS:
     void editItem();
     void updateItemToolTip(const Options &aOptions);
     AnimationItem *getNextAnimation(void);
-    inline void setCurrentAnimation(Animation* arg) {
-        if (m_currentAnimation != arg) {
-            m_currentAnimation = arg;
-            emit currentAnimationChanged(arg);
-        }
-    }
+    void setCurrentAnimation(Animation* arg);
+
 private Q_SLOTS:
     void setNewItemOptions(const AnimationItem *itemForUpdate);
 protected:
@@ -78,5 +76,7 @@ private:
 
     Q_DISABLE_COPY(AnimationPlayListWidget)
 };
+
+
 
 #endif // ANIMATIONPLAYLISTWIDGET_HPP
