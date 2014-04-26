@@ -45,7 +45,6 @@ public Q_SLOTS:
     void removeItems();
     void moveItemsUpDown();
     void editItem();
-    void updateItemToolTip(AnimationItem *aOptions);
     AnimationItem *getNextAnimation(void);
 private Q_SLOTS:
     void setNewItemOptions(AnimationItem *itemForUpdate);

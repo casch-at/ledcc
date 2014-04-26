@@ -435,11 +435,9 @@ void AnimationPlayListWidget::setNewItemOptions(AnimationItem *itemForUpdate)
 {
     if (indexFromItem(itemForUpdate).row() == m_lastPlayedAnimation - 1) {
         animations()->updateAnimation(itemForUpdate);
-        qDebug("update animation");
     }
-#ifdef _DEBUG_
-    qDebug( ) << indexFromItem(const_cast<AnimationItem*>(itemForUpdate)).row();
-#endif
+    itemForUpdate->createAnimationTooltipAsRichText();
+    Q_EMIT showPropertiePreview( itemForUpdate->getAnimationPropertiesAsPlainText() );
 }
 
 /*!
@@ -472,8 +470,7 @@ void AnimationPlayListWidget::editItem()
 
     AnimationOptions *adjAnimation = new AnimationOptions(itemList, this);
     connect(adjAnimation, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlayListWidget::setNewItemOptions);
-    int ret = adjAnimation->exec();
-    qDebug() << "adjAnimation return value: " << ret;
+    adjAnimation->exec();
     disconnect(adjAnimation, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlayListWidget::setNewItemOptions);
     delete adjAnimation;
 }
@@ -513,24 +510,3 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
     }
 }
 
-/*!
- \brief
-
- \param aOptions
-*/
-void AnimationPlayListWidget::updateItemToolTip(AnimationItem *animationItem)
-{
-    QList<QListWidgetItem*> items = selectedItems();
-    if(!items.isEmpty())
-    {
-        AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
-        item->setOptions(const_cast<Options&>(*animationItem->getOptions()));
-        animationItem->createAnimationTooltipAsRichText();
-//        ui->animationPropertiesPreview->createPropertiePreview(
-//                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
-//        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
-//        {
-//            updateAnimation(item);
-//        }
-    }
-}
