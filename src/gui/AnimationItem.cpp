@@ -57,7 +57,7 @@ AnimationItem *AnimationItem::clone() const
  \brief
 
 */
-void AnimationItem::createAnimationTooltipAsRichText()
+void AnimationItem:: createAnimationTooltipAsRichText()
 {
     QString itemToolTip;
 

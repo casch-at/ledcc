@@ -41,11 +41,17 @@
 #include <QDebug>
 #endif
 
+/*!
+ \brief Slot gets called when the user has pressed the edit button from \a AnimationPlayListWidget.
+ The first animation options are displayed, and the window will be shown, all other animation options
+ will be inserted either in \a optionsNextAnimation or \a optionsPrevAnimation slot function.
 
-AnimationOptions::AnimationOptions(QWidget *parent) :
+ \param itemsList
+*/
+
+AnimationOptions::AnimationOptions(QList<AnimationItem*> &itemsList, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AnimationOptions),
-    m_animationOptionsModefied(false),
     m_animationAt(-1)
 {
     // Setup the user interface
@@ -58,32 +64,16 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
     connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
     connect(this, &QDialog::rejected, this, &AnimationOptions::cancel);
     setWindowModified(true);
-//    AQP::accelerateWidget(this);
-
-
+    if(itemsList.isEmpty())
+        return;
+    m_itemList = itemsList;
+    optionsNextAnimation();
 }
 
 AnimationOptions::~AnimationOptions()
 {
     delete ui;
 }
-
-/*!
- \brief Slot gets called when the user has pressed the edit button from \a AnimationPlayListWidget.
- The first animation options are displayed, and the window will be shown, all other animation options
- will be inserted either in \a optionsNextAnimation or \a optionsPrevAnimation slot function.
-
- \param itemsList
-*/
-void AnimationOptions::adjustAnimationOptions(QList<AnimationItem*> &itemsList)
-{
-    if(itemsList.isEmpty())
-       return;
-    m_itemList = itemsList;
-    optionsNextAnimation();
-    show();
-}
-
 
 /*!
  \brief Gets called if the ui changes (e.g. the language)
@@ -112,23 +102,45 @@ void AnimationOptions::applyAnimationOptions()
     if(compareOldNewAnimationOptions()){
         Options options;
         options.m_speed = ui->m_speedSpinB->value();
-        if (ui->m_axisComB->currentIndex() == Draw::X_AXIS)
-            options.m_axis = Draw::X_AXIS;
-        else if (ui->m_axisComB->currentIndex() == Draw::Y_AXIS)
-            options.m_axis = Draw::Y_AXIS;
-        else
-            options.m_axis = Draw::Z_AXIS;
-
-        options.m_delay = ui->m_delaySpinB->value();
-        options.m_direction = ui->m_directionComB->currentIndex() == Draw::Forward ? Draw::Forward : Draw::Backward ;
-        options.m_invert = ui->m_invertCheckB->isChecked();
-        options.m_iteration = ui->m_iterationsSpinB->value();
-        options.m_leds = ui->m_ledsSpinB->value();
-        options.m_state = ui->m_ledStateCheckB->isChecked() == true ? Draw::ON : Draw::OFF;
-        options.m_text = ui->m_textLineE->text();
+        for (int i = 1; i < TOTAL_ARGUMENTS; i++) {
+            switch ( (1 << i) &  m_animationToUpdate->getAvailableAnimationOptions() )
+            {
+            case Direction:
+                options.m_direction = static_cast<Draw::Direction>(ui->m_directionComB->currentIndex());
+                break;
+            case Axis:
+                options.m_axis = static_cast<Draw::Axis>(ui->m_axisComB->currentIndex());
+                break;
+            case Leds:
+                options.m_leds = ui->m_ledsSpinB->value();
+                break;
+            case Particls:
+                options.m_leds = ui->m_particlesSpinB->value();
+                break;
+            case Delay:
+                options.m_delay = ui->m_delaySpinB->value();
+                break;
+            case Iterations:
+                options.m_iteration = ui->m_iterationsSpinB->value();
+                break;
+            case Invert:
+                options.m_invert = ui->m_invertCheckB->isChecked();
+                break;
+            case CenterStart:
+                options.m_invert = ui->m_invertCheckB->isChecked();
+                break;
+            case Text:
+                options.m_text = ui->m_textLineE->text();
+                break;
+            case LedState:
+               options.m_state = static_cast<Draw::BixelState>(ui->m_ledStateCheckB->isChecked());
+                break;
+            default:
+                break;
+            }
+        }
         m_animationToUpdate->setOptions(options);
-        // FIXME::Options are already applyed we need to check now if the updated animationitem the same is as the current one played
-        Q_EMIT updateAnimation(m_animationToUpdate);
+
         Q_EMIT applyNewAnimationArguments(m_animationToUpdate);
     }
 }
@@ -139,8 +151,7 @@ void AnimationOptions::applyAnimationOptions()
 */
 void AnimationOptions::cancel()
 {
-    hide();
-    m_animationAt = -1;
+    close();
 }
 
 /*!
@@ -160,12 +171,10 @@ void AnimationOptions::ok()
         int ret = msgb.exec();
 
         if (ret == QMessageBox::Ok)
-           Q_EMIT updateAnimation(m_animationToUpdate);
+            applyAnimationOptions();
 
     }
-    hide();
-    // If current animation has ben modefied ask user if he wants to apply the settings
-    // If nothing has changed hide application
+    close();
 }
 
 void AnimationOptions::updateUi()
@@ -191,7 +200,7 @@ void AnimationOptions::optionsNextAnimation()
     if( m_animationAt < m_itemList.count() -1)
         m_animationAt++;
     m_animationToUpdate = m_itemList.at(m_animationAt);
-    ui->m_propertiesGB->setTitle("Properties of " + m_animationToUpdate->text());
+    ui->m_propertiesGB->setTitle(tr("Properties of ") + m_animationToUpdate->text());
     hideShowWidgetsDisplayOptions();
 }
 
@@ -204,7 +213,7 @@ void AnimationOptions::optionsPrevAnimation()
     if(m_animationAt)
         m_animationAt--;
     m_animationToUpdate = m_itemList.at(m_animationAt);
-    ui->m_propertiesGB->setTitle("Properties of " + m_animationToUpdate->text());
+    ui->m_propertiesGB->setTitle(tr("Properties of ") + m_animationToUpdate->text());
     hideShowWidgetsDisplayOptions();
 }
 
@@ -217,10 +226,9 @@ void AnimationOptions::optionsPrevAnimation()
 void AnimationOptions::hideShowWidgetsDisplayOptions()
 {
     const Options *options = m_animationToUpdate->getOptions();
-    const int hasOption = m_animationToUpdate->getAvailableAnimationOptions();
 
     for (int i = 0; i < TOTAL_ARGUMENTS; i++) {
-        switch ( (1<<i) & hasOption )
+        switch ( (1 << i) & m_animationToUpdate->getAvailableAnimationOptions() )
         {
         case Speed:
             ui->m_speedLabel->setEnabled(true);
@@ -275,7 +283,7 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
             ui->m_ledStateCheckB->setChecked(options->m_state);
             break;
         default:
-            switch ((1<<i))
+            switch ( 1 << i )
             {
             case Speed:
                 ui->m_speedLabel->setEnabled(false);
@@ -324,22 +332,68 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
             break;
         }
     }
-//    m_updateUi->start();
-
     Q_EMIT updateUi();
 }
 
 
-// TODO:: Create class for the Options better for intial values and comparies,
-// in these case the value of the options are undefined and therfor the behavior will be undefined
+/*!
+ \brief
+
+ \return u_int8_t
+*/
 u_int8_t AnimationOptions::compareOldNewAnimationOptions()
 {
-    const Options *options = m_animationToUpdate->getOptions();
-    if (options->m_speed != ui->m_speedSpinB->value())
-        return 1;
-    else if(options->m_axis != ui->m_axisComB->currentIndex())
-        return 1;
+    const Options options = *m_animationToUpdate->getOptions();
+    int ret = 0;
+    ret = options.m_speed != ui->m_speedSpinB->value() ? 1 : 0;
 
-//    else if(options->delay != ui->)
+    for (int i = 1; i < TOTAL_ARGUMENTS; i++) {
+        switch ( (1 << i) & m_animationToUpdate->getAvailableAnimationOptions() )
+        {
+        case Direction:
+            ret += options.m_direction != ui->m_directionComB->currentIndex() ? 1 : 0;
+            break;
+        case Axis:
+            ret += options.m_axis != ui->m_axisComB->currentIndex() ? 1 : 0;
+            break;
+        case Leds:
+            ret += options.m_leds != ui->m_ledsSpinB->value() ? 1 : 0;
+            break;
+        case Particls:
+            ret += options.m_leds != ui->m_particlesSpinB->value() ? 1 : 0;
+            break;
+        case Delay:
+            ret += options.m_delay != ui->m_delaySpinB->value() ? 1 : 0;
+            break;
+        case Iterations:
+            ret += options.m_iteration != ui->m_iterationsSpinB->value() ? 1 : 0;
+            break;
+        case Invert:
+            ret += options.m_invert != ui->m_invertCheckB->isChecked() ? 1 : 0;
+            break;
+        case CenterStart:
+            ret += options.m_invert != ui->m_invertCheckB->isChecked() ? 1 : 0;
+            break;
+        case Text:
+            ret += options.m_text.compare(ui->m_textLineE->text()) ? 1 : 0;
+            break;
+        case LedState:
+            ret += options.m_state != ui->m_ledStateCheckB->isChecked() ? 1 : 0;
+            break;
+        default:
+            break;
+        }
+    }
+//    qDebug() << "Options Speed: " << options.m_speed << "Current Speed: " <<  ui->m_speedSpinB->value();
+//    qDebug() << "Options Delay: " << options.m_delay << "Current Delay: " << ui->m_delaySpinB->value();
+//    qDebug() << "Options Iteraions: " << options.m_iteration << "Current Iteraions: " << ui->m_iterationsSpinB->value();
+//    qDebug() << "Options Leds: " << options.m_leds << "Current Leds: " << ui->m_ledsSpinB->value();
+//    qDebug() << "Options Paritcles: " << options.m_leds << "Current Paritcles: " << ui->m_particlesSpinB->value();
+//    qDebug() << "Options Axis: " << options.m_axis << "Current Axis: " << ui->m_axisComB->currentIndex();
+//    qDebug() << "Options Direction: " << options.m_direction<< "Current Direction: " << ui->m_directionComB->currentIndex();
+//    qDebug() << "Options Invert: " << options.m_invert << "Current Invert: " << ui->m_invertCheckB->isChecked();
+//    qDebug() << "Options Text: " << options.m_text << "Current Text: " << ui->m_textLineE->text();
+//    qDebug() << "Options Led State:" << options.m_state << "Current Led State: " <<  ui->m_ledStateCheckB->isChecked();
+   return ret;
 }
 

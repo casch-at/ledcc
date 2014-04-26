@@ -68,9 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectSignals();
     ui->splitter->setStretchFactor(1,2);
     ui->m_animationList->setFocus();
-
     updateUi(false);
-    qDebug() << "Main thread:" << thread();
     AQP::accelerateWidget (this);  //Give each button a accelerater
     //FIXME:: If it the function is called after the children widgets have been accelerated there action etc. application might crash if duplicates are found.
     //        Don't call AQP for each children of the MainWindow

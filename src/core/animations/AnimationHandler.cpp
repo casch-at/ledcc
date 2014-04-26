@@ -89,7 +89,6 @@ void AnimationHandler::animationDone()
 void AnimationHandler::playAnimations()
 {
     m_stopPlay = true;
-    qDebug() << "AnimationHandler thread:" << thread();
     if(!m_senderThread->isRunning())
         m_senderThread->start();
     m_playAction->setDisabled(true);
@@ -177,10 +176,8 @@ void AnimationHandler::stopThreads()
     bool createrRunning = m_createThread->isRunning();
     if(!senderRunning && !createrRunning)
         return;
-//    if(m_stopAction) //FIXME:: Application crashes because the action is already deleted when the AnimationHandler destructor calls stopThreads.
-//        m_stopAction->setDisabled(true);
-    if (m_currentAnimation)
-        m_currentAnimation->m_abort = true;
+    m_stopAction->setDisabled(true);
+    m_currentAnimation->m_abort = true;
     m_sender->m_abort = true;
     m_stopPlay = false;
     if (createrRunning)

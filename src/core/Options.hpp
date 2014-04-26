@@ -13,7 +13,7 @@ class Options
 {
 public:
     Options(const QString &text = "", const u_int16_t &speed = 1, const u_int16_t &delay = 0,
-            const u_int16_t &leds = 1, const u_int16_t &iteration = 0, const Draw::Direction &direction = Draw::Backward,
+            const u_int16_t &leds = 0, const u_int16_t &iteration = 0, const Draw::Direction &direction = Draw::Backward,
             const Draw::Axis &axis = Draw::X_AXIS, const bool invert = false, const Draw::BixelState state= Draw::OFF);
     QString m_text;
     u_int16_t m_speed;

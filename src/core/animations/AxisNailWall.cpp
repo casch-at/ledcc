@@ -31,10 +31,9 @@ void AxisNailWall::createAnimation()
     QVector<u_int8_t> destination(CUBE_ARRAY_SIZE);
     QVector<u_int8_t> position(CUBE_ARRAY_SIZE);
 
-
     fillCubeArray(0x00);
 
-    if (Draw::Forward )
+    if (m_direction == Draw::Forward)
         setPlane(m_axis, 0);
     else
         setPlane(m_axis, 7);

@@ -38,6 +38,8 @@ class AnimationOptions : public QDialog
     Q_OBJECT
 
 public:
+    explicit AnimationOptions(QList<AnimationItem *> &itemsList, QWidget *parent = 0);
+    ~AnimationOptions();
 
     /*!
     *  All possibly animation arguments.
@@ -56,19 +58,10 @@ public:
         Text        = (1 << 9),
         LedState    = (1 << 10)
         }Arguments;
-
-    explicit AnimationOptions(QWidget *parent = 0);
-    ~AnimationOptions();
-
-    inline const Options *getAnimationSettings(void){ return &m_options;  }
-
     static const int TOTAL_ARGUMENTS = 11;
 Q_SIGNALS:
     void optionsReady(const Options &animationOptions);
-    void applyNewAnimationArguments(const AnimationItem *item);
-    void updateAnimation(const AnimationItem *item);
-public Q_SLOTS:
-    void adjustAnimationOptions(QList<AnimationItem*> &items);
+    void applyNewAnimationArguments(AnimationItem *item);
 protected:
     void changeEvent(QEvent *e);
 private Q_SLOTS:
@@ -78,15 +71,12 @@ private Q_SLOTS:
     void cancel();
     void ok();
     void updateUi();
-    //    void resizeUi();
 private:
     void hideShowWidgetsDisplayOptions();
     u_int8_t compareOldNewAnimationOptions();
 
 private:
     Ui::AnimationOptions *ui;
-    Options m_options;
-    bool m_animationOptionsModefied;
     int m_animationAt;
     QList<AnimationItem*> m_itemList;
     AnimationItem *m_animationToUpdate;

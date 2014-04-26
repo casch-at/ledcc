@@ -32,16 +32,10 @@ class Options;
 class AnimationPlayListWidget : public ListWidget
 {
     Q_OBJECT
-    Q_PROPERTY(Animation* currentAnimation READ currentAnimation WRITE setCurrentAnimation NOTIFY currentAnimationChanged)
 public:
     explicit AnimationPlayListWidget(QWidget *parent = Q_NULLPTR);
     virtual ~AnimationPlayListWidget();
-    inline Animation* currentAnimation() const  { return m_currentAnimation; }
-    AnimationOptions *m_adjustOptionDialog;
-
 Q_SIGNALS:
-    void currentAnimationChanged(Animation* arg);
-
     void contantChanged();
 
 public Q_SLOTS:
@@ -51,12 +45,10 @@ public Q_SLOTS:
     void removeItems();
     void moveItemsUpDown();
     void editItem();
-    void updateItemToolTip(const Options &aOptions);
+    void updateItemToolTip(AnimationItem *aOptions);
     AnimationItem *getNextAnimation(void);
-    void setCurrentAnimation(Animation* arg);
-
 private Q_SLOTS:
-    void setNewItemOptions(const AnimationItem *itemForUpdate);
+    void setNewItemOptions(AnimationItem *itemForUpdate);
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
     virtual void dragMoveEvent(QDragMoveEvent *e);

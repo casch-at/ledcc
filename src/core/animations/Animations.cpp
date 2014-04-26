@@ -138,7 +138,6 @@ void Animations::setupAnimationItems()
             item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
         }
         item->setOptions(options);
-        //FIXME:: Connection between creater and sender thread must be created
         iter.value()->m_abort = false;
         item->createAnimationTooltipAsRichText();
         m_animationItemDefaultList.append(item);

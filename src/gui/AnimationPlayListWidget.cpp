@@ -16,6 +16,7 @@
 //#include "ui_MainWindow.h"
 #include "AnimationOptions.hpp"
 #include "AnimationItem.hpp"
+#include "Animations.hpp"
 // Third Party
 #include "aqp.hpp"
 #include "alt_key.hpp"
@@ -38,7 +39,6 @@
 */
 AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     ListWidget(parent),
-    m_adjustOptionDialog(new AnimationOptions(parent)),
     m_lastPlayedAnimation(0)
 {
     // QListWidget settings
@@ -47,7 +47,6 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     setDragDropMode(DragDrop);
     setDefaultDropAction(Qt::MoveAction);
     setAcceptDrops(true);
-    connect(m_adjustOptionDialog, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlayListWidget::setNewItemOptions);
 }
 
 /*!
@@ -432,9 +431,12 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
     return retItem;
 }
 
-void AnimationPlayListWidget::setNewItemOptions(const AnimationItem *itemForUpdate)
+void AnimationPlayListWidget::setNewItemOptions(AnimationItem *itemForUpdate)
 {
-//    itemForUpdate->setOptions(
+    if (indexFromItem(itemForUpdate).row() == m_lastPlayedAnimation - 1) {
+        animations()->updateAnimation(itemForUpdate);
+        qDebug("update animation");
+    }
 #ifdef _DEBUG_
     qDebug( ) << indexFromItem(const_cast<AnimationItem*>(itemForUpdate)).row();
 #endif
@@ -468,8 +470,12 @@ void AnimationPlayListWidget::editItem()
         for (int i = 0; i < count(); i++)
             itemList.append(dynamic_cast<AnimationItem*>(item(i)));
 
-    m_adjustOptionDialog->adjustAnimationOptions(itemList);
-    //    Q_EMIT updateUi();
+    AnimationOptions *adjAnimation = new AnimationOptions(itemList, this);
+    connect(adjAnimation, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlayListWidget::setNewItemOptions);
+    int ret = adjAnimation->exec();
+    qDebug() << "adjAnimation return value: " << ret;
+    disconnect(adjAnimation, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlayListWidget::setNewItemOptions);
+    delete adjAnimation;
 }
 
 /*!
@@ -512,29 +518,19 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
 
  \param aOptions
 */
-void AnimationPlayListWidget::updateItemToolTip(const Options &aOptions)
+void AnimationPlayListWidget::updateItemToolTip(AnimationItem *animationItem)
 {
     QList<QListWidgetItem*> items = selectedItems();
     if(!items.isEmpty())
     {
         AnimationItem *item = dynamic_cast<AnimationItem*>(items.first());
-        item->setOptions(const_cast<Options&>(aOptions));
-
-//        m_animationHash.value(item->text())->createAnimationTooltipAsRichText(item);
+        item->setOptions(const_cast<Options&>(*animationItem->getOptions()));
+        animationItem->createAnimationTooltipAsRichText();
 //        ui->animationPropertiesPreview->createPropertiePreview(
 //                    m_animationHash.value( item->text() )->getAnimationPropertiesAsPlainText( item ) );
 //        if(m_currentAnimation->getName().compare(item->text()) == 0 /*&& createThread->isRunning()*/)
 //        {
 //            updateAnimation(item);
 //        }
-    }
-}
-
-
-void AnimationPlayListWidget::setCurrentAnimation(Animation *arg)
-{
-    if (m_currentAnimation != arg) {
-        m_currentAnimation = arg;
-        emit currentAnimationChanged(arg);
     }
 }

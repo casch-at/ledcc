@@ -16,14 +16,14 @@
  */
 #include "SettingsDialog.hpp"
 #include "ui_SettingsDialog.h"
-#include "alt_key.hpp"
-#include "aqp.hpp"
+
 #include <QCloseEvent>
 #include <QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QIntValidator>
 #include <QLineEdit>
 #include <QSettings>
+
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -44,7 +44,8 @@ namespace{
 //void SettingsDialog::closeEvent()
 void SettingsDialog::closeEvent(QCloseEvent *e)
 {
-    e->accept();
+    hide();
+//    e->accept();
 }
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
@@ -63,8 +64,6 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     fillPortsInfo();
     updateSettings();
     restoreValues();
-//    qRegisterMetaType<SettingsDialog::SerialSettings>("SettingsDialog::SerialSettings");
-    AQP::accelerateWidget (this);  //Give each button a accelerater
 }
 
 /**
@@ -103,7 +102,6 @@ void SettingsDialog::apply()
     updateSettings();
     saveValues();
     hide();
-
 }
 
 //void SettingsDialog::checkCustomBaudRatePolicy(int idx)
@@ -232,7 +230,7 @@ void SettingsDialog::updateSettings()  // Store the current settings in struct
 void SettingsDialog::restoreValues() //Restore Settings of Serial Port
 {
 
-    QSettings settings("Settings","Kitchen Scale");
+    QSettings settings("ledcc","3D-LED Cube");
 
     serialSettings()->m_baudRate =static_cast<QSerialPort::BaudRate>(settings.value (BaudeRate).toInt ());
     serialSettings()->m_stringBaudRate = QString::number(settings.value (BaudeRate).toInt ());
@@ -257,7 +255,7 @@ void SettingsDialog::restoreValues() //Restore Settings of Serial Port
  */
 void SettingsDialog::saveValues() //Save Settings of Serial Port
 {
-    QSettings settings("Settings","Kitchen Scale");
+    QSettings settings( "ledcc","3D-LED Cube");
 
     settings.setValue (BaudeRate,serialSettings()->m_baudRate);
     settings.setValue (DataBits,serialSettings()->m_dataBits);
