@@ -40,7 +40,11 @@
          </widget>
         </item>
         <item>
-         <widget class="AnimationListWidget" name="m_animationList"/>
+         <widget class="AnimationListWidget" name="m_animationList">
+          <property name="defaultDropAction">
+           <enum>Qt::IgnoreAction</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -60,7 +64,14 @@
          </widget>
         </item>
         <item>
-         <widget class="AnimationPlayListWidget" name="m_animationPlaylist"/>
+         <widget class="AnimationPlayListWidget" name="m_animationPlaylist">
+          <property name="dragDropMode">
+           <enum>QAbstractItemView::DragDrop</enum>
+          </property>
+          <property name="defaultDropAction">
+           <enum>Qt::MoveAction</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

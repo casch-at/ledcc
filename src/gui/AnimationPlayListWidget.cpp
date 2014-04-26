@@ -17,9 +17,6 @@
 #include "AnimationOptions.hpp"
 #include "AnimationItem.hpp"
 #include "Animations.hpp"
-// Third Party
-#include "aqp.hpp"
-#include "alt_key.hpp"
 
 // Qt includes
 #include <QScrollBar>
@@ -27,6 +24,7 @@
 #include <QAction>
 #include <QSpacerItem>
 #include <QGridLayout>
+#include <QMessageBox>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -41,7 +39,6 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     ListWidget(parent),
     m_lastPlayedAnimation(0)
 {
-    // QListWidget settings
     setDropIndicatorShown(true);
     setMovement(Free);
     setDragDropMode(DragDrop);
@@ -343,7 +340,6 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
             e->setDropAction(Qt::MoveAction);
             insertItemsAt (items, row );
             scrollToItem(item(index.row()));
-            e->accept();
         }
         else
         {
