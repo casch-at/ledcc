@@ -34,6 +34,9 @@
 #include "Rain.hpp"
 #include "StringFly.hpp"
 
+// ThirdParty
+#include "aqp.hpp"
+#include "alt_key.hpp"
 // Qt Includes
 #include <QMessageBox>
 #include <QTimer>
@@ -85,6 +88,7 @@ AnimationOptions::AnimationOptions(QList<AnimationItem*> &itemsList, QWidget *pa
         return;
     m_itemList = itemsList;
     optionsNextAnimation();
+    AQP::accelerateWidget(this);
 }
 
 /*!
