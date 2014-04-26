@@ -42,7 +42,7 @@ public:
 Q_SIGNALS:
     void currentAnimationChanged(Animation* arg);
 
-    void contantChanged(bool arg);
+    void contantChanged();
 
 public Q_SLOTS:
     void clearList(void);

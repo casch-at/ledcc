@@ -94,9 +94,8 @@ void AnimationListWidget::insertAnimationItems(const QList<AnimationItem *> *ani
 
 void AnimationListWidget::createActions()
 {
-    m_addToPlaylistAction = createAction(tr("Add to Playlist"));
+    m_addToPlaylistAction = createAction(tr("&Add to Playlist"));
     addAction(m_addToPlaylistAction);
-    AQP::accelerateActions(actions());
 }
 
 

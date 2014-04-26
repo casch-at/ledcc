@@ -58,7 +58,7 @@ AnimationOptions::AnimationOptions(QWidget *parent) :
     connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
     connect(this, &QDialog::rejected, this, &AnimationOptions::cancel);
     setWindowModified(true);
-    AQP::accelerateWidget(this);
+//    AQP::accelerateWidget(this);
 
 
 }

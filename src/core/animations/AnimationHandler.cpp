@@ -35,10 +35,16 @@ using namespace BIAS;
 */
 AnimationHandler::AnimationHandler(QObject *object, QWidget *parent):
     QObject(object),
-    m_settingsDialog(new SettingsDialog(this)),
+    m_settingsDialog(new SettingsDialog(parent)),
     m_createThread(new QThread)
 {
-    m_currentAnimation = animations()->get("String Fly");
+    foreach (QAction *a, parent->actions()) {
+        if ( a->objectName().compare("m_playAction") == 0)
+            m_playAction = a;
+        else if ( a->objectName().compare("m_stopAction") == 0)
+            m_stopAction = a;
+    }
+    m_currentAnimation = animations()->get(BIAS::SStringFly);
     setupSenderThread();
     connect(m_sender, &Sender::portOpenChanged,this,&AnimationHandler::setIsPortOpen);
 }
@@ -53,17 +59,10 @@ AnimationHandler::~AnimationHandler()
     Q_EMIT okClosePort();
     if(m_createThread->isRunning() || m_senderThread->isRunning())
         stopThreads();
+//    delete m_senderThread;
+    delete m_createThread;
+    delete m_sender;
 }
-
-void AnimationHandler::setAction(QAction *action, int i)
-{
-    if (i) {
-        m_playAction = action;
-    } else {
-        m_stopAction = action;
-    }
-}
-
 
 /*!
  \brief
@@ -90,12 +89,11 @@ void AnimationHandler::animationDone()
 void AnimationHandler::playAnimations()
 {
     m_stopPlay = true;
-
+    qDebug() << "AnimationHandler thread:" << thread();
     if(!m_senderThread->isRunning())
         m_senderThread->start();
-
-    m_playAction->setDisabled(true);//FIXME::
-    m_stopAction->setEnabled(true);//FIXME::
+    m_playAction->setDisabled(true);
+    m_stopAction->setEnabled(true);
     playNextAnimation(m_animationPlaylist->getNextAnimation());
 }
 
@@ -114,8 +112,6 @@ void AnimationHandler::playNextAnimation(const AnimationItem *item)
     m_currentAnimation = animations()->get(item->text());
     connect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
     connect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
-    //        connect(worker, SIGNAL(finished()), worker, SLOT(deleteLater()));
-    //        connect(createThread , &QThread::finished, createThread, &QThread::deleteLater);
     connect(m_currentAnimation,&Animation::done,this,&AnimationHandler::animationDone);
 
     animations()->updateAnimation(item);
@@ -129,7 +125,6 @@ void AnimationHandler::playNextAnimation(const AnimationItem *item)
 
 void AnimationHandler::portOpen(const QString &message)
 {
-
     //    m_statusbar->showMessage(message,3000);//FIXME::
     updateUi();
 }
@@ -138,9 +133,9 @@ void AnimationHandler::displayPortErrorMessage(const QString &message)
 {
     PortMessageBox *msg = Q_NULLPTR;
     if(message.contains("#")){
-        msg = new PortMessageBox(tr("Error"),message.split("#").first(),message.split("#").last()); //FIXME::
+        msg = new PortMessageBox(tr("Error"),message.split("#").first(),message.split("#").last());
     }else{
-        msg = new PortMessageBox(tr("Error"),message);//FIXME::
+        msg = new PortMessageBox(tr("Error"),message);
     }
     msg->exec();
     delete msg;
@@ -153,8 +148,7 @@ void AnimationHandler::displayPortErrorMessage(const QString &message)
  */
 void AnimationHandler::closePort(const QString &message)
 {
-    PortMessageBox *msg = new PortMessageBox(tr("Close Port"),message); //FIXME::
-
+    PortMessageBox *msg = new PortMessageBox(tr("Close Port"),message);
     if(msg->exec() == QMessageBox::Ok)
         Q_EMIT okClosePort();
 
@@ -183,7 +177,8 @@ void AnimationHandler::stopThreads()
     bool createrRunning = m_createThread->isRunning();
     if(!senderRunning && !createrRunning)
         return;
-    m_stopAction->setDisabled(true); //FIXME::
+//    if(m_stopAction) //FIXME:: Application crashes because the action is already deleted when the AnimationHandler destructor calls stopThreads.
+//        m_stopAction->setDisabled(true);
     if (m_currentAnimation)
         m_currentAnimation->m_abort = true;
     m_sender->m_abort = true;
@@ -224,7 +219,8 @@ void AnimationHandler::setupSenderThread(void)
     QHashIterator<QString, Animation*> i(*animations()->getAll());
     while (i.hasNext()) {
         i.next();
-        connect(i.value(),&Animation::sendData, m_sender, &Sender::sendAnimation);
+        connect(i.value(),&Animation::sendData, m_sender, &Sender::sendAnimation); /* Create connection between animation (createThread) thread and sender thred */
+        i.value()->moveToThread(m_createThread); /* Move animation to createThread */
     }
 
 }

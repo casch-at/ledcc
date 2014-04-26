@@ -39,6 +39,7 @@ public:
     explicit AnimationHandler(QObject *object = Q_NULLPTR, QWidget *parent = Q_NULLPTR);
     virtual ~AnimationHandler();
     Sender * getSender() { return m_sender; }
+    inline void setAnimationPlaylist(AnimationPlayListWidget *playlistWidget);
     SettingsDialog *m_settingsDialog;
 
     bool isPortOpen() const
@@ -46,7 +47,7 @@ public:
         return m_isPortOpen;
     }
 
-    void setAction(QAction *action, int i);
+    void setAction(QAction *action);
 Q_SIGNALS:
     void startAnimation();
     void stopPlay();
@@ -74,8 +75,8 @@ private:
     void setupSenderThread(void);
     void playNextAnimation(const AnimationItem *item);
 private:
-    QAction *m_playAction;
-    QAction *m_stopAction;
+    QAction *m_playAction; /* MainWindow will delete this action on exit */
+    QAction *m_stopAction; /* MainWindow will delete this action on exit */
     QThread *m_createThread;
     QThread *m_senderThread;
     Sender *m_sender;
@@ -83,8 +84,13 @@ private:
     bool m_portOpen;
     AnimationItem *m_currentAnimationItem;
     Animation *m_currentAnimation;
-    AnimationPlayListWidget *m_animationPlaylist;
+    AnimationPlayListWidget* m_animationPlaylist; /* MainWindow AnimationPlaylistWidget */
     bool m_isPortOpen;
     Q_DISABLE_COPY(AnimationHandler)
 };
+
+inline void AnimationHandler::setAnimationPlaylist(AnimationPlayListWidget *playlistWidget)
+{
+    m_animationPlaylist = playlistWidget;
+}
 #endif // ANIMATIONHANDLER_HPP

@@ -78,6 +78,7 @@ void Sender::sendAnimation(const Draw::CubeArray &d)
  */
 void Sender::openCloseSerialPort()
 {
+    qDebug() << "Sender thread:" << thread();
     if(m_serial == Q_NULLPTR)
         m_serial = new QSerialPort;
     if(!m_serial->isOpen()){

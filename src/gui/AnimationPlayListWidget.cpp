@@ -84,7 +84,7 @@ void AnimationPlayListWidget::clearList()
 
     if(ret & QMessageBox::Yes){
         clear();
-        Q_EMIT contantChanged(true);
+        Q_EMIT contantChanged();
     }
 }
 
@@ -101,7 +101,7 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
     foreach (QListWidgetItem *i, item) {
         addItem(i->clone());
     }
-    Q_EMIT updateUi(true);
+    Q_EMIT contantChanged();
 
 
 }
@@ -127,7 +127,7 @@ void AnimationPlayListWidget::removeItems()
         delete item;
     }
     if (!count()){
-        Q_EMIT updateUi(true);
+        Q_EMIT contantChanged();
     }
     setCurrentRow(currentRow());
 
@@ -453,7 +453,7 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
         insertItem(row,i);
         setItemSelected(i,true);
     }
-    Q_EMIT updateUi(true);
+    Q_EMIT contantChanged();
 }
 
 void AnimationPlayListWidget::editItem()

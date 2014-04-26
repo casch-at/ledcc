@@ -49,6 +49,7 @@ private Q_SLOTS:
     void about(void);
     void setDirty() { setWindowModified ( true ); }
     void updateUi(bool portOpen);
+    void updateAnimationActions();
 private:
     bool okToContinue(void);
     void readSettings(void);
@@ -61,7 +62,7 @@ private:
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;
-
+    bool m_open; /* Port open or not */
     AnimationHandler *m_animationHandler;
     Q_DISABLE_COPY(MainWindow)
 };
