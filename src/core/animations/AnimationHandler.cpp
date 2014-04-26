@@ -79,7 +79,7 @@ void AnimationHandler::animationDone()
     if(m_stopPlay)
         playNextAnimation(m_animationPlaylist->getNextAnimation());
     else
-        updateUi();
+       Q_EMIT updateUi(true);
 }
 
 /*!
@@ -125,7 +125,7 @@ void AnimationHandler::playNextAnimation(const AnimationItem *item)
 void AnimationHandler::portOpen(const QString &message)
 {
     //    m_statusbar->showMessage(message,3000);//FIXME::
-    updateUi();
+    Q_EMIT updateUi(true);
 }
 
 void AnimationHandler::displayPortErrorMessage(const QString &message)
@@ -163,7 +163,7 @@ void AnimationHandler::portClosed(const QString &message)
 {
     //    ui->m_statusbar->showMessage(message,3000); //FIXME::
     stopThreads();
-    updateUi();
+    Q_EMIT updateUi(false);
 }
 
 /**

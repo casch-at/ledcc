@@ -69,14 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter->setStretchFactor(1,2);
     ui->m_animationList->setFocus();
     updateUi(false);
-    AQP::accelerateWidget (this);  //Give each button a accelerater
-    //FIXME:: If it the function is called after the children widgets have been accelerated there action etc. application might crash if duplicates are found.
-    //        Don't call AQP for each children of the MainWindow
-    AQP::accelerateActions(QList<QAction *>()
-                           << ui->m_clearAction << ui->m_duplicateAction << ui->m_editAction
-                           << ui->m_playAction << ui->m_quitAction << ui->m_removeAction
-                           << ui->m_settingsAction << ui->m_stopAction << ui->m_moveUpAction
-                           << ui->m_moveDownAction);
+    AQP::accelerateActions(actions());
 }
 
 /**
@@ -260,6 +253,7 @@ void MainWindow::connectSignals(void)
                                         << ui->m_removeAction << ui->m_clearAction);
 
     connect( m_animationHandler->getSender(), &Sender::portOpenChanged, this, &MainWindow::updateUi);
+    connect( m_animationHandler, &AnimationHandler::updateUi, this, &MainWindow::updateUi);
 }
 
 /**

@@ -51,7 +51,7 @@ public:
 Q_SIGNALS:
     void startAnimation();
     void stopPlay();
-    void updateUi();
+    void updateUi(bool val);
     void okClosePort();
     void openSerialInterface();
 
