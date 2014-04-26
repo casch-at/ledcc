@@ -16,8 +16,7 @@
  */
 #include "AnimationOptions.hpp"
 #include "ui_AnimationOptions.h"
-#include "alt_key.hpp"
-#include "aqp.hpp"
+
 #include "AnimationItem.hpp"
 #include "Animation.hpp"
 #include "Draw.hpp"
@@ -35,8 +34,9 @@
 #include "Rain.hpp"
 #include "StringFly.hpp"
 
-#include <QTimer>
 // Qt Includes
+#include <QMessageBox>
+#include <QTimer>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -63,13 +63,34 @@ AnimationOptions::AnimationOptions(QList<AnimationItem*> &itemsList, QWidget *pa
     connect(ui->m_cancelPB, &QPushButton::pressed, this, &AnimationOptions::cancel);
     connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
     connect(this, &QDialog::rejected, this, &AnimationOptions::cancel);
-    setWindowModified(true);
+
+    void (AnimationOptions:: *slot1)() = &AnimationOptions::compareOldNewAnimationOptions; /* Resolve the overloaded function compareOldNewAnimationOptions */
+    connect(ui->m_speedSpinB, &QSpinBox::editingFinished, this, slot1);
+    connect(ui->m_delaySpinB, &QSpinBox::editingFinished, this,slot1);
+    connect(ui->m_ledsSpinB, &QSpinBox::editingFinished, this, slot1);
+    connect(ui->m_particlesSpinB, &QSpinBox::editingFinished, this, slot1);
+    connect(ui->m_iterationsSpinB, &QSpinBox::editingFinished, this, slot1);
+
+    /* Resolve functions before creating the connection */
+    void (QComboBox:: *signal2)(int) = &QComboBox::currentIndexChanged;
+    void (AnimationOptions:: *slot2)(int) = &AnimationOptions::compareOldNewAnimationOptions;
+    connect(ui->m_axisComB, signal2,this, slot2);
+    connect(ui->m_directionComB, signal2,this, slot2);
+
+    connect(ui->m_invertCheckB, &QCheckBox::stateChanged, this, slot2);
+    connect(ui->m_ledStateCheckB, &QCheckBox::stateChanged, this, slot2);
+
+    connect(ui->m_textLineE, &QLineEdit::editingFinished, this, slot1);
     if(itemsList.isEmpty())
         return;
     m_itemList = itemsList;
     optionsNextAnimation();
 }
 
+/*!
+ \brief Destructor of class
+
+*/
 AnimationOptions::~AnimationOptions()
 {
     delete ui;
@@ -99,7 +120,8 @@ void AnimationOptions::changeEvent(QEvent *e)
 */
 void AnimationOptions::applyAnimationOptions()
 {
-    if(compareOldNewAnimationOptions()){
+    if(isWindowModified()){
+        setWindowModified(false);
         Options options;
         options.m_speed = ui->m_speedSpinB->value();
         for (int i = 1; i < TOTAL_ARGUMENTS; i++) {
@@ -160,23 +182,14 @@ void AnimationOptions::cancel()
 */
 void AnimationOptions::ok()
 {
-    if (compareOldNewAnimationOptions()) {
-        QMessageBox msgb;
-        msgb.setText("Options have been modified!");
-        msgb.setInformativeText("Do you want apply the new options?");
-        msgb.setWindowTitle("Options Modified");
-        msgb.setIcon(QMessageBox::Information);
-        msgb.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-        msgb.setDefaultButton(QMessageBox::Ok);
-        int ret = msgb.exec();
-
-        if (ret == QMessageBox::Ok)
-            applyAnimationOptions();
-
-    }
+    shouldeApplyNewOptions();
     close();
 }
 
+/*!
+ \brief
+
+*/
 void AnimationOptions::updateUi()
 {
     if (m_animationAt){
@@ -199,6 +212,7 @@ void AnimationOptions::optionsNextAnimation()
 {
     if( m_animationAt < m_itemList.count() -1)
         m_animationAt++;
+    shouldeApplyNewOptions();
     m_animationToUpdate = m_itemList.at(m_animationAt);
     ui->m_propertiesGB->setTitle(tr("Properties of ") + m_animationToUpdate->text());
     hideShowWidgetsDisplayOptions();
@@ -212,6 +226,7 @@ void AnimationOptions::optionsPrevAnimation()
 {
     if(m_animationAt)
         m_animationAt--;
+    shouldeApplyNewOptions();
     m_animationToUpdate = m_itemList.at(m_animationAt);
     ui->m_propertiesGB->setTitle(tr("Properties of ") + m_animationToUpdate->text());
     hideShowWidgetsDisplayOptions();
@@ -335,18 +350,48 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
     Q_EMIT updateUi();
 }
 
+/*!
+ \brief
+
+*/
+void AnimationOptions::shouldeApplyNewOptions()
+{
+    if (isWindowModified()) {
+        if (okToContinue() == QMessageBox::Ok)
+            applyAnimationOptions();
+        else
+            setWindowModified(false);
+    }
+}
+
+/*!
+ \brief
+
+ \return int
+*/
+int AnimationOptions::okToContinue()
+{
+    QMessageBox msgb;
+    msgb.setText("Options have been modified!");
+    msgb.setInformativeText("Do you want apply the new options?");
+    msgb.setWindowTitle("Options Modified");
+    msgb.setIcon(QMessageBox::Information);
+    msgb.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgb.setDefaultButton(QMessageBox::Ok);
+    return msgb.exec();
+}
+
 
 /*!
  \brief
 
  \return u_int8_t
 */
-u_int8_t AnimationOptions::compareOldNewAnimationOptions()
+void AnimationOptions::compareOldNewAnimationOptions()
 {
     const Options options = *m_animationToUpdate->getOptions();
     int ret = 0;
     ret = options.m_speed != ui->m_speedSpinB->value() ? 1 : 0;
-
     for (int i = 1; i < TOTAL_ARGUMENTS; i++) {
         switch ( (1 << i) & m_animationToUpdate->getAvailableAnimationOptions() )
         {
@@ -394,6 +439,12 @@ u_int8_t AnimationOptions::compareOldNewAnimationOptions()
 //    qDebug() << "Options Invert: " << options.m_invert << "Current Invert: " << ui->m_invertCheckB->isChecked();
 //    qDebug() << "Options Text: " << options.m_text << "Current Text: " << ui->m_textLineE->text();
 //    qDebug() << "Options Led State:" << options.m_state << "Current Led State: " <<  ui->m_ledStateCheckB->isChecked();
-   return ret;
+    if(ret) setWindowModified(true);
+}
+
+void AnimationOptions::compareOldNewAnimationOptions(int index)
+{
+    index = index;
+    compareOldNewAnimationOptions();
 }
 

@@ -59,6 +59,7 @@ public:
         LedState    = (1 << 10)
         }Arguments;
     static const int TOTAL_ARGUMENTS = 11;
+public Q_SLOTS:
 Q_SIGNALS:
     void optionsReady(const Options &animationOptions);
     void applyNewAnimationArguments(AnimationItem *item);
@@ -71,9 +72,12 @@ private Q_SLOTS:
     void cancel();
     void ok();
     void updateUi();
+    void compareOldNewAnimationOptions();
+    void compareOldNewAnimationOptions(int index);
 private:
     void hideShowWidgetsDisplayOptions();
-    u_int8_t compareOldNewAnimationOptions();
+    void shouldeApplyNewOptions();
+    int okToContinue();
 
 private:
     Ui::AnimationOptions *ui;
