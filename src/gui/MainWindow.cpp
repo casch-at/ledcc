@@ -21,6 +21,8 @@
 #include "AnimationHandler.hpp"
 #include "AnimationOptions.hpp"
 #include "Sender.hpp"
+#include "Config.hpp"
+
 // ThirdParty
 #include "alt_key.hpp"
 #include "aqp.hpp"
@@ -29,12 +31,10 @@
 // Qt includes
 #include <QMessageBox>
 #include <QCloseEvent>
-#include <QSettings>
 #include <QMenuBar>
 #include <QToolBar>
 #include <QByteArray>
 #include <QEventLoop>
-#include <QSerialPort>
 #include <QShortcut>
 
 #ifdef _DEBUG_
@@ -133,16 +133,16 @@ void MainWindow::resizeEvent(QResizeEvent *e)
  * @brief MainWindow::saveSettings
  */
 void MainWindow::saveSettings(void){  //Save geometry of application
-    QSettings settings("ledcc","3D-LED Cube");
-    settings.setValue (Settings::SMainWindowGeometrySettings,saveGeometry ());
+    config()->set(Settings::MainWindowGeometrySettings,saveGeometry());
+    config()->set(Settings::ShowAnimationOptionPreview, isHidden());
 }
 
 /**
  * @brief MainWindow::readSettings
  */
 void MainWindow::readSettings (void){ //Load geometry of application
-    QSettings settings("ledcc","3D-LED Cube");
-    restoreGeometry (settings.value (Settings::SMainWindowGeometrySettings).toByteArray ());
+    restoreGeometry (config()->get(Settings::MainWindowGeometrySettings).toByteArray ());
+    ui->m_animationPropertiesPreview->setHidden(config()->get(Settings::ShowAnimationOptionPreview).toBool());
 }
 
 /**
@@ -234,10 +234,10 @@ void MainWindow::connectSignals(void)
 
     // ListWidget interconnections
     connect( ui->m_animationList , &AnimationListWidget::addToPlaylist , ui->m_animationPlaylist , &AnimationPlayListWidget::newItem);
-    connect( ui->m_animationList , &AnimationListWidget::showPropertiePreview , ui->animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
+    connect( ui->m_animationList , &AnimationListWidget::showPropertiePreview , ui->m_animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
     connect( ui->m_animationPlaylist, &AnimationPlayListWidget::contantChanged , this, &MainWindow::updateAnimationActions);
     //    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
-    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, ui->animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
+    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, ui->m_animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
 
     // Animation Playlist action
     connect( ui->m_clearAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::clearList);

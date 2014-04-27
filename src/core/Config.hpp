@@ -22,6 +22,20 @@
 #include <QScopedPointer>
 #include <QVariant>
 
+namespace Settings{
+    const QString MainWindowGeometrySettings("MainWindowGeometry");
+    const QString ShowMainToolbar("ShowMainToolbar");
+    const QString ShowAnimationToolbar("ShowAnimationToolbar");
+    const QString ShowHelpToolbar("ShowHelpToolbar");
+    const QString ShowAnimationOptionPreview("ShowAnimationOptionPreview");
+    const QString SettingsBaudeRate("Settings/baude");
+    const QString SettingsParity("Settings/parity");
+    const QString SettingsDataBits("Settings/databits");
+    const QString SettingsStopBits("Settings/stopbits");
+    const QString SettingsFlowControl("Settings/flowcontrol");
+    }
+
+class QSettings;
 
 class Config : public QObject
 {
@@ -40,7 +54,7 @@ signals:
 private:
     explicit Config(QObject *parent);
     Config(const QString &fileName, QObject* parent);
-
+    void init(const QString &fileName);
     static Config *m_instance;
 
     QScopedPointer<QSettings> m_settings;

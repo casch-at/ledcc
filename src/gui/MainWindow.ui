@@ -80,7 +80,7 @@
    </layout>
   </widget>
   <widget class="QStatusBar" name="m_statusbar"/>
-  <widget class="AnimationPropertiesPreview" name="animationPropertiesPreview">
+  <widget class="AnimationPropertiesPreview" name="m_animationPropertiesPreview">
    <property name="font">
     <font>
      <weight>75</weight>
@@ -149,7 +149,7 @@
   </widget>
   <widget class="QToolBar" name="m_helpTB">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Help</string>
    </property>
    <property name="layoutDirection">
     <enum>Qt::RightToLeft</enum>

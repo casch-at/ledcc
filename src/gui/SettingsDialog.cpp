@@ -17,24 +17,22 @@
 #include "SettingsDialog.hpp"
 #include "ui_SettingsDialog.h"
 
+/* Application includes */
+#include "Config.hpp"
+
+/* Qt includes */
 #include <QCloseEvent>
 #include <QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QIntValidator>
 #include <QLineEdit>
-#include <QSettings>
 
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
+
 SerialSettings* SerialSettings::m_instance = Q_NULLPTR;
-namespace{
-    const QString BaudeRate("baude");
-    const QString Parity("parity");
-    const QString DataBits("databits");
-    const QString StopBits("stopbits");
-    const QString FlowControl("flowcontrol");
-    }
+
 
 /**
  * @brief
@@ -105,15 +103,15 @@ void SettingsDialog::apply()
 }
 
 //void SettingsDialog::checkCustomBaudRatePolicy(int idx)
-//    {
-//        bool isCustomBaudRate = !ui->baudRateBox->itemData(idx).isValid();
-//        if (isCustomBaudRate) {
-//                ui->baudRateBox->clearEditText();
-//                QLineEdit *edit = ui->baudRateBox->lineEdit();
-//                edit->setValidator(intValidator);
-//            }
-//        ui->baudRateBox->setEditable(isCustomBaudRate);
+//{
+//    bool isCustomBaudRate = !ui->baudRateBox->itemData(idx).isValid();
+//    if (isCustomBaudRate) {
+//        ui->baudRateBox->clearEditText();
+//        QLineEdit *edit = ui->baudRateBox->lineEdit();
+//        edit->setValidator(intValidator);
 //    }
+//    ui->baudRateBox->setEditable(isCustomBaudRate);
+//}
 
 /**
  * @brief
@@ -229,24 +227,20 @@ void SettingsDialog::updateSettings()  // Store the current settings in struct
  */
 void SettingsDialog::restoreValues() //Restore Settings of Serial Port
 {
+    serialSettings()->m_baudRate =static_cast<QSerialPort::BaudRate>(config()->get(Settings::SettingsBaudeRate).toInt ());
+    serialSettings()->m_stringBaudRate = QString::number(config()->get(Settings::SettingsBaudeRate).toInt ());
 
-    QSettings settings("ledcc","3D-LED Cube");
+    serialSettings()->m_dataBits =  static_cast<QSerialPort::DataBits>(config()->get(Settings::SettingsDataBits).toInt ());
+    serialSettings()->m_stringDataBits = config()->get(Settings::SettingsDataBits).toString ();
 
-    serialSettings()->m_baudRate =static_cast<QSerialPort::BaudRate>(settings.value (BaudeRate).toInt ());
-    serialSettings()->m_stringBaudRate = QString::number(settings.value (BaudeRate).toInt ());
+    serialSettings()->m_parity =  static_cast<QSerialPort::Parity>(config()->get(Settings::SettingsParity).toInt ());
+    serialSettings()->m_stringParity = config()->get(Settings::SettingsParity).toString ();
 
-    serialSettings()->m_dataBits =  static_cast<QSerialPort::DataBits>(settings.value (DataBits).toInt ());
-    serialSettings()->m_stringDataBits =settings.value (DataBits).toString ();
+    serialSettings()->m_stopBits = static_cast<QSerialPort::StopBits>(config()->get(Settings::SettingsStopBits).toInt ());
+    serialSettings()->m_stringStopBits = config()->get(Settings::SettingsStopBits).toString ();
 
-    serialSettings()->m_parity =  static_cast<QSerialPort::Parity>(settings.value (Parity).toInt ());
-    serialSettings()->m_stringParity = settings.value (Parity).toString ();
-
-    serialSettings()->m_stopBits = static_cast<QSerialPort::StopBits>(settings.value (StopBits).toInt ());
-    serialSettings()->m_stringStopBits = settings.value (StopBits).toString ();
-
-    serialSettings()->m_flowControl =  static_cast<QSerialPort::FlowControl>(settings.value (FlowControl).toInt ());
-    serialSettings()->m_stringFlowControl =settings.value (FlowControl).toString ();
-
+    serialSettings()->m_flowControl =  static_cast<QSerialPort::FlowControl>(config()->get(Settings::SettingsFlowControl).toInt ());
+    serialSettings()->m_stringFlowControl = config()->get(Settings::SettingsFlowControl).toString ();
 }
 
 /**
@@ -255,13 +249,11 @@ void SettingsDialog::restoreValues() //Restore Settings of Serial Port
  */
 void SettingsDialog::saveValues() //Save Settings of Serial Port
 {
-    QSettings settings( "ledcc","3D-LED Cube");
-
-    settings.setValue (BaudeRate,serialSettings()->m_baudRate);
-    settings.setValue (DataBits,serialSettings()->m_dataBits);
-    settings.setValue (Parity,serialSettings()->m_parity);
-    settings.setValue (StopBits,serialSettings()->m_stopBits);
-    settings.setValue (FlowControl,serialSettings()->m_flowControl);
+    config()->set(Settings::SettingsBaudeRate,serialSettings()->m_baudRate);
+    config()->set(Settings::SettingsDataBits,serialSettings()->m_dataBits);
+    config()->set(Settings::SettingsParity,serialSettings()->m_parity);
+    config()->set(Settings::SettingsStopBits,serialSettings()->m_stopBits);
+    config()->set(Settings::SettingsFlowControl,serialSettings()->m_flowControl);
 }
 
 /**

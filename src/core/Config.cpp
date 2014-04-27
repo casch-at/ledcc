@@ -23,7 +23,10 @@
 #include <QSettings>
 #include <QTemporaryFile>
 
+using namespace Settings;
+
 Config * Config::m_instance(Q_NULLPTR);
+
 Config::~Config()
 {
 
@@ -31,22 +34,32 @@ Config::~Config()
 
 QVariant Config::get(const QString &key)
 {
-
+    return m_settings->value(key);
 }
 
 QVariant Config::get(const QString &key, const QVariant &defaultValue)
 {
+    return m_settings->value(key, defaultValue);
+}
 
+void Config::set(const QString &key, const QVariant &value)
+{
+    m_settings->setValue(key, value);
 }
 
 Config *Config::instance()
 {
-
+    if (m_instance) {
+        m_instance = new Config(qApp);
+        QCoreApplication::setApplicationName("ledcc");
+        QCoreApplication::setOrganizationName("Open Source");
+    }
 }
 
 void Config::createConfigFromFile(QString &file)
 {
-
+    Q_ASSERT(!m_instance);
+    m_instance = new Config(file,qApp);
 }
 
 void Config::createTempFileInstance()
@@ -57,9 +70,48 @@ void Config::createTempFileInstance()
 Config::Config(QObject *parent) :
     QObject(parent)
 {
+    QString userPath;
+    QString homePath = QDir::homePath();
+
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+    // we can't use QDesktopServices on X11 as it uses XDG_DATA_HOME instead of XDG_CONFIG_HOME
+    QByteArray env = qgetenv("XDG_CONFIG_HOME");
+    if (env.isEmpty()) {
+        userPath = homePath;
+        userPath += "/.config";
+    }
+    else if (env[0] == '/') {
+        userPath = QFile::decodeName(env);
+    }
+    else {
+        userPath = homePath;
+        userPath += '/';
+        userPath += QFile::decodeName(env);
+    }
+
+    userPath += "/ledcc/";
+#else
+    userPath = QDir::fromNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    // storageLocation() appends the application name ("/keepassx/") to the end
+#endif
+
+    userPath += "ledcc.ini";
+
+    init(userPath);
 }
 
-Config::Config(const QString &fileName, QObject *parent)
+Config::Config(const QString &fileName, QObject *parent):
+    QObject(parent)
 {
+    init(fileName);
+}
 
+void Config::init(const QString &fileName)
+{
+    m_settings.reset(new QSettings(fileName, QSettings::IniFormat));
+
+    m_defaults.insert(ShowMainToolbar, true);
+    m_defaults.insert(ShowAnimationToolbar, true);
+    m_defaults.insert(ShowHelpToolbar, true);
+    m_defaults.insert(ShowAnimationOptionPreview, true);
 }

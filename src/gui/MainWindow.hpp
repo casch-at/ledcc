@@ -17,18 +17,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QMainWindow>
-#include <SettingsDialog.hpp>
 #include <QThread>
-#include <Global.hpp>
-#include <QTimer>
 
 
-/*Forward deceleration*/
-class QTimer;
+/* Qt forward decelerations */
 class QShortcut;
-
-
-    class AnimationHandler;
+/* Application forward declerations */
+class AnimationHandler;
 
 namespace Ui {
     class MainWindow;
@@ -67,9 +62,6 @@ private:
     Q_DISABLE_COPY(MainWindow)
 };
 
-namespace Settings{
-    const QString SMainWindowGeometrySettings("geometry");
-    }
 
 
 
