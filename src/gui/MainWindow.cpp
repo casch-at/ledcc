@@ -135,10 +135,10 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 */
 void MainWindow::saveSettings(void){
     config()->set(Settings::MainWindowGeometrySettings,saveGeometry());
-    config()->set(Settings::ShowAnimationOptionPreview, ui->m_animationPropertiesPreview->isHidden());
-    config()->set(Settings::ShowAnimationToolbar, ui->m_animationTB->isHidden());
-    config()->set(Settings::ShowHelpToolbar, ui->m_helpTB->isHidden());
-    config()->set(Settings::ShowMainToolbar, ui->m_mainTB->isHidden());
+    config()->set(Settings::IsAnimationOptionPreviewHidden, ui->m_animationPropertiesPreview->isHidden());
+    config()->set(Settings::IsAnimationToolbarHidden, ui->m_animationTB->isHidden());
+    config()->set(Settings::IsHelpToolbarHidden, ui->m_helpTB->isHidden());
+    config()->set(Settings::IsMainToolbarHidden, ui->m_mainTB->isHidden());
 }
 
 /*!
@@ -147,10 +147,10 @@ void MainWindow::saveSettings(void){
 */
 void MainWindow::readSettings (void){
     restoreGeometry (config()->get(Settings::MainWindowGeometrySettings).toByteArray ());
-    ui->m_animationPropertiesPreview->setHidden(config()->get(Settings::ShowAnimationOptionPreview).toBool());
-    ui->m_animationTB->setHidden(config()->get(Settings::ShowAnimationToolbar).toBool());
-    ui->m_helpTB->setHidden(config()->get(Settings::ShowHelpToolbar).toBool());
-    ui->m_mainTB->setHidden(config()->get(Settings::ShowMainToolbar).toBool());
+    ui->m_animationPropertiesPreview->setHidden(config()->get(Settings::IsAnimationOptionPreviewHidden).toBool());
+    ui->m_animationTB->setHidden(config()->get(Settings::IsAnimationToolbarHidden).toBool());
+    ui->m_helpTB->setHidden(config()->get(Settings::IsHelpToolbarHidden).toBool());
+    ui->m_mainTB->setHidden(config()->get(Settings::IsMainToolbarHidden).toBool());
 }
 
 /**

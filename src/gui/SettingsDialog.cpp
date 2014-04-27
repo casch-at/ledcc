@@ -130,14 +130,14 @@ void SettingsDialog::fillPortsParameters()
     m_ui->m_baudRateBox->addItem(QLatin1String("38400"), QSerialPort::Baud38400);
     m_ui->m_baudRateBox->addItem(QLatin1String("57600"), QSerialPort::Baud57600);
     m_ui->m_baudRateBox->addItem(QLatin1String("115200"), QSerialPort::Baud115200);
-    m_ui->m_baudRateBox->setCurrentIndex (m_ui->m_baudRateBox->count());
+    m_ui->m_baudRateBox->setCurrentIndex ( m_ui->m_baudRateBox->count() - 1 );
 
     // fill data bits
     m_ui->m_dataBitsBox->addItem(QLatin1String("5"), QSerialPort::Data5);
     m_ui->m_dataBitsBox->addItem(QLatin1String("6"), QSerialPort::Data6);
     m_ui->m_dataBitsBox->addItem(QLatin1String("7"), QSerialPort::Data7);
     m_ui->m_dataBitsBox->addItem(QLatin1String("8"), QSerialPort::Data8);
-    m_ui->m_dataBitsBox->setCurrentIndex(m_ui->m_dataBitsBox->count());
+    m_ui->m_dataBitsBox->setCurrentIndex( m_ui->m_dataBitsBox->count() - 1 );
 
     // fill parity
     m_ui->m_parityBox->addItem(QLatin1String("None"), QSerialPort::NoParity);
@@ -187,16 +187,16 @@ void SettingsDialog::fillPortsInfo() //
 }
 
 /**
- * @brief
+ * @brief Store the current settings in the class SerialSettings
  *
  */
-void SettingsDialog::updateSettings()  // Store the current settings in struct
+void SettingsDialog::updateSettings()
 {
     serialSettings()->m_name = m_ui->m_portsBox->currentText();
 
     serialSettings()->m_baudRate = static_cast<QSerialPort::BaudRate>(
                 m_ui->m_baudRateBox->itemData(m_ui->m_baudRateBox->currentIndex()).toInt());
-    //            }
+    //
     serialSettings()->m_stringBaudRate = QString::number(serialSettings()->m_baudRate);
 
     // Data bits

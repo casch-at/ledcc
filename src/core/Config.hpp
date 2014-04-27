@@ -24,15 +24,15 @@
 
 namespace Settings{
     const QString MainWindowGeometrySettings("MainWindowGeometry");
-    const QString ShowMainToolbar("ShowMainToolbar");
-    const QString ShowAnimationToolbar("ShowAnimationToolbar");
-    const QString ShowHelpToolbar("ShowHelpToolbar");
-    const QString ShowAnimationOptionPreview("ShowAnimationOptionPreview");
-    const QString SettingsBaudeRate("Settings/baude");
-    const QString SettingsParity("Settings/parity");
-    const QString SettingsDataBits("Settings/databits");
-    const QString SettingsStopBits("Settings/stopbits");
-    const QString SettingsFlowControl("Settings/flowcontrol");
+    const QString IsMainToolbarHidden("IsMainToolbarHidden");
+    const QString IsAnimationToolbarHidden("IsAnimationToolbarHidden");
+    const QString IsHelpToolbarHidden("IsHelpToolbarHidden");
+    const QString IsAnimationOptionPreviewHidden("IsAnimationOptionPreviewHidden");
+    const QString SettingsBaudeRate("Settings/Port/baude");
+    const QString SettingsParity("Settings/Port/parity");
+    const QString SettingsDataBits("Settings/Port/databits");
+    const QString SettingsStopBits("Settings/Port/stopbits");
+    const QString SettingsFlowControl("Settings/Port/flowcontrol");
     }
 
 class QSettings;

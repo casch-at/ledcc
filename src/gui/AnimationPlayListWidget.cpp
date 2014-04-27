@@ -37,13 +37,14 @@
 */
 AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     ListWidget(parent),
-    m_lastPlayedAnimation(0)
+    m_nextAnimationRow(0)
 {
     setDropIndicatorShown(true);
     setMovement(Free);
     setDragDropMode(DragDrop);
     setDefaultDropAction(Qt::MoveAction);
     setAcceptDrops(true);
+    connect(this, &AnimationPlayListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::onItemDoubleClicked);
 }
 
 /*!
@@ -325,8 +326,7 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
 {
     QList<QListWidgetItem*> items;
 
-    if ( e->source() == this  )
-    {
+    if ( e->source() == this  ) {
         QModelIndex index;
         int row = -1;
         int col = -1;
@@ -346,15 +346,14 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
             e->ignore();
             return;
         }
-    }
-    else //FIXME::Dangerous!!! When source of the event is not a QListWidget application will crash
-    {
-        foreach (QListWidgetItem *i, dynamic_cast<QListWidget*>(e->source())->selectedItems())
-        {
+    } else if (!e->source()->objectName().compare("m_animationList")) {
+        foreach (QListWidgetItem *i, dynamic_cast<QListWidget*>(e->source())->selectedItems()) {
             items.append( i->clone() );
         }
         insertItemsAt( items, indexAt( e->pos() ).row() );
         e->accept();
+    } else {
+        e->ignore();
     }
     stopAutoScroll();
     setState(NoState);
@@ -420,16 +419,16 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
 
     AnimationItem *retItem = Q_NULLPTR;
     if ( rows ) {
-        if ( m_lastPlayedAnimation >= rows )
-            m_lastPlayedAnimation = 0;
-        retItem = dynamic_cast<AnimationItem*>( item( m_lastPlayedAnimation++ ) );
+        if ( m_nextAnimationRow >= rows )
+            m_nextAnimationRow = 0;
+        retItem = dynamic_cast<AnimationItem*>( item( m_nextAnimationRow++ ) );
     }
     return retItem;
 }
 
 void AnimationPlayListWidget::setNewItemOptions(AnimationItem *itemForUpdate)
 {
-    if (indexFromItem(itemForUpdate).row() == m_lastPlayedAnimation - 1) {
+    if (indexFromItem(itemForUpdate).row() == m_nextAnimationRow - 1) {
         animations()->updateAnimation(itemForUpdate);
     }
     itemForUpdate->createAnimationTooltipAsRichText();
@@ -469,6 +468,12 @@ void AnimationPlayListWidget::editItem()
     adjAnimation->exec();
     disconnect(adjAnimation, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlayListWidget::setNewItemOptions);
     delete adjAnimation;
+}
+
+void AnimationPlayListWidget::onItemDoubleClicked(QListWidgetItem *item)
+{
+   m_nextAnimationRow = indexFromItem(item).row() + 1 ;
+   Q_EMIT playAnimation(dynamic_cast<AnimationItem*>(item));
 }
 
 /*!

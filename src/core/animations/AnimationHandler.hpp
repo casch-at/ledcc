@@ -19,8 +19,7 @@
 #include "Options.hpp"
 #include <QObject>
 #include <QHash>
-//#include "AnimationListWidget.hpp"
-//#include "AnimationListWidget.hpp"
+
 class AnimationPlayListWidget;
 class Animation;
 class AnimationItem;
@@ -45,7 +44,6 @@ public:
     {
         return m_isPortOpen;
     }
-
     void setAction(QAction *action);
 Q_SIGNALS:
     void startAnimation();
@@ -57,6 +55,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     void animationDone(void);
     void playAnimations(void);
+    void playAnimation(const AnimationItem  *animation);
     void openCloseSerialPort(void);
     void stopThreads(void);
     void closePort(const QString &message);
@@ -72,6 +71,8 @@ private Q_SLOTS:
 
 private:
     void setupSenderThread(void);
+    void startSenderThread(void);
+    void stopCreaterThread(void);
     void playNextAnimation(const AnimationItem *item);
 private:
     QAction *m_playAction; /* MainWindow will delete this action on exit */
@@ -79,8 +80,7 @@ private:
     QThread *m_createThread;
     QThread *m_senderThread;
     Sender *m_sender;
-    bool m_stopPlay;
-    bool m_portOpen;
+    bool m_play;
     AnimationItem *m_currentAnimationItem;
     Animation *m_currentAnimation;
     AnimationPlayListWidget* m_animationPlaylist; /* MainWindow AnimationPlaylistWidget */

@@ -111,8 +111,8 @@ void Config::init(const QString &fileName)
 {
     m_settings.reset(new QSettings(fileName, QSettings::IniFormat));
 
-    m_defaults.insert(ShowMainToolbar, true);
-    m_defaults.insert(ShowAnimationToolbar, true);
-    m_defaults.insert(ShowHelpToolbar, true);
-    m_defaults.insert(ShowAnimationOptionPreview, true);
+    m_defaults.insert(IsMainToolbarHidden, true);
+    m_defaults.insert(IsAnimationToolbarHidden, true);
+    m_defaults.insert(IsHelpToolbarHidden, true);
+    m_defaults.insert(IsAnimationOptionPreviewHidden, true);
 }

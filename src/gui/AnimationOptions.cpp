@@ -218,7 +218,7 @@ void AnimationOptions::optionsNextAnimation()
         m_animationAt++;
     shouldeApplyNewOptions();
     m_animationToUpdate = m_itemList.at(m_animationAt);
-    ui->m_propertiesGB->setTitle(tr("Properties of ") + m_animationToUpdate->text());
+    ui->m_propertiesGB->setTitle(tr("Properties of animation ") + m_animationToUpdate->text());
     hideShowWidgetsDisplayOptions();
 }
 
@@ -232,7 +232,7 @@ void AnimationOptions::optionsPrevAnimation()
         m_animationAt--;
     shouldeApplyNewOptions();
     m_animationToUpdate = m_itemList.at(m_animationAt);
-    ui->m_propertiesGB->setTitle(tr("Properties of ") + m_animationToUpdate->text());
+    ui->m_propertiesGB->setTitle(tr("Properties of animation ") + m_animationToUpdate->text());
     hideShowWidgetsDisplayOptions();
 }
 
