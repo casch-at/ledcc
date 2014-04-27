@@ -49,11 +49,12 @@ void Config::set(const QString &key, const QVariant &value)
 
 Config *Config::instance()
 {
-    if (m_instance) {
+    if (!m_instance) {
         m_instance = new Config(qApp);
-        QCoreApplication::setApplicationName("ledcc");
-        QCoreApplication::setOrganizationName("Open Source");
+        QCoreApplication::setApplicationName("3D-LED Cube");
+        QCoreApplication::setOrganizationName("ledcc");
     }
+    return m_instance;
 }
 
 void Config::createConfigFromFile(QString &file)

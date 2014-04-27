@@ -129,28 +129,42 @@ void MainWindow::resizeEvent(QResizeEvent *e)
     QMainWindow::resizeEvent(e);
 }
 
-/**
- * @brief MainWindow::saveSettings
- */
-void MainWindow::saveSettings(void){  //Save geometry of application
+
+/*!
+ \brief Save the application settings
+
+*/
+void MainWindow::saveSettings(void){
     config()->set(Settings::MainWindowGeometrySettings,saveGeometry());
-    config()->set(Settings::ShowAnimationOptionPreview, isHidden());
+    config()->set(Settings::ShowAnimationOptionPreview, ui->m_animationPropertiesPreview->isHidden());
+    config()->set(Settings::ShowAnimationToolbar, ui->m_animationTB->isHidden());
+    config()->set(Settings::ShowHelpToolbar, ui->m_helpTB->isHidden());
+    config()->set(Settings::ShowMainToolbar, ui->m_mainTB->isHidden());
 }
 
-/**
- * @brief MainWindow::readSettings
- */
-void MainWindow::readSettings (void){ //Load geometry of application
+/*!
+ \brief Restore the saved application settings
+
+*/
+void MainWindow::readSettings (void){
     restoreGeometry (config()->get(Settings::MainWindowGeometrySettings).toByteArray ());
     ui->m_animationPropertiesPreview->setHidden(config()->get(Settings::ShowAnimationOptionPreview).toBool());
+    ui->m_animationTB->setHidden(config()->get(Settings::ShowAnimationToolbar).toBool());
+    ui->m_helpTB->setHidden(config()->get(Settings::ShowHelpToolbar).toBool());
+    ui->m_mainTB->setHidden(config()->get(Settings::ShowMainToolbar).toBool());
 }
 
 /**
  * @author  Christian Schwarzgruber
- * @brief   MainWindow::updateUi gets called when the serial port gets opened or closed
- *          and when the animation playlist gets modified.
- *          Disables/Enables the playbutton and changes the Seriel connect button appropriated
+ * @brief   MainWindow::updateUi
  */
+
+/*!
+ \brief Gets called when the serial port gets opened or closed and when the animation playlist gets modified.
+        Configures the application action buttons according to the boolean value.
+
+ \param portOpen
+*/
 void MainWindow::updateUi(bool portOpen)
 {
 

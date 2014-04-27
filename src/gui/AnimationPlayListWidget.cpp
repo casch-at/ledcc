@@ -474,6 +474,7 @@ void AnimationPlayListWidget::editItem()
 /*!
  \brief Sort the indexes after the row order.
   A insertion algorithm is used for sorting the \a QModelIndexList.
+
  \param ascending Sort the indexes ascending if true otherwise descending.
  \param list Pointer to \a QModelIndexList to sort.
 */

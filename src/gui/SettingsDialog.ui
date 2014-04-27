@@ -23,10 +23,10 @@
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QComboBox" name="portsBox"/>
+         <widget class="QComboBox" name="m_portsBox"/>
         </item>
         <item>
-         <widget class="QToolButton" name="updateButton">
+         <widget class="QToolButton" name="m_updateButton">
           <property name="toolTip">
            <string>Refresh Ctrl+R</string>
           </property>
@@ -48,35 +48,35 @@
        </layout>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="descriptionLabel">
+       <widget class="QLabel" name="m_descriptionL">
         <property name="text">
          <string>Description:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="manufacturerLabel">
+       <widget class="QLabel" name="m_manufacturerL">
         <property name="text">
          <string>Manufacturer:</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="locationLabel">
+       <widget class="QLabel" name="m_locationL">
         <property name="text">
          <string>Location:</string>
         </property>
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="vidLabel">
+       <widget class="QLabel" name="m_vidL">
         <property name="text">
          <string>Vendor ID:</string>
         </property>
        </widget>
       </item>
       <item row="5" column="0">
-       <widget class="QLabel" name="pidLabel">
+       <widget class="QLabel" name="m_pidL">
         <property name="text">
          <string>Product ID:</string>
         </property>
@@ -92,69 +92,69 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QLabel" name="baudRateLabel">
+       <widget class="QLabel" name="m_baudRateLabel">
         <property name="text">
          <string>BaudRate:</string>
         </property>
         <property name="buddy">
-         <cstring>baudRateBox</cstring>
+         <cstring>m_baudRateBox</cstring>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="baudRateBox"/>
+       <widget class="QComboBox" name="m_baudRateBox"/>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="dataBitsLabel">
+       <widget class="QLabel" name="m_dataBitsLabel">
         <property name="text">
          <string>Data bits:</string>
         </property>
         <property name="buddy">
-         <cstring>dataBitsBox</cstring>
+         <cstring>m_dataBitsBox</cstring>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="dataBitsBox"/>
+       <widget class="QComboBox" name="m_dataBitsBox"/>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="parityLabel">
+       <widget class="QLabel" name="m_parityLabel">
         <property name="text">
          <string>Parity:</string>
         </property>
         <property name="buddy">
-         <cstring>parityBox</cstring>
+         <cstring>m_parityBox</cstring>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="parityBox"/>
+       <widget class="QComboBox" name="m_parityBox"/>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="stopBitsLabel">
+       <widget class="QLabel" name="m_stopBitsLabel">
         <property name="text">
          <string>Stop bits:</string>
         </property>
         <property name="buddy">
-         <cstring>stopBitsBox</cstring>
+         <cstring>m_stopBitsBox</cstring>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QComboBox" name="stopBitsBox"/>
+       <widget class="QComboBox" name="m_stopBitsBox"/>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="flowControlLabel">
+       <widget class="QLabel" name="m_flowControlLabel">
         <property name="text">
          <string>Flow control:</string>
         </property>
         <property name="buddy">
-         <cstring>flowControlBox</cstring>
+         <cstring>m_flowControlBox</cstring>
         </property>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QComboBox" name="flowControlBox"/>
+       <widget class="QComboBox" name="m_flowControlBox"/>
       </item>
      </layout>
     </widget>
@@ -175,7 +175,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="applyButton">
+      <widget class="QPushButton" name="m_applyButton">
        <property name="text">
         <string>Apply</string>
        </property>
