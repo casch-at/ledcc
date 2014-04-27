@@ -25,6 +25,7 @@ set(include_DIRECTORIES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/animations
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/aqp
 )
+
 include_directories(${include_DIRECTORIES})
 
 # ---------------------------------------------------------------------------------------------------
@@ -56,6 +57,7 @@ set(ledcc_core_SOURCES
     ${CoreDirectory}/animations/AnimationHandler.cpp
     ${CoreDirectory}/animations/Animations.cpp
     ${CoreDirectory}/Global.hpp
+    ${CoreDirectory}/Config.cpp
 )
 
 set(ledcc_thirdparty_SOURCES
