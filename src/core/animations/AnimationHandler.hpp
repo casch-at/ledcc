@@ -39,7 +39,6 @@ public:
     explicit AnimationHandler(QObject *object = Q_NULLPTR, QWidget *parent = Q_NULLPTR);
     virtual ~AnimationHandler();
     Sender * getSender() { return m_sender; }
-    inline void setAnimationPlaylist(AnimationPlayListWidget *playlistWidget);
     SettingsDialog *m_settingsDialog;
 
     bool isPortOpen() const
@@ -88,9 +87,4 @@ private:
     bool m_isPortOpen;
     Q_DISABLE_COPY(AnimationHandler)
 };
-
-inline void AnimationHandler::setAnimationPlaylist(AnimationPlayListWidget *playlistWidget)
-{
-    m_animationPlaylist = playlistWidget;
-}
 #endif // ANIMATIONHANDLER_HPP

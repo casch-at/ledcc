@@ -44,7 +44,8 @@ AnimationHandler::AnimationHandler(QObject *object, QWidget *parent):
         else if ( a->objectName().compare("m_stopAction") == 0)
             m_stopAction = a;
     }
-    m_currentAnimation = animations()->get(BIAS::SStringFly);
+    m_animationPlaylist = object->findChild<AnimationPlayListWidget *>("m_animationPlaylist");
+    m_currentAnimation = animations()->get(BIAS::StringFly);
     setupSenderThread();
     connect(m_sender, &Sender::portOpenChanged,this,&AnimationHandler::setIsPortOpen);
 }

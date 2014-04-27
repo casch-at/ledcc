@@ -36,21 +36,21 @@
 #include "Rain.hpp"
 #include "StringFly.hpp"
 
-/*! Build in animations */
+/*! Build In Animations String*/
 namespace BIAS {
-    const QString SWireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
-    const QString SWireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
-    const QString SLift("Lift");
-    const QString SWall("Wall");
-    const QString SFirework("Firework");
-    const QString SRain("Rain");
-    const QString SRandomSpark("Random Spark");
-    const QString SRandomSparkFlash("Random Spark Flash");
-    const QString SRandomFiller("Random Filler");
-    const QString SRandomZLift("Random Z-Axis Lift");
-    const QString SStringFly("String Fly");
-    const QString SLoadbar("Loadbar");
-    const QString SAxisNailWall("Axis Nail Wall");
+    const QString WireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
+    const QString WireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
+    const QString Lift("Lift");
+    const QString Wall("Wall");
+    const QString Firework("Firework");
+    const QString Rain("Rain");
+    const QString RandomSpark("Random Spark");
+    const QString RandomSparkFlash("Random Spark Flash");
+    const QString RandomFiller("Random Filler");
+    const QString RandomZLift("Random Z-Axis Lift");
+    const QString StringFly("String Fly");
+    const QString Loadbar("Loadbar");
+    const QString AxisNailWall("Axis Nail Wall");
     }
 
 

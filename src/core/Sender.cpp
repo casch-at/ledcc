@@ -86,9 +86,12 @@ void Sender::openCloseSerialPort()
         {
 
             Q_EMIT portOpened(QString("Connected to %1 : %2, %3, %4, %5, %6")
-                              .arg (serialSettings()->m_name).arg (serialSettings()->m_stringBaudRate)
-                              .arg (serialSettings()->m_stringDataBits).arg (serialSettings()->m_stringParity)
-                              .arg (serialSettings()->m_stringStopBits).arg (serialSettings()->m_stringFlowControl));
+                              .arg (serialSettings()->m_name)
+                              .arg (serialSettings()->m_stringBaudRate)
+                              .arg (serialSettings()->m_stringDataBits)
+                              .arg (serialSettings()->m_stringParity)
+                              .arg (serialSettings()->m_stringStopBits)
+                              .arg (serialSettings()->m_stringFlowControl));
             setPortOpen(true);
         }else
         {
@@ -102,7 +105,6 @@ void Sender::openCloseSerialPort()
     else{
         Q_EMIT closePort(QString(tr("Do you really want close the serial port: <b>%1</b>")
                                  .arg(serialSettings()->m_name)));
-        setPortOpen(false);
     }
 }
 

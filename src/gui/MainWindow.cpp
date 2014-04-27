@@ -63,7 +63,6 @@ MainWindow::MainWindow(QWidget *parent) :
                << ui->m_settingsAction << ui->m_stopAction << ui->m_moveUpAction
                << ui->m_moveDownAction);
     m_animationHandler = new AnimationHandler(this,this);
-    m_animationHandler->setAnimationPlaylist(ui->m_animationPlaylist);
     readSettings ();
     connectSignals();
     ui->splitter->setStretchFactor(1,2);
@@ -206,24 +205,13 @@ void MainWindow::updateAnimationActions()
         ui->m_playAction->setDisabled(true);
         ui->m_stopAction->setDisabled(true);
     }
-    if(ui->m_animationPlaylist->count()){
-        ui->m_editAction->setEnabled(true);
-        ui->m_clearAction->setEnabled(true);
-        ui->m_removeAction->setEnabled(true);
-        ui->m_moveDownAction->setEnabled(true);
-        ui->m_moveUpAction->setEnabled(true);
-        ui->m_duplicateAction->setEnabled(true);
-        ui->m_clearAction->setEnabled(true);
-    } else {
-        ui->m_editAction->setDisabled(true);
-        ui->m_clearAction->setDisabled(true);
-        ui->m_removeAction->setDisabled(true);
-        ui->m_moveDownAction->setDisabled(true);
-        ui->m_moveUpAction->setDisabled(true);
-        ui->m_duplicateAction->setDisabled(true);
-        ui->m_clearAction->setDisabled(true);
-        ui->m_clearAction->setDisabled(true);
-    }
+
+    if(ui->m_animationPlaylist->count())
+        foreach (QAction *a, ui->m_animationPlaylist->actions())
+            a->setEnabled(true);
+    else
+        foreach (QAction *a, ui->m_animationPlaylist->actions())
+            a->setDisabled(true);
 }
 
 /**
@@ -262,9 +250,8 @@ void MainWindow::connectSignals(void)
     connect( ui->m_editAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::editItem);
     connect( ui->m_playAction, &QAction::triggered, m_animationHandler, &AnimationHandler::playAnimations);
     ui->m_animationPlaylist->addActions(QList<QAction*>()
-                                        << ui->m_playAction << ui->m_stopAction << ui->m_editAction
-                                        << ui->m_moveUpAction << ui->m_moveDownAction << ui->m_duplicateAction
-                                        << ui->m_removeAction << ui->m_clearAction);
+                                        << ui->m_editAction << ui->m_moveUpAction << ui->m_moveDownAction
+                                        << ui->m_duplicateAction << ui->m_removeAction << ui->m_clearAction);
 
     connect( m_animationHandler->getSender(), &Sender::portOpenChanged, this, &MainWindow::updateUi);
     connect( m_animationHandler, &AnimationHandler::updateUi, this, &MainWindow::updateUi);
