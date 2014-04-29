@@ -31,7 +31,7 @@ public:
 private:
     AnimationItem* parseAnimation(QXmlStreamReader *xmlReader);
     int readAnimationProperties(QXmlStreamReader *xmlReader, Options *options);
-    void cleanUpOnError();
+    void cleanUpOnError(QList<AnimationItem *> *animationItemList);
 };
 
 #endif // XMLPLAYLISTREADER_HPP

@@ -64,29 +64,70 @@ AnimationItem* XmlPlaylistReader::parseAnimation(QXmlStreamReader *xmlReader)
     QXmlStreamAttributes attributes = xmlReader->attributes();
 
     AnimationItem *animationItem;
-    if (attributes.hasAttribute("name")) {
+    if (attributes.hasAttribute("name"))
         animationItem = new AnimationItem(attributes.value("name").toString());
-    }
+
     xmlReader->readNext();
 
     while (!(xmlReader->tokenType() == QXmlStreamReader::EndElement && xmlReader->name() == "animation")) {
         if (xmlReader->tokenType() == QXmlStreamReader::StartElement) {
             Options options;
-            if (xmlReader->name() == "delay") {
-                readAnimationProperties(xmlReader, &options);
-            }
+            readAnimationProperties(xmlReader, &options);
+            animationItem->setOptions(options);
         }
+        xmlReader->readNext();
     }
-
-//    AnimationItem animation = new AnimationItem()
-
-    return Q_NULLPTR;
-
+    return animationItem;
 }
 
+/*!
+ \brief
+
+ \param xmlReader Pointer to the \a QXmlStreamReader
+ \param options Pointer to the animation Options object
+ \return int Returns -1 on error otherwise 0
+*/
 int XmlPlaylistReader::readAnimationProperties(QXmlStreamReader *xmlReader, Options *options)
 {
 
+//    QString elementName = xmlReader->name().toString();
+    xmlReader->readNext();
+
+    if (xmlReader->tokenType() != QXmlStreamReader::Characters)
+        return 0;
+
+    if (xmlReader->name() == "delay") {
+        options->m_delay = xmlReader->text().toString().toInt();
+    }
+
+    if (xmlReader->name() == "direction") {
+        options->m_direction = static_cast<Draw::Direction>(xmlReader->text().toString().toInt());
+    }
+
+    if (xmlReader->name() == "invert") {
+        options->m_invert = xmlReader->text().toString().toInt() ? true : false;
+    }
+
+    if (xmlReader->name() == "iteration") {
+        options->m_iteration = xmlReader->text().toString().toInt();
+    }
+
+    if (xmlReader->name() == "leds") {
+        options->m_leds = xmlReader->text().toString().toInt();
+    }
+
+    if (xmlReader->name() == "speed") {
+        options->m_speed = xmlReader->text().toString().toInt();
+    }
+
+    if (xmlReader->name() == "state") {
+        options->m_state = static_cast<Draw::BixelState>(xmlReader->text().toString().toInt());
+    }
+
+    if (xmlReader->name() == "text") {
+        options->m_text = xmlReader->text().toString();
+    }
+    return 0;
 }
 
 void XmlPlaylistReader::cleanUpOnError(QList<AnimationItem*> *animationItemList)

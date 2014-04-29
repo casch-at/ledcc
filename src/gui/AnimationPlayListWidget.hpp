@@ -62,6 +62,7 @@ private:
     bool dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex);
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
     void sortIndexes(const bool ascending, QModelIndexList *list);
+    void readAnimationPlaylist();
     int m_nextAnimationRow; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
     Animation *m_currentAnimation;

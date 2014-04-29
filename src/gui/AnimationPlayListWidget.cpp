@@ -18,6 +18,7 @@
 #include "AnimationItem.hpp"
 #include "Animations.hpp"
 #include "XmlPlaylistWriter.hpp"
+#include "XmlPlaylistReader.hpp"
 
 // Qt includes
 #include <QScrollBar>
@@ -46,7 +47,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     setDefaultDropAction(Qt::MoveAction);
     setAcceptDrops(true);
     connect(this, &AnimationPlayListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::onItemDoubleClicked);
-
+    readAnimationPlaylist();
 }
 
 /*!
@@ -516,6 +517,17 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
                 i -= 1;
             }
             list->replace(i + 1, index);
+        }
+    }
+}
+
+void AnimationPlayListWidget::readAnimationPlaylist()
+{
+    XmlPlaylistReader reader;
+    QList<AnimationItem*> animationItems = reader.readAnimationPlaylist();
+    if (!animationItems.isEmpty()) {
+        foreach (AnimationItem *item, animationItems) {
+            insertItem(0,item);
         }
     }
 }
