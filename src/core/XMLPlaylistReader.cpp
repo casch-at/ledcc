@@ -17,7 +17,6 @@
 
 #include "XMLPlaylistReader.hpp"
 
-XMLPlaylistReader::XMLPlaylistReader(QObject *parent) :
-    QObject(parent)
+XMLPlaylistReader::XMLPlaylistReader()
 {
 }

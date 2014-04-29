@@ -18,17 +18,12 @@
 #ifndef XMLPLAYLISTREADER_HPP
 #define XMLPLAYLISTREADER_HPP
 
-#include <QObject>
 
-class XMLPlaylistReader : public QObject
+class XMLPlaylistReader
 {
-    Q_OBJECT
 public:
-    explicit XMLPlaylistReader(QObject *parent = 0);
+    XMLPlaylistReader();
 
-signals:
-
-public slots:
 private:
 
 };

@@ -22,12 +22,12 @@
 
 class AnimationItem;
 
-class XMLPlaylistWriter : public QObject
+class XMLPlaylistWriter
 {
-    Q_OBJECT
+
 public:
-    explicit XMLPlaylistWriter(QObject *parent = 0);
-    void writeAnimationPlaylist(const QList<AnimationItem*> *animationItemList);
+    XMLPlaylistWriter();
+    int writeAnimationPlaylist(const QList<AnimationItem*> *animationItemList);
 signals:
 
 public slots:

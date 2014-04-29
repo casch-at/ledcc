@@ -18,19 +18,80 @@
 #include "XMLPlaylistWriter.hpp"
 
 #include "AnimationItem.hpp"
-
+#include "System.hpp"
 // Qt Includes
 #include <QXmlStreamWriter>
 #include <QDir>
+//#include <QIODevice>
 
-XMLPlaylistWriter::XMLPlaylistWriter(QObject *parent) :
-    QObject(parent)
+XMLPlaylistWriter::XMLPlaylistWriter()
 {
 }
 
-void XMLPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *animationItemList)
+int XMLPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *animationItemList)
 {
+    System system;
+    QFile file(system.getConfigPath() + "animations.xml");
 
+    if (!file.open(QIODevice::WriteOnly)) {  // INFO:: Print error message to user
+        return -1;
+    } else {
+        QXmlStreamWriter *xmlWriter = new QXmlStreamWriter();
+        xmlWriter->setAutoFormatting(true);
+        xmlWriter->setDevice(&file);
+        // Writes a document start with the XML version number
+        xmlWriter->writeStartDocument();
+        // Writes a start element with name
+        xmlWriter->writeStartElement("animations");
+
+        foreach (AnimationItem * animation, *animationItemList) {
+            Options *options = const_cast<Options*>(animation->getOptions());
+
+            // Create new StarteElement for the animations
+            xmlWriter->writeStartElement("animation");
+            xmlWriter->writeAttribute("name", animation->text());
+
+            // Write attributes of the animation
+            xmlWriter->writeStartElement("delay");
+            xmlWriter->writeAttribute("delay", QString("%1").arg(options->m_delay));
+            xmlWriter->writeEndElement();
+
+            xmlWriter->writeStartElement("direction");
+            xmlWriter->writeAttribute("direction", QString("%1").arg(options->m_direction));
+            xmlWriter->writeEndElement();
+
+            xmlWriter->writeStartElement("invert");
+            xmlWriter->writeAttribute("invert", QString("%1").arg(options->m_invert));
+            xmlWriter->writeEndElement();
+
+            xmlWriter->writeStartElement("iteration");
+            xmlWriter->writeAttribute("iteration", QString("%1").arg(options->m_iteration));
+            xmlWriter->writeEndElement();
+
+            xmlWriter->writeStartElement("leds");
+            xmlWriter->writeAttribute("leds", QString("%1").arg(options->m_leds));
+            xmlWriter->writeEndElement();
+
+            xmlWriter->writeStartElement("speed");
+            xmlWriter->writeAttribute("speed", QString("%1").arg(options->m_speed));
+            xmlWriter->writeEndElement();
+
+            xmlWriter->writeStartElement("state");
+            xmlWriter->writeAttribute("state", QString("%1").arg(options->m_state));
+            xmlWriter->writeEndElement();
+
+            xmlWriter->writeStartElement("text");
+            xmlWriter->writeAttribute("text", QString(options->m_text));
+            xmlWriter->writeEndElement();
+
+            xmlWriter->writeEndElement(); // Write end element "animation"
+        }
+        xmlWriter->writeEndElement(); // Write end element "animations"
+
+        xmlWriter->writeEndDocument(); // Close everything we are done
+        delete xmlWriter;
+    }
+    return 0;
 }
 
 

@@ -17,6 +17,7 @@
 #include "AnimationOptions.hpp"
 #include "AnimationItem.hpp"
 #include "Animations.hpp"
+#include "XMLPlaylistWriter.hpp"
 
 // Qt includes
 #include <QScrollBar>
@@ -45,6 +46,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     setDefaultDropAction(Qt::MoveAction);
     setAcceptDrops(true);
     connect(this, &AnimationPlayListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::onItemDoubleClicked);
+
 }
 
 /*!
@@ -53,6 +55,12 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
 */
 AnimationPlayListWidget::~AnimationPlayListWidget()
 {
+    QList<AnimationItem*> animationItems;
+    for (int i = 0; i < count(); i++) {
+        animationItems.append(dynamic_cast<AnimationItem*>(item(i)));
+    }
+    XMLPlaylistWriter xmlWriter;
+    xmlWriter.writeAnimationPlaylist(&animationItems);
     //    delete m_clearAction;
     //    delete m_stopAction;
     //    delete m_playAction;
