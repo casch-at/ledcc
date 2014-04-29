@@ -58,6 +58,9 @@ set(ledcc_core_SOURCES
     ${CoreDirectory}/animations/Animations.cpp
     ${CoreDirectory}/Global.hpp
     ${CoreDirectory}/Config.cpp
+    ${CoreDirectory}/XMLPlaylistReader.cpp
+    ${CoreDirectory}/XMLPlaylistWriter.cpp
+    ${CoreDirectory}/System.cpp
 )
 
 set(ledcc_thirdparty_SOURCES

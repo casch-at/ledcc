@@ -14,23 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef GLOBAL_H
-#define GLOBAL_H
-#include "stdint.h"
-#include <QVector>
-#include <QString>
-/************************************************************************
- *                      CONSTANTS
- ************************************************************************/
-static const u_int8_t AVAILABLEANIMATIONS = 13;
-static const u_int8_t CUBE_SIZE = 8;
-static const u_int8_t IT_CUBE_SIZE = CUBE_SIZE - 1;
-static const u_int8_t CUBE_ARRAY_SIZE = CUBE_SIZE * CUBE_SIZE;
-static const u_int CUBE_LED_COUNT = CUBE_ARRAY_SIZE * CUBE_SIZE;
 
-#define LEDCC_VERSION_MAJOR 0
-#define LEDCC_VERSION_MINOR 1
-//#define LEDCC_VERSION_MICRO 
-#define LEDCC_VERSION       0.1
+#ifndef XMLPLAYLISTWRITER_HPP
+#define XMLPLAYLISTWRITER_HPP
 
-#endif // GLOBAL_H
+#include <QObject>
+
+class AnimationItem;
+
+class XMLPlaylistWriter : public QObject
+{
+    Q_OBJECT
+public:
+    explicit XMLPlaylistWriter(QObject *parent = 0);
+    void writeAnimationPlaylist(const QList<AnimationItem*> *animationItemList);
+signals:
+
+public slots:
+
+};
+
+#endif // XMLPLAYLISTWRITER_HPP

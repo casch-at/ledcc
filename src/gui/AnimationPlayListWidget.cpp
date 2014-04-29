@@ -120,8 +120,8 @@ void AnimationPlayListWidget::duplicateItems()
 */
 void AnimationPlayListWidget::removeItems()
 {
-    foreach (QListWidgetItem *item, selectedItems()) {
-        delete item;
+    foreach (QModelIndex i, selectedIndexes()) {
+        delete takeItem(i.row());
     }
     if (!count()){
         Q_EMIT contantChanged();

@@ -24,6 +24,7 @@
 
 namespace Settings{
     const QString MainWindowGeometrySettings("MainWindowGeometry");
+    const QString AnimationOptionPreviewGeometry("AnimationOptionPreviewGeometry");
     const QString IsMainToolbarHidden("IsMainToolbarHidden");
     const QString IsAnimationToolbarHidden("IsAnimationToolbarHidden");
     const QString IsHelpToolbarHidden("IsHelpToolbarHidden");

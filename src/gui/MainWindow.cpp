@@ -56,18 +56,21 @@ MainWindow::MainWindow(QWidget *parent) :
 
 {
     ui->setupUi(this); // Ui must be first created befor accessing the elements
-    m_open = false;
+    ui->splitter->setStretchFactor(1,2);
+    ui->m_animationList->setFocus();
+    updateUi(false);
+    m_animationHandler = new AnimationHandler(this,this);
     addActions(QList<QAction *>()
                << ui->m_clearAction << ui->m_duplicateAction << ui->m_editAction
                << ui->m_playAction << ui->m_quitAction << ui->m_removeAction
                << ui->m_settingsAction << ui->m_stopAction << ui->m_moveUpAction
                << ui->m_moveDownAction);
-    m_animationHandler = new AnimationHandler(this,this);
+    ui->m_animationPlaylist->addActions(QList<QAction*>()
+                                        << ui->m_editAction << ui->m_moveUpAction << ui->m_moveDownAction
+                                        << ui->m_duplicateAction << ui->m_removeAction << ui->m_clearAction);
+    m_open = false;
     readSettings ();
     connectSignals();
-    ui->splitter->setStretchFactor(1,2);
-    ui->m_animationList->setFocus();
-    updateUi(false);
     AQP::accelerateActions(actions());
 }
 
@@ -135,6 +138,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 */
 void MainWindow::saveSettings(void){
     config()->set(Settings::MainWindowGeometrySettings,saveGeometry());
+    config()->set(Settings::AnimationOptionPreviewGeometry, ui->m_animationPropertiesPreview->saveGeometry());
     config()->set(Settings::IsAnimationOptionPreviewHidden, ui->m_animationPropertiesPreview->isHidden());
     config()->set(Settings::IsAnimationToolbarHidden, ui->m_animationTB->isHidden());
     config()->set(Settings::IsHelpToolbarHidden, ui->m_helpTB->isHidden());
@@ -147,6 +151,7 @@ void MainWindow::saveSettings(void){
 */
 void MainWindow::readSettings (void){
     restoreGeometry (config()->get(Settings::MainWindowGeometrySettings).toByteArray ());
+    ui->m_animationPropertiesPreview->restoreGeometry( config()->get(Settings::AnimationOptionPreviewGeometry).toByteArray ());
     ui->m_animationPropertiesPreview->setHidden(config()->get(Settings::IsAnimationOptionPreviewHidden).toBool());
     ui->m_animationTB->setHidden(config()->get(Settings::IsAnimationToolbarHidden).toBool());
     ui->m_helpTB->setHidden(config()->get(Settings::IsHelpToolbarHidden).toBool());
@@ -249,9 +254,7 @@ void MainWindow::connectSignals(void)
     connect( ui->m_moveDownAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
     connect( ui->m_editAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::editItem);
     connect( ui->m_playAction, &QAction::triggered, m_animationHandler, &AnimationHandler::playAnimations);
-    ui->m_animationPlaylist->addActions(QList<QAction*>()
-                                        << ui->m_editAction << ui->m_moveUpAction << ui->m_moveDownAction
-                                        << ui->m_duplicateAction << ui->m_removeAction << ui->m_clearAction);
+
 
     connect( m_animationHandler->getSender(), &Sender::portOpenChanged, this, &MainWindow::updateUi);
     connect( m_animationHandler, &AnimationHandler::updateUi, this, &MainWindow::updateUi);
@@ -264,9 +267,9 @@ void MainWindow::connectSignals(void)
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About 3D-LED Cube"),
-                       tr("<h2> 3D-LED Cube v0.1</h2>"
+                       tr("<h2> 3D-LED Cube v%1</h2>"
                           "<p> Copyright &copy; 2014 Christian Schwarzgruber"
                           "<p>The <b>3D-LED Cube</b> program was part of my thesis."
                           "This program lets you rearange the animation in the order you like it, you can even adjust speed,"
-                          "delay, iterations and much more."));
+                          "delay, iterations and much more.").arg(LEDCC_VERSION));
 }

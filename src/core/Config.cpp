@@ -16,7 +16,10 @@
  */
 
 #include "Config.hpp"
+// Application Includes
+#include "System.hpp"
 
+// Qt Includes
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
@@ -71,34 +74,8 @@ void Config::createTempFileInstance()
 Config::Config(QObject *parent) :
     QObject(parent)
 {
-    QString userPath;
-    QString homePath = QDir::homePath();
-
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-    // we can't use QDesktopServices on X11 as it uses XDG_DATA_HOME instead of XDG_CONFIG_HOME
-    QByteArray env = qgetenv("XDG_CONFIG_HOME");
-    if (env.isEmpty()) {
-        userPath = homePath;
-        userPath += "/.config";
-    }
-    else if (env[0] == '/') {
-        userPath = QFile::decodeName(env);
-    }
-    else {
-        userPath = homePath;
-        userPath += '/';
-        userPath += QFile::decodeName(env);
-    }
-
-    userPath += "/ledcc/";
-#else
-    userPath = QDir::fromNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-    // storageLocation() appends the application name ("/keepassx/") to the end
-#endif
-
-    userPath += "ledcc.ini";
-
-    init(userPath);
+    System system;
+    init( system.getConfigPath() + "ledcc.ini");
 }
 
 Config::Config(const QString &fileName, QObject *parent):

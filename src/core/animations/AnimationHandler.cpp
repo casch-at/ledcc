@@ -100,16 +100,11 @@ void AnimationHandler::playAnimations()
 void AnimationHandler::playAnimation(const AnimationItem *animation)
 {
     if (m_isPortOpen) {
-        if (!m_senderThread->isRunning()) {
-            startSenderThread();
-        }
-        if (m_createThread->isRunning()) {
-            stopCreaterThread();
-        }
-
+        if (m_createThread->isRunning())
+            stopThreads();
+        startSenderThread();
         playNextAnimation(animation);
     }
-    qDebug() << "Item double clicked: " << animation->text() << "at row: ";
 }
 
 
@@ -193,23 +188,23 @@ void AnimationHandler::portClosed(const QString &message)
  */
 void AnimationHandler::stopThreads()
 {
-    if (m_currentAnimation)
-        m_currentAnimation->m_abort = true; // Tell the createrThread he shoulde stop working
     m_stopAction->setDisabled(true);
-    m_sender->m_abort = true; // Tell the senderThread he shoulde stop working
-//    stopCreaterThread();
-    if (m_senderThread->isRunning())
-        m_senderThread->quit();
-    if (m_createThread->isRunning())
-        m_createThread->quit();
 
-    m_senderThread->wait(); // Wait until the thread quits
-    m_createThread->wait(); // Wait until the thread quits
+    /* Tell the thread that he shoulde stop working */
+    m_currentAnimation->m_abort = true;
+    m_sender->m_abort = true;
 
-    m_sender->m_abort = false; // Reset senderThread stop flag
+    /* Tell the thread they shoulde exit with code 0. */
+    m_senderThread->quit();
+    m_createThread->quit();
 
-    if (m_currentAnimation)
-        m_currentAnimation->m_abort = false; // Reset createrThread stop flag
+    /* Wait untile the thread exit */
+    m_senderThread->wait();
+    m_createThread->wait();
+
+    /* Reset the stop flag */
+    m_sender->m_abort = false;
+    m_currentAnimation->m_abort = false;
 
     disconnect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
     disconnect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
@@ -229,8 +224,8 @@ void AnimationHandler::setupSenderThread(void)
     m_senderThread = new QThread;
     m_sender = new Sender;
 
-    m_sender->moveToThread(m_senderThread); // move data send class to own thread
-    m_senderThread->start(); // start sender thread, which is running for the entier live of the AnimationHandler
+    m_sender->moveToThread(m_senderThread); // Move Sender class his own thread
+    m_senderThread->start();
 
     connect(this,&AnimationHandler::openSerialInterface,m_sender,&Sender::openCloseSerialPort);
     connect(m_sender,&Sender::portOpened,this,&AnimationHandler::portOpen);
@@ -238,6 +233,11 @@ void AnimationHandler::setupSenderThread(void)
     connect(m_sender,&Sender::portError,this,&AnimationHandler::displayPortErrorMessage);
     connect(m_sender,&Sender::closePort,this,&AnimationHandler::closePort);
     connect(this,&AnimationHandler::okClosePort,m_sender,&Sender::closeSerialPort);
+    /*
+     * Connect the animation creater thread with the sender thread which
+     * will be called when the creater thread emits sendData.
+     * Also move all build in animations to the creater thread.
+     */
     QHashIterator<QString, Animation*> i(*animations()->getAll());
     while (i.hasNext()) {
         i.next();
