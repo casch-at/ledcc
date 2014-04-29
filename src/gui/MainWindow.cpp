@@ -58,7 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this); // Ui must be first created befor accessing the elements
     ui->splitter->setStretchFactor(1,2);
     ui->m_animationList->setFocus();
-    updateUi(false);
     m_animationHandler = new AnimationHandler(this,this);
     addActions(QList<QAction *>()
                << ui->m_clearAction << ui->m_duplicateAction << ui->m_editAction
@@ -68,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_animationPlaylist->addActions(QList<QAction*>()
                                         << ui->m_editAction << ui->m_moveUpAction << ui->m_moveDownAction
                                         << ui->m_duplicateAction << ui->m_removeAction << ui->m_clearAction);
+    updateUi(false); // Should be called after we set the animationPlaylist actions
     m_open = false;
     readSettings ();
     connectSignals();

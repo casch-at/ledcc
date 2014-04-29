@@ -29,6 +29,8 @@ XmlPlaylistWriter::XmlPlaylistWriter()
 
 int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *animationItemList)
 {
+    if (animationItemList->isEmpty())
+        return 0;
     System system;
     QFile file(system.getConfigPath() + "animations.xml");
 
@@ -43,12 +45,19 @@ int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *anim
         // Writes a start element with name
         xmlWriter->writeStartElement("animations");
 
+
         foreach (AnimationItem * animation, *animationItemList) {
+
             Options *options = const_cast<Options*>(animation->getOptions());
+
 
             // Create new StarteElement for the animations
             xmlWriter->writeStartElement("animation");
             xmlWriter->writeAttribute("name", animation->text());
+
+            xmlWriter->writeStartElement("options");
+            xmlWriter->writeAttribute("options", QString("%1").arg(animation->getAvailableAnimationOptions()));
+            xmlWriter->writeEndElement();
 
             // Write attributes of the animation
             xmlWriter->writeStartElement("delay");
@@ -82,6 +91,7 @@ int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *anim
             xmlWriter->writeStartElement("text");
             xmlWriter->writeAttribute("text", QString(options->m_text));
             xmlWriter->writeEndElement();
+
 
             xmlWriter->writeEndElement(); // Write end element "animation"
         }

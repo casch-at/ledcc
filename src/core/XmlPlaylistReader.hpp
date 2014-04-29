@@ -19,9 +19,11 @@
 #define XMLPLAYLISTREADER_HPP
 #include <QList>
 
+/* Forward declarations */
 class AnimationItem;
 class Options;
 class QXmlStreamReader;
+class QXmlStreamAttributes;
 
 class XmlPlaylistReader
 {
@@ -30,7 +32,7 @@ public:
     QList<AnimationItem*> readAnimationPlaylist();
 private:
     AnimationItem* parseAnimation(QXmlStreamReader *xmlReader);
-    int readAnimationProperties(QXmlStreamReader *xmlReader, Options *options);
+    int readAnimationProperties(QXmlStreamReader *xmlReader, QXmlStreamAttributes *attributes, Options *options);
     void cleanUpOnError(QList<AnimationItem *> *animationItemList);
 };
 
