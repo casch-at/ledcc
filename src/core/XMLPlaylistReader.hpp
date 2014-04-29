@@ -18,12 +18,13 @@
 #ifndef XMLPLAYLISTREADER_HPP
 #define XMLPLAYLISTREADER_HPP
 
+class AnimationItem;
 
 class XMLPlaylistReader
 {
 public:
     XMLPlaylistReader();
-
+    QList<AnimationItem*> readAnimationPlaylist();
 private:
 
 };

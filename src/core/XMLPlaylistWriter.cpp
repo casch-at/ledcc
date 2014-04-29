@@ -22,7 +22,6 @@
 // Qt Includes
 #include <QXmlStreamWriter>
 #include <QDir>
-//#include <QIODevice>
 
 XMLPlaylistWriter::XMLPlaylistWriter()
 {

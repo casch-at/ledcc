@@ -17,6 +17,28 @@
 
 #include "XMLPlaylistReader.hpp"
 
+#include "AnimationItem.hpp"
+#include "System.hpp"
+// Qt Includes
+#include <QXmlStreamReader>
+#include <QDir>
+
 XMLPlaylistReader::XMLPlaylistReader()
 {
 }
+
+QList<AnimationItem *> XMLPlaylistReader::readAnimationPlaylist()
+{
+    QList<AnimationItem*> animationItemList;
+    System system;
+
+    QFile file(system.getConfigPath() + "animations.xml");
+
+    if (!file.open(QIODevice::ReadOnly)) {
+        return Q_NULLPTR;
+    } else {
+
+    }
+
+}
+
