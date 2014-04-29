@@ -15,18 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef XMLPLAYLISTREADER_HPP
-#define XMLPLAYLISTREADER_HPP
+#ifndef XMLPLAYLISTWRITER_HPP
+#define XMLPLAYLISTWRITER_HPP
+
+#include <QObject>
 
 class AnimationItem;
 
-class XMLPlaylistReader
+class XmlPlaylistWriter
 {
+
 public:
-    XMLPlaylistReader();
-    QList<AnimationItem*> readAnimationPlaylist();
-private:
+    XmlPlaylistWriter();
+    int writeAnimationPlaylist(const QList<AnimationItem*> *animationItemList);
+signals:
+
+public slots:
 
 };
 
-#endif // XMLPLAYLISTREADER_HPP
+#endif // XMLPLAYLISTWRITER_HPP

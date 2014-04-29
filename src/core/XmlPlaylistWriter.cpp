@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "XMLPlaylistWriter.hpp"
+#include "XmlPlaylistWriter.hpp"
 
 #include "AnimationItem.hpp"
 #include "System.hpp"
@@ -23,11 +23,11 @@
 #include <QXmlStreamWriter>
 #include <QDir>
 
-XMLPlaylistWriter::XMLPlaylistWriter()
+XmlPlaylistWriter::XmlPlaylistWriter()
 {
 }
 
-int XMLPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *animationItemList)
+int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *animationItemList)
 {
     System system;
     QFile file(system.getConfigPath() + "animations.xml");

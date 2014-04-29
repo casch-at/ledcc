@@ -15,30 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "XMLPlaylistReader.hpp"
+#ifndef XMLPLAYLISTREADER_HPP
+#define XMLPLAYLISTREADER_HPP
+#include <QList>
 
-#include "AnimationItem.hpp"
-#include "System.hpp"
-// Qt Includes
-#include <QXmlStreamReader>
-#include <QDir>
+class AnimationItem;
+class Options;
+class QXmlStreamReader;
 
-XMLPlaylistReader::XMLPlaylistReader()
+class XmlPlaylistReader
 {
-}
+public:
+    XmlPlaylistReader();
+    QList<AnimationItem*> readAnimationPlaylist();
+private:
+    AnimationItem* parseAnimation(QXmlStreamReader *xmlReader);
+    int readAnimationProperties(QXmlStreamReader *xmlReader, Options *options);
+    void cleanUpOnError();
+};
 
-QList<AnimationItem *> XMLPlaylistReader::readAnimationPlaylist()
-{
-    QList<AnimationItem*> animationItemList;
-    System system;
-
-    QFile file(system.getConfigPath() + "animations.xml");
-
-    if (!file.open(QIODevice::ReadOnly)) {
-        return Q_NULLPTR;
-    } else {
-
-    }
-
-}
-
+#endif // XMLPLAYLISTREADER_HPP
