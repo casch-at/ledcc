@@ -53,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
     m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
-
 {
     ui->setupUi(this); // Ui must be first created befor accessing the elements
     ui->m_animationListSplitter->setStretchFactor(1,2);
@@ -67,8 +66,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_animationPlaylist->addActions(QList<QAction*>()
                                         << ui->m_editAction << ui->m_moveUpAction << ui->m_moveDownAction
                                         << ui->m_duplicateAction << ui->m_removeAction << ui->m_clearAction);
-    updateUi(false); // Should be called after we set the animationPlaylist actions
     m_open = false;
+    updateUi(false); // Should be called after we set the animationPlaylist actions
     readSettings ();
     connectSignals();
     AQP::accelerateActions(actions());
@@ -102,11 +101,11 @@ void MainWindow::closeEvent( QCloseEvent *event ) {
 }
 
 /**
- * @brief MainWindow::okToContinue
+ * @brief Checks if the window was modefied
  * @return boolean
  */
 bool MainWindow::okToContinue(void)
-{ //Check if window is not modified
+{
     if(isWindowModified ())
     {
         int r = QMessageBox::warning( this, tr( "3D-LED Cube" ),
@@ -161,11 +160,6 @@ void MainWindow::readSettings (void){
     ui->m_mainTB->setHidden(config()->get(Settings::IsMainToolbarHidden).toBool());
 }
 
-/**
- * @author  Christian Schwarzgruber
- * @brief   MainWindow::updateUi
- */
-
 /*!
  \brief Gets called when the serial port gets opened or closed and when the animation playlist gets modified.
         Configures the application action buttons according to the boolean value.
@@ -174,35 +168,28 @@ void MainWindow::readSettings (void){
 */
 void MainWindow::updateUi(bool portOpen)
 {
-
-    if(portOpen)
-    {
-        if(!m_open)
-        {
+    if (portOpen) {
+        if (!m_open) {
             m_open = true;
             ui->m_openClosePortAction->setIcon( QIcon( "://images/disconnect.png"));
             ui->m_openClosePortAction->setToolTip(tr("Disconnect from seriell device  O"));
         }
-    }else
-    {
-        if(m_open)
-        {
+    } else {
+        if (m_open) {
             m_open = false;
             ui->m_openClosePortAction->setIcon( QIcon( "://images/connect.png"));
             ui->m_openClosePortAction->setToolTip(tr("Connect to seriell device  O"));
         }
-
     }
-
     updateAnimationActions();
-
 }
 
 void MainWindow::updateAnimationActions()
 {
+    Q_ASSERT(!ui->m_animationPlaylist->actions().isEmpty());
 
-    if (m_open){
-        if( ui->m_animationPlaylist->count() && !ui->m_stopAction->isEnabled()){
+    if (m_open) {
+        if( ui->m_animationPlaylist->count() && !ui->m_stopAction->isEnabled()) {
             ui->m_playAction->setEnabled(true);
             ui->m_stopAction->setDisabled(true);
         }
@@ -246,7 +233,6 @@ void MainWindow::connectSignals(void)
     connect( ui->m_animationList , &AnimationListWidget::addToPlaylist , ui->m_animationPlaylist , &AnimationPlayListWidget::newItem);
     connect( ui->m_animationList , &AnimationListWidget::showPropertiePreview , ui->m_animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
     connect( ui->m_animationPlaylist, &AnimationPlayListWidget::contantChanged , this, &MainWindow::updateAnimationActions);
-    //    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
     connect( ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, ui->m_animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
     connect( ui->m_openAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::openAnimationPlaylistFrom);
     connect( ui->m_saveAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::saveAnimationPlaylistItemsTo);
@@ -259,7 +245,6 @@ void MainWindow::connectSignals(void)
     connect( ui->m_moveDownAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
     connect( ui->m_editAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::editItem);
     connect( ui->m_playAction, &QAction::triggered, m_animationHandler, &AnimationHandler::playAnimations);
-
 
     connect( m_animationHandler->getSender(), &Sender::portOpenChanged, this, &MainWindow::updateUi);
     connect( m_animationHandler, &AnimationHandler::updateUi, this, &MainWindow::updateUi);

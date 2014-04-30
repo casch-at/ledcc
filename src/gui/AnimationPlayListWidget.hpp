@@ -36,7 +36,7 @@ public:
     explicit AnimationPlayListWidget(QWidget *parent = Q_NULLPTR);
     virtual ~AnimationPlayListWidget();
 Q_SIGNALS:
-    void contantChanged();
+    void contantChanged(); /*! Emit it if items are either taken out or added */
     void playAnimation(const AnimationItem *animation);
 public Q_SLOTS:
     void clearList(void);
@@ -66,7 +66,6 @@ private:
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
     void sortIndexes(const bool ascending, QModelIndexList *list);
     void openAnimationPlaylist();
-    void getAllItems(QList<AnimationItem*> *animationItems);
     int m_nextAnimationRow; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
     Animation *m_currentAnimation;

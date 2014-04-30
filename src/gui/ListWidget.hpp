@@ -16,7 +16,8 @@ class ListWidget : public QListWidget
 public:
     explicit ListWidget(QWidget *parent = Q_NULLPTR);
     virtual ~ListWidget();
-
+    void getAllItems(QList<AnimationItem*> *animationItems);
+    QList<AnimationItem*> getAllItems();
 Q_SIGNALS:
     void showPropertiePreview(QStringList itemProperties);
 public Q_SLOTS:

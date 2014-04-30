@@ -37,7 +37,8 @@
 AnimationHandler::AnimationHandler(QObject *object, QWidget *parent):
     QObject(object),
     m_settingsDialog(new SettingsDialog(parent)),
-    m_createThread(new QThread)
+    m_createThread(new QThread),
+    m_isPortOpen(false)
 {
     m_playAction = Q_NULLPTR;
     m_stopAction = Q_NULLPTR;

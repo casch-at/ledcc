@@ -124,12 +124,16 @@ void AnimationPlayListWidget::duplicateItems()
 */
 void AnimationPlayListWidget::removeItems()
 {
-    foreach (QModelIndex i, selectedIndexes()) {
-        delete takeItem(i.row());
-    }
+    if (selectedItems().isEmpty())
+        return;
+
+    foreach (QListWidgetItem *i, selectedItems())
+        delete i;
+
     if (!count()){
         Q_EMIT contantChanged();
     }
+
     setCurrentRow(currentRow());
 
 }
@@ -548,10 +552,5 @@ void AnimationPlayListWidget::openAnimationPlaylist()
     }
 }
 
-void AnimationPlayListWidget::getAllItems(QList<AnimationItem *> *animationItems)
-{
-    for (int i = 0; i < count(); i++) {
-        animationItems->append(dynamic_cast<AnimationItem*>(item(i)));
-    }
-}
+
 

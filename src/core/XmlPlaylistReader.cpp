@@ -110,7 +110,7 @@ int XmlPlaylistReader::readAnimationProperties(QXmlStreamReader *xmlReader, QXml
     } else if (xmlReader->name() == "direction") {
         options->m_direction = static_cast<Draw::Direction>(attributes->value("direction").toString().toInt());
     } else if (xmlReader->name() == "invert") {
-        options->m_invert = attributes->value("invert").toString().toInt() ? true : false;
+        options->m_invert = static_cast<bool>(attributes->value("invert").toString().toInt());
     } else if (xmlReader->name() == "iteration") {
         options->m_iteration = attributes->value("iteration").toString().toInt();
     } else if (xmlReader->name() == "leds") {

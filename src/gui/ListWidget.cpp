@@ -191,5 +191,19 @@ void ListWidget::keyPressEvent(QKeyEvent *e)
     }
 }
 
+void ListWidget::getAllItems(QList<AnimationItem *> *animationItems)
+{
+    for (int i = 0; i < count(); i++) {
+        animationItems->append(dynamic_cast<AnimationItem*>(item(i)));
+    }
+}
 
+QList<AnimationItem *> ListWidget::getAllItems()
+{
+    QList<AnimationItem*> animationItems;
+    for (int i = 0; i < count(); i++) {
+        animationItems.append(dynamic_cast<AnimationItem*>(item(i)));
+    }
+    return animationItems;
+}
 
