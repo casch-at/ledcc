@@ -20,7 +20,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QSplitter" name="splitter">
+     <widget class="QSplitter" name="m_animationListSplitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>

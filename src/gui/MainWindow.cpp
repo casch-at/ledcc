@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 {
     ui->setupUi(this); // Ui must be first created befor accessing the elements
-    ui->splitter->setStretchFactor(1,2);
+    ui->m_animationListSplitter->setStretchFactor(1,2);
     ui->m_animationList->setFocus();
     m_animationHandler = new AnimationHandler(this,this);
     addActions(QList<QAction *>()
@@ -140,6 +140,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 void MainWindow::saveSettings(void){
     config()->set(Settings::MainWindowGeometrySettings,saveGeometry());
     config()->set(Settings::AnimationOptionPreviewGeometry, ui->m_animationPropertiesPreview->saveGeometry());
+    config()->set(Settings::AnimationListSplitterState, ui->m_animationListSplitter->saveState());
     config()->set(Settings::IsAnimationOptionPreviewHidden, ui->m_animationPropertiesPreview->isHidden());
     config()->set(Settings::IsAnimationToolbarHidden, ui->m_animationTB->isHidden());
     config()->set(Settings::IsHelpToolbarHidden, ui->m_helpTB->isHidden());
@@ -153,6 +154,7 @@ void MainWindow::saveSettings(void){
 void MainWindow::readSettings (void){
     restoreGeometry (config()->get(Settings::MainWindowGeometrySettings).toByteArray ());
     ui->m_animationPropertiesPreview->restoreGeometry( config()->get(Settings::AnimationOptionPreviewGeometry).toByteArray ());
+    ui->m_animationListSplitter->restoreState(config()->get(Settings::AnimationListSplitterState).toByteArray());
     ui->m_animationPropertiesPreview->setHidden(config()->get(Settings::IsAnimationOptionPreviewHidden).toBool());
     ui->m_animationTB->setHidden(config()->get(Settings::IsAnimationToolbarHidden).toBool());
     ui->m_helpTB->setHidden(config()->get(Settings::IsHelpToolbarHidden).toBool());

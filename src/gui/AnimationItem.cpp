@@ -108,6 +108,7 @@ void AnimationItem:: createAnimationTooltipAsRichText()
             break;
         }
     }
+    itemToolTip.remove(itemToolTip.length() - 4, 4); // Remove the last line break (<br>)
     setToolTip(itemToolTip);
 }
 
