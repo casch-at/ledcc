@@ -32,7 +32,7 @@ public:
     QList<AnimationItem*> readAnimationPlaylist();
 private:
     AnimationItem* parseAnimation(QXmlStreamReader *xmlReader);
-    int readAnimationProperties(QXmlStreamReader *xmlReader, QXmlStreamAttributes *attributes, Options *options);
+    int readAnimationProperties(QXmlStreamReader *xmlReader, QXmlStreamAttributes *attributes, Options *options, AnimationItem *animationItem);
     void cleanUpOnError(QList<AnimationItem *> *animationItemList);
 };
 

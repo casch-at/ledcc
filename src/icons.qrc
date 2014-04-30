@@ -23,5 +23,7 @@
         <file>images/arrow-right.png</file>
         <file>images/qt.png</file>
         <file>images/ledgreen.png</file>
+        <file>images/document-save-5.png</file>
+        <file>images/openfiler.png</file>
     </qresource>
 </RCC>

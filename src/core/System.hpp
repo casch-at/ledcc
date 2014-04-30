@@ -19,6 +19,9 @@
 #define SYSTEM_HPP
 #include <QString>
 
+#define ERRNO -1
+#define OK     0
+
 class System
 {
 public:

@@ -60,6 +60,10 @@ int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *anim
             xmlWriter->writeEndElement();
 
             // Write attributes of the animation
+            xmlWriter->writeStartElement("axis");
+            xmlWriter->writeAttribute("axis", QString("%1").arg(options->m_axis));
+            xmlWriter->writeEndElement();
+
             xmlWriter->writeStartElement("delay");
             xmlWriter->writeAttribute("delay", QString("%1").arg(options->m_delay));
             xmlWriter->writeEndElement();

@@ -72,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     readSettings ();
     connectSignals();
     AQP::accelerateActions(actions());
+    AQP::accelerateMenu(ui->menuBar);
 }
 
 /**

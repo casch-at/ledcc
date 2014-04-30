@@ -105,7 +105,7 @@ void AnimationPlayListWidget::clearList()
 void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
 {
     foreach (QListWidgetItem *i, item) {
-        addItem(i->clone());
+        insertItem(count(), i->clone());
     }
     Q_EMIT contantChanged();
 
@@ -527,8 +527,10 @@ void AnimationPlayListWidget::readAnimationPlaylist()
     QList<AnimationItem*> animationItems = reader.readAnimationPlaylist();
     if (!animationItems.isEmpty()) {
         foreach (AnimationItem *item, animationItems) {
-            insertItem(0,item);
+            insertItem(count() ,item);
         }
+    }else {
+        //TODO::Print error message that the playlist coulde not be read
     }
 }
 

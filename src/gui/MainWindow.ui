@@ -175,6 +175,60 @@
    <addaction name="m_aboutAction"/>
    <addaction name="m_aboutQt"/>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>876</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="m_openAction"/>
+    <addaction name="m_saveAction"/>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+    <addaction name="m_quitAction"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="m_aboutQt"/>
+    <addaction name="m_aboutAction"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="m_editAction"/>
+    <addaction name="m_openClosePortAction"/>
+    <addaction name="separator"/>
+    <addaction name="m_settingsAction"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Playlist</string>
+    </property>
+    <addaction name="m_playAction"/>
+    <addaction name="m_stopAction"/>
+    <addaction name="separator"/>
+    <addaction name="m_moveUpAction"/>
+    <addaction name="m_moveDownAction"/>
+    <addaction name="m_duplicateAction"/>
+    <addaction name="m_removeAction"/>
+    <addaction name="separator"/>
+    <addaction name="m_clearAction"/>
+   </widget>
+   <addaction name="menuMenu"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuSettings"/>
+   <addaction name="menuHelp"/>
+  </widget>
   <action name="m_quitAction">
    <property name="icon">
     <iconset resource="../icons.qrc">
@@ -202,7 +256,7 @@
     <string>Connect to seriell device  O</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+O</string>
+    <string>Ctrl+C</string>
    </property>
   </action>
   <action name="m_settingsAction">
@@ -351,6 +405,39 @@
    </property>
    <property name="text">
     <string>Qt</string>
+   </property>
+   <property name="toolTip">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="m_saveAction">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/images/document-save-5.png</normaloff>:/images/document-save-5.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="toolTip">
+    <string>Save playlist</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="m_openAction">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/images/openfiler.png</normaloff>:/images/openfiler.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open playlist</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
  </widget>
