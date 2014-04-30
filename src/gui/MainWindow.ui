@@ -198,6 +198,8 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="m_infoAction"/>
+    <addaction name="separator"/>
     <addaction name="m_aboutQt"/>
     <addaction name="m_aboutAction"/>
    </widget>
@@ -438,6 +440,21 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="m_infoAction">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/images/help-hint.png</normaloff>:/images/help-hint.png</iconset>
+   </property>
+   <property name="text">
+    <string>Info</string>
+   </property>
+   <property name="toolTip">
+    <string>Help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
  </widget>
