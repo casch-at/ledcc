@@ -122,7 +122,6 @@ QAction *ListWidget::createAction(const QString &text, const QString &tooltip)
     QAction *action = new QAction(text,this);
     action->setToolTip(tooltip);
     action->setStatusTip(tooltip);
-
     return action;
 }
 

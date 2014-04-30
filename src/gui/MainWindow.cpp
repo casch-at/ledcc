@@ -248,6 +248,8 @@ void MainWindow::connectSignals(void)
     connect( ui->m_animationPlaylist, &AnimationPlayListWidget::contantChanged , this, &MainWindow::updateAnimationActions);
     //    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::displayAnimationOptions, ui->animationAdjustGB, &AnimationOptions::displayAnimationOptions);
     connect( ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, ui->m_animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
+    connect( ui->m_openAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::openAnimationPlaylistFrom);
+    connect( ui->m_saveAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::saveAnimationPlaylistItemsTo);
 
     // Animation Playlist action
     connect( ui->m_clearAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::clearList);

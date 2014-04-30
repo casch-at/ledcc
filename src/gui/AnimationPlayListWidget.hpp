@@ -47,6 +47,9 @@ public Q_SLOTS:
     void editItem();
     void onItemDoubleClicked(QListWidgetItem *item);
     AnimationItem *getNextAnimation(void);
+    void saveAnimationPlaylistItems();
+    void saveAnimationPlaylistItemsTo();
+    void openAnimationPlaylistFrom();
 private Q_SLOTS:
     void setNewItemOptions(AnimationItem *itemForUpdate);
 protected:
@@ -62,7 +65,8 @@ private:
     bool dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex);
     void insertItemsAt(const QList<QListWidgetItem *> &items, const int row);
     void sortIndexes(const bool ascending, QModelIndexList *list);
-    void readAnimationPlaylist();
+    void openAnimationPlaylist();
+    void getAllItems(QList<AnimationItem*> *animationItems);
     int m_nextAnimationRow; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
     Animation *m_currentAnimation;

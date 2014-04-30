@@ -47,7 +47,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     setDefaultDropAction(Qt::MoveAction);
     setAcceptDrops(true);
     connect(this, &AnimationPlayListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::onItemDoubleClicked);
-    readAnimationPlaylist();
+    openAnimationPlaylist();
 }
 
 /*!
@@ -56,12 +56,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
 */
 AnimationPlayListWidget::~AnimationPlayListWidget()
 {
-    QList<AnimationItem*> animationItems;
-    for (int i = 0; i < count(); i++) {
-        animationItems.append(dynamic_cast<AnimationItem*>(item(i)));
-    }
-    XmlPlaylistWriter xmlWriter;
-    xmlWriter.writeAnimationPlaylist(&animationItems);
+    saveAnimationPlaylistItems();
     //    delete m_clearAction;
     //    delete m_stopAction;
     //    delete m_playAction;
@@ -435,6 +430,25 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
     return retItem;
 }
 
+void AnimationPlayListWidget::saveAnimationPlaylistItems()
+{
+    QList<AnimationItem*> animationItems;
+    getAllItems(&animationItems);
+    XmlPlaylistWriter xmlWriter;
+    xmlWriter.writeAnimationPlaylist(&animationItems);
+}
+
+void AnimationPlayListWidget::saveAnimationPlaylistItemsTo()
+{
+
+}
+
+void AnimationPlayListWidget::openAnimationPlaylistFrom()
+{
+
+
+}
+
 void AnimationPlayListWidget::setNewItemOptions(AnimationItem *itemForUpdate)
 {
     if (indexFromItem(itemForUpdate).row() == m_nextAnimationRow - 1) {
@@ -498,7 +512,7 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
     int i = 0;
     int length = list->length();
 
-    if (ascending){ // Sort indexes ascending 0,1,2,...
+    if (ascending){ // Sort indexes after there row ascending 0,1,2,...
         for (int j = 1; j < length; ++j) {
             index = list->at(j);
             i = j - 1;
@@ -508,7 +522,7 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
             }
             list->replace(i + 1, index);
         }
-    } else { // Sort indexes descending row ...,3,2,1,0
+    } else { // Sort indexes after there row descending  ...,3,2,1,0
         for (int j =  1 ; j < length; ++j) {
             index = list->at(j);
             i = j - 1;
@@ -521,7 +535,7 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
     }
 }
 
-void AnimationPlayListWidget::readAnimationPlaylist()
+void AnimationPlayListWidget::openAnimationPlaylist()
 {
     XmlPlaylistReader reader;
     QList<AnimationItem*> animationItems = reader.readAnimationPlaylist();
@@ -530,7 +544,14 @@ void AnimationPlayListWidget::readAnimationPlaylist()
             insertItem(count() ,item);
         }
     }else {
-        //TODO::Print error message that the playlist coulde not be read
+        //TODO:: Inform the user that an error occured during read
+    }
+}
+
+void AnimationPlayListWidget::getAllItems(QList<AnimationItem *> *animationItems)
+{
+    for (int i = 0; i < count(); i++) {
+        animationItems->append(dynamic_cast<AnimationItem*>(item(i)));
     }
 }
 
