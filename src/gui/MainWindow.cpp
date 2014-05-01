@@ -22,6 +22,7 @@
 #include "AnimationOptions.hpp"
 #include "Sender.hpp"
 #include "Config.hpp"
+#include "HelpDialog.hpp"
 
 // ThirdParty
 #include "alt_key.hpp"
@@ -40,7 +41,9 @@
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-
+//TODO:: Pass File path where the xml file should be stored to the XmlReaderWriter class
+//       We need than only one function for default saving and user specific save location
+//TODO:: Create a HTML help dialog
 // Namespaces
 using namespace std;
 /**
@@ -49,29 +52,29 @@ using namespace std;
  */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
+    m_ui(new Ui::MainWindow),
+    m_helpDialog(Q_NULLPTR),
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
     m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 {
-    ui->setupUi(this); // Ui must be first created befor accessing the elements
-    ui->m_animationListSplitter->setStretchFactor(1,2);
-    ui->m_animationList->setFocus();
+    m_ui->setupUi(this); // Ui must be first created befor accessing the elements
+    m_ui->m_animationList->setFocus();
     m_animationHandler = new AnimationHandler(this,this);
+    m_ui->m_animationPlaylist->addActions(QList<QAction*>()
+                                        << m_ui->m_editAction << m_ui->m_moveUpAction << m_ui->m_moveDownAction
+                                        << m_ui->m_duplicateAction << m_ui->m_removeAction << m_ui->m_clearAction);
     addActions(QList<QAction *>()
-               << ui->m_clearAction << ui->m_duplicateAction << ui->m_editAction
-               << ui->m_playAction << ui->m_quitAction << ui->m_removeAction
-               << ui->m_settingsAction << ui->m_stopAction << ui->m_moveUpAction
-               << ui->m_moveDownAction);
-    ui->m_animationPlaylist->addActions(QList<QAction*>()
-                                        << ui->m_editAction << ui->m_moveUpAction << ui->m_moveDownAction
-                                        << ui->m_duplicateAction << ui->m_removeAction << ui->m_clearAction);
+               << m_ui->m_clearAction << m_ui->m_duplicateAction << m_ui->m_editAction
+               << m_ui->m_playAction << m_ui->m_quitAction << m_ui->m_removeAction
+               << m_ui->m_settingsAction << m_ui->m_stopAction << m_ui->m_moveUpAction
+               << m_ui->m_moveDownAction);
     m_open = false;
     updateUi(false); // Should be called after we set the animationPlaylist actions
     readSettings ();
     connectSignals();
     AQP::accelerateActions(actions());
-    AQP::accelerateMenu(ui->menuBar);
+    AQP::accelerateMenu(m_ui->menuBar);
 }
 
 /**
@@ -80,7 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow(void)
 {
     delete m_animationHandler;
-    delete ui;
+    delete m_ui;
 }
 
 /**
@@ -138,12 +141,12 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 */
 void MainWindow::saveSettings(void){
     config()->set(Settings::MainWindowGeometrySettings,saveGeometry());
-    config()->set(Settings::AnimationOptionPreviewGeometry, ui->m_animationPropertiesPreview->saveGeometry());
-    config()->set(Settings::AnimationListSplitterState, ui->m_animationListSplitter->saveState());
-    config()->set(Settings::IsAnimationOptionPreviewHidden, ui->m_animationPropertiesPreview->isHidden());
-    config()->set(Settings::IsAnimationToolbarHidden, ui->m_animationTB->isHidden());
-    config()->set(Settings::IsHelpToolbarHidden, ui->m_helpTB->isHidden());
-    config()->set(Settings::IsMainToolbarHidden, ui->m_mainTB->isHidden());
+    config()->set(Settings::AnimationOptionPreviewGeometry, m_ui->m_animationPropertiesPreview->saveGeometry());
+    config()->set(Settings::AnimationListSplitterState, m_ui->m_animationListSplitter->saveState());
+    config()->set(Settings::IsAnimationOptionPreviewHidden, m_ui->m_animationPropertiesPreview->isHidden());
+    config()->set(Settings::IsAnimationToolbarHidden, m_ui->m_animationTB->isHidden());
+    config()->set(Settings::IsHelpToolbarHidden, m_ui->m_helpTB->isHidden());
+    config()->set(Settings::IsMainToolbarHidden, m_ui->m_mainTB->isHidden());
 }
 
 /*!
@@ -152,12 +155,12 @@ void MainWindow::saveSettings(void){
 */
 void MainWindow::readSettings (void){
     restoreGeometry (config()->get(Settings::MainWindowGeometrySettings).toByteArray ());
-    ui->m_animationPropertiesPreview->restoreGeometry( config()->get(Settings::AnimationOptionPreviewGeometry).toByteArray ());
-    ui->m_animationListSplitter->restoreState(config()->get(Settings::AnimationListSplitterState).toByteArray());
-    ui->m_animationPropertiesPreview->setHidden(config()->get(Settings::IsAnimationOptionPreviewHidden).toBool());
-    ui->m_animationTB->setHidden(config()->get(Settings::IsAnimationToolbarHidden).toBool());
-    ui->m_helpTB->setHidden(config()->get(Settings::IsHelpToolbarHidden).toBool());
-    ui->m_mainTB->setHidden(config()->get(Settings::IsMainToolbarHidden).toBool());
+    m_ui->m_animationPropertiesPreview->restoreGeometry( config()->get(Settings::AnimationOptionPreviewGeometry).toByteArray ());
+    m_ui->m_animationListSplitter->restoreState(config()->get(Settings::AnimationListSplitterState).toByteArray());
+    m_ui->m_animationPropertiesPreview->setHidden(config()->get(Settings::IsAnimationOptionPreviewHidden).toBool());
+    m_ui->m_animationTB->setHidden(config()->get(Settings::IsAnimationToolbarHidden).toBool());
+    m_ui->m_helpTB->setHidden(config()->get(Settings::IsHelpToolbarHidden).toBool());
+    m_ui->m_mainTB->setHidden(config()->get(Settings::IsMainToolbarHidden).toBool());
 }
 
 /*!
@@ -171,14 +174,14 @@ void MainWindow::updateUi(bool portOpen)
     if (portOpen) {
         if (!m_open) {
             m_open = true;
-            ui->m_openClosePortAction->setIcon( QIcon( "://images/disconnect.png"));
-            ui->m_openClosePortAction->setToolTip(tr("Disconnect from seriell device  O"));
+            m_ui->m_openClosePortAction->setIcon( QIcon( "://images/disconnect.png"));
+            m_ui->m_openClosePortAction->setToolTip(tr("Disconnect from seriell device  O"));
         }
     } else {
         if (m_open) {
             m_open = false;
-            ui->m_openClosePortAction->setIcon( QIcon( "://images/connect.png"));
-            ui->m_openClosePortAction->setToolTip(tr("Connect to seriell device  O"));
+            m_ui->m_openClosePortAction->setIcon( QIcon( "://images/connect.png"));
+            m_ui->m_openClosePortAction->setToolTip(tr("Connect to seriell device  O"));
         }
     }
     updateAnimationActions();
@@ -186,27 +189,34 @@ void MainWindow::updateUi(bool portOpen)
 
 void MainWindow::updateAnimationActions()
 {
-    Q_ASSERT(!ui->m_animationPlaylist->actions().isEmpty());
+    Q_ASSERT(!m_ui->m_animationPlaylist->actions().isEmpty());
 
     if (m_open) {
-        if( ui->m_animationPlaylist->count() && !ui->m_stopAction->isEnabled()) {
-            ui->m_playAction->setEnabled(true);
-            ui->m_stopAction->setDisabled(true);
+        if( m_ui->m_animationPlaylist->count() && !m_ui->m_stopAction->isEnabled()) {
+            m_ui->m_playAction->setEnabled(true);
+            m_ui->m_stopAction->setDisabled(true);
         }
         else{
-            ui->m_playAction->setDisabled(true);
+            m_ui->m_playAction->setDisabled(true);
         }
     } else {
-        ui->m_playAction->setDisabled(true);
-        ui->m_stopAction->setDisabled(true);
+        m_ui->m_playAction->setDisabled(true);
+        m_ui->m_stopAction->setDisabled(true);
     }
 
-    if(ui->m_animationPlaylist->count())
-        foreach (QAction *a, ui->m_animationPlaylist->actions())
+    if(m_ui->m_animationPlaylist->count())
+        foreach (QAction *a, m_ui->m_animationPlaylist->actions())
             a->setEnabled(true);
     else
-        foreach (QAction *a, ui->m_animationPlaylist->actions())
+        foreach (QAction *a, m_ui->m_animationPlaylist->actions())
             a->setDisabled(true);
+}
+
+void MainWindow::help()
+{
+    if (!m_helpDialog)
+        m_helpDialog = new HelpDialog(this);
+    m_helpDialog->show();
 }
 
 /**
@@ -216,35 +226,35 @@ void MainWindow::updateAnimationActions()
 void MainWindow::connectSignals(void)
 {
     // Overall connections
-    connect( ui->m_openClosePortAction, &QAction::triggered, m_animationHandler ,&AnimationHandler::openCloseSerialPort);
-    connect( ui->m_quitAction, &QAction::triggered, this,&MainWindow::close);
-    connect( ui->m_aboutAction, &QAction::triggered,this,&MainWindow::about);
-    connect( ui->m_settingsAction, &QAction::triggered,m_animationHandler->m_settingsDialog,&QWidget::show);
-    connect( ui->m_stopAction, &QAction::triggered , m_animationHandler , &AnimationHandler::stopThreads);
-    connect( ui->m_aboutQt, &QAction::triggered, this, &QApplication::aboutQt);
-
+    connect( m_ui->m_openClosePortAction, &QAction::triggered, m_animationHandler ,&AnimationHandler::openCloseSerialPort);
+    connect( m_ui->m_quitAction, &QAction::triggered, this,&MainWindow::close);
+    connect( m_ui->m_aboutAction, &QAction::triggered,this,&MainWindow::about);
+    connect( m_ui->m_settingsAction, &QAction::triggered,m_animationHandler->m_settingsDialog,&QWidget::show);
+    connect( m_ui->m_stopAction, &QAction::triggered , m_animationHandler , &AnimationHandler::stopThreads);
+    connect( m_ui->m_aboutQt, &QAction::triggered, this, &QApplication::aboutQt);
+    connect( m_ui->m_infoAction, &QAction::triggered, this, &MainWindow::help);
     // ListWidgets shortcuts
-    connect( m_focusAnimationList, &QShortcut::activated, ui->m_animationList, &ListWidget::focus);
-    connect( m_focusAnimationPlaylist, &QShortcut::activated, ui->m_animationPlaylist, &ListWidget::focus);
-    connect( m_scSellectAll, &QShortcut::activated, ui->m_animationList, &ListWidget::selectAllItems);
-    connect( m_scSellectAll, &QShortcut::activated, ui->m_animationPlaylist, &ListWidget::selectAllItems);
+    connect( m_focusAnimationList, &QShortcut::activated, m_ui->m_animationList, &ListWidget::focus);
+    connect( m_focusAnimationPlaylist, &QShortcut::activated, m_ui->m_animationPlaylist, &ListWidget::focus);
+    connect( m_scSellectAll, &QShortcut::activated, m_ui->m_animationList, &ListWidget::selectAllItems);
+    connect( m_scSellectAll, &QShortcut::activated, m_ui->m_animationPlaylist, &ListWidget::selectAllItems);
 
     // ListWidget interconnections
-    connect( ui->m_animationList , &AnimationListWidget::addToPlaylist , ui->m_animationPlaylist , &AnimationPlayListWidget::newItem);
-    connect( ui->m_animationList , &AnimationListWidget::showPropertiePreview , ui->m_animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
-    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::contantChanged , this, &MainWindow::updateAnimationActions);
-    connect( ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, ui->m_animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
-    connect( ui->m_openAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::openAnimationPlaylistFrom);
-    connect( ui->m_saveAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::saveAnimationPlaylistItemsTo);
+    connect( m_ui->m_animationList , &AnimationListWidget::addToPlaylist , m_ui->m_animationPlaylist , &AnimationPlayListWidget::newItem);
+    connect( m_ui->m_animationList , &AnimationListWidget::showPropertiePreview , m_ui->m_animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
+    connect( m_ui->m_animationPlaylist, &AnimationPlayListWidget::contantChanged , this, &MainWindow::updateAnimationActions);
+    connect( m_ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, m_ui->m_animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
+    connect( m_ui->m_openAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::openAnimationPlaylistFrom);
+    connect( m_ui->m_saveAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::saveAnimationPlaylistItemsTo);
 
     // Animation Playlist action
-    connect( ui->m_clearAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::clearList);
-    connect( ui->m_duplicateAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::duplicateItems);
-    connect( ui->m_removeAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::removeItems);
-    connect( ui->m_moveUpAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
-    connect( ui->m_moveDownAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
-    connect( ui->m_editAction, &QAction::triggered, ui->m_animationPlaylist, &AnimationPlayListWidget::editItem);
-    connect( ui->m_playAction, &QAction::triggered, m_animationHandler, &AnimationHandler::playAnimations);
+    connect( m_ui->m_clearAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::clearList);
+    connect( m_ui->m_duplicateAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::duplicateItems);
+    connect( m_ui->m_removeAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::removeItems);
+    connect( m_ui->m_moveUpAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
+    connect( m_ui->m_moveDownAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
+    connect( m_ui->m_editAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::editItem);
+    connect( m_ui->m_playAction, &QAction::triggered, m_animationHandler, &AnimationHandler::playAnimations);
 
     connect( m_animationHandler->getSender(), &Sender::portOpenChanged, this, &MainWindow::updateUi);
     connect( m_animationHandler, &AnimationHandler::updateUi, this, &MainWindow::updateUi);

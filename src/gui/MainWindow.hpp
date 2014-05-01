@@ -24,6 +24,7 @@
 class QShortcut;
 /* Application forward declerations */
 class AnimationHandler;
+class HelpDialog;
 
 namespace Ui {
     class MainWindow;
@@ -45,6 +46,7 @@ private Q_SLOTS:
     void setDirty() { setWindowModified ( true ); }
     void updateUi(bool portOpen);
     void updateAnimationActions();
+    void help();
 private:
     bool okToContinue(void);
     void readSettings(void);
@@ -52,7 +54,8 @@ private:
     void connectSignals(void);
 private:
 //    friend class AnimationHandler;
-    Ui::MainWindow *ui;
+    Ui::MainWindow *m_ui;
+    HelpDialog *m_helpDialog;
 
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
