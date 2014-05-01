@@ -38,7 +38,7 @@ set(PROGNAME ${PROJECT_NAME})
 # ---------------------------------------------------------------------------------------------------
 # Find Qt5 Modules
 # ---------------------------------------------------------------------------------------------------
-set(QT_REQUIRED_MODULES Qt5Widgets Qt5SerialPort)
+set(QT_REQUIRED_MODULES Qt5Widgets Qt5SerialPort Qt5Qml Qt5WebKit)
 foreach(QT_MODULE ${QT_REQUIRED_MODULES})
     find_package(${QT_MODULE} REQUIRED)
 endforeach(QT_MODULE)

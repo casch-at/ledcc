@@ -29,7 +29,7 @@ set(include_DIRECTORIES
 include_directories(${include_DIRECTORIES})
 
 # ---------------------------------------------------------------------------------------------------
-# Configure a hpp file to pass some data from cmake to the program
+# Configure header file to pass some data from cmake to the program
 # ---------------------------------------------------------------------------------------------------
 include(configure.h.in.cmake)
 
@@ -84,7 +84,7 @@ set(ledcc_gui_SOURCES
 # ---------------------------------------------------------------------------------------------------
 # Put all source files together
 # ---------------------------------------------------------------------------------------------------
-set(ledcc_SOURCES
+set(ledcc_core_SOURCES
     ${ledcc_core_SOURCES}
     ${ledcc_thirdparty_SOURCES}
     ${ledcc_gui_SOURCES}
@@ -126,35 +126,36 @@ set(ledcc_SOURCES_MAINEXE
 )
 
 # ---------------------------------------------------------------------------------------------------
-# Create a source file out of the resource file
+# Create a source file out of the resource file.
 # ---------------------------------------------------------------------------------------------------
 qt5_add_resources(ledcc_RESOURCES_RCC
                   icons.qrc OPTIONS -no-compress
 )
 # ---------------------------------------------------------------------------------------------------
-# Create ui_xxxx.h files out of .ui files
+# Create ui_xxxx.h files out of .ui files.
 # ---------------------------------------------------------------------------------------------------
 qt5_wrap_ui(ledcc_FORMS_HEADERS
             ${ledcc_gui_FORMS}
 )
 
 # ---------------------------------------------------------------------------------------------------
-# Create metaobject sourcecode files
+# Create metaobject sourcecode files.
 # ---------------------------------------------------------------------------------------------------
 #qt5_wrap_cpp(ledcc_MOC_SOURCES
 #             ${ledcc_MOC}
 #)
 
 # ---------------------------------------------------------------------------------------------------
-# Create a static library of all sources
+# Create a static library of all sources.
 # ---------------------------------------------------------------------------------------------------
 add_library(ledcc-core
             STATIC
-            ${ledcc_SOURCES}
+            ${ledcc_core_SOURCES}
             ${ledcc_FORMS_HEADERS}
 )
 # ---------------------------------------------------------------------------------------------------
-# Link libraries against the created library HINT: Qt5Widgets_LIBRARIES includes Qt5Core_LIBRARIES and Qt5Gui_LIBRARIES
+# Link libraries against the created library.
+# HINT: Qt5Widgets_LIBRARIES includes Qt5Core_LIBRARIES and Qt5Gui_LIBRARIES
 # ---------------------------------------------------------------------------------------------------
 target_link_libraries(ledcc-core
                       ${Qt5Widgets_LIBRARIES}
@@ -174,8 +175,14 @@ add_executable(${PROGNAME}
 add_dependencies(${PROGNAME} ledcc-core)
 
 # ---------------------------------------------------------------------------------------------------
-# Link libraries against the program HINT: Qt5Widgets_LIBRARIES includes Qt5Core_LIBRARIES and Qt5Gui_LIBRARIES
+# Link libraries against the program.
+# HINT: Qt5Widgets_LIBRARIES includes Qt5Core_LIBRARIES and Qt5Gui_LIBRARIES
 # ---------------------------------------------------------------------------------------------------
 target_link_libraries(${PROGNAME}
                       ledcc-core
 )
+
+
+set_target_properties(${PROGNAME} ledcc-core PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set_target_properties(${PROGNAME} ledcc-core PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set_target_properties(${PROGNAME} ledcc-core PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

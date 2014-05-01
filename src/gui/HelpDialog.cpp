@@ -23,8 +23,7 @@ HelpDialog::HelpDialog(QWidget *parent) :
     m_ui(new Ui::HelpDialog)
 {
     m_ui->setupUi(this);
-//    m_ui->m_helpSplitter->setStretchFactor(1,4);
-//    m_ui->m_helpSplitter->setStretchFactor();
+    connect(m_ui->m_okPB, &QPushButton::pressed, this, &HelpDialog::hide);
 }
 
 HelpDialog::~HelpDialog()
