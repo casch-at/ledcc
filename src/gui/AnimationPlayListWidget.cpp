@@ -439,10 +439,8 @@ void AnimationPlayListWidget::saveAnimationPlaylistItems()
 {
     QList<AnimationItem*> animationItems;
     XmlPlaylistWriter xmlWriter;
-    System system;
-
     getAllItems(&animationItems);
-    xmlWriter.writeAnimationPlaylist(&animationItems, system.getConfigPath() + "animations.xml");
+    xmlWriter.writeAnimationPlaylist(&animationItems, System::getConfigPath() + "animations.xml");
 }
 
 void AnimationPlayListWidget::saveAnimationPlaylistItemsTo(const QString &location)
@@ -455,8 +453,11 @@ void AnimationPlayListWidget::saveAnimationPlaylistItemsTo(const QString &locati
 
 void AnimationPlayListWidget::openAnimationPlaylistFrom(const QString &file)
 {
-
-
+    XmlPlaylistReader reader;
+    QList<AnimationItem*> animationItems = reader.readAnimationPlaylist(file);
+    foreach (AnimationItem *item, animationItems) {
+        insertItem(count() ,item);
+    }
 }
 
 void AnimationPlayListWidget::setNewItemOptions(AnimationItem *itemForUpdate)
@@ -558,8 +559,7 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
 void AnimationPlayListWidget::openAnimationPlaylist()
 {
     XmlPlaylistReader reader;
-    System system;
-    QList<AnimationItem*> animationItems = reader.readAnimationPlaylist(system.getConfigPath() + "animations.xml");
+    QList<AnimationItem*> animationItems = reader.readAnimationPlaylist(System::getConfigPath() + "animations.xml");
     foreach (AnimationItem *item, animationItems) {
         insertItem(count() ,item);
     }

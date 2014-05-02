@@ -38,6 +38,8 @@ namespace Settings{
     const QString LastSavePath("LastSavePath");
     const QString LastOpenPath("LastOpenPath");
     const QString FileDialogState("FileDialogState");
+    const QString FileDialogHistorySave("FileDialogHistorySave");
+    const QString FileDialogHistoryOpen("FileDialogHistoryOpen");
     }
 
 class QSettings;

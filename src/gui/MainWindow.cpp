@@ -63,8 +63,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->m_animationList->setFocus();
     m_animationHandler = new AnimationHandler(this,this);
     m_ui->m_animationPlaylist->addActions(QList<QAction*>()
-                                        << m_ui->m_editAction << m_ui->m_moveUpAction << m_ui->m_moveDownAction
-                                        << m_ui->m_duplicateAction << m_ui->m_removeAction << m_ui->m_clearAction);
+                                          << m_ui->m_editAction << m_ui->m_moveUpAction << m_ui->m_moveDownAction
+                                          << m_ui->m_duplicateAction << m_ui->m_removeAction << m_ui->m_clearAction);
     addActions(QList<QAction *>()
                << m_ui->m_clearAction << m_ui->m_duplicateAction << m_ui->m_editAction
                << m_ui->m_playAction << m_ui->m_quitAction << m_ui->m_removeAction
@@ -222,54 +222,41 @@ void MainWindow::help()
 
 void MainWindow::savePlaylist()
 {
-    QString pathToFile;
-    QFileDialog fileDialog;
+    QFileDialog *fileDialog = new QFileDialog(this, "Save animation playlist", QString(),"XML File (*.xml)");
+    QString lastPath = config()->get(Settings::LastSavePath).toString();
 
-    fileDialog.restoreState(config()->get(Settings::FileDialogState).toByteArray());
-    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
-    fileDialog.setDefaultSuffix(".xml");
-    fileDialog.setNameFilter("XML File (*.xml)");
-    pathToFile = config()->get(Settings::LastSavePath).toString();
+    fileDialog->setDirectory( lastPath.isEmpty() ? QDir::homePath() : lastPath);
+    fileDialog->restoreState(config()->get(Settings::FileDialogState).toByteArray());
+    fileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog->setDefaultSuffix("xml");
 
-    if (pathToFile.isEmpty()) {
-        fileDialog.setDirectory(QDir::homePath());
-    } else {
-        fileDialog.setDirectory(pathToFile);
+    if ( fileDialog->exec() == QDialog::Accepted ){
+        QString pathToFile = fileDialog->selectedFiles().first();
+        m_ui->m_animationPlaylist->saveAnimationPlaylistItemsTo(pathToFile);
+        config()->set(Settings::LastSavePath,fileDialog->directory().absolutePath());
+        config()->set(Settings::FileDialogState, fileDialog->saveState());
     }
-
-    if (fileDialog.exec() == QDialog::Rejected)
-        return;
-
-    qDebug( ) << "getsavefileurl" << fileDialog.getSaveFileUrl();
-    qDebug() << "absolutePath" << fileDialog.directory().absolutePath();
-//    fileDialog.directory().absoluteFilePath("");
-
-    m_ui->m_animationPlaylist->saveAnimationPlaylistItemsTo(fileDialog.directory().absolutePath());
-    config()->set(Settings::LastSavePath,fileDialog.directory().absolutePath());
-    config()->set(Settings::FileDialogState, fileDialog.saveState());
+    delete fileDialog;
 }
 
 void MainWindow::openPlaylist()
 {
-    QString pathToFile;
-    QFileDialog fileDialog;
+    QString lastPath = config()->get(Settings::LastOpenPath).toString();
+    QFileDialog *fileDialog = new QFileDialog(this,"Open animation playlist", QString(),"*.xml" );
 
-    fileDialog.restoreState(config()->get(Settings::FileDialogState).toByteArray());
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setNameFilter("XML File (*.xml)");
-    pathToFile = config()->get(Settings::LastOpenPath).toString();
+    fileDialog->setDirectory( lastPath.isEmpty() ? QDir::homePath() : lastPath);
+    fileDialog->restoreState(config()->get(Settings::FileDialogState).toByteArray());
+    fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog->setNameFilter("XML File (*.xml)");
 
-    if (pathToFile.isEmpty()) {
-        fileDialog.setDirectory(QDir::homePath());
-    } else {
-        fileDialog.setDirectory(pathToFile);
+    if ( fileDialog->exec() == QDialog::Accepted ){
+        QString pathToFile = fileDialog->selectedFiles().first();
+        m_ui->m_animationPlaylist->saveAnimationPlaylistItemsTo(pathToFile);
+        m_ui->m_animationPlaylist->openAnimationPlaylistFrom(pathToFile);
+        config()->set(Settings::LastOpenPath,fileDialog->directory().absolutePath());
+        config()->set(Settings::FileDialogState, fileDialog->saveState());
     }
-
-    if (fileDialog.exec() == QDialog::Rejected)
-        return;
-    m_ui->m_animationPlaylist->openAnimationPlaylistFrom(pathToFile);
-    config()->set(Settings::LastOpenPath,pathToFile);
-    config()->set(Settings::FileDialogState, fileDialog.saveState());
+    delete fileDialog;
 }
 
 /**

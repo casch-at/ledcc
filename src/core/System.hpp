@@ -26,7 +26,7 @@ class System
 {
 public:
     System() { }
-    QString getConfigPath();
+    static QString getConfigPath();
 private:
 };
 
