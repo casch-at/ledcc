@@ -225,23 +225,28 @@ void MainWindow::savePlaylist()
     QString pathToFile;
     QFileDialog fileDialog;
 
+    fileDialog.restoreState(config()->get(Settings::FileDialogState).toByteArray());
     fileDialog.setAcceptMode(QFileDialog::AcceptSave);
     fileDialog.setDefaultSuffix(".xml");
     fileDialog.setNameFilter("XML File (*.xml)");
     pathToFile = config()->get(Settings::LastSavePath).toString();
 
     if (pathToFile.isEmpty()) {
-        fileDialog.setDirectory(pathToFile);
-    } else {
         fileDialog.setDirectory(QDir::homePath());
+    } else {
+        fileDialog.setDirectory(pathToFile);
     }
 
     if (fileDialog.exec() == QDialog::Rejected)
         return;
 
     qDebug( ) << "getsavefileurl" << fileDialog.getSaveFileUrl();
-    m_ui->m_animationPlaylist->saveAnimationPlaylistItemsTo(pathToFile);
-    config()->set(Settings::LastSavePath,pathToFile);
+    qDebug() << "absolutePath" << fileDialog.directory().absolutePath();
+//    fileDialog.directory().absoluteFilePath("");
+
+    m_ui->m_animationPlaylist->saveAnimationPlaylistItemsTo(fileDialog.directory().absolutePath());
+    config()->set(Settings::LastSavePath,fileDialog.directory().absolutePath());
+    config()->set(Settings::FileDialogState, fileDialog.saveState());
 }
 
 void MainWindow::openPlaylist()
@@ -249,20 +254,22 @@ void MainWindow::openPlaylist()
     QString pathToFile;
     QFileDialog fileDialog;
 
+    fileDialog.restoreState(config()->get(Settings::FileDialogState).toByteArray());
     fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
     fileDialog.setNameFilter("XML File (*.xml)");
     pathToFile = config()->get(Settings::LastOpenPath).toString();
 
     if (pathToFile.isEmpty()) {
-        fileDialog.setDirectory(pathToFile);
-    } else {
         fileDialog.setDirectory(QDir::homePath());
+    } else {
+        fileDialog.setDirectory(pathToFile);
     }
 
     if (fileDialog.exec() == QDialog::Rejected)
         return;
-    config()->set(Settings::LastOpenPath,pathToFile);
     m_ui->m_animationPlaylist->openAnimationPlaylistFrom(pathToFile);
+    config()->set(Settings::LastOpenPath,pathToFile);
+    config()->set(Settings::FileDialogState, fileDialog.saveState());
 }
 
 /**

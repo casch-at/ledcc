@@ -549,6 +549,12 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
     }
 }
 
+/*!
+ \brief Open the playlist which was saved on exit.
+        The playlist is located in the user home directory,
+        on Linux system under ~/.config/ledcc/animations.xml
+
+*/
 void AnimationPlayListWidget::openAnimationPlaylist()
 {
     XmlPlaylistReader reader;

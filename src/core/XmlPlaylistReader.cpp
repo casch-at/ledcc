@@ -31,6 +31,12 @@ XmlPlaylistReader::XmlPlaylistReader()
 {
 }
 
+/*!
+ \brief
+
+ \param xmlPlaylist
+ \return QList<AnimationItem *>
+*/
 QList<AnimationItem *> XmlPlaylistReader::readAnimationPlaylist(const QString &xmlPlaylist)
 {
     QList<AnimationItem*> animationItemList;
@@ -63,6 +69,12 @@ QList<AnimationItem *> XmlPlaylistReader::readAnimationPlaylist(const QString &x
     return animationItemList;
 }
 
+/*!
+ \brief
+
+ \param xmlReader
+ \return AnimationItem
+*/
 AnimationItem* XmlPlaylistReader::parseAnimation(QXmlStreamReader *xmlReader)
 {
     Options options;

@@ -37,6 +37,7 @@ namespace Settings{
     const QString SettingsFlowControl("Settings/Port/flowcontrol");
     const QString LastSavePath("LastSavePath");
     const QString LastOpenPath("LastOpenPath");
+    const QString FileDialogState("FileDialogState");
     }
 
 class QSettings;
