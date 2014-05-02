@@ -251,7 +251,7 @@ void MainWindow::openPlaylist()
 
     if ( fileDialog->exec() == QDialog::Accepted ){
         QString pathToFile = fileDialog->selectedFiles().first();
-        m_ui->m_animationPlaylist->saveAnimationPlaylistItemsTo(pathToFile);
+        qDebug( ) << fileDialog->selectedFiles().first();
         m_ui->m_animationPlaylist->openAnimationPlaylistFrom(pathToFile);
         config()->set(Settings::LastOpenPath,fileDialog->directory().absolutePath());
         config()->set(Settings::FileDialogState, fileDialog->saveState());
@@ -282,7 +282,7 @@ void MainWindow::connectSignals(void)
     // ListWidget interconnections
     connect( m_ui->m_animationList , &AnimationListWidget::addToPlaylist , m_ui->m_animationPlaylist , &AnimationPlayListWidget::newItem);
     connect( m_ui->m_animationList , &AnimationListWidget::showPropertiePreview , m_ui->m_animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
-    connect( m_ui->m_animationPlaylist, &AnimationPlayListWidget::contantChanged , this, &MainWindow::updateAnimationActions);
+    connect( m_ui->m_animationPlaylist, &AnimationPlayListWidget::contentChanged , this, &MainWindow::updateAnimationActions);
     connect( m_ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, m_ui->m_animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
     connect( m_ui->m_openAction, &QAction::triggered, this , &MainWindow::openPlaylist);
     connect( m_ui->m_saveAction, &QAction::triggered, this , &MainWindow::savePlaylist);

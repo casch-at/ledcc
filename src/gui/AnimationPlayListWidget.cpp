@@ -32,7 +32,8 @@
 #include <QDebug>
 #endif
 
-
+// TODO:: Always check how many animations are already in the playlist if there are to many already inside it hangs
+// TODO:: Write the animation attributes in one row in xml, file gets to big otherwise when there are many many animation in the playlist
 /*!
  \brief AnimationPlayListWidget Constructor
 
@@ -58,13 +59,6 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
 AnimationPlayListWidget::~AnimationPlayListWidget()
 {
     saveAnimationPlaylistItems();
-    //    delete m_clearAction;
-    //    delete m_stopAction;
-    //    delete m_playAction;
-    //    delete m_duplicateAction;
-    //    delete m_moveDownAction;
-    //    delete m_moveUpAction;
-    //    delete m_removeAction;
 }
 
 
@@ -86,7 +80,7 @@ void AnimationPlayListWidget::clearList()
 
     if(ret & QMessageBox::Yes){
         clear();
-        Q_EMIT contantChanged();
+        Q_EMIT contentChanged();
     }
 }
 
@@ -103,7 +97,7 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
     foreach (QListWidgetItem *i, item) {
         insertItem(count(), i->clone());
     }
-    Q_EMIT contantChanged();
+    Q_EMIT contentChanged();
 
 
 }
@@ -132,7 +126,7 @@ void AnimationPlayListWidget::removeItems()
         delete i;
 
     if (!count()){
-        Q_EMIT contantChanged();
+        Q_EMIT contentChanged();
     }
 
     setCurrentRow(currentRow());
@@ -458,6 +452,7 @@ void AnimationPlayListWidget::openAnimationPlaylistFrom(const QString &file)
     foreach (AnimationItem *item, animationItems) {
         insertItem(count() ,item);
     }
+    Q_EMIT contentChanged();
 }
 
 void AnimationPlayListWidget::setNewItemOptions(AnimationItem *itemForUpdate)
@@ -482,7 +477,7 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
         insertItem(row,i);
         setItemSelected(i,true);
     }
-    Q_EMIT contantChanged();
+    Q_EMIT contentChanged();
 }
 
 /*!
@@ -563,6 +558,7 @@ void AnimationPlayListWidget::openAnimationPlaylist()
     foreach (AnimationItem *item, animationItems) {
         insertItem(count() ,item);
     }
+    Q_EMIT contentChanged();
 }
 
 

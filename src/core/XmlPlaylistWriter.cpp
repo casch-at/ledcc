@@ -29,8 +29,6 @@ XmlPlaylistWriter::XmlPlaylistWriter()
 
 int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *animationItemList, const QString &pathToFile)
 {
-    if (animationItemList->isEmpty())
-        return 0;
     QFile file(pathToFile);
     if (!file.open(QIODevice::WriteOnly)) {  // INFO:: Print error message to user
         return -1;
@@ -38,6 +36,10 @@ int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *anim
         QXmlStreamWriter *xmlWriter = new QXmlStreamWriter();
         xmlWriter->setAutoFormatting(true);
         xmlWriter->setDevice(&file);
+
+        if (animationItemList->isEmpty()) /*! Check if the animationList is Empty after setting the IODevice to insure that the file gets cleared */
+            return 0;
+
         // Writes a document start with the XML version number
         xmlWriter->writeStartDocument();
         // Writes a start element with name
