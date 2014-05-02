@@ -35,6 +35,8 @@ namespace Settings{
     const QString SettingsDataBits("Settings/Port/databits");
     const QString SettingsStopBits("Settings/Port/stopbits");
     const QString SettingsFlowControl("Settings/Port/flowcontrol");
+    const QString LastSavePath("LastSavePath");
+    const QString LastOpenPath("LastOpenPath");
     }
 
 class QSettings;

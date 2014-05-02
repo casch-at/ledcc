@@ -19,6 +19,7 @@
 #include "Animations.hpp"
 #include "XmlPlaylistWriter.hpp"
 #include "XmlPlaylistReader.hpp"
+#include "System.hpp"
 
 // Qt includes
 #include <QScrollBar>
@@ -338,7 +339,7 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
         QModelIndex index;
         int row = -1;
         int col = -1;
-        if (dropOn(e,&row,&col,&index)) /* Evalute the row where to item(s) should be droped befor clone */
+        if (dropOn(e,&row,&col,&index)) /* Evaluate the row where to item(s) should be droped befor clone */
         {
             foreach (QListWidgetItem *i, selectedItems())
             {
@@ -355,8 +356,8 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
             return;
         }
     } else if (!e->source()->objectName().compare("m_animationList")) {
-        foreach (QListWidgetItem *i, dynamic_cast<QListWidget*>(e->source())->selectedItems()) {
-            items.append( i->clone() );
+        foreach (QListWidgetItem *i, dynamic_cast<ListWidget*>(e->source())->selectedItems()) {
+            items.insert(0, i->clone());
         }
         insertItemsAt( items, indexAt( e->pos() ).row() );
         e->accept();
@@ -437,17 +438,22 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
 void AnimationPlayListWidget::saveAnimationPlaylistItems()
 {
     QList<AnimationItem*> animationItems;
+    XmlPlaylistWriter xmlWriter;
+    System system;
+
+    getAllItems(&animationItems);
+    xmlWriter.writeAnimationPlaylist(&animationItems, system.getConfigPath() + "animations.xml");
+}
+
+void AnimationPlayListWidget::saveAnimationPlaylistItemsTo(const QString &location)
+{
+    QList<AnimationItem*> animationItems;
     getAllItems(&animationItems);
     XmlPlaylistWriter xmlWriter;
-    xmlWriter.writeAnimationPlaylist(&animationItems);
+    xmlWriter.writeAnimationPlaylist(&animationItems, location);
 }
 
-void AnimationPlayListWidget::saveAnimationPlaylistItemsTo()
-{
-
-}
-
-void AnimationPlayListWidget::openAnimationPlaylistFrom()
+void AnimationPlayListWidget::openAnimationPlaylistFrom(const QString &file)
 {
 
 
@@ -478,6 +484,10 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
     Q_EMIT contantChanged();
 }
 
+/*!
+ \brief Edit the animation properties
+
+*/
 void AnimationPlayListWidget::editItem()
 {
     QList<QListWidgetItem *> items = selectedItems();
@@ -499,8 +509,8 @@ void AnimationPlayListWidget::editItem()
 
 void AnimationPlayListWidget::onItemDoubleClicked(QListWidgetItem *item)
 {
-   m_nextAnimationRow = indexFromItem(item).row() + 1 ;
-   Q_EMIT playAnimation(dynamic_cast<AnimationItem*>(item));
+    m_nextAnimationRow = indexFromItem(item).row() + 1 ;
+    Q_EMIT playAnimation(dynamic_cast<AnimationItem*>(item));
 }
 
 /*!
@@ -542,13 +552,10 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
 void AnimationPlayListWidget::openAnimationPlaylist()
 {
     XmlPlaylistReader reader;
-    QList<AnimationItem*> animationItems = reader.readAnimationPlaylist();
-    if (!animationItems.isEmpty()) {
-        foreach (AnimationItem *item, animationItems) {
-            insertItem(count() ,item);
-        }
-    }else {
-        //TODO:: Inform the user that an error occured during read
+    System system;
+    QList<AnimationItem*> animationItems = reader.readAnimationPlaylist(system.getConfigPath() + "animations.xml");
+    foreach (AnimationItem *item, animationItems) {
+        insertItem(count() ,item);
     }
 }
 

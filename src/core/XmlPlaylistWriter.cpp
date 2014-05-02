@@ -27,11 +27,11 @@ XmlPlaylistWriter::XmlPlaylistWriter()
 {
 }
 
-int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *animationItemList)
+int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *animationItemList, const QString &pathToFile)
 {
-    System system;
-    QFile file(system.getConfigPath() + "animations.xml");
-
+    if (animationItemList->isEmpty())
+        return 0;
+    QFile file(pathToFile);
     if (!file.open(QIODevice::WriteOnly)) {  // INFO:: Print error message to user
         return -1;
     } else {
@@ -49,11 +49,11 @@ int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *anim
             Options *options = const_cast<Options*>(animation->getOptions());
 
 
-            // Create new StarteElement for the animations and add the name as attribute
+            // Create new StarteElement for the animations and add the animation name as attribute
             xmlWriter->writeStartElement("animation");
             xmlWriter->writeAttribute("name", animation->text());
 
-            // Write attributes of the animation
+            // Write start element - attributes - end element of the animation option
             xmlWriter->writeStartElement("options");
             xmlWriter->writeAttribute("options", QString("%1").arg(animation->getAvailableAnimationOptions()));
             xmlWriter->writeEndElement();

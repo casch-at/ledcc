@@ -47,6 +47,8 @@ private Q_SLOTS:
     void updateUi(bool portOpen);
     void updateAnimationActions();
     void help();
+    void savePlaylist();
+    void openPlaylist();
 private:
     bool okToContinue(void);
     void readSettings(void);

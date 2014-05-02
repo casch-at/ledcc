@@ -29,7 +29,7 @@ class XmlPlaylistReader
 {
 public:
     XmlPlaylistReader();
-    QList<AnimationItem*> readAnimationPlaylist();
+    QList<AnimationItem*> readAnimationPlaylist(const QString &xmlPlaylist);
 private:
     AnimationItem* parseAnimation(QXmlStreamReader *xmlReader);
     int readAnimationProperties(QXmlStreamReader *xmlReader, QXmlStreamAttributes *attributes, Options *options, AnimationItem *animationItem);

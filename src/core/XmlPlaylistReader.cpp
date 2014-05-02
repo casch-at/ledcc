@@ -16,9 +16,9 @@
  */
 
 #include "XmlPlaylistReader.hpp"
-
-#include "AnimationItem.hpp"
 #include "System.hpp"
+#include "AnimationItem.hpp"
+
 // Qt Includes
 #include <QXmlStreamReader>
 #include <QDir>
@@ -31,12 +31,10 @@ XmlPlaylistReader::XmlPlaylistReader()
 {
 }
 
-QList<AnimationItem *> XmlPlaylistReader::readAnimationPlaylist()
+QList<AnimationItem *> XmlPlaylistReader::readAnimationPlaylist(const QString &xmlPlaylist)
 {
     QList<AnimationItem*> animationItemList;
-    System system;
-
-    QFile file(system.getConfigPath() + "animations.xml");
+    QFile file(xmlPlaylist);
 
     if (!file.open(QIODevice::ReadOnly)) {
         return animationItemList;
@@ -60,6 +58,7 @@ QList<AnimationItem *> XmlPlaylistReader::readAnimationPlaylist()
                 }
             }
         }
+        delete xmlReader;
     }
     return animationItemList;
 }

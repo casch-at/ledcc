@@ -37,6 +37,7 @@
 #include <QByteArray>
 #include <QEventLoop>
 #include <QShortcut>
+#include <QFileDialog>
 
 #ifdef _DEBUG_
 #include <QDebug>
@@ -219,6 +220,51 @@ void MainWindow::help()
     m_helpDialog->show();
 }
 
+void MainWindow::savePlaylist()
+{
+    QString pathToFile;
+    QFileDialog fileDialog;
+
+    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog.setDefaultSuffix(".xml");
+    fileDialog.setNameFilter("XML File (*.xml)");
+    pathToFile = config()->get(Settings::LastSavePath).toString();
+
+    if (pathToFile.isEmpty()) {
+        fileDialog.setDirectory(pathToFile);
+    } else {
+        fileDialog.setDirectory(QDir::homePath());
+    }
+
+    if (fileDialog.exec() == QDialog::Rejected)
+        return;
+
+    qDebug( ) << "getsavefileurl" << fileDialog.getSaveFileUrl();
+    m_ui->m_animationPlaylist->saveAnimationPlaylistItemsTo(pathToFile);
+    config()->set(Settings::LastSavePath,pathToFile);
+}
+
+void MainWindow::openPlaylist()
+{
+    QString pathToFile;
+    QFileDialog fileDialog;
+
+    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog.setNameFilter("XML File (*.xml)");
+    pathToFile = config()->get(Settings::LastOpenPath).toString();
+
+    if (pathToFile.isEmpty()) {
+        fileDialog.setDirectory(pathToFile);
+    } else {
+        fileDialog.setDirectory(QDir::homePath());
+    }
+
+    if (fileDialog.exec() == QDialog::Rejected)
+        return;
+    config()->set(Settings::LastOpenPath,pathToFile);
+    m_ui->m_animationPlaylist->openAnimationPlaylistFrom(pathToFile);
+}
+
 /**
  * @brief Create connections
  *
@@ -244,8 +290,8 @@ void MainWindow::connectSignals(void)
     connect( m_ui->m_animationList , &AnimationListWidget::showPropertiePreview , m_ui->m_animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
     connect( m_ui->m_animationPlaylist, &AnimationPlayListWidget::contantChanged , this, &MainWindow::updateAnimationActions);
     connect( m_ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, m_ui->m_animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
-    connect( m_ui->m_openAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::openAnimationPlaylistFrom);
-    connect( m_ui->m_saveAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::saveAnimationPlaylistItemsTo);
+    connect( m_ui->m_openAction, &QAction::triggered, this , &MainWindow::openPlaylist);
+    connect( m_ui->m_saveAction, &QAction::triggered, this , &MainWindow::savePlaylist);
 
     // Animation Playlist action
     connect( m_ui->m_clearAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::clearList);

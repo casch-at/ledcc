@@ -27,7 +27,7 @@ class XmlPlaylistWriter
 
 public:
     XmlPlaylistWriter();
-    int writeAnimationPlaylist(const QList<AnimationItem*> *animationItemList);
+    int writeAnimationPlaylist(const QList<AnimationItem*> *animationItemList, const QString &pathToFile);
 signals:
 
 public slots:

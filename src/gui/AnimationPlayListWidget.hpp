@@ -48,8 +48,8 @@ public Q_SLOTS:
     void onItemDoubleClicked(QListWidgetItem *item);
     AnimationItem *getNextAnimation(void);
     void saveAnimationPlaylistItems();
-    void saveAnimationPlaylistItemsTo();
-    void openAnimationPlaylistFrom();
+    void saveAnimationPlaylistItemsTo(const QString &location);
+    void openAnimationPlaylistFrom(const QString &file);
 private Q_SLOTS:
     void setNewItemOptions(AnimationItem *itemForUpdate);
 protected:

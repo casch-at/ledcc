@@ -20,6 +20,11 @@
 #include <QDir>
 
 
+/*!
+ \brief Retrive the system user default config path
+
+ \return QString Path to system user config path
+*/
 QString System::getConfigPath()
 {
     QString userPath;
