@@ -255,7 +255,7 @@
     <string>Open/Close Serialport</string>
    </property>
    <property name="toolTip">
-    <string>Connect to seriell device  O</string>
+    <string>Connect to seriell device</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+C</string>
@@ -464,9 +464,6 @@
    </property>
    <property name="text">
     <string>Select All</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+A</string>
    </property>
   </action>
  </widget>

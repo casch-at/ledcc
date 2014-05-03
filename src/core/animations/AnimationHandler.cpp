@@ -117,17 +117,17 @@ void AnimationHandler::playAnimation(const AnimationItem *animation)
  */
 void AnimationHandler::playNextAnimation(const AnimationItem *item)
 {
-    if(item == Q_NULLPTR){
-        Q_EMIT stopPlay();
-        return;
-    }
-    m_currentAnimation = animations()->get(item->text());
-    connect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
-    connect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
-    connect(m_currentAnimation,&Animation::done,this,&AnimationHandler::animationDone);
+    if(item){
+        m_currentAnimation = animations()->get(item->text());
+        connect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
+        connect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
+        connect(m_currentAnimation,&Animation::done,this,&AnimationHandler::animationDone);
 
-    animations()->updateAnimation(item);
-    m_createThread->start();
+        animations()->updateAnimation(item);
+        m_createThread->start();
+    } else  {
+        stopThreads();
+    }
 }
 /*!
  \brief

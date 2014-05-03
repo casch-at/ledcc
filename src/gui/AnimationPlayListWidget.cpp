@@ -125,9 +125,8 @@ void AnimationPlayListWidget::removeItems()
     foreach (QListWidgetItem *i, selectedItems())
         delete i;
 
-    if (!count()){
+    if (!count())
         Q_EMIT contentChanged();
-    }
 
     setCurrentRow(currentRow());
 
@@ -512,7 +511,6 @@ void AnimationPlayListWidget::onItemDoubleClicked(QListWidgetItem *item)
 /*!
  \brief Sort the indexes after the row order.
   A insertion algorithm is used for sorting the \a QModelIndexList.
-
  \param ascending Sort the indexes ascending if true otherwise descending.
  \param list Pointer to \a QModelIndexList to sort.
 */

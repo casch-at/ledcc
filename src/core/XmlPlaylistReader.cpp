@@ -149,7 +149,7 @@ int XmlPlaylistReader::readAnimationProperties(QXmlStreamAttributes *attributes,
             break;
         case 2:
             if (attribute.name().compare("axis")) return ERRNO;
-            options->m_delay = static_cast<Draw::Axis>(attribute.value().toString().toInt());
+            options->m_axis = static_cast<Draw::Axis>(attribute.value().toString().toInt());
             break;
         case 3:
             if (attribute.name().compare("delay")) return ERRNO;
