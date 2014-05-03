@@ -457,6 +457,18 @@
     <string>F1</string>
    </property>
   </action>
+  <action name="m_selectAllAction">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/images/select.png</normaloff>:/images/select.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

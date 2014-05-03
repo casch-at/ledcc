@@ -20,6 +20,10 @@
 /* Application includes */
 #include "Config.hpp"
 
+/* Thirdparty includes */
+#include "aqp.hpp"
+#include "alt_key.hpp"
+
 /* Qt includes */
 #include <QCloseEvent>
 #include <QSerialPort>
@@ -63,6 +67,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     fillPortsInfo();
     updateSettings();
     restoreValues();
+    AQP::accelerateWidget(this);
 }
 
 /**

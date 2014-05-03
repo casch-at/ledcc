@@ -26,5 +26,6 @@
         <file>images/document-save-5.png</file>
         <file>images/openfiler.png</file>
         <file>images/help-hint.png</file>
+        <file>images/select.png</file>
     </qresource>
 </RCC>

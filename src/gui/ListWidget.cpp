@@ -111,7 +111,17 @@ void ListWidget::on_showPropertiesPreviewTimerTimeout()
 void ListWidget::on_customContextMenuRequest(const QPoint &pos)
 {
     QMenu menu(this);
-    menu.addActions(actions());
+    QAction *selectAll = Q_NULLPTR;
+    QList<QAction*> allActions = actions();
+
+    Q_ASSERT(!allActions.last()->objectName().compare("m_selectAllAction"));
+
+    selectAll = allActions.last();
+    allActions.removeLast();
+
+    menu.addActions(allActions);
+    menu.addSeparator();
+    menu.addActions(QList<QAction*>() << selectAll);
     menu.exec(viewport()->mapToGlobal(pos));
 }
 
