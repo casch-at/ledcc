@@ -47,7 +47,7 @@ SerialSettings* SerialSettings::m_instance = Q_NULLPTR;
 void SettingsDialog::closeEvent(QCloseEvent *e)
 {
     hide();
-//    e->accept();
+    e->accept();
 }
 
 SettingsDialog::SettingsDialog(QWidget *parent) :

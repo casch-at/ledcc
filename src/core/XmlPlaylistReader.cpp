@@ -69,6 +69,38 @@ QList<AnimationItem *> XmlPlaylistReader::readAnimationPlaylist(const QString &x
     return animationItemList;
 }
 
+///*!
+// \brief
+
+// \param xmlReader
+// \return AnimationItem
+//*/
+//AnimationItem* XmlPlaylistReader::parseAnimation(QXmlStreamReader *xmlReader)
+//{
+//    Options options;
+//    AnimationItem *animationItem;
+//    QXmlStreamAttributes attributes = xmlReader->attributes();
+
+//    if (attributes.hasAttribute("name"))
+//        animationItem = new AnimationItem(attributes.value("name").toString());
+
+//    while (!(xmlReader->tokenType() == QXmlStreamReader::EndElement && xmlReader->name() == "animation")) {
+//        xmlReader->readNext();
+//        attributes = xmlReader->attributes();
+
+//        if (xmlReader->tokenType() == QXmlStreamReader::StartElement) {
+//            if(readAnimationProperties(xmlReader, &attributes, &options, animationItem) == ERRNO ){
+//                delete animationItem;
+//                animationItem = Q_NULLPTR;
+//                return animationItem;
+//            }
+//        }
+
+//    }
+//    animationItem->setOptions(options);
+//    animationItem->createAnimationTooltipAsRichText();
+//    return animationItem;
+//}
 /*!
  \brief
 
@@ -78,25 +110,15 @@ QList<AnimationItem *> XmlPlaylistReader::readAnimationPlaylist(const QString &x
 AnimationItem* XmlPlaylistReader::parseAnimation(QXmlStreamReader *xmlReader)
 {
     Options options;
-    AnimationItem *animationItem;
+    AnimationItem *animationItem = new AnimationItem();
     QXmlStreamAttributes attributes = xmlReader->attributes();
 
-    if (attributes.hasAttribute("name"))
-        animationItem = new AnimationItem(attributes.value("name").toString());
-
-    while (!(xmlReader->tokenType() == QXmlStreamReader::EndElement && xmlReader->name() == "animation")) {
-        xmlReader->readNext();
-        attributes = xmlReader->attributes();
-
-        if (xmlReader->tokenType() == QXmlStreamReader::StartElement) {
-            if(readAnimationProperties(xmlReader, &attributes, &options, animationItem) == ERRNO ){
-                delete animationItem;
-                animationItem = Q_NULLPTR;
-                return animationItem;
-            }
-        }
-
+    if(readAnimationProperties(&attributes, &options, animationItem) == ERRNO ){
+        delete animationItem;
+        animationItem = Q_NULLPTR;
+        return animationItem;
     }
+
     animationItem->setOptions(options);
     animationItem->createAnimationTooltipAsRichText();
     return animationItem;
@@ -109,33 +131,64 @@ AnimationItem* XmlPlaylistReader::parseAnimation(QXmlStreamReader *xmlReader)
  \param options Pointer to the animation Options object
  \return int Returns -1 on error otherwise 0
 */
-int XmlPlaylistReader::readAnimationProperties(QXmlStreamReader *xmlReader, QXmlStreamAttributes *attributes,
+int XmlPlaylistReader::readAnimationProperties(QXmlStreamAttributes *attributes,
                                                Options *options, AnimationItem *animationItem)
 {
-    if (attributes->hasAttribute("options")){
-        animationItem->setAvailableAnimationOptions(attributes->value("options").toString().toInt());
-    } else if (attributes->hasAttribute("axis")) {
-        options->m_delay = static_cast<Draw::Axis>(attributes->value("axis").toString().toInt());
-    } else if (attributes->hasAttribute("delay")) {
-        options->m_delay = attributes->value("delay").toString().toInt();
-    } else if (xmlReader->name() == "direction") {
-        options->m_direction = static_cast<Draw::Direction>(attributes->value("direction").toString().toInt());
-    } else if (xmlReader->name() == "invert") {
-        options->m_invert = static_cast<bool>(attributes->value("invert").toString().toInt());
-    } else if (xmlReader->name() == "iteration") {
-        options->m_iteration = attributes->value("iteration").toString().toInt();
-    } else if (xmlReader->name() == "leds") {
-        options->m_leds = attributes->value("leds").toString().toInt();
-    } else if (attributes->hasAttribute("speed")) {
-        options->m_speed = attributes->value("speed").toString().toInt();
-    } else if (attributes->hasAttribute("state")) {
-        options->m_state = static_cast<Draw::BixelState>(attributes->value("state").toString().toInt());
-    } else if (xmlReader->name() == "text") {
-        options->m_text = attributes->value("text").toString();
-    } else {
-        return -1;
+    QXmlStreamAttribute attribute;
+    for (int i = 0; i < attributes->count(); i++) {
+        attribute = attributes->at(i);
+        switch (i)
+        {
+        case 0:
+            if (attribute.name().compare("name")) return ERRNO;
+            animationItem->setText(attribute.value().toString());
+            break;
+        case 1:
+            if (attribute.name().compare("options")) return ERRNO;
+            animationItem->setAvailableAnimationOptions(attribute.value().toString().toInt());
+            break;
+        case 2:
+            if (attribute.name().compare("axis")) return ERRNO;
+            options->m_delay = static_cast<Draw::Axis>(attribute.value().toString().toInt());
+            break;
+        case 3:
+            if (attribute.name().compare("delay")) return ERRNO;
+            options->m_delay = attribute.value().toString().toInt();
+            break;
+        case 4:
+            if (attribute.name().compare("direction")) return ERRNO;
+            options->m_direction = static_cast<Draw::Direction>(attribute.value().toString().toInt());
+            break;
+        case 5:
+            if (attribute.name().compare("invert")) return ERRNO;
+            options->m_invert = static_cast<bool>(attribute.value().toString().toInt());
+            break;
+        case 6:
+            if (attribute.name().compare("iteration")) return ERRNO;
+            options->m_iteration = attribute.value().toString().toInt();
+            break;
+        case 7:
+            if (attribute.name().compare("leds")) return ERRNO;
+            options->m_leds = attribute.value().toString().toInt();
+            break;
+        case 8:
+            if (attribute.name().compare("speed")) return ERRNO;
+            options->m_speed = attribute.value().toString().toInt();
+            break;
+        case 9:
+            if (attribute.name().compare("state")) return ERRNO;
+            options->m_state = static_cast<Draw::BixelState>(attribute.value().toString().toInt());
+            break;
+        case 10:
+            if (attribute.name().compare("text")) return ERRNO;
+            options->m_text = attribute.value().toString();
+            break;
+        default:
+            return ERRNO;
+            break;
+        }
     }
-    return 0;
+    return OK;
 }
 
 void XmlPlaylistReader::cleanUpOnError(QList<AnimationItem*> *animationItemList)

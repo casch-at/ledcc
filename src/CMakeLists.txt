@@ -17,7 +17,7 @@
 # ---------------------------------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------------------------------
-# Include directories containing headers files
+# Set include directories containing headers files
 # ---------------------------------------------------------------------------------------------------
 set(include_DIRECTORIES
     ${CMAKE_CURRENT_SOURCE_DIR}/gui
@@ -25,7 +25,6 @@ set(include_DIRECTORIES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/animations
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/aqp
 )
-
 include_directories(${include_DIRECTORIES})
 
 # ---------------------------------------------------------------------------------------------------
