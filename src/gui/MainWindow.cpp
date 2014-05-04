@@ -23,7 +23,7 @@
 #include "Sender.hpp"
 #include "Config.hpp"
 #include "HelpDialog.hpp"
-
+#include "AboutDialog.hpp"
 // ThirdParty
 #include "alt_key.hpp"
 #include "aqp.hpp"
@@ -57,7 +57,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_helpDialog(Q_NULLPTR),
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
-    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
+    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
+    m_aboutMsgBox(Q_NULLPTR)
 {
     m_ui->setupUi(this); // Ui must be first created befor accessing the elements
     m_ui->m_animationList->setFocus();
@@ -323,10 +324,21 @@ void MainWindow::connectSignals(void)
  */
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("About 3D-LED Cube"),
-                       tr("<h2> 3D-LED Cube v%1</h2>"
-                          "<p> Copyright &copy; 2014 Christian Schwarzgruber"
-                          "<p>The <b>3D-LED Cube</b> program was part of my thesis."
-                          "This program lets you rearange the animation in the order you like it, you can even adjust speed,"
-                          "delay, iterations and much more.").arg(LEDCC_VERSION));
+    if (!m_aboutMsgBox) {
+        m_aboutMsgBox = new AboutDialog(
+                    tr("<h2>3D-LED Cube Control</h2>"),
+                    QString("%1").arg(LEDCC_VERSION),
+                    tr("LED Cube Control<br>"
+                       "<p> Copyright &copy; 2014 Christian Schwarzgruber"
+                       "<p>The <b>3D-LED Cube</b> program has been implemented with the "
+                       "indention to send the created animation to a µC, without worring about "
+                       "the computation power of the µC. "
+                       "The application is designed like a modern music player, you can start "
+                       "and stop the animation, add animations to the playlist or remove it from the playlist. "
+                       "Furthermore, the animation properties can be adjusted through the user interface."),
+//                       "<p><address><a href=''>License: GNU General Public License</a></address>"),
+                    QPixmap("://images/ledgreen.png"),
+                    this);
+    }
+    m_aboutMsgBox->show();
 }

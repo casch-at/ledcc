@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>3D-LED Cube </string>
+   <string>3D-LED Cube Control</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../icons.qrc">
@@ -418,7 +418,7 @@
      <normaloff>:/images/help-about.png</normaloff>:/images/help-about.png</iconset>
    </property>
    <property name="text">
-    <string>About 3D-LED Cube</string>
+    <string>About 3D-LED Cube Control</string>
    </property>
   </action>
   <action name="m_aboutQt">

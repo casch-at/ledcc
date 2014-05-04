@@ -25,7 +25,7 @@ class QShortcut;
 /* Application forward declerations */
 class AnimationHandler;
 class HelpDialog;
-
+class AboutDialog;
 namespace Ui {
     class MainWindow;
 }
@@ -55,13 +55,13 @@ private:
     void saveSettings(void);
     void connectSignals(void);
 private:
-//    friend class AnimationHandler;
     Ui::MainWindow *m_ui;
     HelpDialog *m_helpDialog;
 
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;
+    AboutDialog *m_aboutMsgBox;
     bool m_open; /* Port open or not */
     AnimationHandler *m_animationHandler;
     Q_DISABLE_COPY(MainWindow)

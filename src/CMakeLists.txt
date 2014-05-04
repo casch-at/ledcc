@@ -99,6 +99,7 @@ set(ledcc_gui_SOURCES
     ${GuiDirectory}/AnimationPropertiesPreview.cpp
     ${GuiDirectory}/ListWidget.cpp
     ${GuiDirectory}/HelpDialog.cpp
+    ${GuiDirectory}/AboutDialog.cpp
 )
 # ---------------------------------------------------------------------------------------------------
 # Put all source files together
@@ -118,6 +119,7 @@ set(ledcc_gui_FORMS
     ${GuiDirectory}/AnimationOptions.ui
     ${GuiDirectory}/AnimationPropertiesPreview.ui
     ${GuiDirectory}/HelpDialog.ui
+    ${GuiDirectory}/AboutDialog.ui
 )
 
 # ---------------------------------------------------------------------------------------------------
