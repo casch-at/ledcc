@@ -18,8 +18,14 @@
     <normaloff>:/images/ledgreen.png</normaloff>:/images/ledgreen.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
      <widget class="QSplitter" name="m_animationListSplitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -230,6 +236,21 @@
    <addaction name="menuEdit"/>
    <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QDockWidget" name="m_animationPreview">
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="windowTitle">
+    <string>Animation Preview</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="m_animationDockWidgetContents"/>
   </widget>
   <action name="m_quitAction">
    <property name="icon">

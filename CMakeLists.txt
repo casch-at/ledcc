@@ -36,12 +36,20 @@ project(ledcc C CXX)
 set(PROGNAME ${PROJECT_NAME})
 
 # ---------------------------------------------------------------------------------------------------
-# Find Qt5 Modules
+# Find packages
 # ---------------------------------------------------------------------------------------------------
-set(QT_REQUIRED_MODULES Qt5Widgets Qt5SerialPort Qt5Qml Qt5WebKit)
+set(QT_REQUIRED_MODULES Qt5Widgets Qt5SerialPort Qt5Quick Qt5WebKitWidgets)
 foreach(QT_MODULE ${QT_REQUIRED_MODULES})
     find_package(${QT_MODULE} REQUIRED)
 endforeach(QT_MODULE)
+
+#find_package(OpenGL)
+
+# ---------------------------------------------------------------------------------------------------
+# Add qt defintions
+# ---------------------------------------------------------------------------------------------------
+add_definitions(${QT_DEFINITIONS})
+remove_definitions(-DQT3_SUPPORT_WARNINGS -DQT3_SUPPORT)
 
 # ---------------------------------------------------------------------------------------------------
 # Source code directories
@@ -51,7 +59,7 @@ set(ThirdPartyDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty")
 set(GuiDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/gui")
 
 # ---------------------------------------------------------------------------------------------------
-# Set the cmake module path to tell cmake where it has to look for other cmake files when include is called
+# Set the cmake module path to tell cmake where it has to look for other cmake files when include(xxx.cmake) is called
 # ---------------------------------------------------------------------------------------------------
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -64,7 +72,7 @@ include(CompileFlags)
 # Configure install option and cmake tool options
 # ---------------------------------------------------------------------------------------------------
 include(Options)
-include_directories(./images)
+#include_directories(./images)
 # ---------------------------------------------------------------------------------------------------
 # Add the source code subdirectory
 # ---------------------------------------------------------------------------------------------------

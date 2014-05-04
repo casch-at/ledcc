@@ -74,8 +74,7 @@ void Config::createTempFileInstance()
 Config::Config(QObject *parent) :
     QObject(parent)
 {
-    System system;
-    init( system.getConfigPath() + "ledcc.ini");
+    init( System::getConfigPath() + "ledcc.ini");
 }
 
 Config::Config(const QString &fileName, QObject *parent):

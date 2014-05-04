@@ -16,6 +16,24 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------------------------------------
 
+#macro( marble_add_project_resources resources )
+#  add_custom_target( ${PROJECT_NAME}_Resources ALL SOURCES ${ARGN} )
+#endmacro()
+#FILE (GLOB QML_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/preview/qml/*.qml )
+#marble_add_project_resources(${QML_FILES})
+
+# ---------------------------------------------------------------------------------------------------
+# Copy qml files to binary directory share/qml
+# ---------------------------------------------------------------------------------------------------
+#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/preview/qml DESTINATION ${CMAKE_BINARY_DIR}/share)
+set(GLOB QML_FILES ${CMAKE_CURRENT_SOURCE_DIR}/preview/qml/*.qml)
+foreach(qml_file ${QML_FILES})
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/preview/qml/${qml_file} ${CMAKE_CURRENT_BINARY_DIR}/share/qml/${qml_file}
+        MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/preview/qml/${qml_file})
+endforeach()
+
 # ---------------------------------------------------------------------------------------------------
 # Set include directories containing headers files
 # ---------------------------------------------------------------------------------------------------
@@ -24,7 +42,9 @@ set(include_DIRECTORIES
     ${CMAKE_CURRENT_SOURCE_DIR}/core
     ${CMAKE_CURRENT_SOURCE_DIR}/core/animations
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/aqp
+    ${CMAKE_CURRENT_SOURCE_DIR}/preview
 )
+
 include_directories(${include_DIRECTORIES})
 
 # ---------------------------------------------------------------------------------------------------
@@ -159,6 +179,8 @@ add_library(ledcc-core
 target_link_libraries(ledcc-core
                       ${Qt5Widgets_LIBRARIES}
                       ${Qt5SerialPort_LIBRARIES}
+#                      ${Qt5WebKit_LIBRARIES}
+                      ${Qt5WebKitWidgets_LIBRARIES}
 )
 # ---------------------------------------------------------------------------------------------------
 # Create a executable

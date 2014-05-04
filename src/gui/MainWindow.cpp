@@ -38,7 +38,7 @@
 #include <QEventLoop>
 #include <QShortcut>
 #include <QFileDialog>
-
+#include <QQuickView>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -76,6 +76,18 @@ MainWindow::MainWindow(QWidget *parent) :
     updateUi(false); // Should be called after we set the animationPlaylist actions
     readSettings ();
     connectSignals();
+    QQuickView *view = new QQuickView();
+    view->setObjectName(QStringLiteral("m_qquickView"));
+    view->setColor(QColor(0,0,0));
+    QWidget *container = QWidget::createWindowContainer(view,this);
+    container->setObjectName(QStringLiteral("m_qquickViewContainer"));
+    container->setMinimumSize(200, 200);
+    container->setMaximumSize(10000, 10000);
+    container->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    container->setFocusPolicy(Qt::TabFocus);
+    view->setSource(QUrl::fromLocalFile("../share/qml/main.qml"));
+    m_ui->m_animationPreview->setWidget(container);
+
     AQP::accelerateActions(actions());
     AQP::accelerateMenu(m_ui->menuBar);
 }

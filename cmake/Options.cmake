@@ -8,12 +8,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # ---------------------------------------------------------------------------------------------------
 set(CMAKE_AUTOMOC ON)
 
-add_definitions(${Qt5Widgets_DEFINITIONS} ${Qt5SerialPort_DEFINITIONS})
-
 # ---------------------------------------------------------------------------------------------------
 # Setup build type ( possible modes are RELEASE, DEBUG )
 # ---------------------------------------------------------------------------------------------------
-if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Debug mode")
     add_definitions(-D_DEBUG_)
 else()
