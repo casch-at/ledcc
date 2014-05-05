@@ -329,11 +329,11 @@ void MainWindow::about()
                     tr("<h2>3D-LED Cube Control</h2>"),
                     QString("%1").arg(LEDCC_VERSION),
                     tr("LED Cube Control<br>"
-                       "<p> Copyright &copy; 2014 Christian Schwarzgruber"
+                       "<p>Copyright &copy; 2014 Christian Schwarzgruber"
                        "<p>The <b>3D-LED Cube</b> program has been implemented with the "
                        "indention to send the created animation to a µC, without worring about "
                        "the computation power of the µC. "
-                       "The application is designed like a modern music player, you can start "
+                       "<p>The application is designed like a modern music player, you can start "
                        "and stop the animation, add animations to the playlist or remove it from the playlist. "
                        "Furthermore, the animation properties can be adjusted through the user interface."),
 //                       "<p><address><a href=''>License: GNU General Public License</a></address>"),
