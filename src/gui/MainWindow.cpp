@@ -77,18 +77,6 @@ MainWindow::MainWindow(QWidget *parent) :
     updateUi(false); // Should be called after we set the animationPlaylist actions
     readSettings ();
     connectSignals();
-    QQuickView *view = new QQuickView();
-    view->setObjectName(QStringLiteral("m_qquickView"));
-    view->setColor(QColor(0,0,0));
-    QWidget *container = QWidget::createWindowContainer(view,this);
-    container->setObjectName(QStringLiteral("m_qquickViewContainer"));
-    container->setMinimumSize(200, 200);
-    container->setMaximumSize(10000, 10000);
-    container->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    container->setFocusPolicy(Qt::TabFocus);
-    view->setSource(QUrl::fromLocalFile("../share/qml/main.qml"));
-    m_ui->m_animationPreview->setWidget(container);
-
     AQP::accelerateActions(actions());
     AQP::accelerateMenu(m_ui->menuBar);
 }
@@ -335,7 +323,7 @@ void MainWindow::about()
                        "the computation power of the µC. "
                        "<p>The application is designed like a modern music player, you can start "
                        "and stop the animation, add animations to the playlist or remove it from the playlist. "
-                       "Furthermore, the animation properties can be adjusted through the user interface."),
+                       "Furthermore, all animation properties can be adjusted through the user interface."),
 //                       "<p><address><a href=''>License: GNU General Public License</a></address>"),
                     QPixmap("://images/ledgreen.png"),
                     this);
