@@ -57,6 +57,7 @@ AnimationOptions::AnimationOptions(QList<AnimationItem*> &itemsList, QWidget *pa
     ui(new Ui::AnimationOptions),
     m_animationAt(-1)
 {
+    Q_ASSERT(!itemsList.isEmpty());
     // Setup the user interface
     ui->setupUi(this);
     // Create connections ( Signal & Slot )
@@ -67,25 +68,7 @@ AnimationOptions::AnimationOptions(QList<AnimationItem*> &itemsList, QWidget *pa
     connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
     connect(this, &QDialog::rejected, this, &AnimationOptions::cancel);
 
-    void (AnimationOptions:: *slot1)() = &AnimationOptions::compareOldNewAnimationOptions; /* Resolve the overloaded function compareOldNewAnimationOptions */
-    connect(ui->m_speedSpinB, &QSpinBox::editingFinished, this, slot1);
-    connect(ui->m_delaySpinB, &QSpinBox::editingFinished, this,slot1);
-    connect(ui->m_ledsSpinB, &QSpinBox::editingFinished, this, slot1);
-    connect(ui->m_particlesSpinB, &QSpinBox::editingFinished, this, slot1);
-    connect(ui->m_iterationsSpinB, &QSpinBox::editingFinished, this, slot1);
 
-    /* Resolve functions before creating the connection */
-    void (QComboBox:: *signal2)(int) = &QComboBox::currentIndexChanged;
-    void (AnimationOptions:: *slot2)(int) = &AnimationOptions::compareOldNewAnimationOptions;
-    connect(ui->m_axisComB, signal2,this, slot2);
-    connect(ui->m_directionComB, signal2,this, slot2);
-
-    connect(ui->m_invertCheckB, &QCheckBox::stateChanged, this, slot2);
-    connect(ui->m_ledStateCheckB, &QCheckBox::stateChanged, this, slot2);
-
-    connect(ui->m_textLineE, &QLineEdit::editingFinished, this, slot1);
-    if(itemsList.isEmpty())
-        return;
     m_itemList = itemsList;
     optionsNextAnimation();
     AQP::accelerateWidget(this);
@@ -245,6 +228,11 @@ void AnimationOptions::optionsPrevAnimation()
 void AnimationOptions::hideShowWidgetsDisplayOptions()
 {
     const Options *options = m_animationToUpdate->getOptions();
+    /*
+     * Disconnect all widgets first, otherwise the signal gets triggert when
+     * we insert a new value into the widget, which is different than the current one
+     */
+    disconnectAll();
 
     for (int i = 0; i < TOTAL_ARGUMENTS; i++) {
         switch ( (1 << i) & m_animationToUpdate->getAvailableAnimationOptions() )
@@ -351,6 +339,10 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
             break;
         }
     }
+    /*
+     * We can now connect the widgets
+     */
+    connectAll();
     Q_EMIT updateUi();
 }
 
@@ -385,6 +377,48 @@ int AnimationOptions::okToContinue()
     return msgb.exec();
 }
 
+void AnimationOptions::connectAll()
+{
+    void (AnimationOptions:: *slot1)() = &AnimationOptions::compareOldNewAnimationOptions; /* Resolve the overloaded function compareOldNewAnimationOptions */
+    connect(ui->m_speedSpinB, &QSpinBox::editingFinished, this, slot1);
+    connect(ui->m_delaySpinB, &QSpinBox::editingFinished, this,slot1);
+    connect(ui->m_ledsSpinB, &QSpinBox::editingFinished, this, slot1);
+    connect(ui->m_particlesSpinB, &QSpinBox::editingFinished, this, slot1);
+    connect(ui->m_iterationsSpinB, &QSpinBox::editingFinished, this, slot1);
+
+    /* Resolve functions before creating the connection */
+    void (QComboBox:: *signal2)(int) = &QComboBox::currentIndexChanged;
+    void (AnimationOptions:: *slot2)(int) = &AnimationOptions::compareOldNewAnimationOptions;
+    connect(ui->m_axisComB, signal2,this, slot2);
+    connect(ui->m_directionComB, signal2,this, slot2);
+
+    connect(ui->m_invertCheckB, &QCheckBox::stateChanged, this, slot2);
+    connect(ui->m_ledStateCheckB, &QCheckBox::stateChanged, this, slot2);
+
+    connect(ui->m_textLineE, &QLineEdit::editingFinished, this, slot1);
+}
+
+void AnimationOptions::disconnectAll()
+{
+    void (AnimationOptions:: *slot1)() = &AnimationOptions::compareOldNewAnimationOptions; /* Resolve the overloaded function compareOldNewAnimationOptions */
+    disconnect(ui->m_speedSpinB, &QSpinBox::editingFinished, this, slot1);
+    disconnect(ui->m_delaySpinB, &QSpinBox::editingFinished, this,slot1);
+    disconnect(ui->m_ledsSpinB, &QSpinBox::editingFinished, this, slot1);
+    disconnect(ui->m_particlesSpinB, &QSpinBox::editingFinished, this, slot1);
+    disconnect(ui->m_iterationsSpinB, &QSpinBox::editingFinished, this, slot1);
+
+    /* Resolve functions before creating the connection */
+    void (QComboBox:: *signal2)(int) = &QComboBox::currentIndexChanged;
+    void (AnimationOptions:: *slot2)(int) = &AnimationOptions::compareOldNewAnimationOptions;
+    disconnect(ui->m_axisComB, signal2,this, slot2);
+    disconnect(ui->m_directionComB, signal2,this, slot2);
+
+    disconnect(ui->m_invertCheckB, &QCheckBox::stateChanged, this, slot2);
+    disconnect(ui->m_ledStateCheckB, &QCheckBox::stateChanged, this, slot2);
+
+    disconnect(ui->m_textLineE, &QLineEdit::editingFinished, this, slot1);
+}
+
 
 /*!
  \brief
@@ -394,56 +428,50 @@ int AnimationOptions::okToContinue()
 void AnimationOptions::compareOldNewAnimationOptions()
 {
     const Options options = *m_animationToUpdate->getOptions();
-    int ret = 0;
-    ret = options.m_speed != ui->m_speedSpinB->value() ? 1 : 0;
-    for (int i = 1; i < TOTAL_ARGUMENTS; i++) {
+    int modefied = 0;
+    modefied = options.m_speed != ui->m_speedSpinB->value() ? 1 : 0;
+    for (int i = 1; i < TOTAL_ARGUMENTS && !modefied; i++) {
         switch ( (1 << i) & m_animationToUpdate->getAvailableAnimationOptions() )
         {
         case Direction:
-            ret += options.m_direction != ui->m_directionComB->currentIndex() ? 1 : 0;
+            modefied += options.m_direction != ui->m_directionComB->currentIndex() ? 1 : 0;
             break;
         case Axis:
-            ret += options.m_axis != ui->m_axisComB->currentIndex() ? 1 : 0;
+            modefied += options.m_axis != ui->m_axisComB->currentIndex() ? 1 : 0;
             break;
         case Leds:
-            ret += options.m_leds != ui->m_ledsSpinB->value() ? 1 : 0;
+            modefied += options.m_leds != ui->m_ledsSpinB->value() ? 1 : 0;
             break;
         case Particls:
-            ret += options.m_leds != ui->m_particlesSpinB->value() ? 1 : 0;
+            modefied += options.m_leds != ui->m_particlesSpinB->value() ? 1 : 0;
             break;
         case Delay:
-            ret += options.m_delay != ui->m_delaySpinB->value() ? 1 : 0;
+            modefied += options.m_delay != ui->m_delaySpinB->value() ? 1 : 0;
             break;
         case Iterations:
-            ret += options.m_iteration != ui->m_iterationsSpinB->value() ? 1 : 0;
+            modefied += options.m_iteration != ui->m_iterationsSpinB->value() ? 1 : 0;
             break;
         case Invert:
-            ret += options.m_invert != ui->m_invertCheckB->isChecked() ? 1 : 0;
+            modefied += options.m_invert != ui->m_invertCheckB->isChecked() ? 1 : 0;
             break;
         case CenterStart:
-            ret += options.m_invert != ui->m_invertCheckB->isChecked() ? 1 : 0;
+            modefied += options.m_invert != ui->m_invertCheckB->isChecked() ? 1 : 0;
             break;
         case Text:
-            ret += options.m_text.compare(ui->m_textLineE->text()) ? 1 : 0;
+            modefied += options.m_text.compare(ui->m_textLineE->text()) ? 1 : 0;
             break;
         case LedState:
-            ret += options.m_state != ui->m_ledStateCheckB->isChecked() ? 1 : 0;
+            modefied += options.m_state != ui->m_ledStateCheckB->isChecked() ? 1 : 0;
             break;
         default:
             break;
         }
     }
-//    qDebug() << "Options Speed: " << options.m_speed << "Current Speed: " <<  ui->m_speedSpinB->value();
-//    qDebug() << "Options Delay: " << options.m_delay << "Current Delay: " << ui->m_delaySpinB->value();
-//    qDebug() << "Options Iteraions: " << options.m_iteration << "Current Iteraions: " << ui->m_iterationsSpinB->value();
-//    qDebug() << "Options Leds: " << options.m_leds << "Current Leds: " << ui->m_ledsSpinB->value();
-//    qDebug() << "Options Paritcles: " << options.m_leds << "Current Paritcles: " << ui->m_particlesSpinB->value();
-//    qDebug() << "Options Axis: " << options.m_axis << "Current Axis: " << ui->m_axisComB->currentIndex();
-//    qDebug() << "Options Direction: " << options.m_direction<< "Current Direction: " << ui->m_directionComB->currentIndex();
-//    qDebug() << "Options Invert: " << options.m_invert << "Current Invert: " << ui->m_invertCheckB->isChecked();
-//    qDebug() << "Options Text: " << options.m_text << "Current Text: " << ui->m_textLineE->text();
 //    qDebug() << "Options Led State:" << options.m_state << "Current Led State: " <<  ui->m_ledStateCheckB->isChecked();
-    if(ret) setWindowModified(true);
+    if(modefied)
+        setWindowModified(true);
+    else
+        setWindowModified(false);
 }
 
 void AnimationOptions::compareOldNewAnimationOptions(int index)

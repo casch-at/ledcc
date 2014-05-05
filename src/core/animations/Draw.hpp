@@ -122,7 +122,7 @@ protected:
     void tmpCubeToCube(void);
 
     void fontGetChar(u_int8_t chr, u_int8_t dst[5]);
-    Q_DISABLE_COPY(Draw)
+    Q_DISABLE_COPY(Draw);
 };
 //Q_DECLARE_METATYPE(Draw::AnimationOptions)
 #endif // DRAW_HPP

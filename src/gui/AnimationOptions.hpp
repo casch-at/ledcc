@@ -78,6 +78,8 @@ private:
     void hideShowWidgetsDisplayOptions();
     void shouldeApplyNewOptions();
     int okToContinue();
+    void connectAll();
+    void disconnectAll();
 
 private:
     Ui::AnimationOptions *ui;
