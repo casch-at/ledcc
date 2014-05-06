@@ -11,16 +11,17 @@ cmake version >= 2.8.10<br>
 
 # COMPILE INSTRUCTION
 
-#### 1) Create a build directory in the root directory and switch to it.
+#### 1) Create a build directory in the root directory for out of source build.
 ```
-$ mkdir build<br>
-$ cd build<br>
+$ mkdir build
+$ cd build
 ```
-#### 2) Create the make files with cmake, if you have not installed Qt5 over the package manager or you have not adjusted the system environment variables you must pass the Qt5 cmake path to cmake.
+#### 2) Create the make files.
+
 ```
 $ cmake ../
 ```
-##### Or if the Qt5 framework is installed in an none standard place type:
+##### If you have not installed Qt5 over the package manager or you have not adjusted the system environment variables you must pass the Qt5 cmake path to cmake.
 ```
 $ cmake -DCMAKE_PREFIX_PATH=/PATH/TO/QT5/lib/cmake ../
 ```
@@ -28,7 +29,8 @@ $ cmake -DCMAKE_PREFIX_PATH=/PATH/TO/QT5/lib/cmake ../
 ```
 $ cmake --prefix=INSTALL/PATH ../
 ```
-#### 3) Compile the program with make, replace the number after "-j" with the available cores on your system or leave "-j4" away).
+#### 3) Compile the program with make.
+Replace the number after ```-j``` with the available cores on your system or leave ```-j4``` away.
 ```
 $ make -j4
 ```
@@ -40,7 +42,7 @@ $ make install
 ```
 # Simplified
 
-One liner, provided that you are already in the root directory, if not switch to the root directory
+One liner, provided that you are already in the root directory, if not switch to the root directory and
 adjust the ```CMAKE_PREFIX_PATH``` and ```--prefix``` variable to your needs.
 ```
 $ mkdir build && cd build && cmake ../ && make && make install
