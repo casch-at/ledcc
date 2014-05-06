@@ -21,11 +21,11 @@ $ cd build
 ```
 $ cmake ../
 ```
-##### If you have not installed Qt5 over the package manager or you have not adjusted the system environment variables you must pass the Qt5 cmake path to cmake.
+If you have not installed Qt5 over the package manager or you have not adjusted the system environment variables you must pass the Qt5 cmake path to cmake.
 ```
 $ cmake -DCMAKE_PREFIX_PATH=/PATH/TO/QT5/lib/cmake ../
 ```
-##### If you want install the propram to a different place (default ```/usr/local```) you must pass the install path to cmake with:
+If you want install the propram to a different place (default ```/usr/local```) you must pass the install path to cmake with:
 ```
 $ cmake --prefix=INSTALL/PATH ../
 ```
