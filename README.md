@@ -32,7 +32,7 @@ $ cmake --prefix=INSTALL/PATH ../
 ```
 $ make -j4
 ```
-The executable should now be in the directory ```"./build/bin/"```, called ledcc.
+The executable should now be in the directory ```./build/bin/```, called ledcc.
 
 #### 4) If you want install the program, type:
 ```
