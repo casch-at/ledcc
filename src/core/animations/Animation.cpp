@@ -87,6 +87,6 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
 void Animation::waitMs(const u_int16_t &time)
 {
     Q_EMIT sendData(cubeFrame);
-    thread()->usleep(time *1000);
+    thread()->usleep(time * 1000);
 }
 

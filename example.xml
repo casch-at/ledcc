@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animations>
+    <animation name="Axis Nail Wall" options="7" axis="0" delay="0" direction="1" invert="0" iteration="0" leds="0" speed="70" state="0" text=""/>
+    <animation name="Firework" options="81" axis="0" delay="0" direction="0" invert="0" iteration="15" leds="50" speed="50" state="0" text=""/>
+    <animation name="Lift" options="97" axis="0" delay="50" direction="0" invert="0" iteration="10" leds="0" speed="80" state="0" text=""/>
+    <animation name="Loadbar" options="5" axis="0" delay="0" direction="0" invert="0" iteration="0" leds="0" speed="50" state="0" text=""/>
+    <animation name="Loadbar" options="5" axis="1" delay="0" direction="0" invert="0" iteration="0" leds="0" speed="50" state="0" text=""/>
+    <animation name="Loadbar" options="5" axis="2" delay="0" direction="0" invert="0" iteration="0" leds="0" speed="50" state="0" text=""/>
+    <animation name="Rain" options="65" axis="0" delay="0" direction="0" invert="0" iteration="50" leds="0" speed="80" state="0" text=""/>
+    <animation name="Random Filler" options="1025" axis="0" delay="0" direction="0" invert="1" iteration="0" leds="0" speed="10" state="0" text=""/>
+    <animation name="Random Spark" options="73" axis="0" delay="0" direction="0" invert="0" iteration="1" leds="10" speed="100" state="0" text=""/>
+    <animation name="Random Spark Flash" options="73" axis="0" delay="0" direction="0" invert="0" iteration="20" leds="40" speed="80" state="0" text=""/>
+    <animation name="Random Z-Axis Lift" options="65" axis="0" delay="0" direction="0" invert="0" iteration="10" leds="0" speed="100" state="0" text=""/>
+    <animation name="String Fly" options="513" axis="0" delay="0" direction="0" invert="0" iteration="0" leds="0" speed="80" state="0" text="3D LED CUBE"/>
+    <animation name="Wall" options="7" axis="0" delay="0" direction="1" invert="0" iteration="0" leds="0" speed="50" state="0" text=""/>
+    <animation name="Wall" options="7" axis="0" delay="0" direction="0" invert="0" iteration="0" leds="0" speed="50" state="0" text=""/>
+    <animation name="Wall" options="7" axis="1" delay="0" direction="1" invert="0" iteration="0" leds="0" speed="50" state="0" text=""/>
+    <animation name="Wall" options="7" axis="1" delay="0" direction="0" invert="0" iteration="0" leds="0" speed="50" state="0" text=""/>
+    <animation name="Wall" options="7" axis="2" delay="0" direction="1" invert="0" iteration="0" leds="0" speed="50" state="0" text=""/>
+    <animation name="Wall" options="7" axis="2" delay="0" direction="0" invert="0" iteration="0" leds="0" speed="50" state="0" text=""/>
+    <animation name="Wire Box Center Shrink Grow" options="321" axis="0" delay="0" direction="0" invert="0" iteration="1" leds="0" speed="180" state="0" text=""/>
+    <animation name="Wire Box Corner Shrink Grow" options="65" axis="0" delay="0" direction="0" invert="0" iteration="1" leds="0" speed="50" state="0" text=""/>
+</animations>
