@@ -38,32 +38,32 @@ Draw::~Draw()
     cubeFrameTemp.clear();
 }
 
-void Draw::setBixel(int x, int y, int z)
+void Draw::setBixel(const u_int8_t x, const  u_int8_t y, const u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrame[z][y] |= ( 0x01 << x );
 //    qDebug("|Z: 0x%02x| Y: 0x%02x| X: 0x%02x|",z,y,x);
 }
 
-void Draw::setTempBixel(u_int8_t x, u_int8_t y, u_int8_t z)
+void Draw::setTempBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrameTemp[z][y] |= ( 0x01 << x );
 }
 
-void Draw::clearBixel(u_int8_t x, u_int8_t y, u_int8_t z)
+void Draw::clearBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrame[z][y] &= ~( 0x01 << x );
 }
 
-void Draw::clearTempBixel(u_int8_t x, u_int8_t y, u_int8_t z)
+void Draw::clearTempBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrameTemp[z][y] &= ~( 0x01 << x );
 }
 
-Draw::BixelState Draw::getBixelState(u_int8_t x, u_int8_t y, u_int8_t z)
+Draw::BixelState Draw::getBixelState(const u_int8_t x, const u_int8_t y, const u_int8_t z)
 {
     if (inRange(x, y, z)) {
         if (cubeFrame[z][y] & ( 1 << x ))
@@ -75,13 +75,13 @@ Draw::BixelState Draw::getBixelState(u_int8_t x, u_int8_t y, u_int8_t z)
     }
 }
 
-void Draw::flipBixels(u_int8_t x, u_int8_t y, u_int8_t z)
+void Draw::flipBixels(const u_int8_t x, const u_int8_t y, const u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrame[z][y] ^= ( 1 << x );
 }
 
-void Draw::alterBixel(u_int8_t x, u_int8_t y, u_int8_t z, BixelState state)
+void Draw::alterBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z, const BixelState state)
 {
     if (state)
         setBixel(x, y, z);
@@ -89,14 +89,14 @@ void Draw::alterBixel(u_int8_t x, u_int8_t y, u_int8_t z, BixelState state)
         clearBixel(x, y, z);
 }
 
-bool Draw::inRange(u_int8_t x, u_int8_t y, u_int8_t z)
+bool Draw::inRange(const u_int8_t x, const u_int8_t y, const u_int8_t z)
 {
     if (x < CUBE_SIZE && y < CUBE_SIZE && z < CUBE_SIZE)
         return true;
     return false;
 }
 
-void Draw::shift(Axis axis, Direction direction)
+void Draw::shift(const Axis axis, const Direction direction)
 {
     u_int8_t i, x, y, ii, iii;
     for (i = 0; i < CUBE_SIZE; i++) {
@@ -165,7 +165,7 @@ void Draw::checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoin
     *newEndPoint = to;
 }
 
-void Draw::drawPositionAxis(Axis axis, QVector<u_int8_t> &position, Direction direction)
+void Draw::drawPositionAxis(const Axis axis, const QVector<u_int8_t> &position, const Direction direction)
 {
     u_int8_t k = 0;
 
@@ -197,14 +197,14 @@ void Draw::drawPositionAxis(Axis axis, QVector<u_int8_t> &position, Direction di
     }
 }
 
-u_int8_t Draw::flipByte(u_int8_t byte)
+u_int8_t Draw::flipByte(const u_int8_t byte)
 {
     u_int8_t b = byte;
     b = ( ( ( b * 0x0802LU ) & 0x22110LU ) | ( ( b * 0x8020LU ) & 0x88440LU ) ) * 0x10101LU >> 16;
     return b;
 }
 
-void Draw::setPlaneZ(u_int8_t z)
+void Draw::setPlaneZ(const u_int8_t z)
 {
     u_int8_t i;
     if (z < CUBE_SIZE) {
@@ -213,7 +213,7 @@ void Draw::setPlaneZ(u_int8_t z)
     }
 }
 
-void Draw::clearPlaneZ(u_int8_t z)
+void Draw::clearPlaneZ(const u_int8_t z)
 {
     u_int8_t i;
     if (z < CUBE_SIZE) {
@@ -222,7 +222,7 @@ void Draw::clearPlaneZ(u_int8_t z)
     }
 }
 
-void Draw::setPlaneX(u_int8_t x)
+void Draw::setPlaneX(const u_int8_t x)
 {
     u_int8_t z, y;
     if (x < CUBE_SIZE) {
@@ -233,7 +233,7 @@ void Draw::setPlaneX(u_int8_t x)
     }
 }
 
-void Draw::clearPlaneX(u_int8_t x)
+void Draw::clearPlaneX(const u_int8_t x)
 {
     u_int8_t z, y;
     if (x < CUBE_SIZE) {
@@ -244,7 +244,7 @@ void Draw::clearPlaneX(u_int8_t x)
     }
 }
 
-void Draw::setPlaneY(u_int8_t y)
+void Draw::setPlaneY(const u_int8_t y)
 {
     u_int8_t z;
     if (y < CUBE_SIZE) {
@@ -253,7 +253,7 @@ void Draw::setPlaneY(u_int8_t y)
     }
 }
 
-void Draw::clearPlaneY(u_int8_t y)
+void Draw::clearPlaneY(const u_int8_t y)
 {
     u_int8_t z;
     if (y < CUBE_SIZE) {
@@ -262,7 +262,7 @@ void Draw::clearPlaneY(u_int8_t y)
     }
 }
 
-void Draw::setPlane(Axis axis, u_int8_t i)
+void Draw::setPlane(const Axis axis, const u_int8_t i)
 {
     switch (axis) {
     case X_AXIS:
@@ -279,7 +279,7 @@ void Draw::setPlane(Axis axis, u_int8_t i)
     }
 }
 
-void Draw::clearPlane(Axis axis, u_int8_t i)
+void Draw::clearPlane(const Axis axis, const u_int8_t i)
 {
     switch (axis) {
     case X_AXIS:

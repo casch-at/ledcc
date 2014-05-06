@@ -42,8 +42,7 @@
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
-//TODO:: Pass File path where the xml file should be stored to the XmlReaderWriter class
-//       We need than only one function for default saving and user specific save location
+
 //TODO:: Create a HTML help dialog
 // Namespaces
 using namespace std;
@@ -279,6 +278,7 @@ void MainWindow::connectSignals(void)
     connect( m_ui->m_infoAction, &QAction::triggered, this, &MainWindow::help);
     connect( m_ui->m_selectAllAction, &QAction::triggered, m_ui->m_animationPlaylist, &ListWidget::selectAllItems);
     connect( m_ui->m_selectAllAction, &QAction::triggered, m_ui->m_animationList, &ListWidget::selectAllItems);
+
     // ListWidgets shortcuts
     connect( m_focusAnimationList, &QShortcut::activated, m_ui->m_animationList, &ListWidget::focus);
     connect( m_focusAnimationPlaylist, &QShortcut::activated, m_ui->m_animationPlaylist, &ListWidget::focus);

@@ -28,12 +28,6 @@
 #include <QVector>
 #include <QObject>
 
-
-
-
-
-
-
 /*!
  \brief Base class of \a Animation class which provides drawing functions
 
@@ -75,35 +69,35 @@ public:
     CubeArray cubeFrameTemp;
 protected:
     virtual ~Draw();
-    void setBixel(int x, int y, int z);
+    void setBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z);
     void setTempBixel(u_int8_t x, u_int8_t y, u_int8_t z);
 
-    void clearBixel(u_int8_t x, u_int8_t y, u_int8_t z);
-    void clearTempBixel(u_int8_t x, u_int8_t y, u_int8_t z);
+    void clearBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z);
+    void clearTempBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z);
 
-    BixelState getBixelState(u_int8_t x, u_int8_t y, u_int8_t z);
+    BixelState getBixelState(const u_int8_t x, const u_int8_t y, const u_int8_t z);
 
-    void flipBixels(u_int8_t x, u_int8_t y, u_int8_t z);
+    void flipBixels(const u_int8_t x, const u_int8_t y, const u_int8_t z);
 
-    void alterBixel(u_int8_t x, u_int8_t y, u_int8_t z, BixelState state);
+    void alterBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z, const BixelState state);
 
-    bool inRange(u_int8_t x, u_int8_t y, u_int8_t z);
+    bool inRange(const u_int8_t x, const u_int8_t y, const u_int8_t z);
 
-    void shift(Axis axis, Direction direction);
+    void shift(const Axis axis, const Direction direction);
 
     void checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoint, u_int8_t *newEndPoint);
 
-    void drawPositionAxis(Axis axis, QVector<u_int8_t> &position, Direction direction);
+    void drawPositionAxis(const Axis axis, const QVector<u_int8_t> &position, const Direction direction);
 
-    void setPlaneX(u_int8_t x);
-    void setPlaneY(u_int8_t y);
-    void setPlaneZ(u_int8_t z);
-    void setPlane(Axis axis, u_int8_t i);
+    void setPlaneX(const u_int8_t x);
+    void setPlaneY(const u_int8_t y);
+    void setPlaneZ(const u_int8_t z);
+    void setPlane(const Axis axis, const u_int8_t i);
 
-    void clearPlaneX(u_int8_t x);
-    void clearPlaneY(u_int8_t y);
-    void clearPlaneZ(u_int8_t z);
-    void clearPlane(Axis axis, u_int8_t i);
+    void clearPlaneX(const u_int8_t x);
+    void clearPlaneY(const u_int8_t y);
+    void clearPlaneZ(const u_int8_t z);
+    void clearPlane(const Axis axis, const u_int8_t i);
 
     void boxWireframe(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2);
     void boxFilled(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2);
@@ -117,12 +111,12 @@ protected:
     void fillCubeArray(const u_int8_t &pattern);
 
     u_int8_t byteline(const u_int8_t &start, const u_int8_t &end);
-    u_int8_t flipByte(u_int8_t byte);
+    u_int8_t flipByte(const u_int8_t byte);
 
     void tmpCubeToCube(void);
 
-    void fontGetChar(u_int8_t chr, u_int8_t dst[5]);
-    Q_DISABLE_COPY(Draw);
+    void fontGetChar(u_int8_t chr, u_int8_t dst[]);
+    Q_DISABLE_COPY(Draw)
 };
 //Q_DECLARE_METATYPE(Draw::AnimationOptions)
 #endif // DRAW_HPP
