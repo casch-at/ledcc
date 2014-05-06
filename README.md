@@ -12,34 +12,36 @@ cmake version >= 2.8.10<br>
 # COMPILE INSTRUCTION
 
 #### 1) Create a build directory in the root directory and switch to it.
-
-mkdir build<br>
-cd build<br>
-
+```
+$ mkdir build<br>
+$ cd build<br>
+```
 #### 2) Create the make files with cmake, if you have not installed Qt5 over the package manager or you have not adjusted the system environment variables you must pass the Qt5 cmake path to cmake.
-
-cmake ../
-
+```
+$ cmake ../
+```
 ##### Or if the Qt5 framework is installed in an none standard place type:
-
-cmake -DCMAKE_PREFIX_PATH=/PATH/TO/QT5/lib/cmake ../
-
-##### If you want install the propram to a different place (default /usr/local) you must pass the install path to cmake with:
-
-cmake --prefix=INSTALL/PATH ../
-
+```
+$ cmake -DCMAKE_PREFIX_PATH=/PATH/TO/QT5/lib/cmake ../
+```
+##### If you want install the propram to a different place (default ```/usr/local```) you must pass the install path to cmake with:
+```
+$ cmake --prefix=INSTALL/PATH ../
+```
 #### 3) Compile the program with make, replace the number after "-j" with the available cores on your system or leave "-j4" away).
-make -j4
-
-The executable should now be in the directory "build/bin/", called ledcc.
+```
+$ make -j4
+```
+The executable should now be in the directory ```"./build/bin/"```, called ledcc.
 
 #### 4) If you want install the program, type:
-
-make install
-
+```
+$ make install
+```
 # Simplified
 
 One liner, provided that you are already in the root directory, if not switch to the root directory
-adjust the CMAKE_PREFIX_PATH and --prefix variable to your needs.
-
-mkdir build && cd build && cmake ../ && make && make install
+adjust the ```CMAKE_PREFIX_PATH``` and ```--prefix``` variable to your needs.
+```
+$ mkdir build && cd build && cmake ../ && make && make install
+```
