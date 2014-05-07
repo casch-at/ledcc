@@ -253,7 +253,6 @@ void MainWindow::openPlaylist()
 
     if ( fileDialog->exec() == QDialog::Accepted ){
         QString pathToFile = fileDialog->selectedFiles().first();
-        qDebug( ) << fileDialog->selectedFiles().first();
         m_ui->m_animationPlaylist->openAnimationPlaylistFrom(pathToFile);
         config()->set(Settings::LastOpenPath,fileDialog->directory().absolutePath());
         config()->set(Settings::FileDialogState, fileDialog->saveState());

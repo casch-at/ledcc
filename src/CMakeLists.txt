@@ -16,16 +16,9 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------------------------------------
 
-#macro( marble_add_project_resources resources )
-#  add_custom_target( ${PROJECT_NAME}_Resources ALL SOURCES ${ARGN} )
-#endmacro()
-#FILE (GLOB QML_FILES  ${CMAKE_CURRENT_SOURCE_DIR}/preview/qml/*.qml )
-#marble_add_project_resources(${QML_FILES})
-
 # ---------------------------------------------------------------------------------------------------
 # Copy qml files to binary directory share/qml
 # ---------------------------------------------------------------------------------------------------
-#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/preview/qml DESTINATION ${CMAKE_BINARY_DIR}/share)
 set(GLOB QML_FILES ${CMAKE_CURRENT_SOURCE_DIR}/preview/qml/*.qml)
 foreach(qml_file ${QML_FILES})
     add_custom_command(
@@ -56,50 +49,50 @@ include(configure.h.in.cmake)
 # Collect all source files
 # ---------------------------------------------------------------------------------------------------
 set(ledcc_core_SOURCES
-    ${CoreDirectory}/Options.cpp
-    ${CoreDirectory}/Sender.cpp
-    ${CoreDirectory}/animations/Draw.cpp
-    ${CoreDirectory}/animations/Animation.cpp
-    ${CoreDirectory}/animations/Lift.cpp
-    ${CoreDirectory}/animations/Rain.cpp
-    ${CoreDirectory}/animations/Wall.cpp
-    ${CoreDirectory}/animations/RandomZLift.cpp
-    ${CoreDirectory}/animations/Firework.cpp
-    ${CoreDirectory}/animations/WireBoxCornerShrinkGrow.cpp
-    ${CoreDirectory}/animations/WireBoxCenterShrinkGrow.cpp
-    ${CoreDirectory}/animations/AxisNailWall.cpp
-    ${CoreDirectory}/animations/Loadbar.cpp
-    ${CoreDirectory}/animations/RandomSparkFlash.cpp
-    ${CoreDirectory}/animations/RandomSpark.cpp
-    ${CoreDirectory}/animations/RandomFiller.cpp
-    ${CoreDirectory}/animations/StringFly.cpp
-    ${CoreDirectory}/animations/AnimationHandler.cpp
-    ${CoreDirectory}/animations/Animations.cpp
-    ${CoreDirectory}/Global.hpp
-    ${CoreDirectory}/Config.cpp
-    ${CoreDirectory}/XmlPlaylistReader.cpp
-    ${CoreDirectory}/XmlPlaylistWriter.cpp
-    ${CoreDirectory}/System.cpp
+    ${CORE_DIR}/Options.cpp
+    ${CORE_DIR}/Sender.cpp
+    ${CORE_DIR}/animations/Draw.cpp
+    ${CORE_DIR}/animations/Animation.cpp
+    ${CORE_DIR}/animations/Lift.cpp
+    ${CORE_DIR}/animations/Rain.cpp
+    ${CORE_DIR}/animations/Wall.cpp
+    ${CORE_DIR}/animations/RandomZLift.cpp
+    ${CORE_DIR}/animations/Firework.cpp
+    ${CORE_DIR}/animations/WireBoxCornerShrinkGrow.cpp
+    ${CORE_DIR}/animations/WireBoxCenterShrinkGrow.cpp
+    ${CORE_DIR}/animations/AxisNailWall.cpp
+    ${CORE_DIR}/animations/Loadbar.cpp
+    ${CORE_DIR}/animations/RandomSparkFlash.cpp
+    ${CORE_DIR}/animations/RandomSpark.cpp
+    ${CORE_DIR}/animations/RandomFiller.cpp
+    ${CORE_DIR}/animations/StringFly.cpp
+    ${CORE_DIR}/animations/AnimationHandler.cpp
+    ${CORE_DIR}/animations/Animations.cpp
+    ${CORE_DIR}/Global.hpp
+    ${CORE_DIR}/Config.cpp
+    ${CORE_DIR}/XmlPlaylistReader.cpp
+    ${CORE_DIR}/XmlPlaylistWriter.cpp
+    ${CORE_DIR}/System.cpp
 )
 
 set(ledcc_thirdparty_SOURCES
-    ${ThirdPartyDirectory}/aqp/alt_key.cpp
-    ${ThirdPartyDirectory}/aqp/aqp.cpp
-    ${ThirdPartyDirectory}/aqp/kuhn_munkres.cpp
+    ${THIRD_PARTY_DIR}/aqp/alt_key.cpp
+    ${THIRD_PARTY_DIR}/aqp/aqp.cpp
+    ${THIRD_PARTY_DIR}/aqp/kuhn_munkres.cpp
 )
 
 set(ledcc_gui_SOURCES
-    ${GuiDirectory}/MainWindow.cpp
-    ${GuiDirectory}/SettingsDialog.cpp
-    ${GuiDirectory}/AnimationListWidget.cpp
-    ${GuiDirectory}/AnimationPlayListWidget.cpp
-    ${GuiDirectory}/AnimationOptions.cpp
-    ${GuiDirectory}/PortMessageBox.cpp
-    ${GuiDirectory}/AnimationItem.cpp
-    ${GuiDirectory}/AnimationPropertiesPreview.cpp
-    ${GuiDirectory}/ListWidget.cpp
-    ${GuiDirectory}/HelpDialog.cpp
-    ${GuiDirectory}/AboutDialog.cpp
+    ${GUI_DIR}/MainWindow.cpp
+    ${GUI_DIR}/SettingsDialog.cpp
+    ${GUI_DIR}/AnimationListWidget.cpp
+    ${GUI_DIR}/AnimationPlayListWidget.cpp
+    ${GUI_DIR}/AnimationOptions.cpp
+    ${GUI_DIR}/PortMessageBox.cpp
+    ${GUI_DIR}/AnimationItem.cpp
+    ${GUI_DIR}/AnimationPropertiesPreview.cpp
+    ${GUI_DIR}/ListWidget.cpp
+    ${GUI_DIR}/HelpDialog.cpp
+    ${GUI_DIR}/AboutDialog.cpp
 )
 # ---------------------------------------------------------------------------------------------------
 # Put all source files together
@@ -114,30 +107,13 @@ set(ledcc_core_SOURCES
 # All ui forms
 # ---------------------------------------------------------------------------------------------------
 set(ledcc_gui_FORMS
-    ${GuiDirectory}/MainWindow.ui
-    ${GuiDirectory}/SettingsDialog.ui
-    ${GuiDirectory}/AnimationOptions.ui
-    ${GuiDirectory}/AnimationPropertiesPreview.ui
-    ${GuiDirectory}/HelpDialog.ui
-    ${GuiDirectory}/AboutDialog.ui
+    ${GUI_DIR}/MainWindow.ui
+    ${GUI_DIR}/SettingsDialog.ui
+    ${GUI_DIR}/AnimationOptions.ui
+    ${GUI_DIR}/AnimationPropertiesPreview.ui
+    ${GUI_DIR}/HelpDialog.ui
+    ${GUI_DIR}/AboutDialog.ui
 )
-
-# ---------------------------------------------------------------------------------------------------
-# Headers files for what moc data has to be generated
-# ---------------------------------------------------------------------------------------------------
-#set(ledcc_MOC
-#    ${GuiDirectory}/AddDialog.hpp
-#    ${GuiDirectory}/AnimationItem.hpp
-#    ${GuiDirectory}/AnimationListWidget.hpp
-#    ${GuiDirectory}/AnimationPlayListWidget.hpp
-#    ${GuiDirectory}/AnimationOptions.hpp
-#    ${GuiDirectory}/AnimationPropertiesPreview.hpp
-#    ${GuiDirectory}/ListWidget.hpp
-#    ${GuiDirectory}/MainWindow.hpp
-#    ${GuiDirectory}/PortMessageBox.hpp
-#    ${GuiDirectory}/SettingsDialog.hpp
-#)
-
 
 # ---------------------------------------------------------------------------------------------------
 # The main file
@@ -160,13 +136,6 @@ qt5_wrap_ui(ledcc_FORMS_HEADERS
 )
 
 # ---------------------------------------------------------------------------------------------------
-# Create metaobject sourcecode files.
-# ---------------------------------------------------------------------------------------------------
-#qt5_wrap_cpp(ledcc_MOC_SOURCES
-#             ${ledcc_MOC}
-#)
-
-# ---------------------------------------------------------------------------------------------------
 # Create a static library of all sources.
 # ---------------------------------------------------------------------------------------------------
 add_library(ledcc-core
@@ -174,6 +143,7 @@ add_library(ledcc-core
             ${ledcc_core_SOURCES}
             ${ledcc_FORMS_HEADERS}
 )
+set_target_properties(ledcc-core PROPERTIES COMPILE_DEFINITIONS LED_CONTROL_BUILDING_CORE)
 # ---------------------------------------------------------------------------------------------------
 # Link libraries against the created library.
 # HINT: Qt5Widgets_LIBRARIES includes Qt5Core_LIBRARIES and Qt5Gui_LIBRARIES
@@ -184,6 +154,7 @@ target_link_libraries(ledcc-core
 #                      ${Qt5WebKit_LIBRARIES}
                       ${Qt5WebKitWidgets_LIBRARIES}
 )
+
 # ---------------------------------------------------------------------------------------------------
 # Create a executable
 # ---------------------------------------------------------------------------------------------------
@@ -191,6 +162,7 @@ add_executable(${PROGNAME}
                ${ledcc_SOURCES_MAINEXE}
                ${ledcc_RESOURCES_RCC}
 )
+#set_target_properties(${PROGNAME} PROPERTIES ENABLE_EXPORTS ON)
 # ---------------------------------------------------------------------------------------------------
 # The executable depends on the previously created static library ledcc_core.
 # To insure that this library is first created add a dependency.
@@ -209,3 +181,8 @@ target_link_libraries(${PROGNAME}
 set_target_properties(${PROGNAME} ledcc-core PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set_target_properties(${PROGNAME} ledcc-core PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set_target_properties(${PROGNAME} ledcc-core PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
+install(TARGETS ${PROGNAME}
+        BUNDLE DESTINATION . COMPONENT Runtime
+        RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT Runtime
+)
