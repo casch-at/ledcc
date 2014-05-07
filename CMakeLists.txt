@@ -38,7 +38,12 @@ set(PROGNAME ${PROJECT_NAME})
 # ---------------------------------------------------------------------------------------------------
 # Find packages
 # ---------------------------------------------------------------------------------------------------
-set(QT_REQUIRED_MODULES Qt5Widgets Qt5SerialPort Qt5Quick Qt5WebKitWidgets)
+set(QT_REQUIRED_MODULES
+    Qt5Widgets
+    Qt5SerialPort
+    Qt5Quick
+    Qt5WebKitWidgets
+)
 foreach(QT_MODULE ${QT_REQUIRED_MODULES})
     find_package(${QT_MODULE} REQUIRED)
 endforeach(QT_MODULE)
@@ -54,26 +59,35 @@ remove_definitions(-DQT3_SUPPORT_WARNINGS -DQT3_SUPPORT)
 # ---------------------------------------------------------------------------------------------------
 # Source code directories
 # ---------------------------------------------------------------------------------------------------
-set(CoreDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/core")
-set(ThirdPartyDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty")
-set(GuiDirectory "${CMAKE_CURRENT_SOURCE_DIR}/src/gui")
+set(CORE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/core")
+set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty")
+set(GUI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/gui")
+set(PREVIEW_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/preview")
 
 # ---------------------------------------------------------------------------------------------------
-# Set the cmake module path to tell cmake where it has to look for other cmake files when include(xxx.cmake) is called
+# Set the cmake module path to tell cmake where it has to
+# look for other cmake files when include(xxx.cmake) is called
 # ---------------------------------------------------------------------------------------------------
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 
 # ---------------------------------------------------------------------------------------------------
 # Setup compile flags
 # ---------------------------------------------------------------------------------------------------
-
 include(CompileFlags)
 # ---------------------------------------------------------------------------------------------------
 # Configure install option and cmake tool options
 # ---------------------------------------------------------------------------------------------------
 include(Options)
-#include_directories(./images)
 # ---------------------------------------------------------------------------------------------------
 # Add the source code subdirectory
 # ---------------------------------------------------------------------------------------------------
 add_subdirectory( src )
+
+# ---------------------------------------------------------------------------------------------------
+# Since cmake 2.8.3 it has a build in feature summary cmake file,
+# we will use it to print the used packages
+# ---------------------------------------------------------------------------------------------------
+set(PRINT_SUMMARY ON)
+include(FeatureSummary)
+feature_summary(WHAT ALL)

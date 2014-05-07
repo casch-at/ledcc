@@ -23,11 +23,11 @@ endif()
 # Configure the install path
 # ---------------------------------------------------------------------------------------------------
 if( "${CMAKE_PREFIX_PATH}" STREQUAL  "/usr/local/")
-  message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
+  set(CMAKE_PREFIX_PATH "/usr/local")
 elseif("${CMAKE_PREFIX_PATH}" STREQUAL "")
   set(CMAKE_PREFIX_PATH "/usr/local")
-  message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
 endif()
+message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
 
 if(MINGW)
   set(BIN_INSTALL_DIR    ".")
@@ -39,9 +39,9 @@ elseif(APPLE)
   set(DATA_INSTALL_DIR   "${PROJECT_NAME}.app/Contents/Resources")
 else()
   include(GNUInstallDirs)
-  set(BIN_INSTALL_DIR    "${CMAKE_INSTALL_BINDIR}")
-  set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}")
-  set(DATA_INSTALL_DIR   "${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}")
+  set(BIN_INSTALL_DIR    "${CMAKE_PREFIX_PATH}/${CMAKE_INSTALL_BINDIR}")
+  set(PLUGIN_INSTALL_DIR "${CMAKE_PREFIX_PATH}/${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}")
+  set(DATA_INSTALL_DIR   "${CMAKE_PREFIX_PATH}/${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}")
 endif()
 
 # ---------------------------------------------------------------------------------------------------

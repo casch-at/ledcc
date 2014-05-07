@@ -6,4 +6,4 @@ set(LEDCC_VERSION ${LEDCC_VERSION_MAJOR}.${LEDCC_VERSION_MINOR})
 
 message(STATUS "Creating Global.hpp")
 
-configure_file("${CoreDirectory}/Global.hpp.in" "${CoreDirectory}/Global.hpp" @ONLY)
+configure_file("${CORE_DIR}/Global.hpp.in" "${CORE_DIR}/Global.hpp" @ONLY)

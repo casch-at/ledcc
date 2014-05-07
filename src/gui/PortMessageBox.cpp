@@ -21,20 +21,14 @@
 PortMessageBox::PortMessageBox(const QString &title, QWidget *parent) :
     QMessageBox(parent)
 {
-    setTextFormat(Qt::RichText);
-    setStandardButtons( Cancel | Ok);
-    setDefaultButton(Cancel);
-    setIconPixmap(QPixmap("://images/dialog-error.png").scaled(QSize(48,48)));
+    setup();
     setWindowTitle(title);
 }
 
 PortMessageBox::PortMessageBox(const QString &title, const QString &text, const QString &infText, QWidget *parent) :
     QMessageBox(parent)
 {
-    setTextFormat(Qt::RichText);
-    setStandardButtons( Cancel | Ok);
-    setDefaultButton(Cancel);
-    setIconPixmap(QPixmap("://images/dialog-error.png").scaled(QSize(48,48)));
+    setup();
     setWindowTitle(title);
     setText(text);
     setInformativeText(infText);
@@ -43,16 +37,20 @@ PortMessageBox::PortMessageBox(const QString &title, const QString &text, const 
 PortMessageBox::PortMessageBox(const QString &title, const QString &text, QWidget *parent) :
     QMessageBox(parent)
 {
-    setTextFormat(Qt::RichText);
-    setStandardButtons( Cancel | Ok);
-    setDefaultButton(Cancel);
-    setIconPixmap(QPixmap("://images/dialog-error.png").scaled(QSize(48,48)));
+    setup();
     setWindowTitle(title);
     setText(text);
 }
 
-//PortMessageBox::~PortMessageBox()
-//{
-//    qDebug("PortMessageBox destructor");
-//}
+void PortMessageBox::setup()
+{
+    setTextFormat(Qt::RichText);
+    setStandardButtons( Cancel | Ok);
+    setDefaultButton(Cancel);
+    setIconPixmap(QPixmap("://images/dialog-error.png").scaled(QSize(48,48)));
+}
+
+PortMessageBox::~PortMessageBox()
+{
+}
 
