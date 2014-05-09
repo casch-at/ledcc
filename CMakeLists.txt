@@ -19,7 +19,6 @@
 #   Debug:      -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake -DCMAKE_BUILD_TYPE=DEBUG
 #   Release:    -DCMAKE_PREFIX_PATH=/PATH/TO/QT/VERSION/lib/cmake -DCMAKE_BUILD_TYPE=RELEASE
 # ---------------------------------------------------------------------------------------------------
-
 # ---------------------------------------------------------------------------------------------------
 # Minimum required cmake tool
 # ---------------------------------------------------------------------------------------------------
@@ -44,6 +43,10 @@ set(QT_REQUIRED_MODULES
     Qt5Quick
     Qt5WebKitWidgets
 )
+if(DEVELOPING)
+    list(APPEND QT_REQUIRED_MODULES Qt5LinguistTools)
+endif(DEVELOPING)
+
 foreach(QT_MODULE ${QT_REQUIRED_MODULES})
     find_package(${QT_MODULE} REQUIRED)
 endforeach(QT_MODULE)

@@ -42,7 +42,6 @@ void Draw::setBixel(const u_int8_t x, const  u_int8_t y, const u_int8_t z)
 {
     if (inRange(x, y, z))
         cubeFrame[z][y] |= ( 0x01 << x );
-//    qDebug("|Z: 0x%02x| Y: 0x%02x| X: 0x%02x|",z,y,x);
 }
 
 void Draw::setTempBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z)

@@ -177,7 +177,7 @@ target_link_libraries(${PROGNAME}
                       ledcc-core
 )
 
-
+qt5_create_translation(${PROGNAME}_de.ts ${PROGNAME}_en.ts ${CORE_DIR} ${GUI_DIR} ${ledcc_core_SOURCES} ${ledcc_FORMS_HEADERS} )
 set_target_properties(${PROGNAME} ledcc-core PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set_target_properties(${PROGNAME} ledcc-core PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set_target_properties(${PROGNAME} ledcc-core PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

@@ -19,13 +19,11 @@
 #include <QMainWindow>
 #include <QThread>
 
-
-/* Qt forward decelerations */
 class QShortcut;
-/* Application forward declerations */
 class AnimationHandler;
 class HelpDialog;
 class AboutDialog;
+
 namespace Ui {
     class MainWindow;
 }
@@ -66,8 +64,4 @@ private:
     AnimationHandler *m_animationHandler;
     Q_DISABLE_COPY(MainWindow)
 };
-
-
-
-
 #endif // MAINWINDOW_H
