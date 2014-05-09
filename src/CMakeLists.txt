@@ -97,7 +97,7 @@ set(ledcc_gui_SOURCES
 # ---------------------------------------------------------------------------------------------------
 # Put all source files together
 # ---------------------------------------------------------------------------------------------------
-set(ledcc_core_SOURCES
+set(ledcc_SOURCES
     ${ledcc_core_SOURCES}
     ${ledcc_thirdparty_SOURCES}
     ${ledcc_gui_SOURCES}
@@ -114,6 +114,8 @@ set(ledcc_gui_FORMS
     ${GUI_DIR}/HelpDialog.ui
     ${GUI_DIR}/AboutDialog.ui
 )
+
+
 
 # ---------------------------------------------------------------------------------------------------
 # The main file
@@ -136,13 +138,42 @@ qt5_wrap_ui(ledcc_FORMS_HEADERS
 )
 
 # ---------------------------------------------------------------------------------------------------
+# Create translation files when release mode
+# ---------------------------------------------------------------------------------------------------
+if(Qt5LinguistTools_FOUND)
+    # ---------------------------------------------------------------------------------------------------
+    # All translation files
+    # ---------------------------------------------------------------------------------------------------
+    set(ledcc_TS_FILES
+        ${LANG_DIR}/${PROGNAME}_de.ts
+        ${LANG_DIR}/${PROGNAME}_en.ts
+    )
+    set(ledcc_QM_FILES
+        ${PROGNAME}_de.qm
+        ${PROGNAME}_en.qm
+    )
+    message(STATUS "Translation files will be created")
+
+    foreach(_ts ${ledcc_TS_FILES})
+        qt5_create_translation(${_ts} ${CORE_DIR} ${GUI_DIR} ${ledcc_core_SOURCES} ${ledcc_FORMS_HEADERS} )
+    endforeach(_ts)
+
+    foreach(_qm ${ledcc_QM_FILES})
+        qt5_add_translation( ${LANG_DIR}/${_qm})
+    endforeach(_qm)
+endif(Qt5LinguistTools_FOUND)
+
+
+# ---------------------------------------------------------------------------------------------------
 # Create a static library of all sources.
 # ---------------------------------------------------------------------------------------------------
 add_library(ledcc-core
             STATIC
-            ${ledcc_core_SOURCES}
+            ${ledcc_SOURCES}
             ${ledcc_FORMS_HEADERS}
+            ../lang/ledcc_de.ts
 )
+
 set_target_properties(ledcc-core PROPERTIES COMPILE_DEFINITIONS LED_CONTROL_BUILDING_CORE)
 # ---------------------------------------------------------------------------------------------------
 # Link libraries against the created library.
@@ -161,13 +192,14 @@ target_link_libraries(ledcc-core
 add_executable(${PROGNAME}
                ${ledcc_SOURCES_MAINEXE}
                ${ledcc_RESOURCES_RCC}
+
 )
 #set_target_properties(${PROGNAME} PROPERTIES ENABLE_EXPORTS ON)
 # ---------------------------------------------------------------------------------------------------
 # The executable depends on the previously created static library ledcc_core.
 # To insure that this library is first created add a dependency.
 # ---------------------------------------------------------------------------------------------------
-add_dependencies(${PROGNAME} ledcc-core)
+add_dependencies(${PROGNAME} ledcc-core ${ledcc_TS_FILES})
 
 # ---------------------------------------------------------------------------------------------------
 # Link libraries against the program.
@@ -177,7 +209,8 @@ target_link_libraries(${PROGNAME}
                       ledcc-core
 )
 
-qt5_create_translation(${PROGNAME}_de.ts ${PROGNAME}_en.ts ${CORE_DIR} ${GUI_DIR} ${ledcc_core_SOURCES} ${ledcc_FORMS_HEADERS} )
+
+
 set_target_properties(${PROGNAME} ledcc-core PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set_target_properties(${PROGNAME} ledcc-core PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set_target_properties(${PROGNAME} ledcc-core PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

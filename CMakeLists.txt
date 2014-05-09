@@ -35,28 +35,35 @@ project(ledcc C CXX)
 set(PROGNAME ${PROJECT_NAME})
 
 # ---------------------------------------------------------------------------------------------------
-# Find packages
+# Setup build type ( possible modes are RELEASE, DEBUG )
 # ---------------------------------------------------------------------------------------------------
-set(QT_REQUIRED_MODULES
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message(STATUS "Debug mode")
+    add_definitions(-D_DEBUG_)
+else()
+    message(STATUS "Release mode")
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+# ---------------------------------------------------------------------------------------------------
+# Find packages and add Qt5 defintions
+# ---------------------------------------------------------------------------------------------------
+set(QT5_REQUIRED_MODULES
     Qt5Widgets
     Qt5SerialPort
     Qt5Quick
     Qt5WebKitWidgets
 )
-if(DEVELOPING)
-    list(APPEND QT_REQUIRED_MODULES Qt5LinguistTools)
-endif(DEVELOPING)
 
-foreach(QT_MODULE ${QT_REQUIRED_MODULES})
-    find_package(${QT_MODULE} REQUIRED)
-endforeach(QT_MODULE)
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    list(APPEND QT5_REQUIRED_MODULES Qt5LinguistTools)
+endif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
-#find_package(OpenGL)
+foreach(_QT5_MODULE ${QT5_REQUIRED_MODULES})
+    find_package(${_QT5_MODULE} REQUIRED)
+    add_definitions(${${_QT5_MODULE}_DEFINITIONS})
+endforeach(_QT5_MODULE)
 
-# ---------------------------------------------------------------------------------------------------
-# Add qt defintions
-# ---------------------------------------------------------------------------------------------------
-add_definitions(${QT_DEFINITIONS})
 remove_definitions(-DQT3_SUPPORT_WARNINGS -DQT3_SUPPORT)
 
 # ---------------------------------------------------------------------------------------------------
@@ -66,13 +73,13 @@ set(CORE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/core")
 set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/thirdparty")
 set(GUI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/gui")
 set(PREVIEW_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/preview")
+set(LANG_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lang")
 
 # ---------------------------------------------------------------------------------------------------
 # Set the cmake module path to tell cmake where it has to
 # look for other cmake files when include(xxx.cmake) is called
 # ---------------------------------------------------------------------------------------------------
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
 
 # ---------------------------------------------------------------------------------------------------
 # Setup compile flags
@@ -82,6 +89,7 @@ include(CompileFlags)
 # Configure install option and cmake tool options
 # ---------------------------------------------------------------------------------------------------
 include(Options)
+
 # ---------------------------------------------------------------------------------------------------
 # Add the source code subdirectory
 # ---------------------------------------------------------------------------------------------------
