@@ -650,6 +650,17 @@
     </message>
 </context>
 <context>
+    <name>QObject</name>
+    <message>
+        <source>&amp;Delete</source>
+        <translation type="vanished">Löschen</translation>
+    </message>
+    <message>
+        <source>Do &amp;Not Delete</source>
+        <translation type="vanished">Nicht Löschen</translation>
+    </message>
+</context>
+<context>
     <name>Sender</name>
     <message>
         <location filename="../src/core/Sender.cpp" line="98"/>

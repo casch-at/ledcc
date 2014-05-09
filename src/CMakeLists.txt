@@ -144,7 +144,7 @@ qt5_wrap_ui(ledcc_FORMS_HEADERS
 # ---------------------------------------------------------------------------------------------------
 # Create translation files ts/qm
 # ---------------------------------------------------------------------------------------------------
-set(_TMP ${CORE_DIR} ${GUI_DIR}  ${ledcc_SOURCES})
+set(_TMP ${CORE_DIR} ${GUI_DIR} )
 if(UPDATE_TRANSLATIONS)
     message(STATUS "Translation files will be created")
     qt5_create_translation(QM_FILES ${_TMP} ${ledcc_TS_FILES})
@@ -152,8 +152,7 @@ else(UPDATE_TRANSLATIONS)
     message(STATUS "Translation files for install will be created")
     qt5_add_translation(QM_FILES ${ledcc_TS_FILES})
 endif(UPDATE_TRANSLATIONS)
-
-
+unset(_TMP)
 
 # ---------------------------------------------------------------------------------------------------
 # Create a static library of all sources.
@@ -212,4 +211,5 @@ install(TARGETS ${PROGNAME}
 )
 
 install(FILES ${QM_FILES} DESTINATION
-${CMAKE_INSTALL_PREFIX}/lang)
+        ${DATA_INSTALL_DIR}/ts
+)
