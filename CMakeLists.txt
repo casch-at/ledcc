@@ -53,11 +53,8 @@ set(QT5_REQUIRED_MODULES
     Qt5SerialPort
     Qt5Quick
     Qt5WebKitWidgets
+    Qt5LinguistTools
 )
-
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    list(APPEND QT5_REQUIRED_MODULES Qt5LinguistTools)
-endif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
 foreach(_QT5_MODULE ${QT5_REQUIRED_MODULES})
     find_package(${_QT5_MODULE} REQUIRED)

@@ -116,6 +116,10 @@ set(ledcc_gui_FORMS
 )
 
 
+set(ledcc_TS_FILES
+    ${LANG_DIR}/${PROGNAME}_en.ts
+    ${LANG_DIR}/${PROGNAME}_de.ts
+)
 
 # ---------------------------------------------------------------------------------------------------
 # The main file
@@ -138,30 +142,17 @@ qt5_wrap_ui(ledcc_FORMS_HEADERS
 )
 
 # ---------------------------------------------------------------------------------------------------
-# Create translation files when release mode
+# Create translation files ts/qm
 # ---------------------------------------------------------------------------------------------------
-if(Qt5LinguistTools_FOUND)
-    # ---------------------------------------------------------------------------------------------------
-    # All translation files
-    # ---------------------------------------------------------------------------------------------------
-    set(ledcc_TS_FILES
-        ${LANG_DIR}/${PROGNAME}_de.ts
-        ${LANG_DIR}/${PROGNAME}_en.ts
-    )
-    set(ledcc_QM_FILES
-        ${PROGNAME}_de.qm
-        ${PROGNAME}_en.qm
-    )
+set(_TMP ${CORE_DIR} ${GUI_DIR}  ${ledcc_SOURCES})
+if(UPDATE_TRANSLATIONS)
     message(STATUS "Translation files will be created")
+    qt5_create_translation(QM_FILES ${_TMP} ${ledcc_TS_FILES})
+else(UPDATE_TRANSLATIONS)
+    message(STATUS "Translation files for install will be created")
+    qt5_add_translation(QM_FILES ${ledcc_TS_FILES})
+endif(UPDATE_TRANSLATIONS)
 
-    foreach(_ts ${ledcc_TS_FILES})
-        qt5_create_translation(${_ts} ${CORE_DIR} ${GUI_DIR} ${ledcc_core_SOURCES} ${ledcc_FORMS_HEADERS} )
-    endforeach(_ts)
-
-    foreach(_qm ${ledcc_QM_FILES})
-        qt5_add_translation( ${LANG_DIR}/${_qm})
-    endforeach(_qm)
-endif(Qt5LinguistTools_FOUND)
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -171,7 +162,7 @@ add_library(ledcc-core
             STATIC
             ${ledcc_SOURCES}
             ${ledcc_FORMS_HEADERS}
-            ../lang/ledcc_de.ts
+            ${QM_FILES}
 )
 
 set_target_properties(ledcc-core PROPERTIES COMPILE_DEFINITIONS LED_CONTROL_BUILDING_CORE)
@@ -219,3 +210,6 @@ install(TARGETS ${PROGNAME}
         BUNDLE DESTINATION . COMPONENT Runtime
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT Runtime
 )
+
+install(FILES ${QM_FILES} DESTINATION
+${CMAKE_INSTALL_PREFIX}/lang)

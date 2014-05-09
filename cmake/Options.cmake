@@ -8,6 +8,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # ---------------------------------------------------------------------------------------------------
 set(CMAKE_AUTOMOC ON)
 
+option(UPDATE_TRANSLATIONS "If 'ON' .ts files will be updated, if 'OFF' .qm files will be created")
 
 # ---------------------------------------------------------------------------------------------------
 # Configure the install path
