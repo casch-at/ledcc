@@ -122,12 +122,12 @@
     <message>
         <location filename="../src/gui/AnimationItem.cpp" line="101"/>
         <source>Start from center: YES&lt;br&gt;</source>
-        <translation>Starte von Mitte: JA&lt;br&gt;</translation>
+        <translation>Von Mitte Starten: JA&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationItem.cpp" line="101"/>
         <source>Start from center: NO&lt;br&gt;</source>
-        <translation>Starte von Mitte: NEIN&lt;br&gt;</translation>
+        <translation>Von Mitte Starten: NEIN&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationItem.cpp" line="104"/>
@@ -220,7 +220,7 @@
     <message>
         <location filename="../src/gui/AnimationItem.cpp" line="162"/>
         <source>Start from center:NO</source>
-        <translation>Starte von Mitte: NO</translation>
+        <translation>Von Mitte Starten: NEIN</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationItem.cpp" line="168"/>
@@ -251,12 +251,12 @@
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="122"/>
         <source>Speed:</source>
-        <translation>Geschwindigkeit</translation>
+        <translation>Geschwindigkeit:</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="153"/>
         <source>Direction:</source>
-        <translation>Richtung</translation>
+        <translation>Richtung:</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="181"/>
@@ -276,12 +276,12 @@
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="291"/>
         <source>LEDs:</source>
-        <translation>LEDs</translation>
+        <translation>LEDs:</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="322"/>
         <source>Axis:</source>
-        <translation>Achse</translation>
+        <translation>Achse:</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="376"/>
@@ -301,22 +301,22 @@
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="440"/>
         <source>Delay:</source>
-        <translation>Verzögerung</translation>
+        <translation>Verzögerung:</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="471"/>
         <source>Text:</source>
-        <translation>Text</translation>
+        <translation>Text:</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="502"/>
         <source>Iterations:</source>
-        <translation>Durchläufe</translation>
+        <translation>Durchläufe:</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="561"/>
         <source>Particles:</source>
-        <translation>Partikeln</translation>
+        <translation>Partikeln:</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationOptions.ui" line="576"/>
@@ -365,7 +365,7 @@
     <message>
         <location filename="../src/gui/AnimationPlayListWidget.cpp" line="74"/>
         <source>&lt;h3&gt;&lt;b&gt;Do you really want clear the animation playlist?&lt;/b&gt;&lt;/h3&gt;</source>
-        <translation>Möchten sie wirklich die Animationenabspielliste löschen</translation>
+        <translation>Möchten sie wirklich die Animationen Abspielliste löschen</translation>
     </message>
     <message>
         <location filename="../src/gui/AnimationPlayListWidget.cpp" line="75"/>
