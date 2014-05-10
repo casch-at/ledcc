@@ -143,6 +143,9 @@ qt5_wrap_ui(ledcc_FORMS_HEADERS
 
 # ---------------------------------------------------------------------------------------------------
 # Create translation files ts/qm
+# NOTE:: Set UPDATE_TRANSLATIONS to ON when you want update the translation files. After that you
+# shoulde set it to OFF as soon as possible, because when it set to ON and you call 'make clean'
+# the translation files will also be deleted
 # ---------------------------------------------------------------------------------------------------
 set(_TMP ${CORE_DIR} ${GUI_DIR} )
 if(UPDATE_TRANSLATIONS)
