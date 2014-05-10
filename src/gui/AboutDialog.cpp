@@ -56,6 +56,11 @@ AboutDialog::~AboutDialog()
     delete ui;
 }
 
+void AboutDialog::closeEvent(QCloseEvent *)
+{
+    this->~AboutDialog();
+}
+
 void AboutDialog::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);

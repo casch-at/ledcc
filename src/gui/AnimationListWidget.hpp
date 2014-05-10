@@ -31,12 +31,12 @@ class AnimationListWidget : public ListWidget
 public:
     explicit AnimationListWidget(QWidget* parent = Q_NULLPTR);
     virtual ~AnimationListWidget();
-
+    void translateItemToolTip();
 Q_SIGNALS:
     void addToPlaylist(QList<QListWidgetItem *> selected);
 
 protected:
-    virtual void keyPressEvent(QKeyEvent * e);
+    void keyPressEvent(QKeyEvent * e);
 public Q_SLOTS:
     void insertAnimationItems(const QList<AnimationItem *> *animation);
     void addSelectedItemsToPlaylist();

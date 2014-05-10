@@ -37,6 +37,7 @@ public:
     ~AboutDialog();
 
 protected:
+    void closeEvent(QCloseEvent *);
     void changeEvent(QEvent *e);
 
 private:

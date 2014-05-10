@@ -56,8 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_helpDialog(Q_NULLPTR),
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
-    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
-    m_aboutMsgBox(Q_NULLPTR)
+    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 {
     m_ui->setupUi(this); // Ui must be first created befor accessing the elements
     m_ui->m_animationList->setFocus();
@@ -87,6 +86,24 @@ MainWindow::~MainWindow(void)
 {
     delete m_animationHandler;
     delete m_ui;
+}
+
+void MainWindow::changeEvent(QEvent *e)
+{
+    QMainWindow::changeEvent(e);
+
+    switch (e->type())
+    {
+    case QEvent::LanguageChange:
+        m_ui->retranslateUi(this);
+        m_ui->m_animationList->translateItemToolTip();
+        //FIXME:: Application has no accelerator after retranslate. AQP::crashes when calling possible reason ALPAHPET has no Ü,Ä,Ö, etc.
+        AQP::accelerateActions(actions());
+        AQP::accelerateMenu(m_ui->menuBar);
+        break;
+    default:
+        break;
+    }
 }
 
 /**
@@ -311,21 +328,19 @@ void MainWindow::connectSignals(void)
  */
 void MainWindow::about()
 {
-    if (!m_aboutMsgBox) {
-        m_aboutMsgBox = new AboutDialog(
-                    tr("<h2>3D-LED Cube Control</h2>"),
-                    QString("%1").arg(LEDCC_VERSION),
-                    tr("LED Cube Control<br>"
-                       "<p>Copyright &copy; 2014 Christian Schwarzgruber"
-                       "<p>The <b>3D-LED Cube</b> program has been implemented with the "
-                       "indention to send the created animation to a µC, without worring about "
-                       "the computation power of the µC. "
-                       "<p>The application is designed like a modern music player, you can start "
-                       "and stop the animation, add animations to the playlist or remove it from the playlist. "
-                       "Furthermore, all animation properties can be adjusted through the user interface."),
-//                       "<p><address><a href=''>License: GNU General Public License</a></address>"),
-                    QPixmap("://images/ledgreen.png"),
-                    this);
-    }
+    AboutDialog *m_aboutMsgBox = new AboutDialog(
+                tr("<h2>3D-LED Cube Control</h2>"),
+                QString("%1").arg(LEDCC_VERSION),
+                tr("LED Cube Control<br>"
+                   "<p>Copyright &copy; 2014 Christian Schwarzgruber"
+                   "<p>The <b>3D-LED Cube</b> program has been implemented with the "
+                   "indention to send the created animation to a µC, without worring about "
+                   "the computation power of the µC. "
+                   "<p>The application is designed like a modern music player, you can start "
+                   "and stop the animation, add animations to the playlist or remove it from the playlist. "
+                   "Furthermore, all animation properties can be adjusted through the user interface."),
+                //                       "<p><address><a href=''>License: GNU General Public License</a></address>"),
+                QPixmap("://images/ledgreen.png"),
+                this);
     m_aboutMsgBox->show();
 }

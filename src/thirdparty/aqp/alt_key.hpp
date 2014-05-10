@@ -45,7 +45,7 @@ class _Alphabet {
 public:
     _Alphabet() {}
     operator QString() const {
-            return tr("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            return tr("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÜÖÄ",
                       "Accelerator Keys"); }
 };
 

@@ -39,7 +39,8 @@ public:
     ~SettingsDialog();
     SerialSettings getSerialSettings();
 protected:
-    virtual void closeEvent(QCloseEvent *e);
+    void closeEvent(QCloseEvent *e);
+    void changeEvent(QEvent *e);
 private Q_SLOTS:
     void showPortInfo(int idx);
     void apply();

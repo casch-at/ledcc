@@ -50,6 +50,21 @@ void SettingsDialog::closeEvent(QCloseEvent *e)
     e->accept();
 }
 
+void SettingsDialog::changeEvent(QEvent *e)
+{
+    QDialog::changeEvent(e);
+
+    switch (e->type())
+    {
+    case QEvent::LanguageChange:
+        m_ui->retranslateUi(this);
+        AQP::accelerateWidget(this);
+        break;
+    default:
+        break;
+    };
+}
+
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
     m_ui(new Ui::SettingsDialog)

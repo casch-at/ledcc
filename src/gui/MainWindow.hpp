@@ -34,12 +34,13 @@ class MainWindow : public QMainWindow
 
 protected:
     void closeEvent (QCloseEvent *);
+    void changeEvent(QEvent *e);
+    void resizeEvent(QResizeEvent *e);
 public:
     explicit MainWindow(QWidget *parent = Q_NULLPTR);
-    virtual ~MainWindow();
+    ~MainWindow();
 Q_SIGNALS:
 private Q_SLOTS:
-    void resizeEvent(QResizeEvent *e);
     void about(void);
     void setDirty() { setWindowModified ( true ); }
     void updateUi(bool portOpen);
@@ -59,7 +60,6 @@ private:
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;
-    AboutDialog *m_aboutMsgBox;
     bool m_open; /* Port open or not */
     AnimationHandler *m_animationHandler;
     Q_DISABLE_COPY(MainWindow)

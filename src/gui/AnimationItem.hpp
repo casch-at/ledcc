@@ -19,12 +19,13 @@
 
 #include <QListWidgetItem>
 #include "Options.hpp"
-//#include <QObject>
+#include <QObject>
 
+//FIXME:: Translation does not work for this object because the text is dynamicly
 
-class AnimationItem : public QListWidgetItem
+class AnimationItem : public QObject, public QListWidgetItem
 {
-//    Q_OBJECT
+    Q_OBJECT
 public:
     explicit AnimationItem(QListWidget *view = 0, int type = UserType);
     explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = UserType);
@@ -50,7 +51,6 @@ public:
     }
     void createAnimationTooltipAsRichText();
     QStringList getAnimationPropertiesAsPlainText();
-
 private:
     //    void initOptions(void);
     int m_availableAnimationOptions;

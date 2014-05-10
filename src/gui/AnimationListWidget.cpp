@@ -85,6 +85,15 @@ void AnimationListWidget::keyPressEvent(QKeyEvent *e)
     e->accept();
 }
 
+void AnimationListWidget::translateItemToolTip()
+{
+    selectAllItems();
+    QList<QListWidgetItem*> list = selectedItems();
+    for (int i = 0; i < list.count(); i++) {
+        dynamic_cast<AnimationItem*>(list.at(i))->createAnimationTooltipAsRichText();
+    }
+}
+
 
 void AnimationListWidget::insertAnimationItems(const QList<AnimationItem *> *animation)
 {
