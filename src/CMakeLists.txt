@@ -201,9 +201,9 @@ target_link_libraries(${PROGNAME}
 
 
 
-set_target_properties(${PROGNAME} ledcc-core PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set_target_properties(${PROGNAME} ledcc-core PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set_target_properties(${PROGNAME} ledcc-core PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+#set_target_properties(${PROGNAME} ledcc-core PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+#set_target_properties(${PROGNAME} ledcc-core PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+#set_target_properties(${PROGNAME} ledcc-core PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 install(TARGETS ${PROGNAME}
         BUNDLE DESTINATION . COMPONENT Runtime

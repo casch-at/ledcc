@@ -408,7 +408,7 @@
     <message>
         <location filename="../src/gui/MainWindow.ui" line="14"/>
         <source>3D-LED Cube Control</source>
-        <translation>3D-LED Cube Steuerung</translation>
+        <translation>3D-LED Cube Control</translation>
     </message>
     <message>
         <location filename="../src/gui/MainWindow.ui" line="44"/>
