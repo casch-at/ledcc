@@ -18,7 +18,7 @@
 #include "MainWindow.hpp"
 #include <QApplication>
 #include <QTranslator>
-
+#include <QLibraryInfo>
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -35,17 +35,23 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QTranslator translator;
     MainWindow w;
-    translator.load(QString("ledcc_en"));
-    a.installTranslator(&translator);
+    QTranslator qtTranslator;
+    QTranslator ledccTranslator;
+//    qtTranslator.load("qt_de", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    a.installTranslator(&qtTranslator);
+
 #ifdef _DEBUG_
-    if(!translator.load(QString("ledcc_de")))
+    if(!ledccTranslator.load("ledcc_" + QLocale::system().name()))
         qDebug("Error loading translation");
 #else
-    translator.load(QString("ledcc_de"));
+    translator.load("ledcc_de", + QLocale::system().name());
 #endif
-    a.installTranslator(&translator);
+    a.installTranslator(&ledccTranslator);
+//    ledccTranslator.load("ledcc_" + QLocale::system().name());
+//    a.installTranslator(&ledccTranslator);
+
     w.show();
     return a.exec();
 }

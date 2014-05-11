@@ -64,7 +64,11 @@ void AnimationItem:: createAnimationTooltipAsRichText()
     QString itemToolTip;
 
     // Append name of the animation.
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+    itemToolTip.append(QString(tr("<p style='white-space:pre'><font color=#FFFFFF><b>%1 Animation</b></font><br>")).arg(text()));
+#else // Windows
     itemToolTip.append(QString(tr("<p style='white-space:pre'><font color=#000000><b>%1 Animation</b></font><br>")).arg(text()));
+#endif
     for (int i = 0; i < AnimationOptions::TOTAL_ARGUMENTS; i++) {
         switch ((1<<i) & m_availableAnimationOptions)
         {

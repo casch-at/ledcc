@@ -70,7 +70,7 @@ void AnimationPlayListWidget::clearList()
 {
     QMessageBox msgb;
     msgb.setTextFormat(Qt::RichText);
-    msgb.setWindowTitle("Clear Animation Playlist");
+    msgb.setWindowTitle(tr("Clear Animation Playlist"));
     msgb.setText(tr("<h3><b>Do you really want clear the animation playlist?</b></h3>"));
     msgb.setInformativeText(tr("This can not be undone!"));
     msgb.setStandardButtons(QMessageBox::Yes | QMessageBox::No);

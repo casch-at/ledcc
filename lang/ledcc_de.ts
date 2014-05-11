@@ -59,171 +59,180 @@
 <context>
     <name>AnimationItem</name>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="67"/>
         <source>&lt;p style=&apos;white-space:pre&apos;&gt;&lt;font color=#00FFFF&gt;&lt;b&gt;%1 Animation&lt;/b&gt;&lt;/font&gt;&lt;br&gt;</source>
-        <translation>&lt;p style=&apos;white-space:pre&apos;&gt;&lt;font color=#00FFFF&gt;&lt;b&gt;%1 Animation&lt;/b&gt;&lt;/font&gt;&lt;br&gt;</translation>
+        <translation type="vanished">&lt;p style=&apos;white-space:pre&apos;&gt;&lt;font color=#00FFFF&gt;&lt;b&gt;%1 Animation&lt;/b&gt;&lt;/font&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="72"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="68"/>
+        <source>&lt;p style=&apos;white-space:pre&apos;&gt;&lt;font color=#FFFFFF&gt;&lt;b&gt;%1 Animation&lt;/b&gt;&lt;/font&gt;&lt;br&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/AnimationItem.cpp" line="70"/>
+        <source>&lt;p style=&apos;white-space:pre&apos;&gt;&lt;font color=#000000&gt;&lt;b&gt;%1 Animation&lt;/b&gt;&lt;/font&gt;&lt;br&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/AnimationItem.cpp" line="76"/>
         <source>Speed: %1&lt;br&gt;</source>
         <translation>Geschwindigkeit: %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="75"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="79"/>
         <source>Direction: Forward&lt;br&gt;</source>
         <translation>Richtung: Vorwärts&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="75"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="79"/>
         <source>Direction: Backward&lt;br&gt;</source>
         <translation>Richtung: Rückwärts&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="79"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="83"/>
         <source>Axis: X-Axis&lt;br&gt;</source>
         <translation>Achse: X-Achse&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="81"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="85"/>
         <source>Axis: Y-Axis&lt;br&gt;</source>
         <translation>Achse: Y-Achse&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="83"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="87"/>
         <source>Axis: Z-Axis&lt;br&gt;</source>
         <translation>Achse: Z-Achse</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="86"/>
-        <location filename="../src/gui/AnimationItem.cpp" line="89"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="90"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="93"/>
         <source>Particles: %1&lt;br&gt;</source>
         <translation>Partikeln: %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="92"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="96"/>
         <source>Delay: %1&lt;br&gt;</source>
         <translation>Verzögerung: %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="95"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="99"/>
         <source>Iterations: %1&lt;br&gt;</source>
         <translation>Durchläufe: %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="98"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="102"/>
         <source>Invert: YES&lt;br&gt;</source>
         <translation>Invertieren: JA&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="98"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="102"/>
         <source>Invert: NO&lt;br&gt;</source>
         <translation>Invertieren: NEIN&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="101"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="105"/>
         <source>Start from center: YES&lt;br&gt;</source>
         <translation>Von Mitte Starten: JA&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="101"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="105"/>
         <source>Start from center: NO&lt;br&gt;</source>
         <translation>Von Mitte Starten: NEIN&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="104"/>
-        <location filename="../src/gui/AnimationItem.cpp" line="165"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="108"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="169"/>
         <source>Current Text: </source>
         <translation>Momentaner Text:</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="107"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="111"/>
         <source>Initial LED State: %1&lt;br&gt;</source>
         <translation>Anfangs LED zustand: %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="107"/>
-        <location filename="../src/gui/AnimationItem.cpp" line="168"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="111"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="172"/>
         <source>ON</source>
         <translation>EIN</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="107"/>
-        <location filename="../src/gui/AnimationItem.cpp" line="168"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="111"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="172"/>
         <source>OFF</source>
         <translation>AUS</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="133"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="137"/>
         <source>Speed:%1</source>
         <translation>Geschwindigkeit:%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="136"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="140"/>
         <source>Direction:Forward</source>
         <translation>Richtung:Vorwärts</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="136"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="140"/>
         <source>Direction:Backward</source>
         <translation>Richtung:Rückwärts</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="140"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="144"/>
         <source>Axis:X-Axis</source>
         <translation>Achse:X-Achse</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="142"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="146"/>
         <source>Axis:Y-Axis</source>
         <translation>Achse:Y-Achse</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="144"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="148"/>
         <source>Axis:Z-Axis</source>
         <translation>Achse:Z-Achse</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="147"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="151"/>
         <source>LEDs:%1</source>
         <translation>LEDs: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="150"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="154"/>
         <source>Particles:%1</source>
         <translation>Partikeln:%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="153"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="157"/>
         <source>Delay:%1</source>
         <translation>Verzögerung:%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="156"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="160"/>
         <source>Iterations:%1</source>
         <translation>Durchläufe:%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="159"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="163"/>
         <source>Invert:YES</source>
         <translation>Invertieren:JA</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="159"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="163"/>
         <source>Invert:NO</source>
         <translation>Invertieren:NEIN</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="162"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="166"/>
         <source>Start from center:YES</source>
         <translation>Starte von Mitte: JA</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="162"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="166"/>
         <source>Start from center:NO</source>
         <translation>Von Mitte Starten: NEIN</translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="168"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="172"/>
         <source>Initial LED State:%1</source>
         <translation>Anfangs LED zustand:%1</translation>
     </message>
@@ -362,6 +371,11 @@
 </context>
 <context>
     <name>AnimationPlayListWidget</name>
+    <message>
+        <location filename="../src/gui/AnimationPlayListWidget.cpp" line="73"/>
+        <source>Clear Animation Playlist</source>
+        <translation>Animations Abspielliste Löschen</translation>
+    </message>
     <message>
         <location filename="../src/gui/AnimationPlayListWidget.cpp" line="74"/>
         <source>&lt;h3&gt;&lt;b&gt;Do you really want clear the animation playlist?&lt;/b&gt;&lt;/h3&gt;</source>
