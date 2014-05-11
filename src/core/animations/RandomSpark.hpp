@@ -23,32 +23,32 @@
 class RandomSpark : public Animation
 {
     Q_OBJECT
-    Q_PROPERTY(u_int16_t sparks READ getSparks WRITE setSparks)
-    Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
+    Q_PROPERTY(quint16 sparks READ getSparks WRITE setSparks)
+    Q_PROPERTY(quint16 iterations READ getIterations WRITE setIterations)
 public:
-    explicit RandomSpark(const u_int16_t &speed = 100,
-                         const u_int16_t &iterations = 1,
-                         const u_int16_t &sparks = 10,
+    explicit RandomSpark(const quint16 &speed = 100,
+                         const quint16 &iterations = 1,
+                         const quint16 &sparks = 10,
                          const QString &name = "Random Spark",
                          QObject *parent = 0);
-    u_int16_t getSparks() const
+    quint16 getSparks() const
     {
         return m_sparks;
     }
 
-    u_int16_t getIterations() const
+    quint16 getIterations() const
     {
         return m_iterations;
     }
 
 public Q_SLOTS:
     virtual void createAnimation();
-    void setSparks(const u_int16_t &sparks)
+    void setSparks(const quint16 &sparks)
     {
         if(m_sparks != sparks)
             m_sparks = sparks;
     }
-    void setIterations(const u_int16_t &iterations)
+    void setIterations(const quint16 &iterations)
     {
         if(m_iterations != iterations)
             m_iterations = iterations;
@@ -56,9 +56,9 @@ public Q_SLOTS:
 
 
 private:
-    void createSparks(const u_int16_t &leds);
-    u_int16_t m_sparks;
-    u_int16_t m_iterations;
+    void createSparks(const quint16 &leds);
+    quint16 m_sparks;
+    quint16 m_iterations;
 };
 
 #endif // RANDOMSPARK_HPP

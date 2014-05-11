@@ -18,7 +18,7 @@
 
 
 
-RandomFiller::RandomFiller(const u_int16_t &speed, const BixelState &state, const QString &name, QObject *parent) :
+RandomFiller::RandomFiller(const quint16 &speed, const BixelState &state, const QString &name, QObject *parent) :
     Animation(speed,name,parent),
     m_state(state)
 {
@@ -27,9 +27,9 @@ RandomFiller::RandomFiller(const u_int16_t &speed, const BixelState &state, cons
 void RandomFiller::createAnimation()
 {
     u_int32_t leds = 0;
-    u_int8_t x = 0;
-    u_int8_t y = 0;
-    u_int8_t z = 0;
+    quint8 x = 0;
+    quint8 y = 0;
+    quint8 z = 0;
 
     if (m_state)
         fillCubeArray(0x00);

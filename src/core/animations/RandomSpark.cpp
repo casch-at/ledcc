@@ -19,7 +19,7 @@
 
 
 
-RandomSpark::RandomSpark(const u_int16_t &speed, const u_int16_t &iterations, const u_int16_t &sparks,
+RandomSpark::RandomSpark(const quint16 &speed, const quint16 &iterations, const quint16 &sparks,
                          const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_sparks(sparks),
@@ -30,11 +30,11 @@ RandomSpark::RandomSpark(const u_int16_t &speed, const u_int16_t &iterations, co
 
 void RandomSpark::createAnimation()
 {
-    for (u_int16_t i = 0; i < m_sparks; i++)
+    for (quint16 i = 0; i < m_sparks; i++)
     {
         createSparks(i);
     }
-    for (u_int16_t i = m_sparks; i >= 1; i--)
+    for (quint16 i = m_sparks; i >= 1; i--)
     {
         createSparks(i);
     }
@@ -43,11 +43,11 @@ void RandomSpark::createAnimation()
 
 
 
-void RandomSpark::createSparks(const u_int16_t &leds)
+void RandomSpark::createSparks(const quint16 &leds)
 {
-    for (u_int16_t i = 0; i < m_iterations; i++)
+    for (quint16 i = 0; i < m_iterations; i++)
     {
-        for (u_int16_t b = 0; b < leds; b++)
+        for (quint16 b = 0; b < leds; b++)
         {
             setBixel(qrand() % CUBE_SIZE, qrand() % CUBE_SIZE,
                     qrand() % CUBE_SIZE);

@@ -18,7 +18,7 @@
 
 
 
-RandomSparkFlash::RandomSparkFlash(const u_int16_t &speed, const u_int16_t &iterations, const u_int16_t &leds, const QString &name, QObject *parent):
+RandomSparkFlash::RandomSparkFlash(const quint16 &speed, const quint16 &iterations, const quint16 &leds, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_iterations(iterations),
     m_leds(leds)
@@ -27,9 +27,9 @@ RandomSparkFlash::RandomSparkFlash(const u_int16_t &speed, const u_int16_t &iter
 
 void RandomSparkFlash::createAnimation()
 {
-    for (u_int16_t i = 0; i < m_iterations; i++)
+    for (quint16 i = 0; i < m_iterations; i++)
     {
-        for (u_int16_t b = 0; b < m_leds; b++)
+        for (quint16 b = 0; b < m_leds; b++)
         {
             setBixel(qrand() % CUBE_SIZE, qrand() % CUBE_SIZE,
                     qrand() % CUBE_SIZE);

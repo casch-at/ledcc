@@ -29,27 +29,27 @@ class Animation : public Draw
 {
     Q_OBJECT
 public:
-    explicit  Animation(const u_int16_t &speed, const QString &name,QObject *parent = Q_NULLPTR);
+    explicit  Animation(const quint16 &speed, const QString &name,QObject *parent = Q_NULLPTR);
 
     QString getName(void) const{
         return m_name;
     }
-    void setSpeed(const u_int16_t &speed)
+    void setSpeed(const quint16 &speed)
     {
         if(m_speed != speed){
             m_speed = speed;
         }
     }
-    u_int16_t getSpeed(void) const
+    quint16 getSpeed(void) const
     {
         return m_speed;
     }
 
-    void sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z);
-    void effectZUpDownMove(QVector<u_int8_t> &destination,
-                           QVector<u_int8_t> &position, Draw::Axis axis);
+    void sendBixelZ(quint8 x, quint8 y, quint8 z);
+    void effectZUpDownMove(QVector<quint8> &destination,
+                           QVector<quint8> &position, Draw::Axis axis);
 
-    void waitMs(const u_int16_t &time);
+    void waitMs(const quint16 &time);
 
 
     bool m_abort;
@@ -62,7 +62,7 @@ public Q_SLOTS:
 protected:
     QStringList list;
 private:
-    u_int16_t m_speed;
+    quint16 m_speed;
     QString m_name;
     Q_DISABLE_COPY(Animation)
 };

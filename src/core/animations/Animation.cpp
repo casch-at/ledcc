@@ -18,7 +18,7 @@
 #include <QTimer>
 
 
-Animation::Animation(const u_int16_t &speed, const QString &name, QObject *parent):
+Animation::Animation(const quint16 &speed, const QString &name, QObject *parent):
     Draw(parent),
     m_speed(speed),
     m_name(name)
@@ -34,10 +34,10 @@ Animation::Animation(const u_int16_t &speed, const QString &name, QObject *paren
  * @param y
  * @param z
  */
-void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z)
+void Animation::sendBixelZ(quint8 x, quint8 y, quint8 z)
 {
-    u_int8_t ii = 0;
-    for (u_int8_t i = 0; i < CUBE_SIZE; i++)
+    quint8 ii = 0;
+    for (quint8 i = 0; i < CUBE_SIZE; i++)
     {
         if (z == ( CUBE_SIZE - 1))
         {
@@ -64,9 +64,9 @@ void Animation::sendBixelZ(u_int8_t x, u_int8_t y, u_int8_t z)
  * @param position
  * @param axe
  */
-void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8_t> &position, Draw::Axis axis)
+void Animation::effectZUpDownMove(QVector<quint8> &destination, QVector<quint8> &position, Draw::Axis axis)
 {
-    for (u_int8_t px = 0; px < CUBE_ARRAY_SIZE; px++)
+    for (quint8 px = 0; px < CUBE_ARRAY_SIZE; px++)
     {
         if (position[px] < destination[px])
             position[px]++;
@@ -84,7 +84,7 @@ void Animation::effectZUpDownMove(QVector<u_int8_t> &destination, QVector<u_int8
  *
  * @param time
  */
-void Animation::waitMs(const u_int16_t &time)
+void Animation::waitMs(const quint16 &time)
 {
     Q_EMIT sendData(cubeFrame);
     thread()->usleep(time * 1000);

@@ -18,7 +18,7 @@
 #include <QDebug>
 
 
-Wall::Wall(const u_int16_t &speed, const Draw::Axis &axis, const Draw::Direction &direction, const QString &name, QObject *parent):
+Wall::Wall(const quint16 &speed, const Draw::Axis &axis, const Draw::Direction &direction, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_direction(direction),
     m_axis(axis)
@@ -27,7 +27,7 @@ Wall::Wall(const u_int16_t &speed, const Draw::Axis &axis, const Draw::Direction
 
 void Wall::createAnimation()
 {
-    u_int8_t i = 0;
+    quint8 i = 0;
 
     fillCubeArray(0x00);
 

@@ -25,7 +25,7 @@ class Loadbar : public Animation
     Q_PROPERTY(Draw::Axis axis READ getAxis WRITE setAxis)
     Q_PROPERTY(Draw::Direction direction READ getDirection WRITE setDirection)
 public:
-    explicit Loadbar(const u_int16_t &speed = 50, const Draw::Axis &axis = X_AXIS,
+    explicit Loadbar(const quint16 &speed = 50, const Draw::Axis &axis = X_AXIS,
                      const QString &name = "Loadbar", const Draw::Direction &direction = Forward, QObject *parent = 0);
     Draw::Axis getAxis() const
     {

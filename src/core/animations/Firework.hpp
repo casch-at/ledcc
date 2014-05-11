@@ -22,39 +22,39 @@
 class Firework : public Animation
 {
     Q_OBJECT
-    Q_PROPERTY(u_int8_t iterations READ getIterations WRITE setIterations)
-    Q_PROPERTY(u_int16_t particles READ getParticles WRITE setParticles)
+    Q_PROPERTY(quint8 iterations READ getIterations WRITE setIterations)
+    Q_PROPERTY(quint16 particles READ getParticles WRITE setParticles)
 public:
-    explicit Firework(const u_int16_t &iterations = 15, const u_int16_t &speed = 50,
-                      const u_int8_t &particles = 20, const QString &name = "Firework",
+    explicit Firework(const quint16 &iterations = 15, const quint16 &speed = 50,
+                      const quint8 &particles = 20, const QString &name = "Firework",
                       QObject *parent = Q_NULLPTR);
 
-    u_int8_t getIterations() const
+    quint8 getIterations() const
     {
         return m_iterations;
     }
 
-    u_int16_t getParticles() const
+    quint16 getParticles() const
     {
         return m_particles;
     }
 
 public Q_SLOTS:
     virtual void createAnimation();
-    void setIterations(const u_int8_t &iterations)
+    void setIterations(const quint8 &iterations)
     {
         if(m_iterations != iterations)
             m_iterations = iterations;
     }
 
-    void setParticles(const u_int16_t &particles)
+    void setParticles(const quint16 &particles)
     {
         if(m_particles != particles)
             m_particles = particles;
     }
 private:
-    u_int16_t m_iterations;
-    u_int8_t m_particles;
-    u_int8_t m_tempParticles;
+    quint16 m_iterations;
+    quint8 m_particles;
+    quint8 m_tempParticles;
 };
 #endif // FIREWORK_HPP

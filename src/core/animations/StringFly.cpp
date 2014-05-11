@@ -17,7 +17,7 @@
 #include "StringFly.hpp"
 
 
-StringFly::StringFly(const u_int16_t &speed, const QString &string, const QString &name, QObject *parent) :
+StringFly::StringFly(const quint16 &speed, const QString &string, const QString &name, QObject *parent) :
     Animation(speed,name,parent),
     m_sToDisplay(string)
 {
@@ -25,10 +25,10 @@ StringFly::StringFly(const u_int16_t &speed, const QString &string, const QStrin
 
 void StringFly::createAnimation()
 {
-    u_int8_t x = 0;
-    u_int8_t z = 0;
-    u_int8_t i = 0;
-    u_int8_t chr[5];
+    quint8 x = 0;
+    quint8 z = 0;
+    quint8 i = 0;
+    quint8 chr[5];
 
     for(int j = 0; j < m_sToDisplay.length(); j++)
     {

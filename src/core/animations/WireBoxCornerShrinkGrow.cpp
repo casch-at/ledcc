@@ -18,7 +18,7 @@
 
 
 
-WireBoxCornerShrinkGrow::WireBoxCornerShrinkGrow(const u_int16_t &iterations, const u_int16_t &speed, const u_int8_t &rotate, const u_int8_t &flip, const QString &name, QObject *parent):
+WireBoxCornerShrinkGrow::WireBoxCornerShrinkGrow(const quint16 &iterations, const quint16 &speed, const quint8 &rotate, const quint8 &flip, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_iterations(iterations),
     m_rotate(rotate),
@@ -28,17 +28,17 @@ WireBoxCornerShrinkGrow::WireBoxCornerShrinkGrow(const u_int16_t &iterations, co
 
 void WireBoxCornerShrinkGrow::createAnimation()
 {
-    for (u_int8_t i = 0; i < CUBE_SIZE; i++)
+    for (quint8 i = 0; i < CUBE_SIZE; i++)
                 createWireBoxCorner(i % 4, i & 0x04);
     Q_EMIT done();
 }
 
-void WireBoxCornerShrinkGrow::createWireBoxCorner(const u_int8_t rotate, const u_int8_t flip)
+void WireBoxCornerShrinkGrow::createWireBoxCorner(const quint8 rotate, const quint8 flip)
 {
-    u_int8_t xyz = 0;
-    for (u_int16_t j = 0; j < m_iterations; j++)
+    quint8 xyz = 0;
+    for (quint16 j = 0; j < m_iterations; j++)
     {
-        for (u_int8_t i = 0; i < CUBE_SIZE * 2; i++)
+        for (quint8 i = 0; i < CUBE_SIZE * 2; i++)
         {
             xyz = CUBE_SIZE - 1 - i;
             if (i > CUBE_SIZE - 1)

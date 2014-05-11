@@ -24,29 +24,29 @@
 class WireBoxCornerShrinkGrow : public Animation
 {
     Q_OBJECT
-    Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
-    Q_PROPERTY(u_int8_t rotate READ getRotate WRITE setRotate)
-    Q_PROPERTY(u_int8_t flip READ getFlip WRITE setFlip)
+    Q_PROPERTY(quint16 iterations READ getIterations WRITE setIterations)
+    Q_PROPERTY(quint8 rotate READ getRotate WRITE setRotate)
+    Q_PROPERTY(quint8 flip READ getFlip WRITE setFlip)
 public:
-    explicit WireBoxCornerShrinkGrow(const u_int16_t &iterations = 1,
-                                     const u_int16_t &speed = 50,
-                                     const u_int8_t &rotate = 1,
-                                     const u_int8_t &flip=0,
+    explicit WireBoxCornerShrinkGrow(const quint16 &iterations = 1,
+                                     const quint16 &speed = 50,
+                                     const quint8 &rotate = 1,
+                                     const quint8 &flip=0,
                                      const QString &name = "Wire Box Corner Shrink Grow",
                                      QObject *parent = Q_NULLPTR);
 
 
-    u_int16_t getIterations() const
+    quint16 getIterations() const
     {
         return m_iterations;
     }
 
-    u_int8_t getRotate() const
+    quint8 getRotate() const
     {
         return m_rotate;
     }
 
-    u_int8_t getFlip() const
+    quint8 getFlip() const
     {
         return m_flip;
     }
@@ -54,28 +54,28 @@ public:
 public Q_SLOTS:
     virtual void createAnimation();
     virtual QStringList& getAnimationPropertiesAsPlainText( const AnimationItem *item );
-    void setIterations(const u_int16_t &iterations)
+    void setIterations(const quint16 &iterations)
     {
         if(m_iterations != iterations)
             m_iterations = iterations;
     }
 
-    void setRotate(const u_int8_t &rotate)
+    void setRotate(const quint8 &rotate)
     {
         if(m_rotate != rotate)
             m_rotate = rotate;
     }
 
-    void setFlip(const u_int8_t &flip)
+    void setFlip(const quint8 &flip)
     {
         if(m_flip != flip)
             m_flip = flip;
     }
 
 private:
-    void createWireBoxCorner(const u_int8_t rotate, const u_int8_t flip);
-    u_int16_t m_iterations;
-    u_int8_t m_rotate;
-    u_int8_t m_flip;
+    void createWireBoxCorner(const quint8 rotate, const quint8 flip);
+    quint16 m_iterations;
+    quint8 m_rotate;
+    quint8 m_flip;
 };
 #endif // WIREBOXCORNERSHRINKGROW_HPP

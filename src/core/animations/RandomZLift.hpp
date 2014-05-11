@@ -24,26 +24,26 @@
 class RandomZLift : public Animation
 {
     Q_OBJECT
-    Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
+    Q_PROPERTY(quint16 iterations READ getIterations WRITE setIterations)
 public:
-    explicit RandomZLift(const u_int16_t &iterations = 10, const u_int16_t &speed = 100,
+    explicit RandomZLift(const quint16 &iterations = 10, const quint16 &speed = 100,
                          const QString &name = "Random Z Lift",QObject *parent = Q_NULLPTR);
 
-    u_int16_t getIterations() const
+    quint16 getIterations() const
     {
         return m_iterations;
     }
 
 public Q_SLOTS:
     virtual void createAnimation();
-    void setIterations(u_int16_t &iterations)
+    void setIterations(quint16 &iterations)
     {
         if (m_iterations != iterations)
             m_iterations = iterations;
     }
 
 private:
-    u_int16_t m_iterations;
+    quint16 m_iterations;
 };
 
 #endif // RANDOMZLIFT_HPP

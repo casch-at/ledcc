@@ -18,8 +18,8 @@
 #include "Options.hpp"
 
 
-Options::Options(const QString &text, const u_int16_t &speed, const u_int16_t &delay,
-                 const u_int16_t &leds, const u_int16_t &iteration,  const Draw::Direction &direction,
+Options::Options(const QString &text, const quint16 &speed, const quint16 &delay,
+                 const quint16 &leds, const quint16 &iteration,  const Draw::Direction &direction,
                  const Draw::Axis &axis, const bool invert, const Draw::BixelState state):
     m_text(text),
     m_speed(speed),

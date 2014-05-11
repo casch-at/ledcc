@@ -56,8 +56,8 @@ void Sender::sendAnimation(const Draw::CubeArray &d)
     m_serial->waitForBytesWritten(1000);
     m_serial->putChar(0x00);
     m_serial->waitForBytesWritten(1000);
-    for (u_int8_t z = 0; z < CUBE_SIZE; z++) {
-        for (u_int8_t y = 0; y < CUBE_SIZE; y++) {
+    for (quint8 z = 0; z < CUBE_SIZE; z++) {
+        for (quint8 y = 0; y < CUBE_SIZE; y++) {
             m_serial->putChar(d[z][y]);
             m_serial->waitForBytesWritten(1000);
             if(m_abort)

@@ -18,7 +18,7 @@
 
 
 
-Rain::Rain(const u_int16_t &iterations, const u_int16_t &speed, const QString &name, QObject *parent):
+Rain::Rain(const quint16 &iterations, const quint16 &speed, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_iterations(iterations)
 {
@@ -26,8 +26,8 @@ Rain::Rain(const u_int16_t &iterations, const u_int16_t &speed, const QString &n
 
 void Rain::createAnimation()
 {
-    u_int8_t i = 0;
-    u_int16_t ii = 0;
+    quint8 i = 0;
+    quint16 ii = 0;
 
     for (ii = 0; ii < m_iterations; ii++)
     {

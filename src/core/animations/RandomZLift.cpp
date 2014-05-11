@@ -17,7 +17,7 @@
 #include "RandomZLift.hpp"
 
 
-RandomZLift::RandomZLift(const u_int16_t &iterations, const u_int16_t &speed, const QString &name, QObject *parent):
+RandomZLift::RandomZLift(const quint16 &iterations, const quint16 &speed, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_iterations(iterations)
 {
@@ -25,10 +25,10 @@ RandomZLift::RandomZLift(const u_int16_t &iterations, const u_int16_t &speed, co
 
 void RandomZLift::createAnimation()
 {
-    QVector<u_int8_t> destination(CUBE_ARRAY_SIZE);
-    QVector<u_int8_t> position(CUBE_ARRAY_SIZE);
+    QVector<quint8> destination(CUBE_ARRAY_SIZE);
+    QVector<quint8> position(CUBE_ARRAY_SIZE);
 
-    for (u_int16_t i = 0; i < CUBE_ARRAY_SIZE; i++)
+    for (quint16 i = 0; i < CUBE_ARRAY_SIZE; i++)
     {
         position[i] = 4;
         destination[i] = qrand() % 8;
@@ -40,9 +40,9 @@ void RandomZLift::createAnimation()
 //        waitMs(getSpeed());
 //    }
 
-    for (u_int16_t i = 0; i < m_iterations; i++)
+    for (quint16 i = 0; i < m_iterations; i++)
     {
-        for (u_int8_t j = 0; j < CUBE_SIZE; j++)
+        for (quint8 j = 0; j < CUBE_SIZE; j++)
         {
             effectZUpDownMove(destination, position, Z_AXIS);
 
@@ -57,7 +57,7 @@ void RandomZLift::createAnimation()
 
         waitMs(getSpeed() * 4);
 
-        for (u_int8_t j = 0; j < CUBE_ARRAY_SIZE / 4; j++)
+        for (quint8 j = 0; j < CUBE_ARRAY_SIZE / 4; j++)
         {
             destination[qrand() % CUBE_ARRAY_SIZE] = qrand() % CUBE_SIZE;
         }

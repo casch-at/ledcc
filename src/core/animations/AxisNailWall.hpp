@@ -26,7 +26,7 @@ class AxisNailWall : public Animation
     Q_PROPERTY(Draw::Axis axis READ getAxis WRITE setAxis)
 
 public:
-    explicit AxisNailWall(const u_int16_t &speed = 70,
+    explicit AxisNailWall(const quint16 &speed = 70,
                           const Draw::Axis &axis = X_AXIS,
                           const Draw::Direction &direction = Forward,
                           const QString &name = "Axis Nail Wall",

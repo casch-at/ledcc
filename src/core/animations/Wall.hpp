@@ -25,7 +25,7 @@ class Wall : public Animation
     Q_PROPERTY(Draw::Direction direction READ getDirection WRITE setDirection)
     Q_PROPERTY(Draw::Axis axis READ getAxis WRITE setAxis)
 public:
-    explicit Wall(const u_int16_t &speed = 50,
+    explicit Wall(const quint16 &speed = 50,
                   const Draw::Axis &axis = X_AXIS,
                   const Draw::Direction &direction = Forward,
                   const QString &name = "Wall",

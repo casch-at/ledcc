@@ -18,7 +18,7 @@
 
 
 
-AxisNailWall::AxisNailWall(const u_int16_t &speed, const Draw::Axis &axis, const Draw::Direction &direction, const QString &name, QObject *parent):
+AxisNailWall::AxisNailWall(const quint16 &speed, const Draw::Axis &axis, const Draw::Direction &direction, const QString &name, QObject *parent):
     Animation(speed,name,parent),
     m_axis(axis),
     m_direction(direction)
@@ -28,8 +28,8 @@ AxisNailWall::AxisNailWall(const u_int16_t &speed, const Draw::Axis &axis, const
 
 void AxisNailWall::createAnimation()
 {
-    QVector<u_int8_t> destination(CUBE_ARRAY_SIZE);
-    QVector<u_int8_t> position(CUBE_ARRAY_SIZE);
+    QVector<quint8> destination(CUBE_ARRAY_SIZE);
+    QVector<quint8> position(CUBE_ARRAY_SIZE);
 
     fillCubeArray(0x00);
 
@@ -42,12 +42,12 @@ void AxisNailWall::createAnimation()
         return;
     waitMs(getSpeed() * 3);
 
-    for (u_int8_t i = 0; i < CUBE_ARRAY_SIZE; i++)
+    for (quint8 i = 0; i < CUBE_ARRAY_SIZE; i++)
         destination[i] = qrand() % CUBE_SIZE;
 
-    for (u_int8_t i = 0; i < CUBE_SIZE; i++)
+    for (quint8 i = 0; i < CUBE_SIZE; i++)
     {
-        for (u_int8_t px = 0; px < CUBE_ARRAY_SIZE; px++)
+        for (quint8 px = 0; px < CUBE_ARRAY_SIZE; px++)
         {
             if (position[px] < destination[px])
                 position[px]++;
@@ -58,7 +58,7 @@ void AxisNailWall::createAnimation()
         waitMs(getSpeed());
     }
 
-    for (u_int8_t i = 0; i < CUBE_ARRAY_SIZE; i++)
+    for (quint8 i = 0; i < CUBE_ARRAY_SIZE; i++)
     {
         destination[i] = CUBE_SIZE - 1;
     }
@@ -66,9 +66,9 @@ void AxisNailWall::createAnimation()
         return;
     waitMs(getSpeed() * 10);
 
-    for (u_int8_t i = 0; i < CUBE_SIZE; i++)
+    for (quint8 i = 0; i < CUBE_SIZE; i++)
     {
-        for (u_int8_t px = 0; px < CUBE_ARRAY_SIZE; px++)
+        for (quint8 px = 0; px < CUBE_ARRAY_SIZE; px++)
         {
             if (position[px] < destination[px])
                 position[px]++;

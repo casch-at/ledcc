@@ -18,7 +18,7 @@
 
 
 
-Loadbar::Loadbar(const u_int16_t &speed, const Draw::Axis &axis, const QString &name, const Draw::Direction &direction, QObject *parent):
+Loadbar::Loadbar(const quint16 &speed, const Draw::Axis &axis, const QString &name, const Draw::Direction &direction, QObject *parent):
     Animation(speed,name,parent),
     m_axis(axis),
     m_direction(direction)
@@ -28,7 +28,7 @@ Loadbar::Loadbar(const u_int16_t &speed, const Draw::Axis &axis, const QString &
 void Loadbar::createAnimation()
 {
     fillCubeArray(0x00);
-    for (u_int8_t i = 0; i < CUBE_SIZE; i++)
+    for (quint8 i = 0; i < CUBE_SIZE; i++)
     {
         setPlane(m_axis, i);
         if(m_abort)
@@ -36,7 +36,7 @@ void Loadbar::createAnimation()
         waitMs(getSpeed());
     }
     waitMs(getSpeed() * 2);
-    for (u_int8_t i = 0; i < CUBE_SIZE; i++)
+    for (quint8 i = 0; i < CUBE_SIZE; i++)
     {
         clearPlane(m_axis, i);
         if(m_abort)

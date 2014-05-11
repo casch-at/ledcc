@@ -24,11 +24,11 @@ class WireBoxCenterShrinkGrow : public Animation
 {
     Q_OBJECT
     Q_PROPERTY(bool centerStart READ getCenterStart WRITE setCenterStart)
-    Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
+    Q_PROPERTY(quint16 iterations READ getIterations WRITE setIterations)
 public:
-    explicit WireBoxCenterShrinkGrow(const u_int16_t &speed = 180,
+    explicit WireBoxCenterShrinkGrow(const quint16 &speed = 180,
                                      const bool centerStart = false,
-                                     const u_int16_t &iterations = 1,
+                                     const quint16 &iterations = 1,
                                      const QString &name = "Wire Box Center Shrink Grow",
                                      QObject *parent = Q_NULLPTR);
     bool getCenterStart() const
@@ -36,7 +36,7 @@ public:
         return m_centerStart;
     }
 
-    u_int16_t getIterations() const
+    quint16 getIterations() const
     {
         return m_iterations;
     }
@@ -48,7 +48,7 @@ public Q_SLOTS:
         if(m_centerStart != centerStart)
             m_centerStart = centerStart;
     }
-    void setIterations(const u_int16_t &iterations)
+    void setIterations(const quint16 &iterations)
     {
         if(m_iterations != iterations )
             m_iterations = iterations;
@@ -56,7 +56,7 @@ public Q_SLOTS:
 
 private:
     bool m_centerStart;
-    u_int16_t m_iterations;
+    quint16 m_iterations;
 };
 
 #endif // WIREBOXCENTERSHRINKGROW_HPP

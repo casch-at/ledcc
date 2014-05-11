@@ -18,7 +18,7 @@
 
 
 
-Lift::Lift(const u_int16_t &delay, const u_int16_t &iterations, const QString &name, const u_int16_t &speed, QObject *parent):
+Lift::Lift(const quint16 &delay, const quint16 &iterations, const QString &name, const quint16 &speed, QObject *parent):
     Animation(speed,name,parent),
     m_delay(delay),
     m_iterations(iterations)
@@ -28,10 +28,10 @@ Lift::Lift(const u_int16_t &delay, const u_int16_t &iterations, const QString &n
 void Lift::createAnimation()
 {
 
-    u_int8_t lastX = 0;
-    u_int8_t lastY = 0;
-    u_int8_t x;
-    u_int8_t y;
+    quint8 lastX = 0;
+    quint8 lastY = 0;
+    quint8 x;
+    quint8 y;
 
     fillCubeArray(0x00);
 
@@ -43,7 +43,7 @@ void Lift::createAnimation()
         }
     }
 
-    for (u_int16_t i = 0; i < m_iterations; i++)
+    for (quint16 i = 0; i < m_iterations; i++)
     {
 
         x = qrand() % CUBE_SIZE;

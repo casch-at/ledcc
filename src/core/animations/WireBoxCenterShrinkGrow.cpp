@@ -18,7 +18,7 @@
 
 
 
-WireBoxCenterShrinkGrow::WireBoxCenterShrinkGrow(const u_int16_t &speed, const bool centerStart, const u_int16_t &iterations, const QString &name, QObject *parent) :
+WireBoxCenterShrinkGrow::WireBoxCenterShrinkGrow(const quint16 &speed, const bool centerStart, const quint16 &iterations, const QString &name, QObject *parent) :
     Animation(speed,name,parent),
     m_centerStart(centerStart),
     m_iterations(iterations)
@@ -28,12 +28,12 @@ WireBoxCenterShrinkGrow::WireBoxCenterShrinkGrow(const u_int16_t &speed, const b
 
 void WireBoxCenterShrinkGrow::createAnimation()
 {
-    u_int8_t j = 0;
-    u_int8_t cubeSizeHalf = CUBE_SIZE / 2;
-    u_int8_t xyzStart = 0;
-    u_int8_t xyzEnd = 0;
-    for(u_int8_t iter = 0; iter < m_iterations; iter++){
-        for (u_int8_t i = 0; i < cubeSizeHalf; i++)
+    quint8 j = 0;
+    quint8 cubeSizeHalf = CUBE_SIZE / 2;
+    quint8 xyzStart = 0;
+    quint8 xyzEnd = 0;
+    for(quint8 iter = 0; iter < m_iterations; iter++){
+        for (quint8 i = 0; i < cubeSizeHalf; i++)
         {
             fillCubeArray(0x00);
             j = i;

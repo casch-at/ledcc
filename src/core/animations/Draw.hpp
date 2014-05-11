@@ -38,7 +38,7 @@ class Draw: public QObject
 public:
     explicit Draw(QObject *parent = Q_NULLPTR);
     /** @brief CubeArray holds the data of the cube! */
-    typedef QVector<QVector<u_int8_t> > CubeArray; /*! Define alias for the CubeArray */
+    typedef QVector<QVector<quint8> > CubeArray; /*! Define alias for the CubeArray */
 
     /************************************************************************
      *                   ENUMERATION DEFENTIONS
@@ -69,53 +69,53 @@ public:
     CubeArray cubeFrameTemp;
 protected:
     virtual ~Draw();
-    void setBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z);
-    void setTempBixel(u_int8_t x, u_int8_t y, u_int8_t z);
+    void setBixel(const quint8 x, const quint8 y, const quint8 z);
+    void setTempBixel(quint8 x, quint8 y, quint8 z);
 
-    void clearBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z);
-    void clearTempBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z);
+    void clearBixel(const quint8 x, const quint8 y, const quint8 z);
+    void clearTempBixel(const quint8 x, const quint8 y, const quint8 z);
 
-    BixelState getBixelState(const u_int8_t x, const u_int8_t y, const u_int8_t z);
+    BixelState getBixelState(const quint8 x, const quint8 y, const quint8 z);
 
-    void flipBixels(const u_int8_t x, const u_int8_t y, const u_int8_t z);
+    void flipBixels(const quint8 x, const quint8 y, const quint8 z);
 
-    void alterBixel(const u_int8_t x, const u_int8_t y, const u_int8_t z, const BixelState state);
+    void alterBixel(const quint8 x, const quint8 y, const quint8 z, const BixelState state);
 
-    bool inRange(const u_int8_t x, const u_int8_t y, const u_int8_t z);
+    bool inRange(const quint8 x, const quint8 y, const quint8 z);
 
     void shift(const Axis axis, const Direction direction);
 
-    void checkArgumentOrder(u_int8_t from, u_int8_t to, u_int8_t *newStartPoint, u_int8_t *newEndPoint);
+    void checkArgumentOrder(quint8 from, quint8 to, quint8 *newStartPoint, quint8 *newEndPoint);
 
-    void drawPositionAxis(const Axis axis, const QVector<u_int8_t> &position, const Direction direction);
+    void drawPositionAxis(const Axis axis, const QVector<quint8> &position, const Direction direction);
 
-    void setPlaneX(const u_int8_t x);
-    void setPlaneY(const u_int8_t y);
-    void setPlaneZ(const u_int8_t z);
-    void setPlane(const Axis axis, const u_int8_t i);
+    void setPlaneX(const quint8 x);
+    void setPlaneY(const quint8 y);
+    void setPlaneZ(const quint8 z);
+    void setPlane(const Axis axis, const quint8 i);
 
-    void clearPlaneX(const u_int8_t x);
-    void clearPlaneY(const u_int8_t y);
-    void clearPlaneZ(const u_int8_t z);
-    void clearPlane(const Axis axis, const u_int8_t i);
+    void clearPlaneX(const quint8 x);
+    void clearPlaneY(const quint8 y);
+    void clearPlaneZ(const quint8 z);
+    void clearPlane(const Axis axis, const quint8 i);
 
-    void boxWireframe(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2);
-    void boxFilled(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2);
-    void boxWalls(u_int8_t x1, u_int8_t y1, u_int8_t z1, u_int8_t x2, u_int8_t y2, u_int8_t z2);
+    void boxWireframe(quint8 x1, quint8 y1, quint8 z1, quint8 x2, quint8 y2, quint8 z2);
+    void boxFilled(quint8 x1, quint8 y1, quint8 z1, quint8 x2, quint8 y2, quint8 z2);
+    void boxWalls(quint8 x1, quint8 y1, quint8 z1, quint8 x2, quint8 y2, quint8 z2);
 
     void mirrorX(void);
     void mirrorY(void);
     void mirrorZ(void);
 
-    void fillTempCubeArray(const u_int8_t &pattern);
-    void fillCubeArray(const u_int8_t &pattern);
+    void fillTempCubeArray(const quint8 &pattern);
+    void fillCubeArray(const quint8 &pattern);
 
-    u_int8_t byteline(const u_int8_t &start, const u_int8_t &end);
-    u_int8_t flipByte(const u_int8_t byte);
+    quint8 byteline(const quint8 &start, const quint8 &end);
+    quint8 flipByte(const quint8 byte);
 
     void tmpCubeToCube(void);
 
-    void fontGetChar(u_int8_t chr, u_int8_t dst[]);
+    void fontGetChar(quint8 chr, quint8 dst[]);
     Q_DISABLE_COPY(Draw)
 };
 //Q_DECLARE_METATYPE(Draw::AnimationOptions)

@@ -23,40 +23,40 @@
 class RandomSparkFlash : public Animation
 {
     Q_OBJECT
-    Q_PROPERTY(u_int16_t iterations READ getIterations WRITE setIterations)
-    Q_PROPERTY(u_int16_t leds READ getLeds WRITE setLeds)
+    Q_PROPERTY(quint16 iterations READ getIterations WRITE setIterations)
+    Q_PROPERTY(quint16 leds READ getLeds WRITE setLeds)
 public:
-    explicit RandomSparkFlash(const u_int16_t &speed = 80,
-                              const u_int16_t &iterations = 20,
-                              const u_int16_t &leds = 40,
+    explicit RandomSparkFlash(const quint16 &speed = 80,
+                              const quint16 &iterations = 20,
+                              const quint16 &leds = 40,
                               const QString &name = "Random Spark Flash",
                               QObject *parent = 0);
 
-    u_int16_t getIterations() const
+    quint16 getIterations() const
     {
         return m_iterations;
     }
 
-    u_int16_t getLeds() const
+    quint16 getLeds() const
     {
         return m_leds;
     }
 
 public Q_SLOTS:
     virtual void createAnimation();
-    void setIterations(const u_int16_t iterations)
+    void setIterations(const quint16 iterations)
     {
         if(m_iterations != iterations)
             m_iterations = iterations;
     }
-    void setLeds(const u_int16_t leds)
+    void setLeds(const quint16 leds)
     {
         if(m_leds != leds)
             m_leds = leds;
     }
 private:
-    u_int16_t m_iterations;
-    u_int16_t m_leds;
+    quint16 m_iterations;
+    quint16 m_leds;
 };
 
 #endif // RANDOMSPARKFLASH_HPP
