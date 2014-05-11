@@ -26,7 +26,7 @@ RandomFiller::RandomFiller(const quint16 &speed, const BixelState &state, const 
 
 void RandomFiller::createAnimation()
 {
-    u_int32_t leds = 0;
+    quint32 leds = 0;
     quint8 x = 0;
     quint8 y = 0;
     quint8 z = 0;
