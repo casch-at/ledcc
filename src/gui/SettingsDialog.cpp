@@ -169,7 +169,7 @@ void SettingsDialog::fillPortsParameters()
     // fill stop bits
     m_ui->m_stopBitsBox->addItem(QLatin1String("1"), QSerialPort::OneStop);
 #ifdef Q_OS_WIN
-    ui->m_stopBitsBox->addItem(QLatin1String("1.5"), QSerialPort::OneAndHalfStop);
+    m_ui->m_stopBitsBox->addItem(QLatin1String("1.5"), QSerialPort::OneAndHalfStop);
 #endif
     m_ui->m_stopBitsBox->addItem(QLatin1String("2"), QSerialPort::TwoStop);
 
