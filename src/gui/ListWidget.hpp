@@ -55,7 +55,7 @@ protected:
     QAction *createAction(const QString &text, const QString &tooltip = "");
 
 private:
-    u_int8_t m_scrollThrough;
+    quint8 m_scrollThrough;
     QTimer *m_showPropertiesPreview;
 };
 
