@@ -18,6 +18,7 @@
 #include "MainWindow.hpp"
 #include <QApplication>
 #include <QTranslator>
+
 #ifdef _DEBUG_
 #include <QDebug>
 #endif

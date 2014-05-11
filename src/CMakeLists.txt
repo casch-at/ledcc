@@ -73,6 +73,7 @@ set(ledcc_core_SOURCES
     ${CORE_DIR}/XmlPlaylistReader.cpp
     ${CORE_DIR}/XmlPlaylistWriter.cpp
     ${CORE_DIR}/System.cpp
+    ${CORE_DIR}/animations/LookUpTables.hpp
 )
 
 set(ledcc_thirdparty_SOURCES
