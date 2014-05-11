@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     if(!translator.load(QString("ledcc_de")))
         qDebug("Error loading translation");
 #else
-    translator.load(QString("ledcc_de"))
+    translator.load(QString("ledcc_de"));
 #endif
     a.installTranslator(&translator);
     w.show();

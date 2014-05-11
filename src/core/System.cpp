@@ -19,6 +19,7 @@
 #include <QDesktopServices>
 #include <QDir>
 
+#include <QDebug>
 
 /*!
  \brief Retrive the system user default config path
@@ -48,7 +49,9 @@ QString System::getConfigPath()
 
     userPath += "/ledcc/";
 #else
-    userPath = QDir::fromNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+//    userPath = QDir::fromNativeSeparators(""/*QDesktopServices::storageLocation(QDesktopServices::DataLocation)*/);
+    userPath = homePath + "/AppData/Local/ledcc/";
+    qDebug() << userPath;
     // storageLocation() appends the application name ("/keepassx/") to the end
 #endif
     return userPath;
