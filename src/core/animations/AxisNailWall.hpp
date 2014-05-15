@@ -42,7 +42,7 @@ public:
         return m_axis;
     }
 public Q_SLOTS:
-    virtual void createAnimation();
+    void createAnimation();
     void setDirection(const Draw::Direction direction)
     {
         if(m_direction != direction)

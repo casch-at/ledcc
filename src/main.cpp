@@ -36,21 +36,22 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    QTranslator qtTranslator;
-    QTranslator ledccTranslator;
-//    qtTranslator.load("qt_de", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    a.installTranslator(&qtTranslator);
+    QTranslator *qtTranslator = new QTranslator(w.parent());
+    QTranslator *ledccTranslator = new QTranslator(w.parent());
+    qtTranslator->load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    a.installTranslator(qtTranslator);
 
 #ifdef _DEBUG_
-    if(!ledccTranslator.load("ledcc_" + QLocale::system().name()))
+//    if(!ledccTranslator->load("ledcc_" + QLocale::system().name()))
+    if(!ledccTranslator->load("ledcc_en" ))
         qDebug("Error loading translation");
 #else
-    translator.load("ledcc_de", + QLocale::system().name());
+    translator->load("ledcc_de", + QLocale::system().name());
 #endif
-    a.installTranslator(&ledccTranslator);
-//    ledccTranslator.load("ledcc_" + QLocale::system().name());
-//    a.installTranslator(&ledccTranslator);
+    a.installTranslator(ledccTranslator);
+//    ledccTranslator->load("ledcc_" + QLocale::system().name());
+    ledccTranslator->load("ledcc_de" );
+    a.installTranslator(ledccTranslator);
 
     w.show();
     return a.exec();

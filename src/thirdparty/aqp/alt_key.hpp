@@ -41,9 +41,10 @@ namespace AQP {
     is required, thus preserving the Alt_Key module's API.
 */
 class _Alphabet {
-    Q_DECLARE_TR_FUNCTIONS(_Alphabet);
+    Q_DECLARE_TR_FUNCTIONS(_Alphabet)
 public:
     _Alphabet() {}
+    // TODO:: Added german caracters like ü,ö,ä. We should use the alphabet as the choosen ui language.
     operator QString() const {
             return tr("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÜÖÄ",
                       "Accelerator Keys"); }

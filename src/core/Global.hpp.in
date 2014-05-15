@@ -19,10 +19,8 @@
 #include "stdint.h"
 #include <QVector>
 #include <QString>
-/************************************************************************
- *                      CONSTANTS
- ************************************************************************/
-static const quint8 AVAILABLEANIMATIONS = 13;
+
+static const quint8 AVAILABLEANIMATIONS = 15;
 static const quint8 CUBE_SIZE = 8;
 static const quint8 IT_CUBE_SIZE = CUBE_SIZE - 1;
 static const quint8 CUBE_ARRAY_SIZE = CUBE_SIZE * CUBE_SIZE;

@@ -68,6 +68,8 @@ set(ledcc_core_SOURCES
     ${CORE_DIR}/animations/StringFly.cpp
     ${CORE_DIR}/animations/AnimationHandler.cpp
     ${CORE_DIR}/animations/Animations.cpp
+    ${CORE_DIR}/animations/ConwaysGameOfLife.cpp
+    ${CORE_DIR}/animations/Wave.cpp
     ${CORE_DIR}/Global.hpp
     ${CORE_DIR}/Config.cpp
     ${CORE_DIR}/XmlPlaylistReader.cpp

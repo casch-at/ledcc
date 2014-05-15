@@ -14,21 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef GLOBAL_H
-#define GLOBAL_H
-#include "stdint.h"
-#include <QVector>
-#include <QString>
 
-static const quint8 AVAILABLEANIMATIONS = 15;
-static const quint8 CUBE_SIZE = 8;
-static const quint8 IT_CUBE_SIZE = CUBE_SIZE - 1;
-static const quint8 CUBE_ARRAY_SIZE = CUBE_SIZE * CUBE_SIZE;
-static const quint32  CUBE_LED_COUNT = CUBE_ARRAY_SIZE * CUBE_SIZE;
+#include "ConwaysGameOfLife.hpp"
 
-#define LEDCC_VERSION_MAJOR 0
-#define LEDCC_VERSION_MINOR 1
-//#define LEDCC_VERSION_MICRO 
-#define LEDCC_VERSION       0.1
+ConwaysGameOfLife::ConwaysGameOfLife(const quint16 &speed, const QString &name, QObject *parent) :
+    Animation(speed,name,parent)
+{
+}
 
-#endif // GLOBAL_H
+void ConwaysGameOfLife::createAnimation()
+{
+
+}

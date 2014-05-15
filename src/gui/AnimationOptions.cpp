@@ -33,6 +33,7 @@
 #include "Wall.hpp"
 #include "Rain.hpp"
 #include "StringFly.hpp"
+#include "ConwaysGameOfLife.hpp"
 
 // ThirdParty
 #include "aqp.hpp"

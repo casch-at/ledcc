@@ -36,23 +36,6 @@
 #include "Rain.hpp"
 #include "StringFly.hpp"
 
-/*! Build In Animations String*/
-namespace BIAS {
-    const QString WireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
-    const QString WireBoxCornerShrinkGrow("Wire Box Corner Shrink Grow");
-    const QString Lift("Lift");
-    const QString Wall("Wall");
-    const QString Firework("Firework");
-    const QString Rain("Rain");
-    const QString RandomSpark("Random Spark");
-    const QString RandomSparkFlash("Random Spark Flash");
-    const QString RandomFiller("Random Filler");
-    const QString RandomZLift("Random Z-Axis Lift");
-    const QString StringFly("String Fly");
-    const QString Loadbar("Loadbar");
-    const QString AxisNailWall("Axis Nail Wall");
-    }
-
 
 class Animation;
 class AnimationItem;
