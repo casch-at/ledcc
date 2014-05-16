@@ -4,11 +4,11 @@
 # ---------------------------------------------------------------------------------------------------
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # ---------------------------------------------------------------------------------------------------
-# Tell cmake to run moc when neccasery
+# Tell cmake to run moc tool when neccasery
 # ---------------------------------------------------------------------------------------------------
 set(CMAKE_AUTOMOC ON)
 
-option(UPDATE_TRANSLATIONS "If 'ON' .ts files will be updated, if 'OFF' .qm files will be created")
+option(UPDATE_TRANSLATIONS "If 'ON' .ts files will be updated, if 'OFF' .qm files will be created" OFF)
 
 # ---------------------------------------------------------------------------------------------------
 # Configure the install path
@@ -35,9 +35,7 @@ else()
   set(DATA_INSTALL_DIR   "${CMAKE_PREFIX_PATH}/${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}")
 endif()
 
-# ---------------------------------------------------------------------------------------------------
-# Print a message where the program will be installed
-# ---------------------------------------------------------------------------------------------------
+
 message(STATUS "BIN_INSTALL_DIR: ${BIN_INSTALL_DIR}" )
 message(STATUS "PLUGIN_INSTALL_DIR: ${PLUGIN_INSTALL_DIR}" )
 message(STATUS "DATA_INSTALL_DIR: ${DATA_INSTALL_DIR}" )

@@ -20,6 +20,7 @@
 ConwaysGameOfLife::ConwaysGameOfLife(const quint16 &speed, const QString &name, QObject *parent) :
     Animation(speed,name,parent)
 {
+
 }
 
 void ConwaysGameOfLife::createAnimation()

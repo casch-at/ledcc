@@ -29,7 +29,8 @@
 #include <QObject>
 
 /*!
- \brief Base class of \a Animation class which provides drawing functions
+ \brief Base class of \a Animation class.
+        Provides drawing functions.
 
 */
 class Draw: public QObject
@@ -38,11 +39,8 @@ class Draw: public QObject
 public:
     explicit Draw(QObject *parent = Q_NULLPTR);
     /** @brief CubeArray holds the data of the cube! */
-    typedef QVector<QVector<quint8> > CubeArray; /*! Define alias for the CubeArray */
+    typedef QVector<QVector<quint8> > CubeArray;
 
-    /************************************************************************
-     *                   ENUMERATION DEFENTIONS
-     ************************************************************************/
     /** @brief: AXIS TYPE */
     typedef enum Axis
         {

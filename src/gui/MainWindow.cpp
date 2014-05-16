@@ -38,7 +38,7 @@
 #include <QEventLoop>
 #include <QShortcut>
 #include <QFileDialog>
-#include <QQuickView>
+
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -277,10 +277,7 @@ void MainWindow::openPlaylist()
     delete fileDialog;
 }
 
-/**
- * @brief Create connections
- *
- */
+
 void MainWindow::connectSignals(void)
 {
 
@@ -322,10 +319,6 @@ void MainWindow::connectSignals(void)
     connect( m_animationHandler, &AnimationHandler::updateUi, this, &MainWindow::updateUi);
 }
 
-/**
- * @brief About the Application
- *
- */
 void MainWindow::about()
 {
     AboutDialog *m_aboutMsgBox = new AboutDialog(

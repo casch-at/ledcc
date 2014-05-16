@@ -47,7 +47,7 @@ void AboutDialog::setInfromativeText(const QString &text)
 
 void AboutDialog::setAboutPixmap(const QPixmap &pix)
 {
- ui->m_aboutIcon->setPixmap(pix);
+    ui->m_aboutIcon->setPixmap(pix);
 }
 
 

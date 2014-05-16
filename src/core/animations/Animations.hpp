@@ -35,6 +35,8 @@
 #include "Wall.hpp"
 #include "Rain.hpp"
 #include "StringFly.hpp"
+#include "ConwaysGameOfLife.hpp"
+#include "Wave.hpp"
 
 
 class Animation;
@@ -45,9 +47,9 @@ class Animations : public QObject
     Q_OBJECT
 public:
     virtual ~Animations();
-    Animation *get(const QString& key);
+    Animation* get(const QString& key);
     Animation* get(const QString& key,const AnimationItem* defaultValue);
-    Animation *get(const AnimationItem* defaultValue);
+    Animation* get(const AnimationItem* defaultValue);
     const QHash<QString, Animation *> *getAll();
     static Animations* instance();
     QList<AnimationItem*> const * animationItemDefaultList() const { return &m_animationItemDefaultList; }
