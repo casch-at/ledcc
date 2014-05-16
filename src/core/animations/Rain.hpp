@@ -24,8 +24,10 @@ class Rain : public Animation
     Q_OBJECT
     Q_PROPERTY(quint16 iterations READ getIterations WRITE setIterations)
 public:
-    explicit Rain(const quint16 &iterations = 20, const quint16 &speed = 80,
-                  const QString &name = "Rain",QObject *parent = Q_NULLPTR);
+    explicit Rain(const quint16 &iterations = 20,
+                  const quint16 &speed = 80,
+                  const QString &name = BIAS::Rain,
+                  QObject *parent = Q_NULLPTR);
 
     quint16 getIterations() const
     {

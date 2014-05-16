@@ -27,6 +27,33 @@ class AnimationItem : public QObject, public QListWidgetItem
 {
     Q_OBJECT
 public:
+    class Options
+    {
+    public:
+        Options(const QString &text = "", const quint16 &speed = 1, const quint16 &delay = 0,
+                const quint16 &leds = 0, const quint16 &iteration = 0, const Draw::Direction &direction = Draw::Backward,
+                const Draw::Axis &axis = Draw::X_AXIS, const bool invert = false, const Draw::BixelState state= Draw::OFF)
+            : m_text(text),
+              m_speed(speed),
+              m_delay(delay),
+              m_leds(leds),
+              m_iteration(iteration),
+              m_direction(direction),
+              m_axis(axis),
+              m_invert(invert),
+              m_state(state) { }
+
+        QString m_text;
+        quint16 m_speed;
+        quint16 m_delay;
+        quint16 m_leds;
+        quint16 m_iteration;
+        Draw::Direction m_direction;
+        Draw::Axis m_axis;
+        bool m_invert;
+        Draw::BixelState m_state;
+    };
+
     explicit AnimationItem(QListWidget *view = 0, int type = UserType);
     explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = UserType);
 

@@ -29,7 +29,7 @@ public:
     explicit AxisNailWall(const quint16 &speed = 70,
                           const Draw::Axis &axis = X_AXIS,
                           const Draw::Direction &direction = Forward,
-                          const QString &name = "Axis Nail Wall",
+                          const QString &name = BIAS::AxisNailWall,
                           QObject *parent = 0);
 
     Draw::Direction getDirection() const

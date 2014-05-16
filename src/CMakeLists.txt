@@ -49,7 +49,6 @@ include(configure.h.in.cmake)
 # Collect all source files
 # ---------------------------------------------------------------------------------------------------
 set(ledcc_core_SOURCES
-    ${CORE_DIR}/Options.cpp
     ${CORE_DIR}/Sender.cpp
     ${CORE_DIR}/animations/Draw.cpp
     ${CORE_DIR}/animations/Animation.cpp

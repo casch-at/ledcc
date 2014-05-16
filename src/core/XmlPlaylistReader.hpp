@@ -20,8 +20,7 @@
 #include <QList>
 
 /* Forward declarations */
-class AnimationItem;
-class Options;
+#include "AnimationItem.hpp"
 class QXmlStreamReader;
 class QXmlStreamAttributes;
 
@@ -32,7 +31,7 @@ public:
     QList<AnimationItem*> readAnimationPlaylist(const QString &xmlPlaylist);
 private:
     AnimationItem* parseAnimation(QXmlStreamReader *xmlReader);
-    int readAnimationProperties(QXmlStreamAttributes *attributes, Options *options, AnimationItem *animationItem);
+    int readAnimationProperties(QXmlStreamAttributes *attributes, AnimationItem::Options *options, AnimationItem *animationItem);
     void cleanUpOnError(QList<AnimationItem *> *animationItemList);
 };
 

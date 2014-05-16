@@ -32,7 +32,7 @@ public:
                                      const quint16 &speed = 50,
                                      const quint8 &rotate = 1,
                                      const quint8 &flip=0,
-                                     const QString &name = "Wire Box Corner Shrink Grow",
+                                     const QString &name = BIAS::WireBoxCornerShrinkGrow,
                                      QObject *parent = Q_NULLPTR);
 
 

@@ -27,7 +27,7 @@ class StringFly : public Animation
 public:
     explicit StringFly(const quint16 &speed = 80,
                        const QString &string = "3D LED CUBE",
-                       const QString &name = "String Fly",
+                       const QString &name = BIAS::StringFly,
                        QObject *parent = 0);
 
     QString getSToDisplay() const

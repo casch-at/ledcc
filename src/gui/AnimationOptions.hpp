@@ -17,7 +17,7 @@
 #ifndef ANIMATIONOPTIONS_HPP
 #define ANIMATIONOPTIONS_HPP
 #include "Global.hpp"
-#include "Options.hpp"
+#include "AnimationItem.hpp"
 #include <QtWidgets/QDialog>
 
 class QTimer;
@@ -26,9 +26,6 @@ namespace Ui {
     class AnimationOptions;
     }
 
-
-
-class AnimationItem;
 
 /*!
  \brief Dialog to adjust the animation properties
@@ -61,7 +58,7 @@ public:
     static const int TOTAL_ARGUMENTS = 11;
 public Q_SLOTS:
 Q_SIGNALS:
-    void optionsReady(const Options &animationOptions);
+    void optionsReady(const AnimationItem::Options &animationOptions);
     void applyNewAnimationArguments(AnimationItem *item);
 protected:
     void changeEvent(QEvent *e);

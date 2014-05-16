@@ -25,8 +25,10 @@ class Firework : public Animation
     Q_PROPERTY(quint8 iterations READ getIterations WRITE setIterations)
     Q_PROPERTY(quint16 particles READ getParticles WRITE setParticles)
 public:
-    explicit Firework(const quint16 &iterations = 15, const quint16 &speed = 50,
-                      const quint8 &particles = 20, const QString &name = "Firework",
+    explicit Firework(const quint16 &iterations = 15,
+                      const quint16 &speed = 50,
+                      const quint8 &particles = 20,
+                      const QString &name = BIAS::Firework,
                       QObject *parent = Q_NULLPTR);
 
     quint8 getIterations() const

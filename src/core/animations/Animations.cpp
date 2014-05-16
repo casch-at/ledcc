@@ -74,7 +74,7 @@ void Animations::setupAnimationItems()
     QHash<QString,Animation*>::const_iterator iter = m_animationHash.constBegin();
     while(iter != m_animationHash.constEnd()){
         AnimationItem *item = new AnimationItem(iter.key());
-        Options options;
+        AnimationItem::Options options;
         options.m_speed = iter.value()->getSpeed();
         if(iter.key().compare(BIAS::AxisNailWall) == 0){
             options.m_axis =  dynamic_cast<AxisNailWall*>(iter.value())->getAxis();
@@ -140,7 +140,7 @@ void Animations::updateAnimation(const AnimationItem *item)
 {
     QString text = item->text();
     Animation *a = m_animationHash.value(text);
-    const Options *options = item->getOptions();
+    const AnimationItem::Options *options = item->getOptions();
 
     if(text.compare(BIAS::Lift) == 0){
         dynamic_cast<Lift*>(a)->setDelay(options->m_delay);

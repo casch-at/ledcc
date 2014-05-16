@@ -27,7 +27,7 @@ class RandomFiller : public Animation
 public:
     explicit RandomFiller(const quint16 &speed = 10,
                           const BixelState &state = ON,
-                          const QString &name = "Random Filler",
+                          const QString &name = BIAS::RandomFiller,
                           QObject *parent = 0);
     BixelState getState() const
     {

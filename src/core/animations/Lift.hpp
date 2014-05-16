@@ -26,8 +26,11 @@ class Lift : public Animation
     Q_PROPERTY(quint16 iterations READ getIterations WRITE setIterations)
     Q_PROPERTY(quint16 delay READ getDelay WRITE setDelay)
 public:
-    explicit Lift(const quint16 &delay = 50, const quint16  &iterations = 10,
-                  const QString &name = "Lift", const quint16 &speed = 80, QObject *parent = Q_NULLPTR);
+    explicit Lift(const quint16 &delay = 50,
+                  const quint16  &iterations = 10,
+                  const QString &name = BIAS::Lift,
+                  const quint16 &speed = 80,
+                  QObject *parent = Q_NULLPTR);
     quint16 getIterations() const
     {
         return m_iterations;

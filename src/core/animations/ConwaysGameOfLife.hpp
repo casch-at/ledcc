@@ -24,7 +24,9 @@ class ConwaysGameOfLife : public Animation
 {
     Q_OBJECT
 public:
-    explicit ConwaysGameOfLife(const quint16 &speed = 30, const QString &name = BIAS::ConwaysGameOfLife,QObject *parent = 0);
+    explicit ConwaysGameOfLife(const quint16 &speed = 30,
+                               const QString &name = BIAS::ConwaysGameOfLife,
+                               QObject *parent = 0);
 
 public Q_SLOTS:
     void createAnimation();

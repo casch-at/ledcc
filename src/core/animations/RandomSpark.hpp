@@ -29,7 +29,7 @@ public:
     explicit RandomSpark(const quint16 &speed = 100,
                          const quint16 &iterations = 1,
                          const quint16 &sparks = 10,
-                         const QString &name = "Random Spark",
+                         const QString &name = BIAS::RandomSpark,
                          QObject *parent = 0);
     quint16 getSparks() const
     {

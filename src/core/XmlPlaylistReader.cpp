@@ -109,7 +109,7 @@ QList<AnimationItem *> XmlPlaylistReader::readAnimationPlaylist(const QString &x
 */
 AnimationItem* XmlPlaylistReader::parseAnimation(QXmlStreamReader *xmlReader)
 {
-    Options options;
+    AnimationItem::Options options;
     AnimationItem *animationItem = new AnimationItem();
     QXmlStreamAttributes attributes = xmlReader->attributes();
 
@@ -132,7 +132,7 @@ AnimationItem* XmlPlaylistReader::parseAnimation(QXmlStreamReader *xmlReader)
  \return int Returns -1 on error otherwise 0
 */
 int XmlPlaylistReader::readAnimationProperties(QXmlStreamAttributes *attributes,
-                                               Options *options, AnimationItem *animationItem)
+                                               AnimationItem::Options *options, AnimationItem *animationItem)
 {
     QXmlStreamAttribute attribute;
     for (int i = 0; i < attributes->count(); i++) {

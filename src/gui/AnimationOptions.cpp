@@ -19,21 +19,21 @@
 
 #include "AnimationItem.hpp"
 #include "Animation.hpp"
-#include "Draw.hpp"
-#include "Lift.hpp"
-#include "Firework.hpp"
-#include "AxisNailWall.hpp"
-#include "WireBoxCenterShrinkGrow.hpp"
-#include "WireBoxCornerShrinkGrow.hpp"
-#include "Loadbar.hpp"
-#include "RandomFiller.hpp"
-#include "RandomSpark.hpp"
-#include "RandomSparkFlash.hpp"
-#include "RandomZLift.hpp"
-#include "Wall.hpp"
-#include "Rain.hpp"
-#include "StringFly.hpp"
-#include "ConwaysGameOfLife.hpp"
+//#include "Draw.hpp"
+//#include "Lift.hpp"
+//#include "Firework.hpp"
+//#include "AxisNailWall.hpp"
+//#include "WireBoxCenterShrinkGrow.hpp"
+//#include "WireBoxCornerShrinkGrow.hpp"
+//#include "Loadbar.hpp"
+//#include "RandomFiller.hpp"
+//#include "RandomSpark.hpp"
+//#include "RandomSparkFlash.hpp"
+//#include "RandomZLift.hpp"
+//#include "Wall.hpp"
+//#include "Rain.hpp"
+//#include "StringFly.hpp"
+//#include "ConwaysGameOfLife.hpp"
 
 // ThirdParty
 #include "aqp.hpp"
@@ -110,7 +110,7 @@ void AnimationOptions::applyAnimationOptions()
 {
     if(isWindowModified()){
         setWindowModified(false);
-        Options options;
+        AnimationItem::Options options;
         options.m_speed = ui->m_speedSpinB->value();
         for (int i = 1; i < TOTAL_ARGUMENTS; i++) {
             switch ( (1 << i) &  m_animationToUpdate->getAvailableAnimationOptions() )
@@ -228,7 +228,7 @@ void AnimationOptions::optionsPrevAnimation()
 */
 void AnimationOptions::hideShowWidgetsDisplayOptions()
 {
-    const Options *options = m_animationToUpdate->getOptions();
+    const AnimationItem::Options *options = m_animationToUpdate->getOptions();
     /*
      * Disconnect all widgets first, otherwise the signal gets triggert when
      * we insert a new value into the widget, which is different than the current one
@@ -428,7 +428,7 @@ void AnimationOptions::disconnectAll()
 */
 void AnimationOptions::compareOldNewAnimationOptions()
 {
-    const Options options = *m_animationToUpdate->getOptions();
+    const AnimationItem::Options options = *m_animationToUpdate->getOptions();
     int modefied = 0;
     modefied = options.m_speed != ui->m_speedSpinB->value() ? 1 : 0;
     for (int i = 1; i < TOTAL_ARGUMENTS && !modefied; i++) {

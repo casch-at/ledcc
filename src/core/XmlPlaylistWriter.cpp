@@ -129,7 +129,7 @@ int XmlPlaylistWriter::writeAnimationPlaylist(const QList<AnimationItem *> *anim
 
         foreach (AnimationItem * animation, *animationItemList) {
 
-            Options *options = const_cast<Options*>(animation->getOptions());
+            AnimationItem::Options *options = const_cast<AnimationItem::Options*>(animation->getOptions());
 
             // Create new StarteElement for the animations and add the animation name as attribute
             xmlWriter->writeStartElement("animation");

@@ -28,7 +28,7 @@ public:
     explicit Wall(const quint16 &speed = 50,
                   const Draw::Axis &axis = X_AXIS,
                   const Draw::Direction &direction = Forward,
-                  const QString &name = "Wall",
+                  const QString &name = BIAS::Wall,
                   QObject *parent = Q_NULLPTR);
 
     Draw::Direction getDirection(void) const{

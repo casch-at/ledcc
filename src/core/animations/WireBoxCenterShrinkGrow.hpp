@@ -29,7 +29,7 @@ public:
     explicit WireBoxCenterShrinkGrow(const quint16 &speed = 180,
                                      const bool centerStart = false,
                                      const quint16 &iterations = 1,
-                                     const QString &name = "Wire Box Center Shrink Grow",
+                                     const QString &name = BIAS::WireBoxCenterShrinkGrow,
                                      QObject *parent = Q_NULLPTR);
     bool getCenterStart() const
     {

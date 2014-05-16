@@ -26,8 +26,10 @@ class RandomZLift : public Animation
     Q_OBJECT
     Q_PROPERTY(quint16 iterations READ getIterations WRITE setIterations)
 public:
-    explicit RandomZLift(const quint16 &iterations = 10, const quint16 &speed = 100,
-                         const QString &name = "Random Z Lift",QObject *parent = Q_NULLPTR);
+    explicit RandomZLift(const quint16 &iterations = 10,
+                         const quint16 &speed = 100,
+                         const QString &name = BIAS::RandomZLift,
+                         QObject *parent = Q_NULLPTR);
 
     quint16 getIterations() const
     {

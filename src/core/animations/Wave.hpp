@@ -24,7 +24,9 @@ class Wave : public Animation
 {
     Q_OBJECT
 public:
-    explicit Wave(const quint16 &speed = 40, const QString &name = BIAS::Wave, QObject *parent = 0);
+    explicit Wave(const quint16 &speed = 40,
+                  const QString &name = BIAS::Wave,
+                  QObject *parent = 0);
 
 signals:
 

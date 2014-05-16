@@ -29,7 +29,7 @@ public:
     explicit RandomSparkFlash(const quint16 &speed = 80,
                               const quint16 &iterations = 20,
                               const quint16 &leds = 40,
-                              const QString &name = "Random Spark Flash",
+                              const QString &name = BIAS::RandomSparkFlash,
                               QObject *parent = 0);
 
     quint16 getIterations() const
