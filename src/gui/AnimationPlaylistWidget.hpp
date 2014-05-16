@@ -36,7 +36,7 @@ public:
     explicit AnimationPlaylistWidget(QWidget *parent = Q_NULLPTR);
     virtual ~AnimationPlaylistWidget();
 Q_SIGNALS:
-    void contentChanged(); /*! Emit it if items are either taken out or added */
+    void contentChanged(); /*! Emited if items are either taken out or added */
     void playAnimation(const AnimationItem *animation);
 public Q_SLOTS:
     void clearList(void);

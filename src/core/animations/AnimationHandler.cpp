@@ -69,7 +69,6 @@ AnimationHandler::AnimationHandler(QWidget *widget):
 */
 AnimationHandler::~AnimationHandler()
 {
-    qDebug("Destructor  %s",__PRETTY_FUNCTION__);
     delete m_settingsDialog;
     Q_EMIT okClosePort();
     if(m_createThread->isRunning() || m_senderThread->isRunning()){

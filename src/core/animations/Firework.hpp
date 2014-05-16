@@ -55,6 +55,5 @@ public Q_SLOTS:
 private:
     quint16 m_iterations;
     quint8 m_particles;
-    quint8 m_tempParticles;
 };
 #endif // FIREWORK_HPP

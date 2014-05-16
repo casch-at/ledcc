@@ -17,7 +17,6 @@
 #include "Animation.hpp"
 #include <QTimer>
 
-
 Animation::Animation(const quint16 &speed, const QString &name, QObject *parent):
     Draw(parent),
     m_speed(speed),
@@ -86,7 +85,10 @@ void Animation::effectZUpDownMove(QVector<quint8> &destination, QVector<quint8> 
  */
 void Animation::waitMs(const quint16 &time)
 {
-    Q_EMIT sendData(cubeFrame);
+//    m_mutex.lock();
+    cubeFrameTemp = cubeFrame;
+//    m_mutex.unlock();
+    Q_EMIT sendData(cubeFrameTemp);
     thread()->usleep(time * 1000);
 }
 

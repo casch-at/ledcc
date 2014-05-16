@@ -61,7 +61,7 @@ AnimationPlaylistWidget::AnimationPlaylistWidget(QWidget *parent) :
 AnimationPlaylistWidget::~AnimationPlaylistWidget()
 {
     saveAnimationPlaylistItems();
-    delete  m_animationHandler;
+    delete  m_animationHandler; /* AnimationPlaylistWidget have to delete the AnimationHandler class since this class holds it. */
 }
 
 

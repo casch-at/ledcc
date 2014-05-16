@@ -17,11 +17,9 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 #include "Draw.hpp"
-//#include "AnimationOptions.hpp"
 #include "AnimationItem.hpp"
-#ifdef _DEBUG_
-#include <QDebug>
-#endif
+
+
 /*! Build In Animations String*/
 namespace BIAS {
     const QString WireBoxCenterShrinkGrow("Wire Box Center Shrink Grow");
@@ -80,6 +78,8 @@ protected:
 private:
     quint16 m_speed;
     QString m_name;
+//    QMutexLocker m_mutexLocker;
+//    QMutex m_mutex;
     Q_DISABLE_COPY(Animation)
 };
 

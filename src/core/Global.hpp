@@ -26,6 +26,7 @@ static const quint8 IT_CUBE_SIZE = CUBE_SIZE - 1;
 static const quint8 CUBE_ARRAY_SIZE = CUBE_SIZE * CUBE_SIZE;
 static const quint32  CUBE_LED_COUNT = CUBE_ARRAY_SIZE * CUBE_SIZE;
 
+#define LEDCC_INSTALL_PATH  "/home/christian/ledcc/share/ledcc"
 #define LEDCC_VERSION_MAJOR 0
 #define LEDCC_VERSION_MINOR 1
 //#define LEDCC_VERSION_MICRO 

@@ -37,31 +37,25 @@ void Firework::createAnimation()
 
     qreal slowrate = 0;
     qreal gravity = 0;
-
+    quint8 m_tempParticles = 0;
     // Particles and their position, x,y,z and their movement, dx, dy, dz
     for (quint16 i = 0; i < m_iterations; i++)
     {
+        if(m_particles != m_tempParticles){
+            m_tempParticles = m_particles;
 
-        m_tempParticles = m_particles;
+        }
         qreal particlesA[m_tempParticles][6];
 
         origin_x = qrand() % 4 + 2;
         origin_y = qrand() % 4 + 2;
         origin_z = qrand() % 2 + 5;
 
-        // shoot a particle up in the air
-        for (quint8 e = 0; e < origin_z; e++)
-        {
-            setBixel(origin_x, origin_y, e);
-            if(m_abort)
-                return;
-            waitMs(getSpeed() * 2);
-            fillCubeArray(0x00);
-        }
-
         // Fill particle array
         for (quint8 f = 0; f < m_tempParticles; f++)
         {
+            if(m_abort)
+                return;
             // Position
             particlesA[f][0] = origin_x;
             particlesA[f][1] = origin_y;
@@ -77,8 +71,23 @@ void Firework::createAnimation()
             particlesA[f][5] = 1 - rand_z / 100 ;
         }
 
-        // explode
-        for (quint8 e = 0; e < m_tempParticles; e++)
+        // shoot a particle up in the air
+        for (quint8 e = 0; e < origin_z; e++)
+        {
+            setBixel(origin_x, origin_y, e);
+            if(m_abort)
+                return;
+            waitMs(getSpeed() * 2);
+            clearBixel(origin_x, origin_y, e);
+        }
+
+
+         /*
+          * Explode
+          *
+          * We don't need to loop more often through the loop the particles are after 25 iterations already on the ground.
+          */
+        for (quint8 e = 0; e < 28; e++)
         {
             slowrate = 1 + tan((e + 0.1) / 20) * 10;
 

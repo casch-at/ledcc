@@ -34,25 +34,28 @@
 */
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
     MainWindow w;
     QTranslator *qtTranslator = new QTranslator(w.parent());
     QTranslator *ledccTranslator = new QTranslator(w.parent());
     qtTranslator->load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    a.installTranslator(qtTranslator);
+    app.installTranslator(qtTranslator);
 
-#ifdef _DEBUG_
-//    if(!ledccTranslator->load("ledcc_" + QLocale::system().name()))
-    if(!ledccTranslator->load("ledcc_en" ))
-        qDebug("Error loading translation");
-#else
-    translator->load("ledcc_de", + QLocale::system().name());
-#endif
-    a.installTranslator(ledccTranslator);
-//    ledccTranslator->load("ledcc_" + QLocale::system().name());
-    ledccTranslator->load("ledcc_de" );
-    a.installTranslator(ledccTranslator);
+
+    //TODO:: Shortcut are not translated and not working
+    //TODO:: Create translation settings menu
+//#ifdef _DEBUG_
+//////    if(!ledccTranslator->load("ledcc_" + QLocale::system().name()))
+////    if(!ledccTranslator->load("ledcc_de" ))
+////        qDebug("Error loading translation");
+//#else
+//    translator->load("ledcc_de", + QLocale::system().name());
+//#endif
+//    app.installTranslator(ledccTranslator);
+    ledccTranslator->load("ledcc_" + QLocale::system().name());
+//    ledccTranslator->load("ledcc_en" );
+    app.installTranslator(ledccTranslator);
 
     w.show();
-    return a.exec();
+    return app.exec();
 }
