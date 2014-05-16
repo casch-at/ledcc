@@ -70,7 +70,7 @@
          </widget>
         </item>
         <item>
-         <widget class="AnimationPlayListWidget" name="m_animationPlaylist">
+         <widget class="AnimationPlaylistWidget" name="m_animationPlaylist">
           <property name="dragDropMode">
            <enum>QAbstractItemView::DragDrop</enum>
           </property>
@@ -196,7 +196,7 @@
      <x>0</x>
      <y>0</y>
      <width>876</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">
@@ -490,9 +490,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>AnimationPlayListWidget</class>
+   <class>AnimationPlaylistWidget</class>
    <extends>QListWidget</extends>
-   <header>AnimationPlayListWidget.hpp</header>
+   <header>AnimationPlaylistWidget.hpp</header>
   </customwidget>
   <customwidget>
    <class>AnimationListWidget</class>

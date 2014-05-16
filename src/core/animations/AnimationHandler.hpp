@@ -39,7 +39,7 @@ class AnimationHandler : public QObject
     Q_OBJECT
     Q_PROPERTY(bool isPortOpen READ isPortOpen WRITE setIsPortOpen )
 public:
-    explicit AnimationHandler(QObject *object = Q_NULLPTR, QWidget *parent = Q_NULLPTR);
+    explicit AnimationHandler(QWidget *widget);
     virtual ~AnimationHandler();
     Sender * getSender() { return m_sender; }
     SettingsDialog *m_settingsDialog;

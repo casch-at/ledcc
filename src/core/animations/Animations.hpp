@@ -42,12 +42,11 @@
 class Animation;
 class AnimationItem;
 
-class Animations : public QObject
+class Animations
 {
-    Q_OBJECT
 public:
-    explicit Animations(QObject *parent);
-    virtual ~Animations();
+    explicit Animations();
+    ~Animations();
     Animation* get(const QString& key);
     Animation* get(const QString& key,const AnimationItem* defaultValue);
     Animation* get(const AnimationItem* defaultValue);
@@ -55,8 +54,6 @@ public:
     QList<AnimationItem*> const * animationItemDefaultList() const { return &m_animationItemDefaultList; }
     void updateAnimation(const AnimationItem *item);
 private:
-    Animations *m_instance;
-
     void setupAnimationItems(void);
     QHash<QString, Animation*> m_animationHash;
     QList<AnimationItem*> m_animationItemDefaultList;

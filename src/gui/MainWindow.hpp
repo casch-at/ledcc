@@ -52,7 +52,7 @@ private:
     bool okToContinue(void);
     void readSettings(void);
     void saveSettings(void);
-    void connectSignals(void);
+    void connectSignals(AnimationHandler *animationHandler);
 private:
     Ui::MainWindow *m_ui;
     HelpDialog *m_helpDialog;
@@ -61,7 +61,6 @@ private:
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;
     bool m_open; /* Port open or not */
-    AnimationHandler *m_animationHandler;
     Q_DISABLE_COPY(MainWindow)
 };
 #endif // MAINWINDOW_H

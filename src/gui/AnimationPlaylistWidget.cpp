@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  */
 
-#include "AnimationPlayListWidget.hpp"
+#include "AnimationPlaylistWidget.hpp"
 //#include "ui_MainWindow.h"
 #include "AnimationOptions.hpp"
 #include "AnimationItem.hpp"
@@ -33,8 +33,8 @@
 #include <QDebug>
 #endif
 
-// TODO:: Always check how many animations are already in the playlist if there are to many already inside it hangs
-// TODO:: Write the animation attributes in one row in xml, file gets to big otherwise when there are many many animation in the playlist
+// TODO:: Always check how many animations are already in the playlist
+//        if there are to many already inside it will need a long long time to move them etc.
 /*!
  \brief AnimationPlayListWidget Constructor
 
@@ -51,6 +51,7 @@ AnimationPlaylistWidget::AnimationPlaylistWidget(QWidget *parent) :
     setAcceptDrops(true);
     connect(this, &AnimationPlaylistWidget::itemDoubleClicked, this, &AnimationPlaylistWidget::onItemDoubleClicked);
     openAnimationPlaylist();
+    m_animationHandler = Q_NULLPTR;
 }
 
 /*!
@@ -60,6 +61,7 @@ AnimationPlaylistWidget::AnimationPlaylistWidget(QWidget *parent) :
 AnimationPlaylistWidget::~AnimationPlaylistWidget()
 {
     saveAnimationPlaylistItems();
+    delete  m_animationHandler;
 }
 
 
@@ -89,7 +91,7 @@ void AnimationPlaylistWidget::clearList()
 /*!
  \brief Insert new item(s)
 
- Function insert one or more new QListWidgetItems into the QListWidget
+ Function to insert one or more new \a QListWidgetItems into the \a QListWidget
 
  \param[in] item The item(s) to insert
 */

@@ -20,19 +20,16 @@
 #include "AnimationOptions.hpp"
 #include "QCoreApplication"
 
-//using namespace BIAS;
 
-Animations::Animations(QObject *parent) :
-    QObject(parent)
+Animations::Animations()
 {
     setupAnimationItems();
 }
 
 Animations::~Animations()
 {
-    foreach (Animation *a, m_animationHash) //FIXME::Crashes, why?
+    foreach (Animation *a, m_animationHash)
         delete a;
-    delete m_instance;
 }
 
 

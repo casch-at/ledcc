@@ -50,6 +50,11 @@ public Q_SLOTS:
     void saveAnimationPlaylistItems();
     void saveAnimationPlaylistItemsTo(const QString &location);
     void openAnimationPlaylistFrom(const QString &file);
+    void setAnimationHandler(AnimationHandler *animationHandler){
+        if(!m_animationHandler)
+            m_animationHandler = animationHandler;
+    }
+
 private Q_SLOTS:
     void setNewItemOptions(AnimationItem *itemForUpdate);
 protected:
@@ -69,7 +74,7 @@ private:
     int m_nextAnimationRow; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
     Animation *m_currentAnimation;
-    AnimationHandler * m_animationHandler; /* AnimationHandler and AnimationPlayListWidget have a bidirectional association */
+    AnimationHandler *m_animationHandler; /* AnimationHandler and AnimationPlayListWidget have a bidirectional association */
     Q_DISABLE_COPY(AnimationPlaylistWidget)
 };
 

@@ -88,7 +88,7 @@ set(ledcc_gui_SOURCES
     ${GUI_DIR}/MainWindow.cpp
     ${GUI_DIR}/SettingsDialog.cpp
     ${GUI_DIR}/AnimationListWidget.cpp
-    ${GUI_DIR}/AnimationPlayListWidget.cpp
+    ${GUI_DIR}/AnimationPlaylistWidget.cpp
     ${GUI_DIR}/AnimationOptions.cpp
     ${GUI_DIR}/PortMessageBox.cpp
     ${GUI_DIR}/AnimationItem.cpp

@@ -20,7 +20,7 @@
 #include "Animation.hpp"
 #include "Animations.hpp"
 #include "AnimationItem.hpp"
-#include "AnimationPlayListWidget.hpp"
+#include "AnimationPlaylistWidget.hpp"
 #include "Sender.hpp"
 #include "PortMessageBox.hpp"
 #include "SettingsDialog.hpp"
@@ -30,27 +30,32 @@
 #include <QString>
 #include <QAction>
 #include <QStatusBar>
+
+#ifdef _DEBUG_
+#include <QDebug>
+#endif
 /*!
  \brief
 
 */
-AnimationHandler::AnimationHandler(QObject *object, QWidget *parent):
-    QObject(object),
-    m_settingsDialog(new SettingsDialog(parent)),
+AnimationHandler::AnimationHandler(QWidget *widget):
+    QObject(widget->parent()),
+    m_settingsDialog(new SettingsDialog(widget)),
     m_createThread(new QThread),
-    m_animations(new Animations(object)),
+    m_animations(new Animations),
     m_isPortOpen(false)
 {
     m_playAction = Q_NULLPTR;
     m_stopAction = Q_NULLPTR;
     m_animationPlaylist = Q_NULLPTR;
 
-    m_playAction = object->findChild<QAction*>("m_playAction");
-
+    m_playAction = widget->findChild<QAction*>("m_playAction");
     Q_ASSERT(m_playAction);
-    m_stopAction = object->findChild<QAction*>("m_stopAction");
+
+    m_stopAction = widget->findChild<QAction*>("m_stopAction");
     Q_ASSERT(m_stopAction);
-    m_animationPlaylist = object->findChild<AnimationPlayListWidget *>("m_animationPlaylist");
+
+    m_animationPlaylist = widget->findChild<AnimationPlaylistWidget *>("m_animationPlaylist");
     Q_ASSERT(m_animationPlaylist);
     m_currentAnimation = m_animations->get(BIAS::StringFly);
     setupSenderThread();
@@ -64,11 +69,22 @@ AnimationHandler::AnimationHandler(QObject *object, QWidget *parent):
 */
 AnimationHandler::~AnimationHandler()
 {
+    qDebug("Destructor  %s",__PRETTY_FUNCTION__);
     delete m_settingsDialog;
     Q_EMIT okClosePort();
-    if(m_createThread->isRunning() || m_senderThread->isRunning())
-        stopThreads();
-    //    delete m_senderThread;
+    if(m_createThread->isRunning() || m_senderThread->isRunning()){
+        m_currentAnimation->m_abort = true;
+        m_sender->m_abort = true;
+
+        /* Tell the thread they shoulde exit with code 0. */
+        m_senderThread->quit();
+        m_createThread->quit();
+
+        /* Wait untile the thread exit */
+        m_senderThread->wait();
+        m_createThread->wait();
+    }
+    delete m_animations;
     delete m_createThread;
     delete m_sender;
 }
@@ -189,6 +205,7 @@ void AnimationHandler::portClosed(const QString &message)
  */
 void AnimationHandler::stopThreads()
 {
+
     m_stopAction->setDisabled(true);
 
     /* Tell the thread that he shoulde stop working */
@@ -263,7 +280,7 @@ void AnimationHandler::stopCreaterThread()
         m_currentAnimation->m_abort = true;
 
     if (m_createThread->isRunning()) {
-        m_createThread->quit(); // first quit threads befor wait
+        m_createThread->quit(); // Always quit the thread befor waiting for them to quit
         m_createThread->wait();
     }
 

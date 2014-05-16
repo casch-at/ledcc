@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     m_ui->setupUi(this); // Ui must be first created befor accessing the elements
     m_ui->m_animationList->setFocus();
-    m_animationHandler = new AnimationHandler(this,this);
+    AnimationHandler *animationHandler = new AnimationHandler(this);
     m_ui->m_animationPlaylist->addActions(QList<QAction*>()
                                           << m_ui->m_editAction << m_ui->m_moveUpAction << m_ui->m_moveDownAction
                                           << m_ui->m_duplicateAction << m_ui->m_removeAction << m_ui->m_clearAction
@@ -75,8 +75,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_open = false;
     updateUi(false); // Should be called after we set the animationPlaylist actions
     readSettings ();
-    connectSignals();
-    m_ui->m_animationList->insertAnimationItems(m_animationHandler->getAnimations()->animationItemDefaultList());
+    connectSignals(animationHandler);
+    m_ui->m_animationPlaylist->setAnimationHandler(animationHandler);
+    m_ui->m_animationList->insertAnimationItems(animationHandler->getAnimations()->animationItemDefaultList());
+
     AQP::accelerateActions(actions());
     AQP::accelerateMenu(m_ui->menuBar);
 }
@@ -86,7 +88,6 @@ MainWindow::MainWindow(QWidget *parent) :
  */
 MainWindow::~MainWindow(void)
 {
-    delete m_animationHandler;
     delete m_ui;
 }
 
@@ -280,15 +281,15 @@ void MainWindow::openPlaylist()
 }
 
 
-void MainWindow::connectSignals(void)
+void MainWindow::connectSignals(AnimationHandler *animationHandler)
 {
 
     // Overall connections
-    connect( m_ui->m_openClosePortAction, &QAction::triggered, m_animationHandler ,&AnimationHandler::openCloseSerialPort);
+    connect( m_ui->m_openClosePortAction, &QAction::triggered, animationHandler ,&AnimationHandler::openCloseSerialPort);
+    connect( m_ui->m_settingsAction, &QAction::triggered,animationHandler->m_settingsDialog,&QWidget::show);
+
     connect( m_ui->m_quitAction, &QAction::triggered, this,&MainWindow::close);
     connect( m_ui->m_aboutAction, &QAction::triggered,this,&MainWindow::about);
-    connect( m_ui->m_settingsAction, &QAction::triggered,m_animationHandler->m_settingsDialog,&QWidget::show);
-    connect( m_ui->m_stopAction, &QAction::triggered , m_animationHandler , &AnimationHandler::stopThreads);
     connect( m_ui->m_aboutQt, &QAction::triggered, this, &QApplication::aboutQt);
     connect( m_ui->m_infoAction, &QAction::triggered, this, &MainWindow::help);
     connect( m_ui->m_selectAllAction, &QAction::triggered, m_ui->m_animationPlaylist, &ListWidget::selectAllItems);
@@ -299,6 +300,7 @@ void MainWindow::connectSignals(void)
     connect( m_focusAnimationPlaylist, &QShortcut::activated, m_ui->m_animationPlaylist, &ListWidget::focus);
     connect( m_scSellectAll, &QShortcut::activated, m_ui->m_animationList, &ListWidget::selectAllItems);
     connect( m_scSellectAll, &QShortcut::activated, m_ui->m_animationPlaylist, &ListWidget::selectAllItems);
+    connect( m_ui->m_stopAction, &QAction::triggered , animationHandler , &AnimationHandler::stopThreads);
 
     // ListWidget interconnections
     connect( m_ui->m_animationList , &AnimationListWidget::addToPlaylist , m_ui->m_animationPlaylist , &AnimationPlaylistWidget::newItem);
@@ -315,10 +317,10 @@ void MainWindow::connectSignals(void)
     connect( m_ui->m_moveUpAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlaylistWidget::moveItemsUpDown);
     connect( m_ui->m_moveDownAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlaylistWidget::moveItemsUpDown);
     connect( m_ui->m_editAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlaylistWidget::editItem);
-    connect( m_ui->m_playAction, &QAction::triggered, m_animationHandler, &AnimationHandler::playAnimations);
+    connect( m_ui->m_playAction, &QAction::triggered, animationHandler, &AnimationHandler::playAnimations);
 
-    connect( m_animationHandler->getSender(), &Sender::portOpenChanged, this, &MainWindow::updateUi);
-    connect( m_animationHandler, &AnimationHandler::updateUi, this, &MainWindow::updateUi);
+    connect( animationHandler->getSender(), &Sender::portOpenChanged, this, &MainWindow::updateUi);
+    connect( animationHandler, &AnimationHandler::updateUi, this, &MainWindow::updateUi);
 }
 
 void MainWindow::about()
