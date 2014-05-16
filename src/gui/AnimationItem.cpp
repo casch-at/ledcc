@@ -69,16 +69,16 @@ void AnimationItem:: createAnimationTooltipAsRichText()
 #else // Windows
     itemToolTip.append(QString(tr("<p style='white-space:pre'><font color=#000000><b>%1 Animation</b></font><br>")).arg(text()));
 #endif
-    for (int i = 0; i < AnimationOptions::TOTAL_ARGUMENTS; i++) {
+    for (int i = 0; i < AnimationItem::TOTAL_ARGUMENTS; i++) {
         switch ((1<<i) & m_availableAnimationOptions)
         {
-        case AnimationOptions::Speed:
+        case AnimationItem::Speed:
             itemToolTip.append(QString(tr("Speed: %1<br>")).arg(m_options.m_speed));
             break;
-        case AnimationOptions::Direction:
+        case AnimationItem::Direction:
             itemToolTip.append( m_options.m_direction == Draw::Forward ? tr("Direction: Forward<br>") : tr("Direction: Backward<br>"));
             break;
-        case AnimationOptions::Axis:
+        case AnimationItem::Axis:
             if(m_options.m_axis == Draw::X_AXIS)
                 itemToolTip.append(tr("Axis: X-Axis<br>"));
             else if(m_options.m_axis == Draw::Y_AXIS)
@@ -86,28 +86,28 @@ void AnimationItem:: createAnimationTooltipAsRichText()
             else
                 itemToolTip.append(tr("Axis: Z-Axis<br>"));
             break;
-        case AnimationOptions::Leds:
+        case AnimationItem::Leds:
             itemToolTip.append(QString(tr("Particles: %1<br>")).arg( m_options.m_leds ));
             break;
-        case AnimationOptions::Particls:
+        case AnimationItem::Particls:
             itemToolTip.append(QString(tr("Particles: %1<br>")).arg( m_options.m_leds ));
             break;
-        case AnimationOptions::Delay:
+        case AnimationItem::Delay:
             itemToolTip.append(QString(tr("Delay: %1<br>")).arg(m_options.m_delay));
             break;
-        case AnimationOptions::Iterations:
+        case AnimationItem::Iterations:
             itemToolTip.append( QString(tr("Iterations: %1<br>")).arg( m_options.m_iteration ) );
             break;
-        case AnimationOptions::Invert:
+        case AnimationItem::Invert:
             itemToolTip.append(m_options.m_invert == true ? tr("Invert: YES<br>") : tr("Invert: NO<br>"));
             break;
-        case AnimationOptions::CenterStart:
+        case AnimationItem::CenterStart:
             itemToolTip.append(m_options.m_invert == true ? tr("Start from center: YES<br>") : tr("Start from center: NO<br>"));
             break;
-        case AnimationOptions::Text:
+        case AnimationItem::Text:
             itemToolTip.append(tr("Current Text: ") + m_options.m_text.toLatin1() + "<br>");
             break;
-        case AnimationOptions::LedState:
+        case AnimationItem::LedState:
             itemToolTip.append( QString( tr("Initial LED State: %1<br>") ).arg( m_options.m_invert == Draw::ON ? tr("ON") : tr("OFF") ) );
             break;
         default:
@@ -130,16 +130,16 @@ QStringList AnimationItem::getAnimationPropertiesAsPlainText()
 
     // Append name of the animation.
     list.append(text());
-    for (int i = 0; i < AnimationOptions::TOTAL_ARGUMENTS; i++) {
+    for (int i = 0; i < AnimationItem::TOTAL_ARGUMENTS; i++) {
         switch ((1<<i) & m_availableAnimationOptions)
         {
-        case AnimationOptions::Speed:
+        case AnimationItem::Speed:
             list.append(QString(tr("Speed:%1")).arg(m_options.m_speed));
             break;
-        case AnimationOptions::Direction:
+        case AnimationItem::Direction:
             list.append( m_options.m_direction == Draw::Forward ? tr("Direction:Forward") : tr("Direction:Backward"));
             break;
-        case AnimationOptions::Axis:
+        case AnimationItem::Axis:
             if(m_options.m_axis == Draw::X_AXIS)
                 list.append(tr("Axis:X-Axis"));
             else if(m_options.m_axis == Draw::Y_AXIS)
@@ -147,28 +147,28 @@ QStringList AnimationItem::getAnimationPropertiesAsPlainText()
             else
                 list.append(tr("Axis:Z-Axis"));
             break;
-        case AnimationOptions::Leds:
+        case AnimationItem::Leds:
             list.append(QString(tr("LEDs:%1")).arg( m_options.m_leds ));
             break;
-        case AnimationOptions::Particls:
+        case AnimationItem::Particls:
             list.append(QString(tr("Particles:%1")).arg( m_options.m_leds ));
             break;
-        case AnimationOptions::Delay:
+        case AnimationItem::Delay:
             list.append(QString(tr("Delay:%1")).arg(m_options.m_delay));
             break;
-        case AnimationOptions::Iterations:
+        case AnimationItem::Iterations:
             list.append( QString( tr("Iterations:%1") ).arg( m_options.m_iteration ) );
             break;
-        case AnimationOptions::Invert:
+        case AnimationItem::Invert:
             list.append(m_options.m_invert == true ? tr("Invert:YES") : tr("Invert:NO"));
             break;
-        case AnimationOptions::CenterStart:
+        case AnimationItem::CenterStart:
             list.append(m_options.m_invert == true ? tr("Start from center:YES") : tr("Start from center:NO"));
             break;
-        case AnimationOptions::Text:
+        case AnimationItem::Text:
             list.append(tr("Current Text: ") + m_options.m_text.toLatin1());
             break;
-        case AnimationOptions::LedState:
+        case AnimationItem::LedState:
             list.append( QString( tr("Initial LED State:%1") ).arg( m_options.m_invert == Draw::ON ? tr("ON") : tr("OFF") ) );
             break;
         default:

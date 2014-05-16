@@ -53,7 +53,20 @@ public:
         bool m_invert;
         Draw::BixelState m_state;
     };
-
+    enum Arguments{
+        Speed       = (1 << 0),
+        Direction   = (1 << 1),
+        Axis        = (1 << 2),
+        Leds        = (1 << 3),
+        Particls    = (1 << 4),
+        Delay       = (1 << 5),
+        Iterations  = (1 << 6),
+        Invert      = (1 << 7),
+        CenterStart = (1 << 8),
+        Text        = (1 << 9),
+        LedState    = (1 << 10)
+        };
+    static const int TOTAL_ARGUMENTS = 11;
     explicit AnimationItem(QListWidget *view = 0, int type = UserType);
     explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = UserType);
 

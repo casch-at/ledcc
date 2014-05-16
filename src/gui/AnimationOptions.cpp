@@ -17,24 +17,6 @@
 #include "AnimationOptions.hpp"
 #include "ui_AnimationOptions.h"
 
-#include "AnimationItem.hpp"
-#include "Animation.hpp"
-//#include "Draw.hpp"
-//#include "Lift.hpp"
-//#include "Firework.hpp"
-//#include "AxisNailWall.hpp"
-//#include "WireBoxCenterShrinkGrow.hpp"
-//#include "WireBoxCornerShrinkGrow.hpp"
-//#include "Loadbar.hpp"
-//#include "RandomFiller.hpp"
-//#include "RandomSpark.hpp"
-//#include "RandomSparkFlash.hpp"
-//#include "RandomZLift.hpp"
-//#include "Wall.hpp"
-//#include "Rain.hpp"
-//#include "StringFly.hpp"
-//#include "ConwaysGameOfLife.hpp"
-
 // ThirdParty
 #include "aqp.hpp"
 #include "alt_key.hpp"
@@ -112,37 +94,37 @@ void AnimationOptions::applyAnimationOptions()
         setWindowModified(false);
         AnimationItem::Options options;
         options.m_speed = ui->m_speedSpinB->value();
-        for (int i = 1; i < TOTAL_ARGUMENTS; i++) {
+        for (int i = 1; i < AnimationItem::TOTAL_ARGUMENTS; i++) {
             switch ( (1 << i) &  m_animationToUpdate->getAvailableAnimationOptions() )
             {
-            case Direction:
+            case AnimationItem::Direction:
                 options.m_direction = static_cast<Draw::Direction>(ui->m_directionComB->currentIndex());
                 break;
-            case Axis:
+            case AnimationItem::Axis:
                 options.m_axis = static_cast<Draw::Axis>(ui->m_axisComB->currentIndex());
                 break;
-            case Leds:
+            case AnimationItem::Leds:
                 options.m_leds = ui->m_ledsSpinB->value();
                 break;
-            case Particls:
+            case AnimationItem::Particls:
                 options.m_leds = ui->m_particlesSpinB->value();
                 break;
-            case Delay:
+            case AnimationItem::Delay:
                 options.m_delay = ui->m_delaySpinB->value();
                 break;
-            case Iterations:
+            case AnimationItem::Iterations:
                 options.m_iteration = ui->m_iterationsSpinB->value();
                 break;
-            case Invert:
+            case AnimationItem::Invert:
                 options.m_invert = ui->m_invertCheckB->isChecked();
                 break;
-            case CenterStart:
+            case AnimationItem::CenterStart:
                 options.m_invert = ui->m_invertCheckB->isChecked();
                 break;
-            case Text:
+            case AnimationItem::Text:
                 options.m_text = ui->m_textLineE->text();
                 break;
-            case LedState:
+            case AnimationItem::LedState:
                options.m_state = static_cast<Draw::BixelState>(ui->m_ledStateCheckB->isChecked());
                 break;
             default:
@@ -235,103 +217,103 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
      */
     disconnectAll();
 
-    for (int i = 0; i < TOTAL_ARGUMENTS; i++) {
+    for (int i = 0; i < AnimationItem::TOTAL_ARGUMENTS; i++) {
         switch ( (1 << i) & m_animationToUpdate->getAvailableAnimationOptions() )
         {
-        case Speed:
+        case AnimationItem::Speed:
             ui->m_speedLabel->setEnabled(true);
             ui->m_speedSpinB->setEnabled(true);
             ui->m_speedSpinB->setValue(options->m_speed);
             break;
-        case Direction:
+        case AnimationItem::Direction:
             ui->m_directionLabel->setEnabled(true);
             ui->m_directionComB->setEnabled(true);
             ui->m_directionComB->setCurrentIndex(options->m_direction);
             break;
-        case Axis:
+        case AnimationItem::Axis:
             ui->m_axisLabel->setEnabled(true);
             ui->m_axisComB->setEnabled(true);
             ui->m_axisComB->setCurrentIndex(options->m_axis);
             break;
-        case Leds:
+        case AnimationItem::Leds:
             ui->m_ledsLabel->setEnabled(true);
             ui->m_ledsSpinB->setEnabled(true);
             ui->m_ledsSpinB->setValue(options->m_leds);
             break;
-        case Particls:
+        case AnimationItem::Particls:
             ui->m_particlesLabel->setEnabled(true);
             ui->m_particlesSpinB->setEnabled(true);
             ui->m_particlesSpinB->setValue(options->m_leds);
             break;
-        case Delay:
+        case AnimationItem::Delay:
             ui->m_delayLabel->setEnabled(true);
             ui->m_delaySpinB->setEnabled(true);
             ui->m_delaySpinB->setValue(options->m_delay);
             break;
-        case Iterations:
+        case AnimationItem::Iterations:
             ui->m_iterationsLabel->setEnabled(true);
             ui->m_iterationsSpinB->setEnabled(true);
             ui->m_iterationsSpinB->setValue(options->m_iteration);
             break;
-        case Invert:
+        case AnimationItem::Invert:
             ui->m_invertCheckB->setEnabled(true);
             ui->m_invertCheckB->setChecked(options->m_invert);
             break;
-        case CenterStart:
+        case AnimationItem::CenterStart:
             ui->m_invertCheckB->setEnabled(true);
             ui->m_invertCheckB->setChecked(options->m_invert);
             break;
-        case Text:
+        case AnimationItem::Text:
             ui->m_textLabel->setEnabled(true);
             ui->m_textLineE->setEnabled(true);
             ui->m_textLineE->setText(options->m_text);
             break;
-        case LedState:
+        case AnimationItem::LedState:
             ui->m_ledStateCheckB->setEnabled(true);
             ui->m_ledStateCheckB->setChecked(options->m_state);
             break;
         default:
             switch ( 1 << i )
             {
-            case Speed:
+            case AnimationItem::Speed:
                 ui->m_speedLabel->setEnabled(false);
                 ui->m_speedSpinB->setEnabled(false);
                 break;
-            case Direction:
+            case AnimationItem::Direction:
                 ui->m_directionLabel->setEnabled(false);
                 ui->m_directionComB->setEnabled(false);
                 break;
-            case Axis:
+            case AnimationItem::Axis:
                 ui->m_axisLabel->setEnabled(false);
                 ui->m_axisComB->setEnabled(false);
                 break;
-            case Leds:
+            case AnimationItem::Leds:
                 ui->m_ledsLabel->setEnabled(false);
                 ui->m_ledsSpinB->setEnabled(false);
                 break;
-            case Particls:
+            case AnimationItem::Particls:
                 ui->m_particlesLabel->setEnabled(false);
                 ui->m_particlesSpinB->setEnabled(false);
                 break;
-            case Delay:
+            case AnimationItem::Delay:
                 ui->m_delayLabel->setEnabled(false);
                 ui->m_delaySpinB->setEnabled(false);
                 break;
-            case Iterations:
+            case AnimationItem::Iterations:
                 ui->m_iterationsLabel->setEnabled(false);
                 ui->m_iterationsSpinB->setEnabled(false);
                 break;
-            case Invert:
+            case AnimationItem::Invert:
                 ui->m_invertCheckB->setEnabled(false);
                 break;
-            case CenterStart:
+            case AnimationItem::CenterStart:
                 ui->m_invertCheckB->setEnabled(false);
                 break;
-            case Text:
+            case AnimationItem::Text:
                 ui->m_textLabel->setEnabled(false);
                 ui->m_textLineE->setEnabled(false);
                 break;
-            case LedState:
+            case AnimationItem::LedState:
                 ui->m_ledStateCheckB->setEnabled(false);
                 break;
             default: /* Should never come here */
@@ -431,37 +413,37 @@ void AnimationOptions::compareOldNewAnimationOptions()
     const AnimationItem::Options options = *m_animationToUpdate->getOptions();
     int modefied = 0;
     modefied = options.m_speed != ui->m_speedSpinB->value() ? 1 : 0;
-    for (int i = 1; i < TOTAL_ARGUMENTS && !modefied; i++) {
+    for (int i = 1; i < AnimationItem::TOTAL_ARGUMENTS && !modefied; i++) {
         switch ( (1 << i) & m_animationToUpdate->getAvailableAnimationOptions() )
         {
-        case Direction:
+        case AnimationItem::Direction:
             modefied += options.m_direction != ui->m_directionComB->currentIndex() ? 1 : 0;
             break;
-        case Axis:
+        case AnimationItem::Axis:
             modefied += options.m_axis != ui->m_axisComB->currentIndex() ? 1 : 0;
             break;
-        case Leds:
+        case AnimationItem::Leds:
             modefied += options.m_leds != ui->m_ledsSpinB->value() ? 1 : 0;
             break;
-        case Particls:
+        case AnimationItem::Particls:
             modefied += options.m_leds != ui->m_particlesSpinB->value() ? 1 : 0;
             break;
-        case Delay:
+        case AnimationItem::Delay:
             modefied += options.m_delay != ui->m_delaySpinB->value() ? 1 : 0;
             break;
-        case Iterations:
+        case AnimationItem::Iterations:
             modefied += options.m_iteration != ui->m_iterationsSpinB->value() ? 1 : 0;
             break;
-        case Invert:
+        case AnimationItem::Invert:
             modefied += options.m_invert != ui->m_invertCheckB->isChecked() ? 1 : 0;
             break;
-        case CenterStart:
+        case AnimationItem::CenterStart:
             modefied += options.m_invert != ui->m_invertCheckB->isChecked() ? 1 : 0;
             break;
-        case Text:
+        case AnimationItem::Text:
             modefied += options.m_text.compare(ui->m_textLineE->text()) ? 1 : 0;
             break;
-        case LedState:
+        case AnimationItem::LedState:
             modefied += options.m_state != ui->m_ledStateCheckB->isChecked() ? 1 : 0;
             break;
         default:

@@ -79,49 +79,49 @@ void Animations::setupAnimationItems()
         if(iter.key().compare(BIAS::AxisNailWall) == 0){
             options.m_axis =  dynamic_cast<AxisNailWall*>(iter.value())->getAxis();
             options.m_direction = dynamic_cast<AxisNailWall*>(iter.value())->getDirection();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Direction );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Axis | AnimationItem::Direction );
         }else if(iter.key().compare(BIAS::Firework) == 0){
             options.m_iteration = dynamic_cast<Firework*>(iter.value())->getIterations();
             options.m_leds = dynamic_cast<Firework*>(iter.value())->getParticles();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Particls );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Particls );
         }else if(iter.key().compare(BIAS::Lift) == 0){
             options.m_iteration = dynamic_cast<Lift*>(iter.value())->getIterations();
             options.m_delay = dynamic_cast<Lift*>(iter.value())->getDelay();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Delay );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Delay );
         }else if(iter.key().compare(BIAS::Loadbar) == 0){
             options.m_axis = dynamic_cast<Loadbar*>(iter.value())->getAxis();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Axis );
         }else if(iter.key().compare(BIAS::Rain) == 0){
             options.m_iteration = dynamic_cast<Rain*>(iter.value())->getIterations();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
         }else if(iter.key().compare(BIAS::RandomFiller) == 0){
             options.m_invert = dynamic_cast<RandomFiller*>(iter.value())->getState() == Draw::ON ? true : false;
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::LedState );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::LedState );
         }else if(iter.key().compare(BIAS::RandomSpark) == 0){
             options.m_iteration = dynamic_cast<RandomSpark*>(iter.value())->getIterations();
             options.m_leds = dynamic_cast<RandomSpark*>(iter.value())->getSparks();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Leds );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Leds );
         }else if(iter.key().compare(BIAS::RandomSparkFlash) == 0){
             options.m_iteration = dynamic_cast<RandomSparkFlash*>(iter.value())->getIterations();
             options.m_leds = dynamic_cast<RandomSparkFlash*>(iter.value())->getLeds();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::Leds );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Leds );
         }else if(iter.key().compare(BIAS::RandomZLift) == 0){
             options.m_iteration = dynamic_cast<RandomZLift*>(iter.value())->getIterations();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
         }else if(iter.key().compare(BIAS::StringFly) == 0){
             options.m_text = dynamic_cast<StringFly*>(iter.value())->getSToDisplay();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Text );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Text );
         }else if(iter.key().compare(BIAS::Wall) == 0){
             options.m_axis = dynamic_cast<Wall*>(iter.value())->getAxis();
             options.m_direction = dynamic_cast<Wall*>(iter.value())->getDirection();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Axis | AnimationOptions::Direction );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Axis | AnimationItem::Direction );
         }else if(iter.key().compare(BIAS::WireBoxCenterShrinkGrow) == 0){
             options.m_iteration = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getIterations();
             options.m_invert = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations | AnimationOptions::CenterStart );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::CenterStart );
         }else if(iter.key().compare(BIAS::WireBoxCornerShrinkGrow) == 0){
             options.m_iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
-            item->setAvailableAnimationOptions( AnimationOptions::Speed | AnimationOptions::Iterations );
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
         }
         item->setOptions(options);
         iter.value()->m_abort = false;

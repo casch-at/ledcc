@@ -42,20 +42,7 @@ public:
     *  All possibly animation arguments.
     *  The static variable \a TOTAL_ARGUMENTS holds the sum of available options, must be updated when an enum is added
     */
-    typedef enum {
-        Speed       = (1 << 0),
-        Direction   = (1 << 1),
-        Axis        = (1 << 2),
-        Leds        = (1 << 3),
-        Particls    = (1 << 4),
-        Delay       = (1 << 5),
-        Iterations  = (1 << 6),
-        Invert      = (1 << 7),
-        CenterStart = (1 << 8),
-        Text        = (1 << 9),
-        LedState    = (1 << 10)
-        }Arguments;
-    static const int TOTAL_ARGUMENTS = 11;
+
 public Q_SLOTS:
 Q_SIGNALS:
     void optionsReady(const AnimationItem::Options &animationOptions);
