@@ -38,6 +38,7 @@ AnimationHandler::AnimationHandler(QObject *object, QWidget *parent):
     QObject(object),
     m_settingsDialog(new SettingsDialog(parent)),
     m_createThread(new QThread),
+    m_animations(new Animations(object)),
     m_isPortOpen(false)
 {
     m_playAction = Q_NULLPTR;
@@ -51,11 +52,10 @@ AnimationHandler::AnimationHandler(QObject *object, QWidget *parent):
     Q_ASSERT(m_stopAction);
     m_animationPlaylist = object->findChild<AnimationPlayListWidget *>("m_animationPlaylist");
     Q_ASSERT(m_animationPlaylist);
-
-    m_currentAnimation = animations()->get(BIAS::StringFly);
+    m_currentAnimation = m_animations->get(BIAS::StringFly);
     setupSenderThread();
     connect(m_sender, &Sender::portOpenChanged,this,&AnimationHandler::setIsPortOpen);
-    connect(m_animationPlaylist, &AnimationPlayListWidget::playAnimation, this, &AnimationHandler::playAnimation);
+    connect(m_animationPlaylist, &AnimationPlaylistWidget::playAnimation, this, &AnimationHandler::playAnimation);
 }
 
 /*!
@@ -118,12 +118,12 @@ void AnimationHandler::playAnimation(const AnimationItem *animation)
 void AnimationHandler::playNextAnimation(const AnimationItem *item)
 {
     if(item){
-        m_currentAnimation = animations()->get(item->text());
+        m_currentAnimation = m_animations->get(item->text());
         connect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
         connect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
         connect(m_currentAnimation,&Animation::done,this,&AnimationHandler::animationDone);
 
-        animations()->updateAnimation(item);
+        m_animations->updateAnimation(item);
         m_createThread->start();
     } else  {
         stopThreads();
@@ -239,7 +239,7 @@ void AnimationHandler::setupSenderThread(void)
      * will be called when the creater thread emits sendData.
      * Also move all build in animations to the creater thread.
      */
-    QHashIterator<QString, Animation*> i(*animations()->getAll());
+    QHashIterator<QString, Animation*> i(*m_animations->getAll());
     while (i.hasNext()) {
         i.next();
         connect(i.value(),&Animation::sendData, m_sender, &Sender::sendAnimation); /* Create connection between animation (createThread) thread and sender thred */

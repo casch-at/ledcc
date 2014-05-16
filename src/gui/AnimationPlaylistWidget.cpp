@@ -17,6 +17,7 @@
 #include "AnimationOptions.hpp"
 #include "AnimationItem.hpp"
 #include "Animations.hpp"
+#include "AnimationHandler.hpp"
 #include "XmlPlaylistWriter.hpp"
 #include "XmlPlaylistReader.hpp"
 #include "System.hpp"
@@ -39,7 +40,7 @@
 
  \param[in,out] parent  Parent QWidget past over to \link ListWidget()
 */
-AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
+AnimationPlaylistWidget::AnimationPlaylistWidget(QWidget *parent) :
     ListWidget(parent),
     m_nextAnimationRow(0)
 {
@@ -48,7 +49,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
     setDragDropMode(DragDrop);
     setDefaultDropAction(Qt::MoveAction);
     setAcceptDrops(true);
-    connect(this, &AnimationPlayListWidget::itemDoubleClicked, this, &AnimationPlayListWidget::onItemDoubleClicked);
+    connect(this, &AnimationPlaylistWidget::itemDoubleClicked, this, &AnimationPlaylistWidget::onItemDoubleClicked);
     openAnimationPlaylist();
 }
 
@@ -56,7 +57,7 @@ AnimationPlayListWidget::AnimationPlayListWidget(QWidget *parent) :
  \brief Virtual destructor
 
 */
-AnimationPlayListWidget::~AnimationPlayListWidget()
+AnimationPlaylistWidget::~AnimationPlaylistWidget()
 {
     saveAnimationPlaylistItems();
 }
@@ -66,7 +67,7 @@ AnimationPlayListWidget::~AnimationPlayListWidget()
  \brief Function to clear the QListWidget.
 
 */
-void AnimationPlayListWidget::clearList()
+void AnimationPlaylistWidget::clearList()
 {
     QMessageBox msgb;
     msgb.setTextFormat(Qt::RichText);
@@ -92,7 +93,7 @@ void AnimationPlayListWidget::clearList()
 
  \param[in] item The item(s) to insert
 */
-void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
+void AnimationPlaylistWidget::newItem(QList<QListWidgetItem *> item)
 {
     foreach (QListWidgetItem *i, item) {
         insertItem(count(), i->clone());
@@ -106,7 +107,7 @@ void AnimationPlayListWidget::newItem(QList<QListWidgetItem *> item)
  \brief
 
 */
-void AnimationPlayListWidget::duplicateItems()
+void AnimationPlaylistWidget::duplicateItems()
 {
     foreach (QListWidgetItem *item, selectedItems()) {
         insertItem(indexFromItem(item).row(),dynamic_cast<AnimationItem *>(item)->clone());
@@ -117,7 +118,7 @@ void AnimationPlayListWidget::duplicateItems()
  \brief
 
 */
-void AnimationPlayListWidget::removeItems()
+void AnimationPlaylistWidget::removeItems()
 {
     if (selectedItems().isEmpty())
         return;
@@ -137,7 +138,7 @@ void AnimationPlayListWidget::removeItems()
 
  \return bool
 */
-void AnimationPlayListWidget::moveItemsUpDown()
+void AnimationPlaylistWidget::moveItemsUpDown()
 {
     QObject *emitedObject = QObject::sender();
     QModelIndexList selectedIndx;
@@ -195,7 +196,7 @@ void AnimationPlayListWidget::moveItemsUpDown()
  \param[out] up Pointer to boolean where the move direction gets stored, true if the item(s) should be moved up otherwise false.
  \return bool Return true if items should be moved otherwise false.
 */
-bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *list,  bool *up)
+bool AnimationPlaylistWidget::moveItem(const QObject *object, QModelIndexList *list,  bool *up)
 {
 
     if (object == NULL)
@@ -225,7 +226,7 @@ bool AnimationPlayListWidget::moveItem(const QObject *object, QModelIndexList *l
  \param dropIndex QModelIndex on which the items should be droped.
  \return bool Return true if the items should be droped, otherwise false.
 */
-bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex)
+bool AnimationPlaylistWidget::dropOn(QDropEvent *event, int *dropRow, int *dropCol, QModelIndex *dropIndex)
 {
     if (event->isAccepted())
         return false;
@@ -272,7 +273,7 @@ bool AnimationPlayListWidget::dropOn(QDropEvent *event, int *dropRow, int *dropC
 
  \param e
 */
-void AnimationPlayListWidget::keyPressEvent(QKeyEvent *e)
+void AnimationPlaylistWidget::keyPressEvent(QKeyEvent *e)
 {
     switch (e->key()) {
     case Qt::Key_Delete:
@@ -302,7 +303,7 @@ void AnimationPlayListWidget::keyPressEvent(QKeyEvent *e)
 
  \param event
 */
-void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *event)
+void AnimationPlaylistWidget::dragMoveEvent(QDragMoveEvent *event)
 {
 
     ListWidget::dragMoveEvent(event);
@@ -313,7 +314,7 @@ void AnimationPlayListWidget::dragMoveEvent(QDragMoveEvent *event)
 
  \param e
 */
-void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
+void AnimationPlaylistWidget::dragLeaveEvent(QDragLeaveEvent *e)
 {
     ListWidget::dragLeaveEvent(e);
 }
@@ -324,7 +325,7 @@ void AnimationPlayListWidget::dragLeaveEvent(QDragLeaveEvent *e)
  Reimplemented dropEvent function to add some more functionality.
  \param[in] e \link QDropEvent
 */
-void AnimationPlayListWidget::dropEvent(QDropEvent *e)
+void AnimationPlaylistWidget::dropEvent(QDropEvent *e)
 {
     QList<QListWidgetItem*> items;
 
@@ -367,7 +368,7 @@ void AnimationPlayListWidget::dropEvent(QDropEvent *e)
 
  \param e
 */
-void AnimationPlayListWidget::mousePressEvent(QMouseEvent *e)
+void AnimationPlaylistWidget::mousePressEvent(QMouseEvent *e)
 {
     if( e->button() == Qt::LeftButton )
     {
@@ -385,7 +386,7 @@ void AnimationPlayListWidget::mousePressEvent(QMouseEvent *e)
 
  \param e
 */
-void AnimationPlayListWidget::mouseReleaseEvent(QMouseEvent *e)
+void AnimationPlaylistWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     if( e->button() == Qt::LeftButton )
     {
@@ -403,7 +404,7 @@ void AnimationPlayListWidget::mouseReleaseEvent(QMouseEvent *e)
 
  \param e
 */
-void AnimationPlayListWidget::dragEnterEvent(QDragEnterEvent *e)
+void AnimationPlaylistWidget::dragEnterEvent(QDragEnterEvent *e)
 {
     if(e->mimeData())
         e->acceptProposedAction();
@@ -415,7 +416,7 @@ void AnimationPlayListWidget::dragEnterEvent(QDragEnterEvent *e)
 
  \return AnimationItem
 */
-AnimationItem *AnimationPlayListWidget::getNextAnimation()
+AnimationItem *AnimationPlaylistWidget::getNextAnimation()
 {
     int rows = count();
 
@@ -428,7 +429,7 @@ AnimationItem *AnimationPlayListWidget::getNextAnimation()
     return retItem;
 }
 
-void AnimationPlayListWidget::saveAnimationPlaylistItems()
+void AnimationPlaylistWidget::saveAnimationPlaylistItems()
 {
     QList<AnimationItem*> animationItems;
     XmlPlaylistWriter xmlWriter;
@@ -436,7 +437,7 @@ void AnimationPlayListWidget::saveAnimationPlaylistItems()
     xmlWriter.writeAnimationPlaylist(&animationItems, System::getConfigPath() + "animations.xml");
 }
 
-void AnimationPlayListWidget::saveAnimationPlaylistItemsTo(const QString &location)
+void AnimationPlaylistWidget::saveAnimationPlaylistItemsTo(const QString &location)
 {
     QList<AnimationItem*> animationItems;
     getAllItems(&animationItems);
@@ -444,7 +445,7 @@ void AnimationPlayListWidget::saveAnimationPlaylistItemsTo(const QString &locati
     xmlWriter.writeAnimationPlaylist(&animationItems, location);
 }
 
-void AnimationPlayListWidget::openAnimationPlaylistFrom(const QString &file)
+void AnimationPlaylistWidget::openAnimationPlaylistFrom(const QString &file)
 {
     XmlPlaylistReader reader;
     QList<AnimationItem*> animationItems = reader.readAnimationPlaylist(file);
@@ -454,10 +455,10 @@ void AnimationPlayListWidget::openAnimationPlaylistFrom(const QString &file)
     Q_EMIT contentChanged();
 }
 
-void AnimationPlayListWidget::setNewItemOptions(AnimationItem *itemForUpdate)
+void AnimationPlaylistWidget::setNewItemOptions(AnimationItem *itemForUpdate)
 {
     if (indexFromItem(itemForUpdate).row() == m_nextAnimationRow - 1) {
-        animations()->updateAnimation(itemForUpdate);
+        m_animationHandler->getAnimations()->updateAnimation(itemForUpdate);
     }
     itemForUpdate->createAnimationTooltipAsRichText();
     Q_EMIT showPropertiePreview( itemForUpdate->getAnimationPropertiesAsPlainText() );
@@ -469,7 +470,7 @@ void AnimationPlayListWidget::setNewItemOptions(AnimationItem *itemForUpdate)
  \param items
  \param row
 */
-void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &items, const int row)
+void AnimationPlaylistWidget::insertItemsAt(const QList<QListWidgetItem *> &items, const int row)
 {
     foreach (QListWidgetItem *i, items)
     {
@@ -483,7 +484,7 @@ void AnimationPlayListWidget::insertItemsAt(const QList<QListWidgetItem *> &item
  \brief Edit the animation properties
 
 */
-void AnimationPlayListWidget::editItem()
+void AnimationPlaylistWidget::editItem()
 {
     QList<QListWidgetItem *> items = selectedItems();
     QList<AnimationItem*> itemList;
@@ -496,13 +497,13 @@ void AnimationPlayListWidget::editItem()
             itemList.append(dynamic_cast<AnimationItem*>(item(i)));
 
     AnimationOptions *adjAnimation = new AnimationOptions(itemList, this);
-    connect(adjAnimation, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlayListWidget::setNewItemOptions);
+    connect(adjAnimation, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlaylistWidget::setNewItemOptions);
     adjAnimation->exec();
-    disconnect(adjAnimation, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlayListWidget::setNewItemOptions);
+    disconnect(adjAnimation, &AnimationOptions::applyNewAnimationArguments, this, &AnimationPlaylistWidget::setNewItemOptions);
     delete adjAnimation;
 }
 
-void AnimationPlayListWidget::onItemDoubleClicked(QListWidgetItem *item)
+void AnimationPlaylistWidget::onItemDoubleClicked(QListWidgetItem *item)
 {
     m_nextAnimationRow = indexFromItem(item).row() + 1 ;
     Q_EMIT playAnimation(dynamic_cast<AnimationItem*>(item));
@@ -514,7 +515,7 @@ void AnimationPlayListWidget::onItemDoubleClicked(QListWidgetItem *item)
  \param ascending Sort the indexes ascending if true otherwise descending.
  \param list Pointer to \a QModelIndexList to sort.
 */
-void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList *list)
+void AnimationPlaylistWidget::sortIndexes(const bool ascending, QModelIndexList *list)
 {
     QModelIndex index;
     int i = 0;
@@ -549,7 +550,7 @@ void AnimationPlayListWidget::sortIndexes(const bool ascending, QModelIndexList 
         on Linux system under ~/.config/ledcc/animations.xml
 
 */
-void AnimationPlayListWidget::openAnimationPlaylist()
+void AnimationPlaylistWidget::openAnimationPlaylist()
 {
     XmlPlaylistReader reader;
     QList<AnimationItem*> animationItems = reader.readAnimationPlaylist(System::getConfigPath() + "animations.xml");

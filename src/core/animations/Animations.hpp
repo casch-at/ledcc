@@ -46,22 +46,16 @@ class Animations : public QObject
 {
     Q_OBJECT
 public:
+    explicit Animations(QObject *parent);
     virtual ~Animations();
     Animation* get(const QString& key);
     Animation* get(const QString& key,const AnimationItem* defaultValue);
     Animation* get(const AnimationItem* defaultValue);
     const QHash<QString, Animation *> *getAll();
-    static Animations* instance();
     QList<AnimationItem*> const * animationItemDefaultList() const { return &m_animationItemDefaultList; }
     void updateAnimation(const AnimationItem *item);
-signals:
-
-public slots:
-
 private:
-    explicit Animations(QObject *parent);
-
-    static Animations *m_instance;
+    Animations *m_instance;
 
     void setupAnimationItems(void);
     QHash<QString, Animation*> m_animationHash;
@@ -69,8 +63,5 @@ private:
     Q_DISABLE_COPY(Animations)
 };
 
-inline Animations* animations(){
-    return Animations::instance();
-}
 
 #endif // ANIMATIONS_HPP

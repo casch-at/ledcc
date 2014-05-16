@@ -23,18 +23,18 @@ class Animation;
 class AnimationOptions;
 class AnimationItem;
 class Options;
-
+class AnimationHandler;
 
 /*!
  \brief Holds the animation to play
 
 */
-class AnimationPlayListWidget : public ListWidget
+class AnimationPlaylistWidget : public ListWidget
 {
     Q_OBJECT
 public:
-    explicit AnimationPlayListWidget(QWidget *parent = Q_NULLPTR);
-    virtual ~AnimationPlayListWidget();
+    explicit AnimationPlaylistWidget(QWidget *parent = Q_NULLPTR);
+    virtual ~AnimationPlaylistWidget();
 Q_SIGNALS:
     void contentChanged(); /*! Emit it if items are either taken out or added */
     void playAnimation(const AnimationItem *animation);
@@ -69,8 +69,8 @@ private:
     int m_nextAnimationRow; /*! Holds the row of the current shown Animation */
     int m_mousePressRow;
     Animation *m_currentAnimation;
-
-    Q_DISABLE_COPY(AnimationPlayListWidget)
+    AnimationHandler * m_animationHandler; /* AnimationHandler and AnimationPlayListWidget have a bidirectional association */
+    Q_DISABLE_COPY(AnimationPlaylistWidget)
 };
 
 

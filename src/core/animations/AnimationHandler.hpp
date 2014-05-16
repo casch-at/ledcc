@@ -20,12 +20,16 @@
 #include <QObject>
 #include <QHash>
 
-class AnimationPlayListWidget;
+class AnimationPlaylistWidget;
 class Animation;
+class Animations;
 class AnimationItem;
+
 class Sender;
 class SettingsDialog;
+
 class QAction;
+
     /*!
      \brief Class \a AnimationHandler interface between all animations
 
@@ -39,7 +43,7 @@ public:
     virtual ~AnimationHandler();
     Sender * getSender() { return m_sender; }
     SettingsDialog *m_settingsDialog;
-
+    Animations* getAnimations() const { return m_animations; }
     bool isPortOpen() const
     {
         return m_isPortOpen;
@@ -83,7 +87,8 @@ private:
     bool m_play;
     AnimationItem *m_currentAnimationItem;
     Animation *m_currentAnimation;
-    AnimationPlayListWidget* m_animationPlaylist; /* MainWindow AnimationPlaylistWidget */
+    Animations *m_animations;
+    AnimationPlaylistWidget* m_animationPlaylist; /* MainWindow AnimationPlaylistWidget */
     bool m_isPortOpen;
     Q_DISABLE_COPY(AnimationHandler)
 };

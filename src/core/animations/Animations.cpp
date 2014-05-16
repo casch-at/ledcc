@@ -22,8 +22,6 @@
 
 //using namespace BIAS;
 
-Animations* Animations::m_instance(Q_NULLPTR);
-
 Animations::Animations(QObject *parent) :
     QObject(parent)
 {
@@ -32,9 +30,9 @@ Animations::Animations(QObject *parent) :
 
 Animations::~Animations()
 {
-//    foreach (Animation *a, m_animationHash) //FIXME::Crashes, why?
-//        delete a;
-//    delete m_instance;
+    foreach (Animation *a, m_animationHash) //FIXME::Crashes, why?
+        delete a;
+    delete m_instance;
 }
 
 
@@ -59,15 +57,6 @@ const QHash<QString, Animation*> * Animations::getAll()
 {
     return &m_animationHash;
 }
-
-Animations *Animations::instance()
-{
-    if (!m_instance) {
-        m_instance = new Animations(qApp);
-    }
-    return m_instance;
-}
-
 
 void Animations::setupAnimationItems()
 {

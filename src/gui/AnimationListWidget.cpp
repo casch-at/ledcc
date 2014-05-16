@@ -45,7 +45,6 @@ AnimationListWidget::AnimationListWidget(QWidget *parent):
     setAcceptDrops(false);
     setSortingEnabled(true);
     createActions();
-    insertAnimationItems(animations()->animationItemDefaultList());
 
     connect( m_addToPlaylistAction, &QAction::triggered, this, &AnimationListWidget::addSelectedItemsToPlaylist);
 }

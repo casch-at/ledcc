@@ -24,6 +24,7 @@
 #include "Config.hpp"
 #include "HelpDialog.hpp"
 #include "AboutDialog.hpp"
+#include "Animations.hpp"
 // ThirdParty
 #include "alt_key.hpp"
 #include "aqp.hpp"
@@ -75,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
     updateUi(false); // Should be called after we set the animationPlaylist actions
     readSettings ();
     connectSignals();
+    m_ui->m_animationList->insertAnimationItems(m_animationHandler->getAnimations()->animationItemDefaultList());
     AQP::accelerateActions(actions());
     AQP::accelerateMenu(m_ui->menuBar);
 }
@@ -299,20 +301,20 @@ void MainWindow::connectSignals(void)
     connect( m_scSellectAll, &QShortcut::activated, m_ui->m_animationPlaylist, &ListWidget::selectAllItems);
 
     // ListWidget interconnections
-    connect( m_ui->m_animationList , &AnimationListWidget::addToPlaylist , m_ui->m_animationPlaylist , &AnimationPlayListWidget::newItem);
+    connect( m_ui->m_animationList , &AnimationListWidget::addToPlaylist , m_ui->m_animationPlaylist , &AnimationPlaylistWidget::newItem);
     connect( m_ui->m_animationList , &AnimationListWidget::showPropertiePreview , m_ui->m_animationPropertiesPreview , &AnimationPropertiesPreview::createPropertiePreview);
-    connect( m_ui->m_animationPlaylist, &AnimationPlayListWidget::contentChanged , this, &MainWindow::updateAnimationActions);
-    connect( m_ui->m_animationPlaylist, &AnimationPlayListWidget::showPropertiePreview, m_ui->m_animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
+    connect( m_ui->m_animationPlaylist, &AnimationPlaylistWidget::contentChanged , this, &MainWindow::updateAnimationActions);
+    connect( m_ui->m_animationPlaylist, &AnimationPlaylistWidget::showPropertiePreview, m_ui->m_animationPropertiesPreview, &AnimationPropertiesPreview::createPropertiePreview);
     connect( m_ui->m_openAction, &QAction::triggered, this , &MainWindow::openPlaylist);
     connect( m_ui->m_saveAction, &QAction::triggered, this , &MainWindow::savePlaylist);
 
     // Animation Playlist action
-    connect( m_ui->m_clearAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::clearList);
-    connect( m_ui->m_duplicateAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::duplicateItems);
-    connect( m_ui->m_removeAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::removeItems);
-    connect( m_ui->m_moveUpAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
-    connect( m_ui->m_moveDownAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::moveItemsUpDown);
-    connect( m_ui->m_editAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlayListWidget::editItem);
+    connect( m_ui->m_clearAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlaylistWidget::clearList);
+    connect( m_ui->m_duplicateAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlaylistWidget::duplicateItems);
+    connect( m_ui->m_removeAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlaylistWidget::removeItems);
+    connect( m_ui->m_moveUpAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlaylistWidget::moveItemsUpDown);
+    connect( m_ui->m_moveDownAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlaylistWidget::moveItemsUpDown);
+    connect( m_ui->m_editAction, &QAction::triggered, m_ui->m_animationPlaylist, &AnimationPlaylistWidget::editItem);
     connect( m_ui->m_playAction, &QAction::triggered, m_animationHandler, &AnimationHandler::playAnimations);
 
     connect( m_animationHandler->getSender(), &Sender::portOpenChanged, this, &MainWindow::updateUi);
