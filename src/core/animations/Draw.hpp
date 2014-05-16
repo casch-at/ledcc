@@ -114,6 +114,9 @@ protected:
     void tmpCubeToCube(void);
 
     void fontGetChar(quint8 chr, quint8 dst[]);
+
+    float distance2d(float x1, float y1, float x2, float y2);
+    float distance3d(float x1, float y1, float z1, float x2, float y2, float z2);
     Q_DISABLE_COPY(Draw)
 };
 //Q_DECLARE_METATYPE(Draw::AnimationOptions)
