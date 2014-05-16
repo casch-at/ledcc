@@ -36,7 +36,7 @@ void RandomSparkFlash::createAnimation()
         }
         if(m_abort)
             return;
-        waitMs(getSpeed());
+        waitMs(speed());
         fillCubeArray(0x00);
     }
     Q_EMIT done();

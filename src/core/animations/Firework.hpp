@@ -22,8 +22,8 @@
 class Firework : public Animation
 {
     Q_OBJECT
-    Q_PROPERTY(quint8 iterations READ getIterations WRITE setIterations)
-    Q_PROPERTY(quint16 particles READ getParticles WRITE setParticles)
+    Q_PROPERTY(quint16 iterations READ iterations WRITE setIterations)
+    Q_PROPERTY(quint16 particles READ particles WRITE setParticles)
 public:
     explicit Firework(const quint16 &iterations = 15,
                       const quint16 &speed = 50,
@@ -31,19 +31,19 @@ public:
                       const QString &name = BIAS::Firework,
                       QObject *parent = Q_NULLPTR);
 
-    quint8 getIterations() const
+    quint16 iterations() const
     {
         return m_iterations;
     }
 
-    quint16 getParticles() const
+    quint16 particles() const
     {
         return m_particles;
     }
 
 public Q_SLOTS:
     virtual void createAnimation();
-    void setIterations(const quint8 &iterations)
+    void setIterations(const quint16 &iterations)
     {
         if(m_iterations != iterations)
             m_iterations = iterations;

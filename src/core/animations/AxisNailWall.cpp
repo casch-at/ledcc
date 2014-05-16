@@ -40,7 +40,7 @@ void AxisNailWall::createAnimation()
 
     if(m_abort)
         return;
-    waitMs(getSpeed() * 3);
+    waitMs(speed() * 3);
 
     for (quint8 i = 0; i < CUBE_ARRAY_SIZE; i++)
         destination[i] = qrand() % CUBE_SIZE;
@@ -55,7 +55,7 @@ void AxisNailWall::createAnimation()
         drawPositionAxis(m_axis, position, m_direction);
         if(m_abort)
             return;
-        waitMs(getSpeed());
+        waitMs(speed());
     }
 
     for (quint8 i = 0; i < CUBE_ARRAY_SIZE; i++)
@@ -64,7 +64,7 @@ void AxisNailWall::createAnimation()
     }
     if(m_abort)
         return;
-    waitMs(getSpeed() * 10);
+    waitMs(speed() * 10);
 
     for (quint8 i = 0; i < CUBE_SIZE; i++)
     {
@@ -78,7 +78,7 @@ void AxisNailWall::createAnimation()
         drawPositionAxis(m_axis, position, m_direction);
         if(m_abort)
             return;
-        waitMs(getSpeed());
+        waitMs(speed());
     }
     Q_EMIT done();
 }

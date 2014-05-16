@@ -45,7 +45,7 @@ class Animation : public Draw
 public:
     explicit  Animation(const quint16 &speed, const QString &name,QObject *parent = Q_NULLPTR);
 
-    QString getName(void) const{
+    QString name(void) const{
         return m_name;
     }
     void setSpeed(const quint16 &speed)
@@ -54,7 +54,7 @@ public:
             m_speed = speed;
         }
     }
-    quint16 getSpeed(void) const
+    quint16 speed(void) const
     {
         return m_speed;
     }

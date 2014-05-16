@@ -40,7 +40,7 @@ void Wall::createAnimation()
     {
         if(m_abort)
             return;
-        waitMs(getSpeed());
+        waitMs(speed());
         shift(m_axis, m_direction);
     }
     Q_EMIT done();

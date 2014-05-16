@@ -49,13 +49,13 @@ void RandomZLift::createAnimation()
             if(m_abort)
                 return;
 
-            waitMs(getSpeed());
+            waitMs(speed());
         }
 
         if(m_abort)
             return;
 
-        waitMs(getSpeed() * 4);
+        waitMs(speed() * 4);
 
         for (quint8 j = 0; j < CUBE_ARRAY_SIZE / 4; j++)
         {

@@ -77,7 +77,7 @@ void Firework::createAnimation()
             setBixel(origin_x, origin_y, e);
             if(m_abort)
                 return;
-            waitMs(getSpeed() * 2);
+            waitMs(speed() * 2);
             clearBixel(origin_x, origin_y, e);
         }
 
@@ -105,7 +105,7 @@ void Firework::createAnimation()
             }
             if(m_abort)
                 return;
-            waitMs(getSpeed());
+            waitMs(speed());
             fillCubeArray(0x00);
         }
 

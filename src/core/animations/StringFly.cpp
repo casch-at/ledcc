@@ -51,7 +51,7 @@ void StringFly::createAnimation()
         {
             if(m_abort)
                 return;
-            waitMs(getSpeed());
+            waitMs(speed());
             shift(Y_AXIS, Backward);
         }
     }
@@ -60,7 +60,7 @@ void StringFly::createAnimation()
     {
         if(m_abort)
             return;
-        waitMs(getSpeed());
+        waitMs(speed());
         shift(Y_AXIS, Backward);
     }
     Q_EMIT done();

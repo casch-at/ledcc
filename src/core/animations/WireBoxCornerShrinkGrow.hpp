@@ -24,9 +24,9 @@
 class WireBoxCornerShrinkGrow : public Animation
 {
     Q_OBJECT
-    Q_PROPERTY(quint16 iterations READ getIterations WRITE setIterations)
-    Q_PROPERTY(quint8 rotate READ getRotate WRITE setRotate)
-    Q_PROPERTY(quint8 flip READ getFlip WRITE setFlip)
+    Q_PROPERTY(quint16 iterations READ iterations WRITE setIterations)
+    Q_PROPERTY(quint8 rotate READ rotate WRITE setRotate)
+    Q_PROPERTY(quint8 flip READ flip WRITE setFlip)
 public:
     explicit WireBoxCornerShrinkGrow(const quint16 &iterations = 1,
                                      const quint16 &speed = 50,
@@ -36,17 +36,17 @@ public:
                                      QObject *parent = Q_NULLPTR);
 
 
-    quint16 getIterations() const
+    quint16 iterations() const
     {
         return m_iterations;
     }
 
-    quint8 getRotate() const
+    quint8 rotate() const
     {
         return m_rotate;
     }
 
-    quint8 getFlip() const
+    quint8 flip() const
     {
         return m_flip;
     }

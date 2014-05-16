@@ -54,7 +54,7 @@ void RandomSpark::createSparks(const quint16 &leds)
         }
         if(m_abort)
             return;
-        waitMs(getSpeed());
+        waitMs(speed());
         fillCubeArray(0x00);
     }
 }

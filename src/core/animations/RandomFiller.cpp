@@ -47,7 +47,7 @@ void RandomFiller::createAnimation()
             alterBixel(x, y, z, m_state);
             if(m_abort)
                 return;
-            waitMs(getSpeed());
+            waitMs(speed());
             leds++;
         }
     }

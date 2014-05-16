@@ -33,15 +33,15 @@ void Loadbar::createAnimation()
         setPlane(m_axis, i);
         if(m_abort)
             return;
-        waitMs(getSpeed());
+        waitMs(speed());
     }
-    waitMs(getSpeed() * 2);
+    waitMs(speed() * 2);
     for (quint8 i = 0; i < CUBE_SIZE; i++)
     {
         clearPlane(m_axis, i);
         if(m_abort)
             return;
-        waitMs(getSpeed());
+        waitMs(speed());
     }
     Q_EMIT done();
 }

@@ -37,7 +37,7 @@ void Rain::createAnimation()
         }
         if(m_abort)
             return;
-        waitMs(getSpeed());
+        waitMs(speed());
         shift(Z_AXIS, Backward);
     }
     Q_EMIT done();

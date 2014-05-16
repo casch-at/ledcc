@@ -23,16 +23,30 @@
 class Wave : public Animation
 {
     Q_OBJECT
+    Q_PROPERTY(quint16 iterations READ iterations WRITE setIterations)
+
 public:
     explicit Wave(const quint16 &speed = 40,
+                  const quint16 &iterations = 20,
                   const QString &name = BIAS::Wave,
                   QObject *parent = 0);
+
+    quint16 iterations() const
+    {
+        return m_iterations;
+    }
 
 signals:
 
 public Q_SLOTS:
     void createAnimation();
 
+    void setIterations(quint16 arg)
+    {
+        m_iterations = arg;
+    }
+private:
+    quint16 m_iterations;
 };
 
 #endif // WAVE_HPP

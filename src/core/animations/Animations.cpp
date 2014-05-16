@@ -44,7 +44,7 @@ Animation *Animations::get(const QString &key, const AnimationItem *defaultValue
     return m_animationHash.value(key);
 }
 
- Animation *Animations::get(const AnimationItem *defaultValue)
+Animation *Animations::get(const AnimationItem *defaultValue)
 {
     updateAnimation(defaultValue);
     return m_animationHash.value(defaultValue->text());
@@ -70,19 +70,20 @@ void Animations::setupAnimationItems()
     m_animationHash.insert(BIAS::Rain,new Rain);
     m_animationHash.insert(BIAS::Wall,new Wall);
     m_animationHash.insert(BIAS::Firework,new Firework);
+    m_animationHash.insert(BIAS::Wave,new Wave);
 
     QHash<QString,Animation*>::const_iterator iter = m_animationHash.constBegin();
     while(iter != m_animationHash.constEnd()){
         AnimationItem *item = new AnimationItem(iter.key());
         AnimationItem::Options options;
-        options.m_speed = iter.value()->getSpeed();
+        options.m_speed = iter.value()->speed();
         if(iter.key().compare(BIAS::AxisNailWall) == 0){
             options.m_axis =  dynamic_cast<AxisNailWall*>(iter.value())->getAxis();
             options.m_direction = dynamic_cast<AxisNailWall*>(iter.value())->getDirection();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Axis | AnimationItem::Direction );
         }else if(iter.key().compare(BIAS::Firework) == 0){
-            options.m_iteration = dynamic_cast<Firework*>(iter.value())->getIterations();
-            options.m_leds = dynamic_cast<Firework*>(iter.value())->getParticles();
+            options.m_iteration = dynamic_cast<Firework*>(iter.value())->iterations();
+            options.m_leds = dynamic_cast<Firework*>(iter.value())->particles();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Particls );
         }else if(iter.key().compare(BIAS::Lift) == 0){
             options.m_iteration = dynamic_cast<Lift*>(iter.value())->getIterations();
@@ -120,7 +121,11 @@ void Animations::setupAnimationItems()
             options.m_invert = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::CenterStart );
         }else if(iter.key().compare(BIAS::WireBoxCornerShrinkGrow) == 0){
-            options.m_iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->getIterations();
+            options.m_iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->iterations();
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
+        }
+        else if(iter.key().compare(BIAS::Wave) == 0){
+            options.m_iteration = dynamic_cast<Wave*>(iter.value())->iterations();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
         }
         item->setOptions(options);
@@ -187,5 +192,8 @@ void Animations::updateAnimation(const AnimationItem *item)
         dynamic_cast<WireBoxCornerShrinkGrow*>(a)->setIterations(options->m_iteration);
     }else if(text.compare(BIAS::RandomZLift) == 0){
         dynamic_cast<RandomZLift*>(a)->setSpeed(options->m_speed);
+    }else if(text.compare(BIAS::Wave) == 0){
+        dynamic_cast<Wave*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<Wave*>(a)->setIterations(options->m_iteration);
     }
 }
