@@ -45,8 +45,8 @@ AnimationHandler::AnimationHandler(QWidget *widget):
     m_animations(new Animations),
     m_isPortOpen(false)
 {
-    m_playAction = Q_NULLPTR;
-    m_stopAction = Q_NULLPTR;
+//    m_playAction = Q_NULLPTR;
+//    m_stopAction = Q_NULLPTR;
     m_animationPlaylist = Q_NULLPTR;
 
     m_playAction = widget->findChild<QAction*>("m_playAction");

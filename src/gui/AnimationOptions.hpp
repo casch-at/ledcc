@@ -57,7 +57,7 @@ private Q_SLOTS:
     void ok();
     void updateUi();
     void compareOldNewAnimationOptions();
-    void compareOldNewAnimationOptions(int index);
+    void compareOldNewAnimationOptions(int);
 private:
     void hideShowWidgetsDisplayOptions();
     void shouldeApplyNewOptions();

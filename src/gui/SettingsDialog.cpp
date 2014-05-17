@@ -38,6 +38,27 @@
 SerialSettings* SerialSettings::m_instance = Q_NULLPTR;
 
 
+SettingsDialog::SettingsDialog(QWidget *parent) :
+    QDialog(parent),
+    m_ui(new Ui::SettingsDialog)
+{
+    m_ui->setupUi(this);
+
+    m_intValidator = new QIntValidator(0, 4000000, this);
+
+    m_ui->m_baudRateBox->setInsertPolicy(QComboBox::NoInsert);
+    m_ui->m_updateButton->setShortcut(QKeySequence::Refresh);
+    connect(m_ui->m_applyButton, &QPushButton::clicked, this, &SettingsDialog::apply);
+    connect(m_ui->m_updateButton, &QPushButton::clicked, this, &SettingsDialog::fillPortsInfo);
+    void (QComboBox:: *signal)(int) = &QComboBox::currentIndexChanged;
+    connect(m_ui->m_portsBox, signal, this, &SettingsDialog::showPortInfo);
+    fillPortsParameters();
+    fillPortsInfo();
+    updateSettings();
+    restoreValues();
+    AQP::accelerateWidget(this);
+}
+
 /**
  * @brief
  *
@@ -63,26 +84,6 @@ void SettingsDialog::changeEvent(QEvent *e)
     default:
         break;
     };
-}
-
-SettingsDialog::SettingsDialog(QWidget *parent) :
-    QDialog(parent),
-    m_ui(new Ui::SettingsDialog)
-{
-    m_ui->setupUi(this);
-
-    m_intValidator = new QIntValidator(0, 4000000, this);
-
-    m_ui->m_baudRateBox->setInsertPolicy(QComboBox::NoInsert);
-    m_ui->m_updateButton->setShortcut(QKeySequence::Refresh);
-    connect(m_ui->m_applyButton, &QPushButton::clicked, this, &SettingsDialog::apply);
-    void (QComboBox:: *signal)(int) = &QComboBox::currentIndexChanged;
-    connect(m_ui->m_portsBox, signal, this, &SettingsDialog::showPortInfo);
-    fillPortsParameters();
-    fillPortsInfo();
-    updateSettings();
-    restoreValues();
-    AQP::accelerateWidget(this);
 }
 
 /**
@@ -279,15 +280,6 @@ void SettingsDialog::saveValues() //Save Settings of Serial Port
     config()->set(Settings::SettingsParity,serialSettings()->m_parity);
     config()->set(Settings::SettingsStopBits,serialSettings()->m_stopBits);
     config()->set(Settings::SettingsFlowControl,serialSettings()->m_flowControl);
-}
-
-/**
- * @brief
- *
- */
-void SettingsDialog::on_m_updateButton_clicked()
-{
-    fillPortsInfo ();
 }
 
 

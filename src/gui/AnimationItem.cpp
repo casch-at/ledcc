@@ -24,15 +24,17 @@
 
 AnimationItem::AnimationItem(QListWidget *view, int type):
 //    QObject(view->parent()),
-    QListWidgetItem(view,type)
+    QListWidgetItem(view,type),
+    m_availableAnimationOptions(0)
 {
-//    initOptions();
-//    qRegisterMetaType<AnimationItem>("AnimationItem");
+    //    initOptions();
+    //    qRegisterMetaType<AnimationItem>("AnimationItem");
 }
 
 AnimationItem::AnimationItem(const QString &text, QListWidget *view, int type):
 //    QObject(view->parent()),
-    QListWidgetItem(text,view,type)
+    QListWidgetItem(text,view,type),
+    m_availableAnimationOptions(0)
 {
     //    initOptions();
 }

@@ -27,10 +27,11 @@
  */
 Sender::Sender(QObject *parent) :
     QObject(parent),
-    m_abort(false)
+    m_abort(false),
+    m_serial(Q_NULLPTR),
+    m_port(Q_NULLPTR),
+    m_portOpen(false)
 {
-    m_portOpen = false;
-    m_serial = Q_NULLPTR;
 }
 
 /**

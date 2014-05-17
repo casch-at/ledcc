@@ -50,7 +50,7 @@ Animation *Animations::get(const AnimationItem *defaultValue)
     return m_animationHash.value(defaultValue->text());
 }
 
-const QHash<QString, Animation*> * Animations::getAll()
+const QHash<QString, Animation*> * Animations::getAll() const
 {
     return &m_animationHash;
 }
@@ -129,10 +129,9 @@ void Animations::setupAnimationItems()
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
         }
         item->setOptions(options);
-        iter.value()->m_abort = false;
+        iter++.value()->m_abort = false;
         item->createAnimationTooltipAsRichText();
         m_animationItemDefaultList.append(item);
-        iter++;
     }
 }
 

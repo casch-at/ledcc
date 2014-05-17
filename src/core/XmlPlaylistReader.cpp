@@ -27,10 +27,6 @@
 #include <QDebug>
 #endif
 
-XmlPlaylistReader::XmlPlaylistReader()
-{
-}
-
 /*!
  \brief
 

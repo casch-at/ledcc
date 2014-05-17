@@ -27,12 +27,11 @@ class QXmlStreamAttributes;
 class XmlPlaylistReader
 {
 public:
-    XmlPlaylistReader();
     QList<AnimationItem*> readAnimationPlaylist(const QString &xmlPlaylist);
 private:
     AnimationItem* parseAnimation(QXmlStreamReader *xmlReader);
-    int readAnimationProperties(QXmlStreamAttributes *attributes, AnimationItem::Options *options, AnimationItem *animationItem);
-    void cleanUpOnError(QList<AnimationItem *> *animationItemList);
+    static int readAnimationProperties(QXmlStreamAttributes *attributes, AnimationItem::Options *options, AnimationItem *animationItem);
+    static void cleanUpOnError(QList<AnimationItem *> *animationItemList);
 };
 
 #endif // XMLPLAYLISTREADER_HPP

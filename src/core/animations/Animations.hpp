@@ -50,7 +50,7 @@ public:
     Animation* get(const QString& key);
     Animation* get(const QString& key,const AnimationItem* defaultValue);
     Animation* get(const AnimationItem* defaultValue);
-    const QHash<QString, Animation *> *getAll();
+    const QHash<QString, Animation *> *getAll() const;
     QList<AnimationItem*> const * animationItemDefaultList() const { return &m_animationItemDefaultList; }
     void updateAnimation(const AnimationItem *item);
 private:

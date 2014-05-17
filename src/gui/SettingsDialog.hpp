@@ -44,7 +44,6 @@ protected:
 private Q_SLOTS:
     void showPortInfo(int idx);
     void apply();
-    void on_m_updateButton_clicked();
 Q_SIGNALS:
 //    void hideDialog();
 private:

@@ -457,9 +457,8 @@ void AnimationOptions::compareOldNewAnimationOptions()
         setWindowModified(false);
 }
 
-void AnimationOptions::compareOldNewAnimationOptions(int index)
+void AnimationOptions::compareOldNewAnimationOptions(int )
 {
-    index = index;
     compareOldNewAnimationOptions();
 }
 
