@@ -57,7 +57,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_helpDialog(Q_NULLPTR),
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
-    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
+    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
+    m_animationHandlerThread(new QThread)
 {
     m_ui->setupUi(this); // Ui must be first created befor accessing the elements
     m_ui->m_animationList->setFocus();

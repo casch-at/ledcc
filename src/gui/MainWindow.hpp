@@ -17,7 +17,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QMainWindow>
-#include <QThread>
 
 class QShortcut;
 class AnimationHandler;
@@ -56,7 +55,7 @@ private:
 private:
     Ui::MainWindow *m_ui;
     HelpDialog *m_helpDialog;
-
+    QThread *m_animationHandlerThread;
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;

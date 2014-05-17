@@ -144,12 +144,11 @@ void AnimationHandler::playNextAnimation(const AnimationItem *item)
         stopThreads();
     }
 }
+
 /*!
- \brief
+ \brief Show message that the port is open
 
 */
-
-
 void AnimationHandler::portOpen(const QString &message)
 {
     QStatusBar *m_statusbar = this->parent()->findChild<QStatusBar*>("m_statusbar");
@@ -251,17 +250,15 @@ void AnimationHandler::setupSenderThread(void)
     connect(m_sender,&Sender::closePort,this,&AnimationHandler::closePort);
     connect(this,&AnimationHandler::okClosePort,m_sender,&Sender::closeSerialPort);
     /*
-     * Connect the animation creater thread with the sender thread which
-     * will be called when the creater thread emits sendData.
-     * Also move all build in animations to the creater thread.
+     * Connect animation creater thread with sender thread, and move the animation to the creater thread.
+     * Sender thread will be called when the creater thread emits sendData.
      */
     QHashIterator<QString, Animation*> i(*m_animations->getAll());
     while (i.hasNext()) {
         i.next();
-        connect(i.value(),&Animation::sendData, m_sender, &Sender::sendAnimation); /* Create connection between animation (createThread) thread and sender thred */
-        i.value()->moveToThread(m_createThread); /* Move animation to createThread */
+        connect(i.value(),&Animation::sendData, m_sender, &Sender::sendAnimation);
+        i.value()->moveToThread(m_createThread);
     }
-
 }
 
 void AnimationHandler::startSenderThread()
@@ -290,7 +287,7 @@ void AnimationHandler::stopCreaterThread()
 
 
 /**
- * @brief Open or close serial port
+ * @brief Tell the sender thread that we want open/close the serial port
  *
  */
 void AnimationHandler::openCloseSerialPort(void)
