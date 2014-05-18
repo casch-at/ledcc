@@ -53,6 +53,7 @@ Sender::~Sender()
  */
 void Sender::sendAnimation(const Draw::CubeArray &d)
 {
+//    forever{
     m_serial->putChar(0xFF);
     m_serial->waitForBytesWritten(1000);
     m_serial->putChar(0x00);
@@ -69,6 +70,7 @@ void Sender::sendAnimation(const Draw::CubeArray &d)
             }
         }
     }
+//    }
 }
 
 

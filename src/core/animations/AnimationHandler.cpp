@@ -41,7 +41,7 @@
 AnimationHandler::AnimationHandler(QWidget *widget):
     QObject(widget->parent()),
     m_settingsDialog(new SettingsDialog(widget)),
-    m_createThread(new QThread),
+    m_createThread(new QThread(this)),
     m_animations(new Animations),
     m_isPortOpen(false)
 {
@@ -57,7 +57,6 @@ AnimationHandler::AnimationHandler(QWidget *widget):
 
     m_animationPlaylist = widget->findChild<AnimationPlaylistWidget *>("m_animationPlaylist");
     Q_ASSERT(m_animationPlaylist);
-    m_currentAnimation = m_animations->get(BIAS::StringFly);
     setupSenderThread();
     connect(m_sender, &Sender::portOpenChanged,this,&AnimationHandler::setIsPortOpen);
     connect(m_animationPlaylist, &AnimationPlaylistWidget::playAnimation, this, &AnimationHandler::playAnimation);
@@ -72,8 +71,12 @@ AnimationHandler::~AnimationHandler()
     delete m_settingsDialog;
     Q_EMIT okClosePort();
     if(m_createThread->isRunning() || m_senderThread->isRunning()){
-        m_currentAnimation->m_abort = true;
+        m_animations->abortCurrentAnimation(true);
         m_sender->m_abort = true;
+
+        /* Delete objects */
+//        m_senderThread->deleteLater();
+//        m_createThread->deleteLater();
 
         /* Tell the thread they shoulde exit with code 0. */
         m_senderThread->quit();
@@ -94,9 +97,9 @@ AnimationHandler::~AnimationHandler()
 */
 void AnimationHandler::animationDone()
 {
-    disconnect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
-    disconnect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
-    disconnect(m_currentAnimation,&Animation::done,this,&AnimationHandler::animationDone);
+    disconnect(m_createThread,&QThread::started, m_animations->getCurrentAnimation(),&Animation::createAnimation);
+    disconnect(m_animations->getCurrentAnimation(), &Animation::done, m_createThread, &QThread::quit);
+    disconnect(m_animations->getCurrentAnimation(),&Animation::done,this,&AnimationHandler::animationDone);
 
     m_createThread->wait();
 
@@ -124,19 +127,18 @@ void AnimationHandler::playAnimation(const AnimationItem *animation)
 }
 
 
-/**
- * @author Christian Schwarzgruber
- * @brief AnimationHandler::playNextAnimation
- *
- * @param QString &a
+/*!
+  \brief Setup up connection for the
+
+  \param QString &a
  */
 void AnimationHandler::playNextAnimation(const AnimationItem *item)
 {
     if(item){
-        m_currentAnimation = m_animations->get(item->text());
-        connect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
-        connect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
-        connect(m_currentAnimation,&Animation::done,this,&AnimationHandler::animationDone);
+        m_animations->setCurrentAnimation(item->text());
+        connect(m_createThread,&QThread::started,m_animations->getCurrentAnimation(),&Animation::createAnimation);
+        connect(m_animations->getCurrentAnimation(), &Animation::done, m_createThread, &QThread::quit);
+        connect(m_animations->getCurrentAnimation(),&Animation::done,this,&AnimationHandler::animationDone);
 
         m_animations->updateAnimation(item);
         m_createThread->start();
@@ -146,7 +148,7 @@ void AnimationHandler::playNextAnimation(const AnimationItem *item)
 }
 
 /*!
- \brief Show message that the port is open
+  \brief Show message that the port is open and update ui.
 
 */
 void AnimationHandler::portOpen(const QString &message)
@@ -207,7 +209,7 @@ void AnimationHandler::stopThreads()
     m_stopAction->setDisabled(true);
 
     /* Tell the thread that he shoulde stop working */
-    m_currentAnimation->m_abort = true;
+    m_animations->abortCurrentAnimation(true);
     m_sender->m_abort = true;
 
     /* Tell the thread they shoulde exit with code 0. */
@@ -220,11 +222,11 @@ void AnimationHandler::stopThreads()
 
     /* Reset the stop flag */
     m_sender->m_abort = false;
-    m_currentAnimation->m_abort = false;
+    m_animations->abortCurrentAnimation();
 
-    disconnect(m_createThread,&QThread::started,m_currentAnimation,&Animation::createAnimation);
-    disconnect(m_currentAnimation, &Animation::done, m_createThread, &QThread::quit);
-    disconnect(m_currentAnimation,&Animation::done,this,&AnimationHandler::animationDone);
+    disconnect(m_createThread,&QThread::started,m_animations->getCurrentAnimation(),&Animation::createAnimation);
+    disconnect(m_animations->getCurrentAnimation(), &Animation::done, m_createThread, &QThread::quit);
+    disconnect(m_animations->getCurrentAnimation(),&Animation::done,this,&AnimationHandler::animationDone);
 
     Q_EMIT updateUi(m_isPortOpen);
 }
@@ -237,7 +239,7 @@ void AnimationHandler::stopThreads()
  */
 void AnimationHandler::setupSenderThread(void)
 {
-    m_senderThread = new QThread;
+    m_senderThread = new QThread(this);
     m_sender = new Sender;
 
     m_sender->moveToThread(m_senderThread); // Move Sender class his own thread
@@ -272,16 +274,16 @@ void AnimationHandler::startSenderThread()
 
 void AnimationHandler::stopCreaterThread()
 {
-    if (m_currentAnimation)
-        m_currentAnimation->m_abort = true;
+    if (m_animations->getCurrentAnimation())
+        m_animations->abortCurrentAnimation(true);
 
     if (m_createThread->isRunning()) {
         m_createThread->quit(); // Always quit the thread befor waiting for them to quit
         m_createThread->wait();
     }
 
-    if (m_currentAnimation)
-        m_currentAnimation->m_abort = false;
+    if (m_animations->getCurrentAnimation())
+        m_animations->abortCurrentAnimation(true);
 }
 
 

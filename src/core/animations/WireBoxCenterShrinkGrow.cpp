@@ -37,7 +37,7 @@ void WireBoxCenterShrinkGrow::createAnimation()
         {
             fillCubeArray(0x00);
             j = i;
-            if (m_centerStart)
+            if (!m_centerStart)
                 j = cubeSizeHalf -1 - i;
             xyzStart = cubeSizeHalf + j;
             xyzEnd = cubeSizeHalf - 1 - j;

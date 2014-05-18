@@ -25,6 +25,7 @@
 #include "HelpDialog.hpp"
 #include "AboutDialog.hpp"
 #include "Animations.hpp"
+
 // ThirdParty
 #include "alt_key.hpp"
 #include "aqp.hpp"
@@ -55,10 +56,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     m_ui(new Ui::MainWindow),
     m_helpDialog(Q_NULLPTR),
+//    m_animationHandlerThread(new QThread),
     m_focusAnimationList(new  QShortcut(QKeySequence(tr("Alt+1")),this)),
     m_focusAnimationPlaylist(new  QShortcut(QKeySequence(tr("Alt+2")),this)),
-    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this)),
-    m_animationHandlerThread(new QThread)
+    m_scSellectAll(new  QShortcut(QKeySequence(tr("Ctrl+A")),this))
 {
     m_ui->setupUi(this); // Ui must be first created befor accessing the elements
     m_ui->m_animationList->setFocus();
@@ -75,18 +76,15 @@ MainWindow::MainWindow(QWidget *parent) :
                << m_ui->m_moveDownAction << m_ui->m_selectAllAction);
     m_open = false;
     updateUi(false); // Should be called after we set the animationPlaylist actions
-    readSettings ();
+    readSettings();
     connectSignals(animationHandler);
     m_ui->m_animationPlaylist->setAnimationHandler(animationHandler);
     m_ui->m_animationList->insertAnimationItems(animationHandler->getAnimations()->animationItemDefaultList());
-
+//    animationHandler->moveToThread(m_animationHandlerThread);
     AQP::accelerateActions(actions());
     AQP::accelerateMenu(m_ui->menuBar);
 }
 
-/**
- * @brief MainWindow::~MainWindow
- */
 MainWindow::~MainWindow(void)
 {
     delete m_ui;
@@ -101,7 +99,6 @@ void MainWindow::changeEvent(QEvent *e)
     case QEvent::LanguageChange:
         m_ui->retranslateUi(this);
         m_ui->m_animationList->translateItemToolTip();
-        //FIXME:: Application has no accelerator after retranslate. AQP::crashes when calling possible reason ALPAHPET has no Ü,Ä,Ö, etc.
         AQP::accelerateActions(actions());
         AQP::accelerateMenu(m_ui->menuBar);
         break;
@@ -110,10 +107,6 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
-/**
- * @brief MainWindow::closeEvent
- * @param event
- */
 void MainWindow::closeEvent( QCloseEvent *event ) {
     if ( okToContinue() ) {
         QList<QDialog *> allDialogs = findChildren<QDialog *>();
@@ -128,7 +121,7 @@ void MainWindow::closeEvent( QCloseEvent *event ) {
 }
 
 /**
- * @brief Checks if the window was modefied
+ * @brief Checks if the window was modefied.
  * @return boolean
  */
 bool MainWindow::okToContinue(void)
@@ -149,20 +142,13 @@ bool MainWindow::okToContinue(void)
     return true;
 }
 
-/**
- * @brief MainWindow::resizeEvent
- * @param e
- */
+
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
     QMainWindow::resizeEvent(e);
 }
 
 
-/*!
- \brief Save the application settings
-
-*/
 void MainWindow::saveSettings(void){
     config()->set(Settings::MainWindowGeometrySettings,saveGeometry());
     config()->set(Settings::AnimationOptionPreviewGeometry, m_ui->m_animationPropertiesPreview->saveGeometry());
@@ -173,10 +159,6 @@ void MainWindow::saveSettings(void){
     config()->set(Settings::IsMainToolbarHidden, m_ui->m_mainTB->isHidden());
 }
 
-/*!
- \brief Restore the saved application settings
-
-*/
 void MainWindow::readSettings (void){
     restoreGeometry (config()->get(Settings::MainWindowGeometrySettings).toByteArray ());
     m_ui->m_animationPropertiesPreview->restoreGeometry( config()->get(Settings::AnimationOptionPreviewGeometry).toByteArray ());

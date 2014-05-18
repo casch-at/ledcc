@@ -24,6 +24,7 @@
 Animations::Animations()
 {
     setupAnimationItems();
+    m_currentAnimation = get(BIAS::Firework);
 }
 
 Animations::~Animations()
@@ -33,26 +34,46 @@ Animations::~Animations()
 }
 
 
-Animation *Animations::get(const QString &key)
+Animation *Animations::get(const QString &key) const
 {
     return m_animationHash.value(key);
 }
 
-Animation *Animations::get(const QString &key, const AnimationItem *defaultValue)
+Animation *Animations::get(const QString &key, const AnimationItem *defaultValue) const
 {
     updateAnimation(defaultValue);
     return m_animationHash.value(key);
 }
 
-Animation *Animations::get(const AnimationItem *defaultValue)
+Animation *Animations::get(const AnimationItem *defaultValue) const
 {
     updateAnimation(defaultValue);
     return m_animationHash.value(defaultValue->text());
 }
 
+Animation *Animations::getCurrentAnimation() const
+{
+    return m_currentAnimation;
+}
+
+void Animations::abortCurrentAnimation(bool abort) const
+{
+    m_currentAnimation->m_abort = abort;
+}
+
+void Animations::setCurrentAnimation(const QString &key)
+{
+    m_currentAnimation = this->get(key);
+}
+
 const QHash<QString, Animation*> * Animations::getAll() const
 {
     return &m_animationHash;
+}
+
+const QList<AnimationItem *> *Animations::animationItemDefaultList() const
+{
+    return &m_animationItemDefaultList;
 }
 
 void Animations::setupAnimationItems()
@@ -81,50 +102,49 @@ void Animations::setupAnimationItems()
             options.m_axis =  dynamic_cast<AxisNailWall*>(iter.value())->getAxis();
             options.m_direction = dynamic_cast<AxisNailWall*>(iter.value())->getDirection();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Axis | AnimationItem::Direction );
-        }else if(iter.key().compare(BIAS::Firework) == 0){
+        } else if(iter.key().compare(BIAS::Firework) == 0){
             options.m_iteration = dynamic_cast<Firework*>(iter.value())->iterations();
             options.m_leds = dynamic_cast<Firework*>(iter.value())->particles();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Particls );
-        }else if(iter.key().compare(BIAS::Lift) == 0){
+        } else if(iter.key().compare(BIAS::Lift) == 0){
             options.m_iteration = dynamic_cast<Lift*>(iter.value())->getIterations();
             options.m_delay = dynamic_cast<Lift*>(iter.value())->getDelay();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Delay );
-        }else if(iter.key().compare(BIAS::Loadbar) == 0){
+        } else if(iter.key().compare(BIAS::Loadbar) == 0){
             options.m_axis = dynamic_cast<Loadbar*>(iter.value())->getAxis();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Axis );
-        }else if(iter.key().compare(BIAS::Rain) == 0){
+        } else if(iter.key().compare(BIAS::Rain) == 0){
             options.m_iteration = dynamic_cast<Rain*>(iter.value())->getIterations();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
-        }else if(iter.key().compare(BIAS::RandomFiller) == 0){
+        } else if(iter.key().compare(BIAS::RandomFiller) == 0){
             options.m_invert = dynamic_cast<RandomFiller*>(iter.value())->getState() == Draw::ON ? true : false;
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::LedState );
-        }else if(iter.key().compare(BIAS::RandomSpark) == 0){
+        } else if(iter.key().compare(BIAS::RandomSpark) == 0){
             options.m_iteration = dynamic_cast<RandomSpark*>(iter.value())->getIterations();
             options.m_leds = dynamic_cast<RandomSpark*>(iter.value())->getSparks();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Leds );
-        }else if(iter.key().compare(BIAS::RandomSparkFlash) == 0){
+        } else if(iter.key().compare(BIAS::RandomSparkFlash) == 0){
             options.m_iteration = dynamic_cast<RandomSparkFlash*>(iter.value())->getIterations();
             options.m_leds = dynamic_cast<RandomSparkFlash*>(iter.value())->getLeds();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Leds );
-        }else if(iter.key().compare(BIAS::RandomZLift) == 0){
+        } else if(iter.key().compare(BIAS::RandomZLift) == 0){
             options.m_iteration = dynamic_cast<RandomZLift*>(iter.value())->getIterations();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
-        }else if(iter.key().compare(BIAS::StringFly) == 0){
+        } else if(iter.key().compare(BIAS::StringFly) == 0){
             options.m_text = dynamic_cast<StringFly*>(iter.value())->getSToDisplay();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Text );
-        }else if(iter.key().compare(BIAS::Wall) == 0){
+        } else if(iter.key().compare(BIAS::Wall) == 0){
             options.m_axis = dynamic_cast<Wall*>(iter.value())->getAxis();
             options.m_direction = dynamic_cast<Wall*>(iter.value())->getDirection();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Axis | AnimationItem::Direction );
-        }else if(iter.key().compare(BIAS::WireBoxCenterShrinkGrow) == 0){
+        } else if(iter.key().compare(BIAS::WireBoxCenterShrinkGrow) == 0){
             options.m_iteration = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getIterations();
             options.m_invert = dynamic_cast<WireBoxCenterShrinkGrow*>(iter.value())->getCenterStart();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::CenterStart );
-        }else if(iter.key().compare(BIAS::WireBoxCornerShrinkGrow) == 0){
+        } else if(iter.key().compare(BIAS::WireBoxCornerShrinkGrow) == 0){
             options.m_iteration = dynamic_cast<WireBoxCornerShrinkGrow*>(iter.value())->iterations();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
-        }
-        else if(iter.key().compare(BIAS::Wave) == 0){
+        } else if(iter.key().compare(BIAS::Wave) == 0){
             options.m_iteration = dynamic_cast<Wave*>(iter.value())->iterations();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
         }
@@ -140,7 +160,7 @@ void Animations::setupAnimationItems()
 
  \param item
 */
-void Animations::updateAnimation(const AnimationItem *item)
+void Animations::updateAnimation(const AnimationItem *item) const
 {
     QString text = item->text();
     Animation *a = m_animationHash.value(text);

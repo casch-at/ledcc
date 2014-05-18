@@ -14,11 +14,11 @@ option(UPDATE_TRANSLATIONS "If 'ON' .ts files will be updated, if 'OFF' .qm file
 # Configure the install path
 # ---------------------------------------------------------------------------------------------------
 if( "${CMAKE_PREFIX_PATH}" STREQUAL  "/usr/local/")
-  set(CMAKE_PREFIX_PATH "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "/usr/local")
 elseif("${CMAKE_PREFIX_PATH}" STREQUAL "")
-  set(CMAKE_PREFIX_PATH "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "/usr/local")
 endif()
-message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
+message(STATUS "CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
 
 if(MINGW)
   set(BIN_INSTALL_DIR    ".")
@@ -30,15 +30,15 @@ elseif(APPLE)
   set(DATA_INSTALL_DIR   "${PROJECT_NAME}.app/Contents/Resources")
 else()
   include(GNUInstallDirs)
-  set(BIN_INSTALL_DIR    "${CMAKE_PREFIX_PATH}/${CMAKE_INSTALL_BINDIR}")
-  set(PLUGIN_INSTALL_DIR "${CMAKE_PREFIX_PATH}/${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}")
-  set(DATA_INSTALL_DIR   "${CMAKE_PREFIX_PATH}/${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}" )
+  set(BIN_INSTALL_DIR    "${CMAKE_INSTALL_BINDIR}")
+  set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}")
+  set(DATA_INSTALL_DIR   "${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}" )
 endif()
 
 
-message(STATUS "BIN_INSTALL_DIR: ${BIN_INSTALL_DIR}" )
-message(STATUS "PLUGIN_INSTALL_DIR: ${PLUGIN_INSTALL_DIR}" )
-message(STATUS "DATA_INSTALL_DIR: ${DATA_INSTALL_DIR}" )
+message(STATUS "BIN_INSTALL_DIR: ${CMAKE_INSTALL_PREFIX}/${BIN_INSTALL_DIR}" )
+message(STATUS "PLUGIN_INSTALL_DIR: ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR}" )
+message(STATUS "DATA_INSTALL_DIR: ${CMAKE_INSTALL_PREFIX}/${DATA_INSTALL_DIR}" )
 
 
 # If not debug mode set QT_NO_DEBUG

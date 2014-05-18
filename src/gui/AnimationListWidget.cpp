@@ -30,9 +30,6 @@
 #include <QDebug>
 #endif
 
-
-
-
 AnimationListWidget::AnimationListWidget(QWidget *parent):
     ListWidget(parent)
 {
@@ -56,9 +53,6 @@ AnimationListWidget::~AnimationListWidget()
 
 void AnimationListWidget::keyPressEvent(QKeyEvent *e)
 {
-    //TODO::Fix space selection!!!
-    //      Actuall behaviour, item stays always selected ones item is selected because
-    //      when moving item item gets selected ;-) Strange behaviour
     switch (e->key()) {
     case Qt::Key_Enter:
         addSelectedItemsToPlaylist();

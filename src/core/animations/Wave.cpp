@@ -25,22 +25,21 @@ Wave::Wave(const quint16 &speed, const quint16 &iterations, const QString &name,
 
 void Wave::createAnimation()
 {
-    float /*origin_x, origin_y,*/ distance, height, ripple_interval;
+    float /*origin_x, origin_y,*/ distance, height, ripple_interval = 1.3;
 
     fillCubeArray(0x00);
 
-    for (int i=0; i<iterations(); i++)
+    for (quint16 i=0; i<iterations(); i++)
     {
-        for (int x=0; x<8; x++)
+        if(m_abort)
+            return;
+        for (quint16 x=0; x<8; x++)
         {
-            for (int y=0; y<8; y++)
+            for (quint16 y=0; y<8; y++)
             {
                 distance = distance2d(3.5,3.5,x,y)/9.899495*8;
-                //distance = distance2d(3.5,3.5,x,y);
-                ripple_interval =1.3;
                 height = 4+sin(distance/ripple_interval+static_cast<float>(i)/50)*4;
-
-                setBixel(x,y,static_cast<int>(height));
+                setBixel(x,y,static_cast<quint8>(height));
             }
         }
         waitMs(speed());

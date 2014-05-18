@@ -86,7 +86,6 @@ private:
     Sender *m_sender;
     bool m_play;
     AnimationItem *m_currentAnimationItem;
-    Animation *m_currentAnimation;
     Animations *m_animations;
     AnimationPlaylistWidget* m_animationPlaylist; /* MainWindow AnimationPlaylistWidget */
     bool m_isPortOpen;

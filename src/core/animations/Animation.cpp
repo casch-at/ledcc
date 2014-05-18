@@ -88,8 +88,13 @@ void Animation::waitMs(const quint16 &time)
 //    m_mutex.lock();
     cubeFrameTemp = cubeFrame;
 //    m_mutex.unlock();
-    Q_EMIT sendData(cubeFrameTemp);
+//    static bool alread=false;
+//    if(!alread){
+        Q_EMIT sendData(cubeFrameTemp);
+//        alread=true;
+//    }
 //    thread()->usleep(time /** 1000*/);
     thread()->usleep(time * 1000);
+//    Q_EMIT sendData(cubeFrameTemp);
 }
 

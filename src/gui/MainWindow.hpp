@@ -55,7 +55,7 @@ private:
 private:
     Ui::MainWindow *m_ui;
     HelpDialog *m_helpDialog;
-    QThread *m_animationHandlerThread;
+//    QThread *m_animationHandlerThread;
     QShortcut *m_focusAnimationList;
     QShortcut *m_focusAnimationPlaylist;
     QShortcut *m_scSellectAll;

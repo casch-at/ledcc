@@ -47,16 +47,20 @@ class Animations
 public:
     explicit Animations();
     ~Animations();
-    Animation* get(const QString& key);
-    Animation* get(const QString& key,const AnimationItem* defaultValue);
-    Animation* get(const AnimationItem* defaultValue);
+    Animation* get(const QString& key) const;
+    Animation* get(const QString& key,const AnimationItem* defaultValue) const;
+    Animation* get(const AnimationItem* defaultValue) const;
+    Animation* getCurrentAnimation() const;
+    void abortCurrentAnimation(bool abort = false) const;
+    void setCurrentAnimation(const QString &key);
     const QHash<QString, Animation *> *getAll() const;
-    QList<AnimationItem*> const * animationItemDefaultList() const { return &m_animationItemDefaultList; }
-    void updateAnimation(const AnimationItem *item);
+    QList<AnimationItem*> const * animationItemDefaultList() const;
+    void updateAnimation(const AnimationItem *item) const;
 private:
     void setupAnimationItems(void);
     QHash<QString, Animation*> m_animationHash;
     QList<AnimationItem*> m_animationItemDefaultList;
+    Animation *m_currentAnimation;
     Q_DISABLE_COPY(Animations)
 };
 
