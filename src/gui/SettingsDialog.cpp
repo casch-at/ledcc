@@ -37,7 +37,7 @@
 
 SerialSettings* SerialSettings::m_instance = Q_NULLPTR;
 
-
+//FIXME:: Port description are only shown after pressing the refresh button
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
     m_ui(new Ui::SettingsDialog)
@@ -52,10 +52,13 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     connect(m_ui->m_updateButton, &QPushButton::clicked, this, &SettingsDialog::fillPortsInfo);
     void (QComboBox:: *signal)(int) = &QComboBox::currentIndexChanged;
     connect(m_ui->m_portsBox, signal, this, &SettingsDialog::showPortInfo);
-    fillPortsParameters();
-    fillPortsInfo();
-    updateSettings();
+
     restoreValues();
+    fillPortsParameters();
+    updateSettings();
+    fillPortsInfo();
+//    Q_EMIT m_ui->m_portsBox->currentIndexChanged(0);
+
     AQP::accelerateWidget(this);
 }
 
@@ -197,12 +200,13 @@ void SettingsDialog::fillPortsInfo() //
 
         m_ui->m_portsBox->addItem(list.first(), list);
         m_ui->m_portsBox->setCurrentIndex (0);
-        for(int i=1; i<m_ui->m_portsBox->count (); i++){
+    }
+
+    for(int i=1; i<m_ui->m_portsBox->count (); i++){
+        m_ui->m_portsBox->setCurrentIndex (i);
+        if( m_ui->m_portsBox->currentText ().contains (rx1)){
             m_ui->m_portsBox->setCurrentIndex (i);
-            if( m_ui->m_portsBox->currentText ().contains (rx1)){
-                m_ui->m_portsBox->setCurrentIndex (i);
-                break;
-            }
+            break;
         }
     }
 }

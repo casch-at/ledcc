@@ -28,6 +28,7 @@ void Wave::createAnimation()
     float /*origin_x, origin_y,*/ distance, height, ripple_interval = 1.3;
 
     fillCubeArray(0x00);
+    QVector<QVector<QVector<quint8> > > tripleVector(iterations(),QVector<QVector<quint8> >(8, QVector<quint8>(8)));
 
     for (quint16 i=0; i<iterations(); i++)
     {
@@ -42,9 +43,15 @@ void Wave::createAnimation()
                 setBixel(x,y,static_cast<quint8>(height));
             }
         }
-        waitMs(speed());
+        tripleVector[i] = cubeFrame;
         fillCubeArray(0x00);
     }
+    for (int i = 0; i < iterations(); i++) {
+        sendData(tripleVector[i]);
+//        if(i/10 == 0)
+//            waitMs(speed());
+    }
+    waitMs(200);
     Q_EMIT done();
 }
 
