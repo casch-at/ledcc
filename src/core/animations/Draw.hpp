@@ -116,6 +116,7 @@ protected:
     void fontGetChar(quint8 chr, quint8 dst[]);
 
     float distance2d(float x1, float y1, float x2, float y2);
+    // TODO:: Put 3D drawing functions into a Draw3D class some day or another
     float distance3d(float x1, float y1, float z1, float x2, float y2, float z2);
 
     void line3d(int x1, int y1, int z1, int x2, int y2, int z2);

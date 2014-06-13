@@ -78,7 +78,7 @@ void AnimationPropertiesPreview::createPropertiePreview(QStringList properties )
     mlayout->setObjectName("animationPropertiesPreviewLay");
     mlayout->setAlignment( this, Qt::AlignCenter );
 
-    QLabel *label = new QLabel( properties.first() ); // Display the name of the animation
+    QLabel *label = new QLabel( properties.first() ); // Get name of the animation
     properties.removeAt(0);
     label->setWordWrap(true);
     label->setFont(font);
@@ -86,7 +86,7 @@ void AnimationPropertiesPreview::createPropertiePreview(QStringList properties )
 
     mlayout->addWidget(label);
 
-    QFrame *f = new QFrame;  // Create a frame the animation properties
+    QFrame *f = new QFrame;  // Create a frame for the animation properties
     f->setFrameStyle(QFrame::HLine | QFrame::Raised);
     f->setMidLineWidth(1);
     f->setLineWidth(0);

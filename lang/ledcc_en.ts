@@ -45,13 +45,13 @@
 <context>
     <name>AnimationHandler</name>
     <message>
-        <location filename="../src/core/animations/AnimationHandler.cpp" line="150"/>
-        <location filename="../src/core/animations/AnimationHandler.cpp" line="152"/>
+        <location filename="../src/core/animations/AnimationHandler.cpp" line="166"/>
+        <location filename="../src/core/animations/AnimationHandler.cpp" line="168"/>
         <source>Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/animations/AnimationHandler.cpp" line="165"/>
+        <location filename="../src/core/animations/AnimationHandler.cpp" line="181"/>
         <source>Close Port</source>
         <translation></translation>
     </message>
@@ -59,176 +59,176 @@
 <context>
     <name>AnimationItem</name>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="68"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="70"/>
         <source>&lt;p style=&apos;white-space:pre&apos;&gt;&lt;font color=#FFFFFF&gt;&lt;b&gt;%1 Animation&lt;/b&gt;&lt;/font&gt;&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="70"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="72"/>
         <source>&lt;p style=&apos;white-space:pre&apos;&gt;&lt;font color=#000000&gt;&lt;b&gt;%1 Animation&lt;/b&gt;&lt;/font&gt;&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="76"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="78"/>
         <source>Speed: %1&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="79"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="81"/>
         <source>Direction: Forward&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="79"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="81"/>
         <source>Direction: Backward&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="83"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="85"/>
         <source>Axis: X-Axis&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="85"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="87"/>
         <source>Axis: Y-Axis&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="87"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="89"/>
         <source>Axis: Z-Axis&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="90"/>
-        <location filename="../src/gui/AnimationItem.cpp" line="93"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="92"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="95"/>
         <source>Particles: %1&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="96"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="98"/>
         <source>Delay: %1&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="99"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="101"/>
         <source>Iterations: %1&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="102"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="104"/>
         <source>Invert: YES&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="102"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="104"/>
         <source>Invert: NO&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="105"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="107"/>
         <source>Start from center: YES&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="105"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="107"/>
         <source>Start from center: NO&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="108"/>
-        <location filename="../src/gui/AnimationItem.cpp" line="169"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="110"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="171"/>
         <source>Current Text: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="111"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="113"/>
         <source>Initial LED State: %1&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="111"/>
-        <location filename="../src/gui/AnimationItem.cpp" line="172"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="113"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="174"/>
         <source>ON</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="111"/>
-        <location filename="../src/gui/AnimationItem.cpp" line="172"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="113"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="174"/>
         <source>OFF</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="137"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="139"/>
         <source>Speed:%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="140"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="142"/>
         <source>Direction:Forward</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="140"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="142"/>
         <source>Direction:Backward</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="144"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="146"/>
         <source>Axis:X-Axis</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="146"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="148"/>
         <source>Axis:Y-Axis</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="148"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="150"/>
         <source>Axis:Z-Axis</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="151"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="153"/>
         <source>LEDs:%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="154"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="156"/>
         <source>Particles:%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="157"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="159"/>
         <source>Delay:%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="160"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="162"/>
         <source>Iterations:%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="163"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="165"/>
         <source>Invert:YES</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="163"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="165"/>
         <source>Invert:NO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="166"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="168"/>
         <source>Start from center:YES</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="166"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="168"/>
         <source>Start from center:NO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationItem.cpp" line="172"/>
+        <location filename="../src/gui/AnimationItem.cpp" line="174"/>
         <source>Initial LED State:%1</source>
         <translation></translation>
     </message>
@@ -236,7 +236,7 @@
 <context>
     <name>AnimationListWidget</name>
     <message>
-        <location filename="../src/gui/AnimationListWidget.cpp" line="106"/>
+        <location filename="../src/gui/AnimationListWidget.cpp" line="99"/>
         <source>&amp;Add to Playlist</source>
         <translation></translation>
     </message>
@@ -359,28 +359,28 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationOptions.cpp" line="204"/>
-        <location filename="../src/gui/AnimationOptions.cpp" line="218"/>
+        <location filename="../src/gui/AnimationOptions.cpp" line="187"/>
+        <location filename="../src/gui/AnimationOptions.cpp" line="201"/>
         <source>Properties of animation </source>
         <translation></translation>
     </message>
 </context>
 <context>
-    <name>AnimationPlayListWidget</name>
+    <name>AnimationPlaylistWidget</name>
     <message>
-        <location filename="../src/gui/AnimationPlayListWidget.cpp" line="73"/>
+        <location filename="../src/gui/AnimationPlaylistWidget.cpp" line="76"/>
         <source>Clear Animation Playlist</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationPlayListWidget.cpp" line="74"/>
+        <location filename="../src/gui/AnimationPlaylistWidget.cpp" line="77"/>
         <source>&lt;h3&gt;&lt;b&gt;Do you really want clear the animation playlist?&lt;/b&gt;&lt;/h3&gt;</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/AnimationPlayListWidget.cpp" line="75"/>
+        <location filename="../src/gui/AnimationPlaylistWidget.cpp" line="78"/>
         <source>This can not be undone!</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -786,47 +786,47 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/MainWindow.cpp" line="57"/>
+        <location filename="../src/gui/MainWindow.cpp" line="60"/>
         <source>Alt+1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/MainWindow.cpp" line="58"/>
+        <location filename="../src/gui/MainWindow.cpp" line="61"/>
         <source>Alt+2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/MainWindow.cpp" line="59"/>
+        <location filename="../src/gui/MainWindow.cpp" line="62"/>
         <source>Ctrl+A</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/MainWindow.cpp" line="134"/>
+        <location filename="../src/gui/MainWindow.cpp" line="132"/>
         <source>3D-LED Cube</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/MainWindow.cpp" line="135"/>
+        <location filename="../src/gui/MainWindow.cpp" line="133"/>
         <source>Do you really want to exit the programm?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/MainWindow.cpp" line="198"/>
+        <location filename="../src/gui/MainWindow.cpp" line="187"/>
         <source>Disconnect from seriell device  O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/MainWindow.cpp" line="204"/>
+        <location filename="../src/gui/MainWindow.cpp" line="193"/>
         <source>Connect to seriell device  O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/MainWindow.cpp" line="332"/>
+        <location filename="../src/gui/MainWindow.cpp" line="314"/>
         <source>&lt;h2&gt;3D-LED Cube Control&lt;/h2&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/MainWindow.cpp" line="334"/>
+        <location filename="../src/gui/MainWindow.cpp" line="316"/>
         <source>LED Cube Control&lt;br&gt;&lt;p&gt;Copyright &amp;copy; 2014 Christian Schwarzgruber&lt;p&gt;The &lt;b&gt;3D-LED Cube&lt;/b&gt; program has been implemented with the indention to send the created animation to a µC, without worring about the computation power of the µC. &lt;p&gt;The application is designed like a modern music player, you can start and stop the animation, add animations to the playlist or remove it from the playlist. Furthermore, all animation properties can be adjusted through the user interface.</source>
         <translation></translation>
     </message>
@@ -834,17 +834,17 @@
 <context>
     <name>Sender</name>
     <message>
-        <location filename="../src/core/Sender.cpp" line="98"/>
+        <location filename="../src/core/Sender.cpp" line="101"/>
         <source>Can&apos;t open serial port: &lt;b&gt;%1&lt;/b&gt; - error code: &lt;b&gt;%2&lt;/b&gt;#Check if device is connected properly</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/Sender.cpp" line="106"/>
+        <location filename="../src/core/Sender.cpp" line="109"/>
         <source>Do you really want close the serial port: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/Sender.cpp" line="127"/>
+        <location filename="../src/core/Sender.cpp" line="130"/>
         <source>Can&apos;t configure the serial port: &lt;b&gt;%1&lt;/b&gt;,
 error code: &lt;b&gt;%2&lt;/b&gt;</source>
         <translation></translation>
@@ -938,27 +938,27 @@ error code: &lt;b&gt;%2&lt;/b&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/SettingsDialog.cpp" line="107"/>
+        <location filename="../src/gui/SettingsDialog.cpp" line="111"/>
         <source>Description: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/SettingsDialog.cpp" line="108"/>
+        <location filename="../src/gui/SettingsDialog.cpp" line="112"/>
         <source>Manufacturer: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/SettingsDialog.cpp" line="109"/>
+        <location filename="../src/gui/SettingsDialog.cpp" line="113"/>
         <source>Location: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/SettingsDialog.cpp" line="110"/>
+        <location filename="../src/gui/SettingsDialog.cpp" line="114"/>
         <source>Vendor Identifier: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/SettingsDialog.cpp" line="111"/>
+        <location filename="../src/gui/SettingsDialog.cpp" line="115"/>
         <source>Product Identifier: %1</source>
         <translation></translation>
     </message>

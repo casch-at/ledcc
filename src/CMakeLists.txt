@@ -75,6 +75,7 @@ set(ledcc_core_SOURCES
     ${CORE_DIR}/XmlPlaylistWriter.cpp
     ${CORE_DIR}/System.cpp
     ${CORE_DIR}/animations/LookUpTables.hpp
+    ${CORE_DIR}/USBInterface.cpp
 )
 
 set(ledcc_thirdparty_SOURCES
@@ -117,12 +118,31 @@ set(ledcc_gui_FORMS
     ${GUI_DIR}/AboutDialog.ui
 )
 
-
+# ---------------------------------------------------------------------------------------------------
+# Set translation files
+# ---------------------------------------------------------------------------------------------------
 set(ledcc_TS_FILES
     ${LANG_DIR}/${PROGNAME}_en.ts
     ${LANG_DIR}/${PROGNAME}_de.ts
 )
 
+
+# ---------------------------------------------------------------------------------------------------
+# Include other files
+# ---------------------------------------------------------------------------------------------------
+set( ledcc_INCLUDE_DIRECTORIES
+     ${USB1_INCLUDE_DIRS}
+)
+
+set( ledcc_LIBRARIES
+     ${Qt5Widgets_LIBRARIES}
+     ${Qt5SerialPort_LIBRARIES}
+#    ${Qt5WebKit_LIBRARIES}
+     ${Qt5WebKitWidgets_LIBRARIES}
+     ${USB1_LIBRARIES}
+)
+
+include_directories( ${ledcc_INCLUDE_DIRECTORIES} )
 # ---------------------------------------------------------------------------------------------------
 # The main file
 # ---------------------------------------------------------------------------------------------------
@@ -151,14 +171,15 @@ qt5_wrap_ui(ledcc_FORMS_HEADERS
 # ---------------------------------------------------------------------------------------------------
 set(_TMP ${CORE_DIR} ${GUI_DIR} )
 if(UPDATE_TRANSLATIONS)
-    message(STATUS "Translation files will be created")
+    message(STATUS "TS files will be created")
     qt5_create_translation(QM_FILES ${_TMP} ${ledcc_TS_FILES})
 else(UPDATE_TRANSLATIONS)
-    message(STATUS "Translation files for install will be created")
+    message(STATUS "QM files will be created")
     qt5_add_translation(QM_FILES ${ledcc_TS_FILES})
 endif(UPDATE_TRANSLATIONS)
 unset(_TMP)
 
+message(STATUS "USB INC and LIB: ${USB1_INCLUDE_DIR} | ${USB1_LIBRARY}")
 # ---------------------------------------------------------------------------------------------------
 # Create a static library of all sources.
 # ---------------------------------------------------------------------------------------------------
@@ -174,11 +195,8 @@ set_target_properties(ledcc-core PROPERTIES COMPILE_DEFINITIONS LED_CONTROL_BUIL
 # Link libraries against the created library.
 # HINT: Qt5Widgets_LIBRARIES includes Qt5Core_LIBRARIES and Qt5Gui_LIBRARIES
 # ---------------------------------------------------------------------------------------------------
-target_link_libraries(ledcc-core
-                      ${Qt5Widgets_LIBRARIES}
-                      ${Qt5SerialPort_LIBRARIES}
-#                      ${Qt5WebKit_LIBRARIES}
-                      ${Qt5WebKitWidgets_LIBRARIES}
+target_link_libraries( ledcc-core
+                       ${ledcc_LIBRARIES}
 )
 
 # ---------------------------------------------------------------------------------------------------

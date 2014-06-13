@@ -26,8 +26,8 @@ Draw::Draw(QObject *parent):
     QObject(parent)
 {
     QTime time = QTime::currentTime();
-    cubeFrame =  CubeArray(8,QVector<quint8>(8)) ;
-    cubeFrameTemp =  CubeArray(8,QVector<quint8>(8)) ;
+    cubeFrame =  CubeArray(CUBE_SIZE,QVector<quint8>(CUBE_SIZE)) ;
+    cubeFrameTemp =  CubeArray(CUBE_SIZE,QVector<quint8>(CUBE_SIZE)) ;
     qsrand(static_cast<uint>(time.msecsSinceStartOfDay()));
     qRegisterMetaType<CubeArray>("CubeArray");
 }
@@ -65,7 +65,7 @@ void Draw::clearTempBixel(const quint8 x, const quint8 y, const quint8 z)
 Draw::BixelState Draw::getBixelState(const quint8 x, const quint8 y, const quint8 z)
 {
     if (inRange(x, y, z)) {
-        if (cubeFrame[z][y] & ( 1 << x ))
+        if (cubeFrame[z][y] & ( 0x01 << x ))
             return ON;
         else
             return OFF;
@@ -77,7 +77,7 @@ Draw::BixelState Draw::getBixelState(const quint8 x, const quint8 y, const quint
 void Draw::flipBixels(const quint8 x, const quint8 y, const quint8 z)
 {
     if (inRange(x, y, z))
-        cubeFrame[z][y] ^= ( 1 << x );
+        cubeFrame[z][y] ^= ( 0x01 << x );
 }
 
 void Draw::alterBixel(const quint8 x, const quint8 y, const quint8 z, const BixelState state)
@@ -100,7 +100,7 @@ void Draw::shift(const Axis axis, const Direction direction)
     quint8 i, x, y, ii, iii;
     for (i = 0; i < CUBE_SIZE; i++) {
         if (direction)
-            ii = 7 - i;
+            ii = IT_CUBE_SIZE - i;
         else
             ii = i;
 
@@ -130,7 +130,7 @@ void Draw::shift(const Axis axis, const Direction direction)
     if (direction) {
         i = 0;
     } else {
-        i = 7;
+        i = IT_CUBE_SIZE;
     }
 
     for (x = 0; x < CUBE_SIZE; x++) {
@@ -195,7 +195,9 @@ void Draw::drawPositionAxis(const Axis axis, const QVector<quint8> &position, co
         }
     }
 }
-
+//TODO:: Currently this is optimized for 32bit Processors, we should also add one for 64Bit
+//       processors and identify the processor size within the cmake files, to set a flag which
+//       of those should be compiled.
 quint8 Draw::flipByte(const quint8 byte)
 {
     quint8 b = byte;
@@ -430,10 +432,12 @@ void Draw::fontGetChar(quint8 chr, quint8 dst[5])
         dst[i] = lookUpTable[(chr*5)+i];
 }
 
+
 float Draw::distance2d(float x1, float y1, float x2, float y2)
 {
     return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 }
+
 
 float Draw::distance3d(float x1, float y1, float z1, float x2, float y2, float z2)
 {
