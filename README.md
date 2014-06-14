@@ -1,6 +1,8 @@
-# ledcc
+# 3D-LED Cube Control (ledcc)
 
-3D-LED Cube Control is a small program to control a 3D-LED Cube (8x8x8) the data are send to the µC which will than turn the LEDs on and off. For the communication between the GUI and the µC the rs_232 interface is used.
+3D-LED Cube Control is a small program to control a 3D-LED Cube the data are send to the µC, the µC is than responsibly for turning ON/OFF the LEDs. 
+
+For the communication between the GUI and the µC the rs_232 interface is used.
 Your implemention of the rs_232 routine on the µC site must follow a strict syntax otherwise it will not work. Checkout the [wiki](https://github.com/luxchris/ledcc/wiki) for more information. 
 
 # Requirments
