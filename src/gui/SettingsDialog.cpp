@@ -37,7 +37,6 @@
 
 SerialSettings* SerialSettings::m_instance = Q_NULLPTR;
 
-//FIXME:: Port description are only shown after pressing the refresh button
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
     m_ui(new Ui::SettingsDialog)
@@ -53,11 +52,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     void (QComboBox:: *signal)(int) = &QComboBox::currentIndexChanged;
     connect(m_ui->m_portsBox, signal, this, &SettingsDialog::showPortInfo);
 
-    restoreValues();
     fillPortsParameters();
-    updateSettings();
     fillPortsInfo();
-//    Q_EMIT m_ui->m_portsBox->currentIndexChanged(0);
+    restoreValues();
+    updateSettings();
 
     AQP::accelerateWidget(this);
 }
@@ -218,7 +216,6 @@ void SettingsDialog::fillPortsInfo() //
 void SettingsDialog::updateSettings()
 {
     serialSettings()->m_name = m_ui->m_portsBox->currentText();
-
     serialSettings()->m_baudRate = static_cast<QSerialPort::BaudRate>(
                 m_ui->m_baudRateBox->itemData(m_ui->m_baudRateBox->currentIndex()).toInt());
     //

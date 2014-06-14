@@ -156,13 +156,10 @@ bool Sender::openSerialPort(void)
 
     m_serial->setPortName (serialSettings()->m_name);
 
-    if(m_serial->open(QIODevice::ReadWrite))
-    {
+    if ( m_serial->open(QIODevice::ReadWrite) )
         result = checkPortSettings();
-
-    }else
-    {
+    else
         result = false;
-    }
+
     return result;
 }

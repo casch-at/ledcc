@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QHash>
 
-class USBInterface : public QObject
+class USBInterface: public QObject
 {
     Q_OBJECT
 public:
@@ -34,9 +34,8 @@ public:
     }
 
 private:
-#ifdef _DEBUG_
     void printDev(libusb_device *dev);
-#endif
+
     libusb_device **m_devList;
     libusb_device_handle *eStickv2_handle;
     libusb_context *ctx;

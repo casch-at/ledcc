@@ -67,6 +67,7 @@ public:
         LedState    = (1 << 10)
         };
     static const int TOTAL_ARGUMENTS = 11;
+
     explicit AnimationItem(QListWidget *view = 0, int type = UserType);
     explicit AnimationItem(const QString &text, QListWidget *view = 0, int type = UserType);
 
@@ -92,7 +93,6 @@ public:
     void createAnimationTooltipAsRichText();
     QStringList getAnimationPropertiesAsPlainText();
 private:
-    //    void initOptions(void);
     int m_availableAnimationOptions;
     Options m_options;
 };

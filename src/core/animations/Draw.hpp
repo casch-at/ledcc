@@ -68,7 +68,7 @@ public:
 protected:
     virtual ~Draw();
     void setBixel(const quint8 x, const quint8 y, const quint8 z);
-    void setTempBixel(quint8 x, quint8 y, quint8 z);
+    void setTempBixel(const quint8 x, const quint8 y, const quint8 z);
 
     void clearBixel(const quint8 x, const quint8 y, const quint8 z);
     void clearTempBixel(const quint8 x, const quint8 y, const quint8 z);

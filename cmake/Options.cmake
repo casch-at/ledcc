@@ -13,11 +13,9 @@ option(UPDATE_TRANSLATIONS "If 'ON' .ts files will be updated, if 'OFF' .qm file
 # ---------------------------------------------------------------------------------------------------
 # Configure the install path
 # ---------------------------------------------------------------------------------------------------
-if( "${CMAKE_PREFIX_PATH}" STREQUAL  "/usr/local/")
+if( "${CMAKE_INSTALL_PREFIX}" STREQUAL  "" )
   set(CMAKE_INSTALL_PREFIX "/usr/local")
-elseif("${CMAKE_PREFIX_PATH}" STREQUAL "")
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
-endif()
+endif( "${CMAKE_INSTALL_PREFIX}" STREQUAL  "" )
 message(STATUS "CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
 
 if(MINGW)

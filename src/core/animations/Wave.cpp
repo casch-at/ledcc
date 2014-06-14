@@ -43,6 +43,7 @@ void Wave::createAnimation()
                 setBixel(x,y,static_cast<quint8>(height));
             }
         }
+        waitMs(speed());
 //        tripleVector[i] = cubeFrame;
         fillCubeArray(0x00);
     }
@@ -51,7 +52,6 @@ void Wave::createAnimation()
 ////        if(i/10 == 0)
 ////            waitMs(speed());
 //    }
-    waitMs(200);
     Q_EMIT done();
 }
 

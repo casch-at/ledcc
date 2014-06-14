@@ -37,12 +37,14 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     MainWindow w;
     QTranslator *qtTranslator = new QTranslator(w.parent());
+#ifndef _DEBUG_
     QTranslator *ledccTranslator = new QTranslator(w.parent());
+#endif
     qtTranslator->load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     app.installTranslator(qtTranslator);
 
 
-    //TODO:: Shortcut are not translated and not working
+    //TODO:: Shortcuts are not translated and not working when ui gets translated
     //TODO:: Create translation settings menu
 //#ifdef _DEBUG_
 //////    if(!ledccTranslator->load("ledcc_" + QLocale::system().name()))
@@ -52,9 +54,11 @@ int main(int argc, char *argv[])
 //    translator->load("ledcc_de", + QLocale::system().name());
 //#endif
 //    app.installTranslator(ledccTranslator);
-    ledccTranslator->load("ledcc_" + QLocale::system().name());
-//    ledccTranslator->load("ledcc_en" );
+#ifndef _DEBUG_
+    ledccTranslator->load("../share/ledcc/ts/ledcc_" + QLocale::system().name());
     app.installTranslator(ledccTranslator);
+#endif
+//    ledccTranslator->load("ledcc_en" );
 
     w.show();
     return app.exec();

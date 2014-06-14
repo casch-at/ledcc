@@ -92,6 +92,7 @@ void Animations::setupAnimationItems()
     m_animationHash.insert(BIAS::Wall,new Wall);
     m_animationHash.insert(BIAS::Firework,new Firework);
     m_animationHash.insert(BIAS::Wave,new Wave);
+    m_animationHash.insert(BIAS::ConwaysGameOfLife,new ConwaysGameOfLife);
 
     QHash<QString,Animation*>::const_iterator iter = m_animationHash.constBegin();
     while(iter != m_animationHash.constEnd()){
@@ -147,6 +148,10 @@ void Animations::setupAnimationItems()
         } else if(iter.key().compare(BIAS::Wave) == 0){
             options.m_iteration = dynamic_cast<Wave*>(iter.value())->iterations();
             item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations );
+        } else if(iter.key().compare(BIAS::ConwaysGameOfLife) == 0){
+            options.m_iteration = dynamic_cast<ConwaysGameOfLife*>(iter.value())->iterations();
+            options.m_invert = dynamic_cast<ConwaysGameOfLife*>(iter.value())->invert();
+            item->setAvailableAnimationOptions( AnimationItem::Speed | AnimationItem::Iterations | AnimationItem::Invert );
         }
         item->setOptions(options);
         iter++.value()->m_abort = false;
@@ -214,5 +219,9 @@ void Animations::updateAnimation(const AnimationItem *item) const
     }else if(text.compare(BIAS::Wave) == 0){
         dynamic_cast<Wave*>(a)->setSpeed(options->m_speed);
         dynamic_cast<Wave*>(a)->setIterations(options->m_iteration);
+    } else if(text.compare(BIAS::ConwaysGameOfLife) == 0){
+        dynamic_cast<ConwaysGameOfLife*>(a)->setSpeed(options->m_speed);
+        dynamic_cast<ConwaysGameOfLife*>(a)->setIterations(options->m_iteration);
+        dynamic_cast<ConwaysGameOfLife*>(a)->setInvert(options->m_invert);
     }
 }

@@ -179,15 +179,14 @@ else(UPDATE_TRANSLATIONS)
 endif(UPDATE_TRANSLATIONS)
 unset(_TMP)
 
-message(STATUS "USB INC and LIB: ${USB1_INCLUDE_DIR} | ${USB1_LIBRARY}")
 # ---------------------------------------------------------------------------------------------------
 # Create a static library of all sources.
 # ---------------------------------------------------------------------------------------------------
-add_library(ledcc-core
-            STATIC
-            ${ledcc_SOURCES}
-            ${ledcc_FORMS_HEADERS}
-            ${QM_FILES}
+add_library( ledcc-core
+             STATIC
+             ${ledcc_SOURCES}
+             ${ledcc_FORMS_HEADERS}
+             ${QM_FILES}
 )
 
 set_target_properties(ledcc-core PROPERTIES COMPILE_DEFINITIONS LED_CONTROL_BUILDING_CORE)
@@ -202,12 +201,13 @@ target_link_libraries( ledcc-core
 # ---------------------------------------------------------------------------------------------------
 # Create a executable
 # ---------------------------------------------------------------------------------------------------
-add_executable(${PROGNAME}
-               ${ledcc_SOURCES_MAINEXE}
-               ${ledcc_RESOURCES_RCC}
-
+add_executable( ${PROGNAME}
+                ${ledcc_SOURCES_MAINEXE}
+                ${ledcc_RESOURCES_RCC}
 )
+
 #set_target_properties(${PROGNAME} PROPERTIES ENABLE_EXPORTS ON)
+
 # ---------------------------------------------------------------------------------------------------
 # The executable depends on the previously created static library ledcc_core.
 # To insure that this library is first created add a dependency.
@@ -228,6 +228,9 @@ target_link_libraries(${PROGNAME}
 #set_target_properties(${PROGNAME} ledcc-core PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 #set_target_properties(${PROGNAME} ledcc-core PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
+# ---------------------------------------------------------------------------------------------------
+# Create install target
+# ---------------------------------------------------------------------------------------------------
 install(TARGETS ${PROGNAME}
         BUNDLE DESTINATION . COMPONENT Runtime
         RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/${BIN_INSTALL_DIR} COMPONENT Runtime

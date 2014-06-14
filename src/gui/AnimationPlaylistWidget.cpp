@@ -33,8 +33,8 @@
 #include <QDebug>
 #endif
 
-// TODO:: Always check how many animations are already in the playlist
-//        if there are to many already inside it will need a long long time to move them etc.
+/* TODO:: Always check how many animations are already in the playlist if there are to many already
+          inside it will need a long long time to move them etc. */
 /*!
  \brief AnimationPlayListWidget Constructor
 
