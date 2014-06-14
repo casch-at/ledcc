@@ -16,7 +16,6 @@
  */
 #ifndef ANIMATIONHANDLER_HPP
 #define ANIMATIONHANDLER_HPP
-#include "Options.hpp"
 #include <QObject>
 #include <QHash>
 

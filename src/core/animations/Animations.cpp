@@ -98,7 +98,9 @@ void Animations::setupAnimationItems()
     while(iter != m_animationHash.constEnd()){
         AnimationItem *item = new AnimationItem(iter.key());
         AnimationItem::Options options;
+
         options.m_speed = iter.value()->speed();
+
         if(iter.key().compare(BIAS::AxisNailWall) == 0){
             options.m_axis =  dynamic_cast<AxisNailWall*>(iter.value())->getAxis();
             options.m_direction = dynamic_cast<AxisNailWall*>(iter.value())->getDirection();

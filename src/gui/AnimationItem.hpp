@@ -18,7 +18,6 @@
 #define ANIMATIONITEM_HPP
 
 #include <QListWidgetItem>
-#include "Options.hpp"
 #include <QObject>
 
 //FIXME:: Translation does not work for this object because the text is dynamicly
