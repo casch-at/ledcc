@@ -26,7 +26,7 @@ class ConwaysGameOfLife : public Animation
     Q_PROPERTY(quint16 iterations READ iterations WRITE setIterations)
     Q_PROPERTY(bool invert READ invert WRITE setInvert)
 public:
-    explicit ConwaysGameOfLife(const quint16 &speed = 120,
+    explicit ConwaysGameOfLife(const quint16 &speed = 140,
                                const QString &name = BIAS::ConwaysGameOfLife,
                                const quint16 &iterations = 100,
                                const bool invert = true,
