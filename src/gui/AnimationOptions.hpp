@@ -68,6 +68,7 @@ private:
 private:
     Ui::AnimationOptions *ui;
     int m_animationAt;
+    bool m_nextACalledFromConstructor;
     QList<AnimationItem*> m_itemList;
     AnimationItem *m_animationToUpdate;
     Q_DISABLE_COPY(AnimationOptions)

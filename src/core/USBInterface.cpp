@@ -25,7 +25,7 @@ USBInterface::USBInterface() :
     m_returnVal(0),
     m_countDev(0)
 {
-    devices.insert("eStickv2",0xfefe);
+    devices.insert("eStickv2",0xfefe); // set known devices
     m_returnVal = libusb_init(&ctx);
     if (m_returnVal < 0) {
 #ifdef _DEBUG_
@@ -40,7 +40,7 @@ USBInterface::USBInterface() :
 #endif
     }
     for (ssize_t i = 0; i < m_countDev; i++) {
-//        printDev(m_devList[i]);
+        printDev(m_devList[i]);
     }
 }
 
@@ -58,13 +58,15 @@ bool USBInterface::disconnectUSB()
 void USBInterface::printDev(libusb_device *dev)
 {
     libusb_device_descriptor desc;
-      int r = libusb_get_device_descriptor(dev, &desc);
-        if (r < 0) {
+    int r = libusb_get_device_descriptor(dev, &desc);
+    if (r < 0) {
 #ifdef _DEBUG_
-            qDebug() <<"failed to get device descriptor";
+        qDebug() <<"failed to get device descriptor";
 #endif
-            return;
-        }
+        return;
+    }
+
+    if (desc.idVendor == 0xffff) {
 #ifdef _DEBUG_
         qDebug() <<"Number of possible configurations: "<<static_cast<int>(desc.bNumConfigurations)<<"  ";
         qDebug() <<"Device Class: "<< static_cast<int>(desc.bDeviceClass)<<"  ";
@@ -79,6 +81,7 @@ void USBInterface::printDev(libusb_device *dev)
         const libusb_interface *inter;
         const libusb_interface_descriptor *interdesc;
         const libusb_endpoint_descriptor *epdesc;
+        qDebug();
         for(int i=0; i<static_cast<int>(config->bNumInterfaces); i++) {
             inter = &config->interface[i];
 #ifdef _DEBUG_
@@ -99,10 +102,11 @@ void USBInterface::printDev(libusb_device *dev)
                 }
             }
 #ifdef _DEBUG_
-            qDebug();
-            qDebug();
+//            qDebug();
+//            qDebug();
             qDebug();
 #endif
         }
         libusb_free_config_descriptor(config);
+    }
 }

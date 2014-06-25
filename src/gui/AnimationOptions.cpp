@@ -38,7 +38,8 @@
 AnimationOptions::AnimationOptions(QList<AnimationItem*> &itemsList, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AnimationOptions),
-    m_animationAt(-1)
+    m_animationAt(-1),
+    m_nextACalledFromConstructor(true)
 {
     Q_ASSERT(!itemsList.isEmpty());
     // Setup the user interface
@@ -50,7 +51,6 @@ AnimationOptions::AnimationOptions(QList<AnimationItem*> &itemsList, QWidget *pa
     connect(ui->m_cancelPB, &QPushButton::pressed, this, &AnimationOptions::cancel);
     connect(ui->m_okPB, &QPushButton::pressed, this, &AnimationOptions::ok);
     connect(this, &QDialog::rejected, this, &AnimationOptions::cancel);
-
 
     m_itemList = itemsList;
     optionsNextAnimation();
@@ -90,6 +90,7 @@ void AnimationOptions::changeEvent(QEvent *e)
 */
 void AnimationOptions::applyAnimationOptions()
 {
+    compareOldNewAnimationOptions();
     if(isWindowModified()){
         setWindowModified(false);
         AnimationItem::Options options;
@@ -182,10 +183,17 @@ void AnimationOptions::optionsNextAnimation()
 {
     if( m_animationAt < m_itemList.count() -1)
         m_animationAt++;
+
+    if ( !m_nextACalledFromConstructor )
+        compareOldNewAnimationOptions();
+
     shouldeApplyNewOptions();
     m_animationToUpdate = m_itemList.at(m_animationAt);
     ui->m_propertiesGB->setTitle(tr("Properties of animation ") + m_animationToUpdate->text());
     hideShowWidgetsDisplayOptions();
+
+    if ( m_nextACalledFromConstructor)
+        m_nextACalledFromConstructor = !m_nextACalledFromConstructor;
 }
 
 /*!
@@ -196,6 +204,7 @@ void AnimationOptions::optionsPrevAnimation()
 {
     if(m_animationAt)
         m_animationAt--;
+    compareOldNewAnimationOptions();
     shouldeApplyNewOptions();
     m_animationToUpdate = m_itemList.at(m_animationAt);
     ui->m_propertiesGB->setTitle(tr("Properties of animation ") + m_animationToUpdate->text());
@@ -335,6 +344,7 @@ void AnimationOptions::hideShowWidgetsDisplayOptions()
 */
 void AnimationOptions::shouldeApplyNewOptions()
 {
+
     if (isWindowModified()) {
         if (okToContinue() == QMessageBox::Ok)
             applyAnimationOptions();

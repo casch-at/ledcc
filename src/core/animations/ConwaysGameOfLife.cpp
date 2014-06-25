@@ -29,10 +29,12 @@ void ConwaysGameOfLife::createAnimation()
 {
     fillCubeArray(0x00);
 
+    // Set initial crowd.
     for (quint8 i = 0; i < 20; i++) {
         setBixel(rand() % 4, rand() % 4, rand() % 4);
     }
 
+    // Let's play the game.
     for (quint16 i  = 0; i < m_iterations; i++) {
         nextgen();
 

@@ -19,6 +19,7 @@
 #include <QApplication>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include "Global.hpp"
 #ifdef _DEBUG_
 #include <QDebug>
 #endif
@@ -35,6 +36,10 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    QApplication::setApplicationName("3D-LED Cube Control");
+    QApplication::setApplicationVersion(QString("%1").arg(LEDCC_VERSION));
+    QApplication::setOrganizationName("ledcc");
+
     MainWindow w;
     QTranslator *qtTranslator = new QTranslator(w.parent());
 #ifndef _DEBUG_

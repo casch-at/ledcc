@@ -17,6 +17,7 @@
 #ifndef ANIMATIONITEM_HPP
 #define ANIMATIONITEM_HPP
 
+#include <Draw.hpp>
 #include <QListWidgetItem>
 #include <QObject>
 

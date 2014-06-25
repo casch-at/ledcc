@@ -54,8 +54,7 @@ Config *Config::instance()
 {
     if (!m_instance) {
         m_instance = new Config(qApp);
-        QCoreApplication::setApplicationName("3D-LED Cube");
-        QCoreApplication::setOrganizationName("ledcc");
+//        QCoreApplication::setApplicationName("3D-LED Cube Control");
     }
     return m_instance;
 }
