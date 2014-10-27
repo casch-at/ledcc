@@ -28,66 +28,65 @@
 
 using namespace Settings;
 
-Config * Config::m_instance(Q_NULLPTR);
+Config *Config::m_instance( Q_NULLPTR );
 
 Config::~Config()
 {
-
 }
 
-QVariant Config::get(const QString &key)
+QVariant Config::get( const QString &key )
 {
-    return m_settings->value(key);
+    return m_settings->value( key );
 }
 
-QVariant Config::get(const QString &key, const QVariant &defaultValue)
+QVariant Config::get( const QString &key, const QVariant &defaultValue )
 {
-    return m_settings->value(key, defaultValue);
+    return m_settings->value( key, defaultValue );
 }
 
-void Config::set(const QString &key, const QVariant &value)
+void Config::set( const QString &key, const QVariant &value )
 {
-    m_settings->setValue(key, value);
+    m_settings->setValue( key, value );
 }
 
 Config *Config::instance()
 {
-    if (!m_instance) {
-        m_instance = new Config(qApp);
+    if( !m_instance )
+    {
+        m_instance = new Config( qApp );
 //        QCoreApplication::setApplicationName("3D-LED Cube Control");
     }
+
     return m_instance;
 }
 
-void Config::createConfigFromFile(QString &file)
+void Config::createConfigFromFile( QString &file )
 {
-    Q_ASSERT(!m_instance);
-    m_instance = new Config(file,qApp);
+    Q_ASSERT( !m_instance );
+    m_instance = new Config( file, qApp );
 }
 
 void Config::createTempFileInstance()
 {
-
 }
 
-Config::Config(QObject *parent) :
-    QObject(parent)
+Config::Config( QObject *parent ) :
+    QObject( parent )
 {
-    init( System::getConfigPath() + "ledcc.ini");
+    init( System::getConfigPath() + "ledcc.ini" );
 }
 
-Config::Config(const QString &fileName, QObject *parent):
-    QObject(parent)
+Config::Config( const QString &fileName, QObject *parent ) :
+    QObject( parent )
 {
-    init(fileName);
+    init( fileName );
 }
 
-void Config::init(const QString &fileName)
+void Config::init( const QString &fileName )
 {
-    m_settings.reset(new QSettings(fileName, QSettings::IniFormat));
-
-    m_defaults.insert(IsMainToolbarHidden, true);
-    m_defaults.insert(IsAnimationToolbarHidden, true);
-    m_defaults.insert(IsHelpToolbarHidden, true);
-    m_defaults.insert(IsAnimationOptionPreviewHidden, true);
+    m_settings.reset( new QSettings( fileName, QSettings::IniFormat ) );
+    m_defaults.insert( IsMainToolbarHidden, true );
+    m_defaults.insert( IsAnimationToolbarHidden, true );
+    m_defaults.insert( IsHelpToolbarHidden, true );
+    m_defaults.insert( IsAnimationOptionPreviewHidden, true );
 }

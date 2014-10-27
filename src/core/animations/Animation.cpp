@@ -97,4 +97,3 @@ void Animation::waitMs(const quint16 &time)
     thread()->usleep(time * 1000);
 //    Q_EMIT sendData(cubeFrameTemp);
 }
-

@@ -22,6 +22,7 @@
 #include <QToolButton>
 
 
+
 namespace Ui {
     class SettingsDialog;
     }
@@ -31,9 +32,28 @@ class QIntValidator;
 class QSettings;
 class SerialSettings;
 
+
+
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
+    class SerialPort : public QSerialPort
+    {
+    public:
+        enum BaudRate {
+            Baud1200 = 1200,
+            Baud2400 = 2400,
+            Baud4800 = 4800,
+            Baud9600 = 9600,
+            Baud19200 = 19200,
+            Baud38400 = 38400,
+            Baud57600 = 57600,
+            Baud76800 = 76800,
+            Baud115200 = 115200,
+            Baud250000 = 250000,
+            UnknownBaud = -1
+            };
+    };
 public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();

@@ -28,17 +28,17 @@ foreach(qml_file ${QML_FILES})
 endforeach()
 
 # ---------------------------------------------------------------------------------------------------
-# Set include directories containing headers files
+# Include directories containing headers files
 # ---------------------------------------------------------------------------------------------------
-set(include_DIRECTORIES
+include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/gui
     ${CMAKE_CURRENT_SOURCE_DIR}/core
     ${CMAKE_CURRENT_SOURCE_DIR}/core/animations
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/aqp
     ${CMAKE_CURRENT_SOURCE_DIR}/preview
-)
 
-include_directories(${include_DIRECTORIES})
+    ${USB1_INCLUDE_DIRS}
+)
 
 # ---------------------------------------------------------------------------------------------------
 # Configure header file to pass some data from cmake to the program
@@ -126,23 +126,18 @@ set(ledcc_TS_FILES
     ${LANG_DIR}/${PROGNAME}_de.ts
 )
 
-
 # ---------------------------------------------------------------------------------------------------
-# Include other files
+# Set all libraries
 # ---------------------------------------------------------------------------------------------------
-set( ledcc_INCLUDE_DIRECTORIES
-     ${USB1_INCLUDE_DIRS}
-)
-
 set( ledcc_LIBRARIES
      ${Qt5Widgets_LIBRARIES}
      ${Qt5SerialPort_LIBRARIES}
 #    ${Qt5WebKit_LIBRARIES}
      ${Qt5WebKitWidgets_LIBRARIES}
+
      ${USB1_LIBRARIES}
 )
 
-include_directories( ${ledcc_INCLUDE_DIRECTORIES} )
 # ---------------------------------------------------------------------------------------------------
 # The main file
 # ---------------------------------------------------------------------------------------------------
@@ -190,6 +185,7 @@ add_library( ledcc-core
 )
 
 set_target_properties(ledcc-core PROPERTIES COMPILE_DEFINITIONS LED_CONTROL_BUILDING_CORE)
+
 # ---------------------------------------------------------------------------------------------------
 # Link libraries against the created library.
 # HINT: Qt5Widgets_LIBRARIES includes Qt5Core_LIBRARIES and Qt5Gui_LIBRARIES

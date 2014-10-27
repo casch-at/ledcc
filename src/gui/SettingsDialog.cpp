@@ -144,41 +144,43 @@ void SettingsDialog::fillPortsParameters()
 {
     // fill baud rate (is not the entire list of available values,
     // desired values??, add your independently)
-    m_ui->m_baudRateBox->addItem(QLatin1String("1200"), QSerialPort::Baud1200);
-    m_ui->m_baudRateBox->addItem(QLatin1String("2400"), QSerialPort::Baud2400);
-    m_ui->m_baudRateBox->addItem(QLatin1String("4800"), QSerialPort::Baud4800);
-    m_ui->m_baudRateBox->addItem(QLatin1String("9600"), QSerialPort::Baud9600);
-    m_ui->m_baudRateBox->addItem(QLatin1String("19200"), QSerialPort::Baud19200);
-    m_ui->m_baudRateBox->addItem(QLatin1String("38400"), QSerialPort::Baud38400);
-    m_ui->m_baudRateBox->addItem(QLatin1String("57600"), QSerialPort::Baud57600);
-    m_ui->m_baudRateBox->addItem(QLatin1String("115200"), QSerialPort::Baud115200);
+    m_ui->m_baudRateBox->addItem(QLatin1String("1200"), SerialPort::Baud1200);
+    m_ui->m_baudRateBox->addItem(QLatin1String("2400"), SerialPort::Baud2400);
+    m_ui->m_baudRateBox->addItem(QLatin1String("4800"), SerialPort::Baud4800);
+    m_ui->m_baudRateBox->addItem(QLatin1String("9600"), SerialPort::Baud9600);
+    m_ui->m_baudRateBox->addItem(QLatin1String("19200"), SerialPort::Baud19200);
+    m_ui->m_baudRateBox->addItem(QLatin1String("38400"), SerialPort::Baud38400);
+    m_ui->m_baudRateBox->addItem(QLatin1String("57600"), SerialPort::Baud57600);
+    m_ui->m_baudRateBox->addItem(QLatin1String("76800"), SerialPort::Baud76800);
+    m_ui->m_baudRateBox->addItem(QLatin1String("115200"), SerialPort::Baud115200);
+    m_ui->m_baudRateBox->addItem(QLatin1String("250000"), SerialPort::Baud250000); // TODO:: The QSerialPort add-on module only provides enums only until 115200 bps
     m_ui->m_baudRateBox->setCurrentIndex ( m_ui->m_baudRateBox->count() - 1 );
 
     // fill data bits
-    m_ui->m_dataBitsBox->addItem(QLatin1String("5"), QSerialPort::Data5);
-    m_ui->m_dataBitsBox->addItem(QLatin1String("6"), QSerialPort::Data6);
-    m_ui->m_dataBitsBox->addItem(QLatin1String("7"), QSerialPort::Data7);
-    m_ui->m_dataBitsBox->addItem(QLatin1String("8"), QSerialPort::Data8);
+    m_ui->m_dataBitsBox->addItem(QLatin1String("5"), SerialPort::Data5);
+    m_ui->m_dataBitsBox->addItem(QLatin1String("6"), SerialPort::Data6);
+    m_ui->m_dataBitsBox->addItem(QLatin1String("7"), SerialPort::Data7);
+    m_ui->m_dataBitsBox->addItem(QLatin1String("8"), SerialPort::Data8);
     m_ui->m_dataBitsBox->setCurrentIndex( m_ui->m_dataBitsBox->count() - 1 );
 
     // fill parity
-    m_ui->m_parityBox->addItem(QLatin1String("None"), QSerialPort::NoParity);
-    m_ui->m_parityBox->addItem(QLatin1String("Even"), QSerialPort::EvenParity);
-    m_ui->m_parityBox->addItem(QLatin1String("Odd"), QSerialPort::OddParity);
-    m_ui->m_parityBox->addItem(QLatin1String("Mark"), QSerialPort::MarkParity);
-    m_ui->m_parityBox->addItem(QLatin1String("Space"), QSerialPort::SpaceParity);
+    m_ui->m_parityBox->addItem(QLatin1String("None"), SerialPort::NoParity);
+    m_ui->m_parityBox->addItem(QLatin1String("Even"), SerialPort::EvenParity);
+    m_ui->m_parityBox->addItem(QLatin1String("Odd"), SerialPort::OddParity);
+    m_ui->m_parityBox->addItem(QLatin1String("Mark"), SerialPort::MarkParity);
+    m_ui->m_parityBox->addItem(QLatin1String("Space"), SerialPort::SpaceParity);
 
     // fill stop bits
-    m_ui->m_stopBitsBox->addItem(QLatin1String("1"), QSerialPort::OneStop);
+    m_ui->m_stopBitsBox->addItem(QLatin1String("1"), SerialPort::OneStop);
 #ifdef Q_OS_WIN
     m_ui->m_stopBitsBox->addItem(QLatin1String("1.5"), QSerialPort::OneAndHalfStop);
 #endif
-    m_ui->m_stopBitsBox->addItem(QLatin1String("2"), QSerialPort::TwoStop);
+    m_ui->m_stopBitsBox->addItem(QLatin1String("2"), SerialPort::TwoStop);
 
     // fill flow control
-    m_ui->m_flowControlBox->addItem(QLatin1String("None"), QSerialPort::NoFlowControl);
-    m_ui->m_flowControlBox->addItem(QLatin1String("RTS/CTS"), QSerialPort::HardwareControl);
-    m_ui->m_flowControlBox->addItem(QLatin1String("XON/XOFF"), QSerialPort::SoftwareControl);
+    m_ui->m_flowControlBox->addItem(QLatin1String("None"), SerialPort::NoFlowControl);
+    m_ui->m_flowControlBox->addItem(QLatin1String("RTS/CTS"), SerialPort::HardwareControl);
+    m_ui->m_flowControlBox->addItem(QLatin1String("XON/XOFF"), SerialPort::SoftwareControl);
 }
 
 /**

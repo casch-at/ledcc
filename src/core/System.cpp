@@ -30,21 +30,24 @@ QString System::getConfigPath()
 {
     QString userPath;
     QString homePath = QDir::homePath();
-
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
     // we can't use QDesktopServices on X11 as it uses XDG_DATA_HOME instead of XDG_CONFIG_HOME
-    QByteArray env = qgetenv("XDG_CONFIG_HOME");
-    if (env.isEmpty()) {
+    QByteArray env = qgetenv ( "XDG_CONFIG_HOME" );
+
+    if ( env.isEmpty() )
+    {
         userPath = homePath;
         userPath += "/.config";
     }
-    else if (env[0] == '/') {
-        userPath = QFile::decodeName(env);
+    else if ( env[0] == '/' )
+    {
+        userPath = QFile::decodeName ( env );
     }
-    else {
+    else
+    {
         userPath = homePath;
         userPath += '/';
-        userPath += QFile::decodeName(env);
+        userPath += QFile::decodeName ( env );
     }
 
     userPath += "/ledcc/";

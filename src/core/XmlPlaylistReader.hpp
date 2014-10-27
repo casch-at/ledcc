@@ -19,8 +19,9 @@
 #define XMLPLAYLISTREADER_HPP
 #include <QList>
 
-/* Forward declarations */
 #include "AnimationItem.hpp"
+
+/* Forward declarations */
 class QXmlStreamReader;
 class QXmlStreamAttributes;
 

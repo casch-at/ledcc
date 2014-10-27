@@ -81,7 +81,7 @@ if(WITH_LTO)
 endif()
 
 if (WITH_CXX11)
-  add_gcc_compiler_cxxflags("-std=c++0x")
+  add_gcc_compiler_cxxflags("-std=c++11")
   add_gcc_compiler_cflags("-ansi")
 else()
   add_gcc_compiler_flags("-ansi")
